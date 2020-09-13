@@ -1,7 +1,11 @@
 <% @title = "Todo一覧" %>
 <h1><%= @title %></h1>
 
-<%= link_to "ToDoを追加", new_task_path %>
+<div>
+  <%= link_to "ToDoを追加", new_task_path %>
+</div>
+<%= link_to "前日へ", index_path(set_previous_day) %>
+<%= link_to "翌日へ", index_path(set_next_day) %>
 <ul>
 <% @tasks.each do |task| %>
   <li style="display: flex; justify-content: flex-start; margin-bottom: 10px;">

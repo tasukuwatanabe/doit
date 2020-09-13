@@ -6,6 +6,7 @@
 <p>ステータス: <%= @task.status if @task.status %></p>
 <p>期限: <%= @task.limit_at if @task.limit_at %></@>
 <p>ユーザid: <%= @task.user_id if @task.user_id %></p>
+<p>日付: <%= @task.date_id if @task.date_id %></p>
 
 <div style="width: 80px; display: flex; justify-content: space-between;">
   <p><%= link_to "編集", [ :edit, @task ] %></p>

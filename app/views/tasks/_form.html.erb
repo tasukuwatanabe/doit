@@ -1,2 +1,8 @@
 <div>タイトル: <%= f.text_field :title %></div>
 <div>メモ: <%= f.text_area :body, size: 32 %></div>
+<% if @task.date_id
+  @task_date = Date.parse(@task.date_id)
+  else
+  @task_date = @today
+end %>
+<div>日付: <%= f.date_field(:date_id, default: "#{@task_date}", value: "#{@task_date}") %></div>

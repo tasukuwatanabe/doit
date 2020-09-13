@@ -15,7 +15,8 @@ titles = %w[
   Task.create!(
     title: (titles[n]).to_s,
     body: n.even? ? 'メモを残すことができます' : nil,
-    status: n % 3 != 0 ? n % 3 : 1,
-    user_id: n.odd? ? n % 2 : 2
+    status: n % 3 != 0 ? 'uncompleted' : 'completed',
+    user_id: n.odd? ? n % 2 : 2,
+    date_id: Date.today.strftime('%Y-%m-%d')
   )
 end
