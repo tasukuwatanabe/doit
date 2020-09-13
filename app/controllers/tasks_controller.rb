@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   def index
-    @tasks = Task.all
+    @tasks = Task.where(date_id: params[:date])
   end
 
   def show
@@ -16,7 +16,7 @@ class TasksController < ApplicationController
     @task.user_id = 1
     if @task.save
       flash.notice = 'ToDoが追加されました。'
-      redirect_to :tasks
+      redirect_to index_path(@task.date_id)
     else
       render action: 'index'
     end
@@ -31,7 +31,7 @@ class TasksController < ApplicationController
     @task.assign_attributes(task_params)
     if @task.save
       flash.notice = 'ToDoが更新されました。'
-      redirect_to :tasks
+      redirect_to index_path(@task.date_id)
     else
       render action: 'edit'
     end
@@ -39,7 +39,7 @@ class TasksController < ApplicationController
 
   private def task_params
     params.require(:task).permit(
-      :title, :body, :status, :limit_at, :user_id
+      :title, :body, :status, :limit_at, :user_id, :date_id
     )
   end
 
