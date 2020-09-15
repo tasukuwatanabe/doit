@@ -59,6 +59,7 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.1)
+    awesome_print (1.8.0)
     bcrypt (3.1.16)
     bindex (0.8.1)
     bootsnap (1.4.8)
@@ -188,13 +189,10 @@ GEM
       unicode-display_width (>= 1.4.0, < 2.0)
     rubocop-ast (0.4.0)
       parser (>= 2.7.1.4)
-<<<<<<< Updated upstream
     rubocop-rails (2.8.0)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 0.87.0)
-=======
->>>>>>> Stashed changes
     ruby-progressbar (1.10.1)
     rubyzip (2.3.0)
     sass-rails (6.0.0)
@@ -257,6 +255,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
   bcrypt
   bootsnap (>= 1.4.2)
   byebug
@@ -272,10 +271,7 @@ DEPENDENCIES
   rails-i18n
   rspec-rails
   rubocop
-<<<<<<< Updated upstream
   rubocop-rails
-=======
->>>>>>> Stashed changes
   sass-rails (>= 6)
   selenium-webdriver
   spring

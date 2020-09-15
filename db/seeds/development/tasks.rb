@@ -11,12 +11,12 @@ titles = %w[
   親に電話をかける
 ]
 
-10.times do |n|
+50.times do |n|
   Task.create!(
     title: (titles[n]).to_s,
     body: n.even? ? 'メモを残すことができます' : nil,
     status: n % 3 != 0 ? 'uncompleted' : 'completed',
-    user_id: n.odd? ? n % 2 : 2,
-    date_id: Date.today.strftime('%Y-%m-%d')
+    user_id: n % 3 != 0 ? n % 3 : 1,
+    date_id: (Date.today - n.days).to_s
   )
 end
