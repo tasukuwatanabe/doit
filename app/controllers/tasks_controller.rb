@@ -1,6 +1,8 @@
 class TasksController < ApplicationController
+  before_action :logged_in_user
+
   def index
-    @tasks = Task.where(date_id: params[:date])
+    @tasks = Task.where(user_id: session[:user_id], date_id: params[:date])
   end
 
   def show
@@ -12,13 +14,12 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
-    @task.user_id = 1
+    @task = current_user.tasks.build(task_params)
     if @task.save
-      flash.notice = 'ToDoが追加されました。'
+      flash[:success] = 'ToDoが追加されました。'
       redirect_to index_path(@task.date_id)
     else
-      render action: 'index'
+      render action: 'new'
     end
   end
 
@@ -30,7 +31,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     @task.assign_attributes(task_params)
     if @task.save
-      flash.notice = 'ToDoが更新されました。'
+      flash[:notice] = 'ToDoが更新されました。'
       redirect_to index_path(@task.date_id)
     else
       render action: 'edit'
@@ -46,7 +47,7 @@ class TasksController < ApplicationController
   def destroy
     task = Task.find(params[:id])
     task.destroy!
-    flash.notice = 'ToDoが削除されました。'
-    redirect_to :tasks
+    flash[:notice] = 'ToDoが削除されました。'
+    redirect_to request.referer
   end
 end

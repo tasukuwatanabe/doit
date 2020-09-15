@@ -1,4 +1,10 @@
 <header>
   <%= link_to "ToDo App", index_path(@today) %>
-  <%= link_to "", index_path(@today) %>
+
+  <% if logged_in? %>
+    <span><%= @current_user.username %></span>
+    <%= link_to "ログアウト", logout_path, method: :delete  %>
+  <% else %>
+    <%= link_to "ログイン", login_path  %>
+  <% end %>
 </header>

@@ -1,0 +1,8 @@
+<li style="display: flex; justify-content: flex-start; margin-bottom: 10px;">
+  <div style="width: 200px;"><%= task.title %></div>
+  <div style="width: 120px; display: flex; justify-content: space-between;">
+    <%= link_to "詳細", task %>
+    <%= link_to "編集", [ :edit, task ] %>
+    <%= link_to "削除", task, method: :delete, data: { confirm: "本当に削除しますか？" } %>
+  </div>
+</li>
