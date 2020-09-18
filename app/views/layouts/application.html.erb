@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= document_title %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag "application", "data-turbolinks-track": "reload" %>
-    <%= javascript_pack_tag 'hello_vue' %>    
+
+    <%= stylesheet_pack_tag 'hello_vue' %>
+    <%= javascript_pack_tag 'hello_vue' %>
   </head>
   <body>
-  <%= render "shared/header" %>
-  <%= render "shared/flash" %>
-  <%= yield %>
+    <%= render "shared/header" %>
+    <%= render "shared/flash" %>
+    <main>
+      <%= yield %>
+    </main>
+    <%= render "shared/footer" %>
   </body>
 </html>

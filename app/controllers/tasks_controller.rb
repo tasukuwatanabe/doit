@@ -3,6 +3,7 @@ class TasksController < ApplicationController
 
   def index
     @tasks = Task.where(user_id: session[:user_id], date_id: params[:date])
+    @date_tasks = @tasks.where(date_id: Date.parse(request.path.gsub('/', '')))
   end
 
   def show
@@ -31,7 +32,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     @task.assign_attributes(task_params)
     if @task.save
-      flash[:notice] = 'ToDoが更新されました。'
+      flash[:success] = 'ToDoが更新されました。'
       redirect_to index_path(@task.date_id)
     else
       render action: 'edit'
@@ -47,7 +48,7 @@ class TasksController < ApplicationController
   def destroy
     task = Task.find(params[:id])
     task.destroy!
-    flash[:notice] = 'ToDoが削除されました。'
+    flash[:success] = 'ToDoが削除されました。'
     redirect_to request.referer
   end
 end

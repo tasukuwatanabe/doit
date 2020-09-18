@@ -1,7 +1,17 @@
-<% @title = "Todo編集" %>
-<h1><%= @title %></h1>
+<% @title = "Todoを編集" %>
 
-<%= form_with model: @task do |f| %>
-  <%= render "form", f: f %>
-  <%= f.submit "ToDoを更新" %>
-<% end %>
+<div class="container d-flex justify-content-center">
+  <%= render "sidebar_left" %>
+    <div class="task__main-col">
+      <div class="page__title-box">
+        <h2 class="page__title"><%= @title %></h2>
+      </div>
+      <%= form_with model: @task do |f| %>
+        <%= render "form", f: f %>
+        <div class="text-center">
+          <%= f.submit "ToDoを更新", class: "btn btn-primary mt-4" %>
+        </div>
+      <% end %>
+    </div>
+  <%= render "sidebar_right" %>
+</div>

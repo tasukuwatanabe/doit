@@ -1,9 +1,24 @@
 <%= render 'shared/error_messages', object: f.object %>
-<div>タイトル: <%= f.text_field :title %></div>
-<div>メモ: <%= f.text_area :body, size: 32 %></div>
-<% if @task.date_id
-  @task_date = Date.parse(@task.date_id)
+<div class="form-group row">
+  <label for="inputTitle" class="col-sm-4 col-form-label">タイトル</label>
+  <div class="col-sm-8">
+    <%= f.text_field :title, class: "form-control" %>
+  </div>
+</div>
+<div class="form-group row">
+  <label for="inputBody" class="col-sm-4 col-form-label">メモ</label>
+  <div class="col-sm-8">
+    <%= f.text_area :body, size: 32, class: "form-control" %>
+  </div>
+</div>
+<div class="form-group row">
+  <% if @task.date_id
+    @task_date = Date.parse(@task.date_id)
   else
-  @task_date = @today
-end %>
-<div>日付: <%= f.date_field(:date_id, default: "#{@task_date}", value: "#{@task_date}") %></div>
+    @task_date = @today
+  end %>
+  <label for="inputDate" class="col-sm-4 col-form-label">日付</label>
+  <div class="col-sm-8">
+    <%= f.date_field(:date_id, default: "#{@task_date}", value: "#{@task_date}", class: "form-control") %>
+  </div>
+</div>

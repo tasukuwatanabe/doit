@@ -1,15 +1,21 @@
 require 'date'
 
 module DateCalculationHelper
-  def get_the_date
-    the_date = Date.parse(request.path.gsub('/', '')).strftime('%Y年%1m月%d日')
+  def get_url_date
+    date_parce_url.strftime('%Y年%1m月%1d日')
   end
 
   def set_previous_date
-    previous_date = Date.parse(request.path.gsub('/', '')).yesterday
+    date_parce_url.yesterday
   end
 
   def set_next_date
-    next_date = Date.parse(request.path.gsub('/', '')).tomorrow
+    date_parce_url.tomorrow
   end
+
+  private def date_parce_url
+    @url_date = Date.parse(request.path.gsub('/', ''))
+  end
+
+  # private_class_method :date_parce_url
 end
