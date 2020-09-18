@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       flash[:success] = 'ログインしました。'
       redirect_to root_path(@today)
     else
-      flash.now[:alert] = 'メールアドレスもしくはパスワードが正しくありません。'
+      flash.now[:danger] = 'メールアドレスもしくはパスワードが正しくありません。'
       render 'new'
     end
   end

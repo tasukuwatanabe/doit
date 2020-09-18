@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       log_in @user
-      flash[:notice] = 'ユーザー登録が完了しました。'
+      flash[:success] = 'ユーザー登録が完了しました。'
       redirect_to index_path(@today)
     else
       render 'new'

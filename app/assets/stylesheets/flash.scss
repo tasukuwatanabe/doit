@@ -1,0 +1,17 @@
+.alert__case {
+  position: absolute !important;
+  top: 7px;
+  left: 0;
+  right: 0;
+  padding: 5px !important;
+  margin: auto !important;
+  display: flex;
+  justify-content: center;
+
+  .alert {
+    padding: 5px 15px;
+    font-size: 12px;
+    min-width: 300px;
+    text-align: center;
+  }
+}

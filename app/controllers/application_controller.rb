@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   private def logged_in_user
     unless logged_in?
       store_location
-      flash[:alert] = 'ログインが必要です'
+      flash[:danger] = 'ログインが必要です'
       redirect_to login_path
     end
   end
