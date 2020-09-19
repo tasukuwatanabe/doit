@@ -2,6 +2,6 @@
   User.create!(
     username: "testuser#{n}",
     email: "testuser#{n}@example.com",
-    password: "password"
+    password: 'password'
   )
 end

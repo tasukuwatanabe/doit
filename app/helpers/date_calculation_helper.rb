@@ -2,6 +2,10 @@ require 'date'
 
 module DateCalculationHelper
   def get_url_date
+    date_parce_url
+  end
+
+  def get_url_date_formatted
     date_parce_url.strftime('%Y年%1m月%1d日')
   end
 

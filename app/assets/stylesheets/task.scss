@@ -18,7 +18,6 @@
   }
   &__list {
     padding: 0;
-    min-height: 80%;
   }
   &__item {
     padding: 15px 15px 15px 20px;
@@ -26,9 +25,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
     background-color: #ffffff;
     border: 1px solid #e4e4e4;
+
+    &:not(:last-child) {
+      margin-bottom: 15px;
+    }
 
     &-title {
       margin-right: 15px;
@@ -37,7 +39,6 @@
 
     &-link-box {
       font-size: 14px;
-      width: 158px;
       display: flex;
       align-items: center;
 
@@ -48,7 +49,7 @@
   }
   &__btn-case {
     display: flex;
-    margin: 50px 0 30px;
+    margin: 20px 0 100px;
     justify-content: flex-end;
   }
 }
