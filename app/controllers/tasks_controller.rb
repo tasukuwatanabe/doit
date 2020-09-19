@@ -1,8 +1,9 @@
 class TasksController < ApplicationController
   before_action :logged_in_user
+  before_action :get_shortcuts, only: :index
 
   def index
-    @tasks = Task.where(user_id: session[:user_id], date_id: params[:date])
+    @tasks = Task.where(user_id: @current_user.id, date_id: params[:date])
     @date_tasks = @tasks.where(date_id: Date.parse(request.path.gsub('/', '')))
   end
 
@@ -20,7 +21,12 @@ class TasksController < ApplicationController
       flash[:success] = 'ToDoが追加されました。'
       redirect_to index_path(@task.date_id)
     else
-      render action: 'new'
+      if Rails.application.routes.recognize_path(request.referrer)[:controller] == 'tasks' && Rails.application.routes.recognize_path(request.referrer)[:action] == 'index'
+        flash[:danger] = @task.errors.messages.values[0][0]
+        redirect_back(fallback_location: root_path)
+      else
+        render action: 'new'
+      end
     end
   end
 
@@ -41,7 +47,7 @@ class TasksController < ApplicationController
 
   private def task_params
     params.require(:task).permit(
-      :title, :body, :status, :limit_at, :user_id, :date_id
+      :title, :body, :status, :date_id
     )
   end
 

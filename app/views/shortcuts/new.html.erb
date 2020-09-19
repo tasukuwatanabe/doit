@@ -1,4 +1,4 @@
-<% @title = "Todoを追加" %>
+<% @title = "ショートカットを追加" %>
 
 <div class="container d-flex justify-content-center">
   <%= render "shared/sidebar_left" %>
@@ -6,10 +6,10 @@
     <div class="page__title-box">
       <h2 class="page__title"><%= @title %></h2>
     </div>
-    <%= form_for(@task) do |f| %>
-      <%= render "form", f:f  %>
+    <%= form_for(@shortcut) do |f| %>
+      <%= render "form", f: f %>
       <div class="text-center">
-        <%= f.submit "ToDoを追加", class: "btn btn-info mt-4" %>
+        <%= f.submit "ショートカットを追加", class: "btn btn-info mt-4" %>
       </div>
     <% end %>
   </div>

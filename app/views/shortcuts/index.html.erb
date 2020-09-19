@@ -1,0 +1,23 @@
+<% @title = "ショートカット一覧" %>
+
+<div class="container d-flex justify-content-center">
+  <%= render "shared/sidebar_left" %>
+    <div class="task__main-col task__main-col--index">
+      <div>
+        <div class="page__title-box">
+          <h2 class="page__title"><%= @title %></h2>
+        </div>
+        <% if @shortcuts.any? %>
+          <ul class="task__list">
+          <% @shortcuts.each do |shortcut| %>
+            <%= render shortcut %>
+          <% end %>
+          </ul>
+        <% end %>
+        <div>
+        <%= link_to "ショートカットを追加", new_shortcut_path, class: "float-right btn btn-outline-info btn-sm" %>
+        </div>
+      </div>
+    </div>
+  <%= render "shared/sidebar_right" %>
+</div>

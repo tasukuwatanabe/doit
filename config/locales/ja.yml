@@ -1,0 +1,13 @@
+ja:
+  activerecord:
+    models:
+      task: ToDo
+      shortcut: ショートカット
+    attributes:
+      task:
+        title: タイトル
+        body: メモ
+        status: ステータス
+      shortcut:
+        title: タイトル
+        body: メモ
