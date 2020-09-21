@@ -1,4 +1,4 @@
 class Task < ApplicationRecord
   belongs_to :user
-  validates :title, presence: true, uniqueness: { scope: :date_id, message: '指定した日付にはすでに追加済みです' }
+  validates :title, presence: true, uniqueness: { scope: [:date_id, :user_id], message: '指定した日付にはすでに追加済みです' }
 end
