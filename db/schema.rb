@@ -27,13 +27,12 @@ ActiveRecord::Schema.define(version: 2020_09_19_015826) do
   create_table "tasks", force: :cascade do |t|
     t.string "title", null: false
     t.text "body"
-    t.string "status", default: "uncompleted", null: false
-    t.datetime "limit_at"
+    t.boolean "status", default: false, null: false
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "date_id"
-    t.index ["date_id", "title"], name: "index_tasks_on_date_id_and_title", unique: true
+    t.index ["date_id", "title", "user_id"], name: "index_tasks_on_date_id_and_title_and_user_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|

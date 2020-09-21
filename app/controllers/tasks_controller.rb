@@ -4,7 +4,7 @@ class TasksController < ApplicationController
 
   def index
     @tasks = Task.where(user_id: @current_user.id, date_id: params[:date])
-    @date_tasks = @tasks.where(date_id: Date.parse(request.path.gsub('/', '')))
+    @date_tasks = @tasks.where(date_id: get_url_date).order(:created_at)
   end
 
   def show
@@ -56,5 +56,12 @@ class TasksController < ApplicationController
     task.destroy!
     flash[:success] = 'ToDoが削除されました。'
     redirect_to request.referer
+  end
+
+  def toggle_status
+    render body: nil
+    @task = Task.find(params[:id])
+    @task.status = !@task.status
+    @task.save
   end
 end

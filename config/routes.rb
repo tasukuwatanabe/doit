@@ -7,5 +7,6 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   resources :users, except: :index
   resources :tasks, except: :index
+  post '/tasks/:id/toggle_status', to: 'tasks#toggle_status', as: 'toggle_status'
   resources :shortcuts
 end
