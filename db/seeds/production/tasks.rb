@@ -15,8 +15,7 @@ titles = %w[
   Task.create!(
     title: (titles[n % titles.length]).to_s,
     body: n.even? ? 'メモを残すことができます' : nil,
-    status: n % 3 != 0 ? 'uncompleted' : 'completed',
-    user_id: n % 3 != 0 ? n % 3 : 1,
-    date_id: (Date.today - n.days).to_s
+    user_id: User.find_by(email: 'testuser1@example.com').id,
+    date_id: (Date.today - (n % 7).days).to_s
   )
 end
