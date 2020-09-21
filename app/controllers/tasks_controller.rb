@@ -4,7 +4,7 @@ class TasksController < ApplicationController
 
   def index
     @tasks = Task.where(user_id: @current_user.id, date_id: params[:date])
-    @date_tasks = @tasks.where(date_id: get_url_date).order(:created_at)
+    @date_tasks = @tasks.where(date_id: get_url_date)
   end
 
   def show
