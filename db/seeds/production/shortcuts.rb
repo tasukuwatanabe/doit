@@ -9,7 +9,6 @@ titles = %w[
   読書をする
   Youtubeを観る
   子供と遊ぶ
-  テレビを観る
 ]
 
 titles.each do |title|
