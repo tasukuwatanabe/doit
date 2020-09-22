@@ -1,4 +1,4 @@
-<li class="task__item <%= 'routine' unless task.routine_id.nil? %>">
+<li class="task__item <%#= 'routine' unless task.routine_id.nil? %>">
   <div id="task-status" class="task__item-status">
     <%= check_box_tag "task_status_#{task.id}", true, task.status, {'data-id' => task.id, remote: true, method: :post} %>
     <%= label_tag "task_status_#{task.id}", "" %>

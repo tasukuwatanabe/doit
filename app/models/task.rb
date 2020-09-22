@@ -1,7 +1,14 @@
 class Task < ApplicationRecord
+  include StringNormalizer
+
   belongs_to :user
   belongs_to :routine, optional: true
-  validates :title, presence: true, uniqueness: { scope: [:date_id, :user_id], message: '指定した日付にはすでに追加済みです' }
 
-  default_scope -> { order(created_at: :desc) }
+  before_validation do
+    self.title = remove_space(title)
+  end
+
+  validates :title, presence: true
+
+  default_scope -> { order('routine_id is null, routine_id desc, created_at desc') }
 end

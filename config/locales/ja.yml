@@ -3,6 +3,7 @@ ja:
     models:
       task: ToDo
       shortcut: ショートカット
+      routine: ルーティーン
     attributes:
       task:
         title: タイトル
@@ -11,3 +12,8 @@ ja:
       shortcut:
         title: タイトル
         body: メモ
+      routine:
+        title: タイトル
+        body: メモ
+        start_date: 開始日
+        end_date: 終了日

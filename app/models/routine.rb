@@ -8,7 +8,7 @@ class Routine < ApplicationRecord
     self.title = remove_space(title)
   end
 
-  validates :title, presence: true, uniqueness: true, allow_blank: true
+  validates :title, presence: true, uniqueness: true
   validates :start_date, presence: true, date: {
     after_or_equal_to: Date.new(2000, 1, 1),
     before: ->(_obj) { 1.year.from_now.to_date },
@@ -19,4 +19,6 @@ class Routine < ApplicationRecord
     before: ->(_obj) { 1.year.from_now.to_date },
     allow_blank: true
   }
+
+  default_scope -> { order(created_at: :desc) }
 end
