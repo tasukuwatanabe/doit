@@ -11,54 +11,54 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2020_09_22_025557) do
+
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+  enable_extension "plpgsql"
 
-  create_table 'routines', force: :cascade do |t|
-    t.string 'title', null: false
-    t.text 'body'
-    t.date 'start_date', null: false
-    t.date 'end_date', null: false
-    t.integer 'skip_day'
-    t.boolean 'progress_display', default: true, null: false
-    t.bigint 'user_id'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.index ['user_id'], name: 'index_routines_on_user_id'
+  create_table "routines", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "body"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.integer "skip_day"
+    t.boolean "progress_display", default: true, null: false
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_routines_on_user_id"
   end
 
-  create_table 'shortcuts', force: :cascade do |t|
-    t.string 'title', null: false
-    t.text 'body'
-    t.bigint 'user_id'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.index ['user_id'], name: 'index_shortcuts_on_user_id'
+  create_table "shortcuts", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "body"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_shortcuts_on_user_id"
   end
 
-  create_table 'tasks', force: :cascade do |t|
-    t.string 'title', null: false
-    t.text 'body'
-    t.boolean 'status', default: false, null: false
-    t.integer 'user_id', null: false
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.string 'date_id'
-    t.bigint 'routine_id'
-    t.index %w[date_id title user_id], name: 'index_tasks_on_date_id_and_title_and_user_id', unique: true
-    t.index ['routine_id'], name: 'index_tasks_on_routine_id'
+  create_table "tasks", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "body"
+    t.boolean "status", default: false, null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "date_id"
+    t.bigint "routine_id"
+    t.index ["routine_id"], name: "index_tasks_on_routine_id"
   end
 
-  create_table 'users', force: :cascade do |t|
-    t.string 'username'
-    t.string 'email'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.string 'password_digest'
-    t.index ['email'], name: 'index_users_on_email', unique: true
+  create_table "users", force: :cascade do |t|
+    t.string "username"
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "password_digest"
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key 'routines', 'users'
-  add_foreign_key 'shortcuts', 'users'
-  add_foreign_key 'tasks', 'routines'
+  add_foreign_key "routines", "users"
+  add_foreign_key "shortcuts", "users"
+  add_foreign_key "tasks", "routines"
 end
