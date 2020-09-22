@@ -1,0 +1,17 @@
+<% @title = "ルーティーンを編集" %>
+
+<div class="container d-flex justify-content-center">
+  <%= render "shared/sidebar_left" %>
+  <div class="task__main-col">
+    <div class="page__title-box">
+      <h2 class="page__title"><%= @title %></h2>
+    </div>
+    <%= form_for(@routine) do |f| %>
+      <%= render "form", f: f %>
+      <div class="text-center">
+        <%= f.submit "ルーティーンを更新", class: "btn btn-info mt-4" %>
+      </div>
+    <% end %>
+  </div>
+  <%= render "shared/sidebar_right" %>
+</div>

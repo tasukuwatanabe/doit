@@ -1,4 +1,4 @@
-table_names = %w[users tasks]
+table_names = %w[users tasks shortcuts routines]
 
 table_names.each do |table_name|
   path = Rails.root.join('db', 'seeds', Rails.env, "#{table_name}.rb")

@@ -14,13 +14,18 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      min-width: 500px;
     }
   }
   &__list {
     padding: 0;
   }
+  &__no-item {
+    text-align: center;
+    margin-bottom: 50px;
+  }
   &__item {
-    padding: 15px 15px 15px 20px;
+    padding: 15px;
     border-radius: 3px;
     display: flex;
     justify-content: space-between;
@@ -32,9 +37,19 @@
       margin-bottom: 15px;
     }
 
+    &.routine {
+      border: 2px solid rgb(252, 175, 33);
+    }
+
     &-title {
       margin-right: 15px;
       width: calc(100% - 158px - 15px);
+    }
+
+    .icon-calendar {
+      margin-right: 15px;
+      font-size: 20px;
+      color: rgb(252, 175, 33);
     }
 
     &-link-box {
@@ -59,7 +74,7 @@
   position: relative;
   width: 28px;
   height: 28px;
-  margin-right: 12px;
+  margin-right: 15px;
 }
 
 .task__item-status label {
@@ -93,8 +108,8 @@
 }
 
 .task__item-status input[type="checkbox"]:checked + label {
-  background-color: skyblue;
-  border-color: skyblue;
+  background-color: rgb(252, 175, 33);
+  border-color: rgb(252, 175, 33);
 }
 
 .task__item-status input[type="checkbox"]:checked + label:after {

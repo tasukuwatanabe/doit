@@ -2,10 +2,18 @@ class ShortcutsController < ApplicationController
   before_action :logged_in_user
 
   def index
-    @shortcuts = Shortcut.where(user_id: current_user.id)
+    @shortcuts = current_user.shortcuts
+    if @shortcuts.count >= Shortcut::MAX_SHORTCUT_COUNT
+      @disabled = 'disabled'
+    end
   end
 
   def new
+    @shortcuts = current_user.shortcuts
+    if @shortcuts.count >= Shortcut::MAX_SHORTCUT_COUNT
+      flash[:danger] = "ショートカットが登録できるのは#{Shortcut::MAX_SHORTCUT_COUNT}個までです。"
+      redirect_to shortcuts_path
+    end
     @shortcut = Shortcut.new
   end
 

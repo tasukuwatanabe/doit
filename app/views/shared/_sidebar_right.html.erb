@@ -1,8 +1,14 @@
 <aside id="sidebar-right" class="sidebar-right">
   <% if @path.is("tasks#index") %>
     <section id="shortcut-links">
-      <p class="sidebar-right__title">ショートカット</p>
-      <% if @shortcuts %>
+      <p class="sidebar-right__title">ショートカット
+        <% if !@shortcuts.empty? %>
+          <%= link_to "編集", shortcuts_path, class: "sidebar-right__title-link" %>
+        <% else %>
+          <%= link_to "登録", new_shortcut_path, class: "sidebar-right__title-link" %>
+        <% end %>
+      </p>
+      <% if !@shortcuts.empty? %>
         <ul class="sidebar-right__list">
           <% @shortcuts.each do |shortcut| %>
             <li class="sidebar-right__item">
@@ -13,9 +19,8 @@
             </li>
           <% end %>
         </ul>
-        <%= link_to "ショートカットを編集", shortcuts_path, class: "float-right btn btn-outline-info btn-sm" %>
       <% else %>
-        <%= link_to "ショートカットを追加", new_shortcut_path, class: "float-right btn btn-outline-info btn-sm" %>
+        <p>ショートカットは未作成です</p>
       <% end %>
     </section>
   <% end %>
