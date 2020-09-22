@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   resources :tasks, except: :index
   post '/tasks/:id/toggle_status', to: 'tasks#toggle_status', as: 'toggle_status'
   resources :shortcuts
+  resources :routines
 end

@@ -1,4 +1,4 @@
-<% @title = "ショートカット一覧" %>
+<% @title = "作成したルーティーン" %>
 
 <div class="container d-flex justify-content-center">
   <%= render "shared/sidebar_left" %>
@@ -7,17 +7,17 @@
         <div class="page__title-box">
           <h2 class="page__title"><%= @title %></h2>
         </div>
-        <% if @shortcuts.any? %>
+        <% if @routines.any? %>
           <ul class="task__list">
-          <% @shortcuts.each do |shortcut| %>
-            <%= render shortcut %>
+          <% @routines.each do |routine| %>
+            <%= render routine %>
           <% end %>
           </ul>
         <% else %>
-          <p class="task__no-item">ショートカットはまだ作成されていません。</p>
+          <p class="task__no-item">ルーティーンはまだ作成されていません。</p>
         <% end %>
-        <div class="task__btn-case">
-          <%= link_to "ショートカットを追加", new_shortcut_path, class: "float-right btn btn-info btn-sm #{@disabled}" %>
+        <div>
+        <%= link_to "ルーティーンを追加", new_routine_path, class: "float-right btn btn-outline-info btn-sm" %>
         </div>
       </div>
     </div>

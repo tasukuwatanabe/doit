@@ -1,0 +1,7 @@
+<li class="task__item">
+  <div class="task__item-title"><%= truncate(routine.title, length: 24, omission: "..." ) %></div>
+  <div class="task__item-link-box">
+    <%= link_to "編集", [ :edit, routine ], class: "btn btn-outline-warning btn-sm" %>
+    <%= link_to "削除", routine, method: :delete, class: "btn btn-outline-danger btn-sm", data: { confirm: "ルーティーンとして自動登録されたToDoは全て削除されますがよろしいですか？" } %>
+  </div>
+</li>

@@ -3,7 +3,12 @@
     <li class="sidebar-left__item">
       <%= link_to "ToDoリスト", index_path(@today) %>
     </li>
-    <li class="sidebar-left__item">ルーティーンを管理</li>
-    <li class="sidebar-left__item">テキストテキスト</li>
+    <li class="sidebar-left__item">
+      <%= link_to "ルーティーンを管理", routines_path %>
+    </li>
+    <li class="sidebar-left__item">
+      <%= link_to "ショートカットを管理", shortcuts_path %>
+    </li>
+    <li class="sidebar-left_t_item">テキストテキスト</li>
   </ul>
 </aside>
