@@ -10,7 +10,8 @@
         <ul class="navbar-nav mr-auto">
           <% if logged_in? %>
             <li class="nav-item">
-              <a href="#" class="nav-link"><%= @current_user.username %></a>
+              <%= gravatar_for current_user %>
+              <%= link_to current_user.username, user_path(current_user), class:"nav-link" %>
             </li>
           <% end %>
           <li class="nav-item">

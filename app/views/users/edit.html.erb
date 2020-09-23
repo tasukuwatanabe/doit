@@ -1,5 +1,5 @@
-<% @title = "Todoを追加" %>
-<% provide(:button_text, "ToDoを追加") %>
+<% @title = "ユーザ編集" %>
+<% provide(:button_text, "更新する") %>
 
 <div class="container d-flex justify-content-center">
   <%= render "shared/sidebar_left" %>
@@ -7,7 +7,7 @@
     <div class="page__title-box">
       <h2 class="page__title"><%= @title %></h2>
     </div>
-    <%= render "form", f: f  %>
+    <%= render "form" %>
   </div>
   <%= render "shared/sidebar_right" %>
 </div>
