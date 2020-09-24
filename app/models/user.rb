@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many :tasks, dependent: :destroy
+  has_many :todos, dependent: :destroy
   has_many :shortcuts, dependent: :destroy
   has_many :routines, dependent: :destroy
 

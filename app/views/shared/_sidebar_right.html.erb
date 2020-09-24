@@ -1,5 +1,5 @@
 <aside id="sidebar-right" class="sidebar-right">
-  <% if @path.is("tasks#index") %>
+  <% if @path.is("todos#index") %>
     <section id="shortcut-links">
       <p class="sidebar-right__title">ショートカット
         <% if !@shortcuts.empty? %>
@@ -13,7 +13,7 @@
           <% @shortcuts.each do |shortcut| %>
             <li class="sidebar-right__item">
               <%= shortcut.title %>
-              <%= link_to(tasks_path(task: { title: shortcut.title, body: shortcut.body, date_id: get_url_date }), method: :post) do %>
+              <%= link_to(todos_path(todo: { title: shortcut.title, body: shortcut.body, date_id: get_url_date }), method: :post) do %>
                 <i class="fa fa-plus-circle"></i>
               <% end %>
             </li>

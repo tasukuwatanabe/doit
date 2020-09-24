@@ -1,4 +1,4 @@
-.task {
+.todo {
   &__main-col {
     padding: 0 60px;
     flex-grow: 1;
@@ -10,7 +10,7 @@
       padding: 0 30px;
     }
 
-    &.task__main-col--index {
+    &.todo__main-col--index {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -70,14 +70,14 @@
   }
 }
 
-.task__item-status {
+.todo__item-status {
   position: relative;
   width: 28px;
   height: 28px;
   margin-right: 15px;
 }
 
-.task__item-status label {
+.todo__item-status label {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 50%;
@@ -89,7 +89,7 @@
   width: 28px;
 }
 
-.task__item-status label:after {
+.todo__item-status label:after {
   border: 2px solid #fff;
   border-top: none;
   border-right: none;
@@ -103,15 +103,15 @@
   width: 12px;
 }
 
-.task__item-status input[type="checkbox"] {
+.todo__item-status input[type="checkbox"] {
   visibility: hidden;
 }
 
-.task__item-status input[type="checkbox"]:checked + label {
+.todo__item-status input[type="checkbox"]:checked + label {
   background-color: rgb(252, 175, 33);
   border-color: rgb(252, 175, 33);
 }
 
-.task__item-status input[type="checkbox"]:checked + label:after {
+.todo__item-status input[type="checkbox"]:checked + label:after {
   opacity: 1;
 }

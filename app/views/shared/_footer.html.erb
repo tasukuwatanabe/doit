@@ -5,7 +5,7 @@
 <script type="text/javascript">
     $(function() {
         $("input[type=checkbox]").click(function() {
-            $.post('/tasks/'+$(this).data('id')+'/toggle_status')
+            $.post('/todos/'+$(this).data('id')+'/toggle_status')
         })
     })
 </script>

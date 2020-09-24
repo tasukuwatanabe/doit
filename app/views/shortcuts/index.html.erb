@@ -2,21 +2,21 @@
 
 <div class="container d-flex justify-content-center">
   <%= render "shared/sidebar_left" %>
-    <div class="task__main-col task__main-col--index">
+    <div class="todo__main-col todo__main-col--index">
       <div>
         <div class="page__title-box">
           <h2 class="page__title"><%= @title %></h2>
         </div>
         <% if @shortcuts.any? %>
-          <ul class="task__list">
+          <ul class="todo__list">
           <% @shortcuts.each do |shortcut| %>
             <%= render shortcut %>
           <% end %>
           </ul>
         <% else %>
-          <p class="task__no-item">ショートカットはまだ作成されていません。</p>
+          <p class="todo__no-item">ショートカットはまだ作成されていません。</p>
         <% end %>
-        <div class="task__btn-case">
+        <div class="todo__btn-case">
           <%= link_to "ショートカットを追加", new_shortcut_path, class: "float-right btn btn-info btn-sm #{@disabled}" %>
         </div>
       </div>

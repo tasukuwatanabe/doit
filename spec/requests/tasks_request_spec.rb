@@ -1,5 +1,4 @@
 require 'rails_helper'
 
-RSpec.describe "Tasks", type: :request do
-
+RSpec.describe 'Todos', type: :request do
 end

@@ -2,19 +2,19 @@
 
 <div class="container d-flex justify-content-center">
   <%= render "shared/sidebar_left" %>
-    <div class="task__main-col task__main-col--index">
+    <div class="todo__main-col todo__main-col--index">
       <div>
         <div class="page__title-box">
           <h2 class="page__title"><%= @title %></h2>
         </div>
         <% if @routines.any? %>
-          <ul class="task__list">
+          <ul class="todo__list">
           <% @routines.each do |routine| %>
             <%= render routine %>
           <% end %>
           </ul>
         <% else %>
-          <p class="task__no-item">ルーティーンはまだ作成されていません。</p>
+          <p class="todo__no-item">ルーティーンはまだ作成されていません。</p>
         <% end %>
         <div>
         <%= link_to "ルーティーンを追加", new_routine_path, class: "float-right btn btn-outline-info btn-sm" %>
