@@ -10,7 +10,7 @@ ja:
         username: ユーザー名
         email: メールアドレス
         password: パスワード
-      task:
+      todo:
         title: タイトル
         body: メモ
         status: ステータス

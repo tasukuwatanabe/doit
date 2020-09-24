@@ -12,7 +12,7 @@ titles = %w[
 ]
 
 50.times do |n|
-  Task.create!(
+  Todo.create!(
     title: (titles[n % titles.length]).to_s,
     body: n.even? ? 'メモを残すことができます' : nil,
     user_id: User.find_by(email: 'testuser1@example.com').id,

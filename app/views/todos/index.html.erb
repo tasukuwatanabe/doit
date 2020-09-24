@@ -2,7 +2,7 @@
 
 <div class="container d-flex justify-content-center">
   <%= render "shared/sidebar_left" %>
-    <div class="task__main-col task__main-col--index">
+    <div class="todo__main-col todo__main-col--index">
       <div>
         <div class="page__title-box">
           <div>
@@ -17,18 +17,18 @@
             <% end %>
           </div>
         </div>
-        <% if @date_tasks.any? %>
-          <ul class="task__list">
-          <% @tasks.each do |task| %>
-            <%= render task %>
+        <% if @date_todos.any? %>
+          <ul class="todo__list">
+          <% @todos.each do |todo| %>
+            <%= render todo %>
           <% end %>
           </ul>
         <% else %>
           <p class="text-center">ToDoがありません</p>
         <% end %>
       </div>
-      <div class="task__btn-case">
-        <%= link_to "ToDoを追加", new_task_path, class: "btn btn-outline-success mr-3 btn-sm" %>
+      <div class="todo__btn-case">
+        <%= link_to "ToDoを追加", new_todo_path, class: "btn btn-outline-success mr-3 btn-sm" %>
         <%= link_to "今日へ移動", index_path(@today), class: "btn btn-outline-primary btn-sm" %>
       </div>
     </div>

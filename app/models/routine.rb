@@ -2,7 +2,7 @@ class Routine < ApplicationRecord
   include StringNormalizer
 
   belongs_to :user
-  has_many :task
+  has_many :todo
 
   before_validation do
     self.title = remove_space(title)
