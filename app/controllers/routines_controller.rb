@@ -12,9 +12,9 @@ class RoutinesController < ApplicationController
     if @routine.save
       routine_days = (@routine.end_date - @routine.start_date).to_i + 1
       routine_days.times do |n|
-        task = current_user.tasks.build(routine_id: @routine.id, title: @routine.title, body: @routine.body)
-        task.date_id = @routine.start_date + n
-        task.save
+        todo = current_user.todos.build(routine_id: @routine.id, title: @routine.title, body: @routine.body)
+        todo.date_id = @routine.start_date + n
+        todo.save
       end
       flash[:success] = 'ルーティーンを作成しました。'
       redirect_to routines_path
@@ -31,10 +31,10 @@ class RoutinesController < ApplicationController
     @routine = Routine.find(params[:id])
     @routine.assign_attributes(routine_params)
     if @routine.save
-      tasks = current_user.tasks.where(routine_id: @routine.id)
-      tasks.each do |task|
-        task.update_attributes(title: @routine.title)
-        task.save
+      todos = current_user.todos.where(routine_id: @routine.id)
+      todos.each do |todo|
+        todo.update_attributes(title: @routine.title)
+        todo.save
       end
       flash[:success] = 'ルーティーンを更新しました。'
       redirect_to routines_path
@@ -45,8 +45,8 @@ class RoutinesController < ApplicationController
 
   def destroy
     @routine = Routine.find(params[:id])
-    tasks = current_user.tasks.where(routine_id: @routine.id)
-    tasks.destroy_all
+    todos = current_user.todos.where(routine_id: @routine.id)
+    todos.destroy_all
     @routine.destroy
     flash[:success] = 'ルーティーンを削除しました。'
     redirect_to routines_path

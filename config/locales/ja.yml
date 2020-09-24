@@ -1,11 +1,16 @@
 ja:
   activerecord:
     models:
+      user: ユーザー
       task: ToDo
       shortcut: ショートカット
       routine: ルーティーン
     attributes:
-      task:
+      user:
+        username: ユーザー名
+        email: メールアドレス
+        password: パスワード
+      todo:
         title: タイトル
         body: メモ
         status: ステータス

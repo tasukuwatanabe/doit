@@ -1,4 +1,4 @@
-class Task < ApplicationRecord
+class Todo < ApplicationRecord
   include StringNormalizer
 
   belongs_to :user

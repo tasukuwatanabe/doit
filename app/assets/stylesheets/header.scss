@@ -1,9 +1,23 @@
 header {
   margin-bottom: 1rem;
   background-color: #fff;
-  // box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid #e4e4e4;
-}
-.navbar-collapse {
-  flex-grow: unset !important;
+
+  .navbar {
+    padding: 0.7em 1em;
+
+    .navbar-collapse {
+      flex-grow: unset !important;
+    }
+    .nav-item {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      .gravatar {
+        width: 38px;
+        border-radius: 50%;
+      }
+    }
+  }
 }

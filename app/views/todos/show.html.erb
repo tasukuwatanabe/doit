@@ -1,14 +1,14 @@
 <div class="container d-flex justify-content-center">
   <%= render "shared/sidebar_left" %>
-    <div class="task__main-col">
+    <div class="todo__main-col">
       <div class="page__title-box">
-        <h2 class="page__title"><%= @task.title %></h2>
+        <h2 class="page__title"><%= @todo.title %></h2>
       </div>
       <div class="form-group row">
         <label for="inputBody" class="col-sm-4 col-form-label">メモ</label>
         <div class="col-sm-8">
           <div class="form-control-plaintext">
-            <%= simple_format(h(@task.body)) %>
+            <%= simple_format(h(@todo.body)) %>
           </div>
         </div>
       </div>
@@ -16,7 +16,7 @@
         <label for="inputBody" class="col-sm-4 col-form-label">ステータス</label>
         <div class="col-sm-8">
           <div class="form-control-plaintext">
-            <%= @task.status %>
+            <%= @todo.status %>
           </div>
         </div>
       </div>
@@ -24,14 +24,14 @@
         <label for="inputBody" class="col-sm-4 col-form-label">日付</label>
         <div class="col-sm-8">
           <div class="form-control-plaintext">
-            <%= format_date_id(@task.date_id) %>
+            <%= format_date_id(@todo.date_id) %>
           </div>
         </div>
       </div>
-      <div class="task__btn-case">
-        <p><%= link_to "ショートカットに登録", shortcuts_path(shortcut: { title: @task.title, body: @task.body }), method: :post, class: "btn btn-outline-success mr-3 btn-sm" %></p>
-        <p><%= link_to "編集", [ :edit, @task ], class: "btn btn-outline-warning mr-3 btn-sm" %></p>
-        <p><%= link_to "削除", @task, method: :delete, class: "btn btn-outline-danger btn-sm", data: { confirm: "本当に削除しますか？" } %></p>
+      <div class="todo__btn-case">
+        <p><%= link_to "ショートカットに登録", shortcuts_path(shortcut: { title: @todo.title, body: @todo.body }), method: :post, class: "btn btn-outline-success mr-3 btn-sm" %></p>
+        <p><%= link_to "編集", [ :edit, @todo ], class: "btn btn-outline-warning mr-3 btn-sm" %></p>
+        <p><%= link_to "削除", @todo, method: :delete, class: "btn btn-outline-danger btn-sm", data: { confirm: "本当に削除しますか？" } %></p>
       </div>
     </div>
   <%= render "shared/sidebar_right" %>
