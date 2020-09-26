@@ -14,4 +14,5 @@ Rails.application.routes.draw do
   resources :shortcuts
   post '/create_todo', to: 'shortcuts#create_todo', as: 'shortcut_create_todo'
   resources :routines, only: [ :create, :update ]
+  resources :password_resets, only: [ :new, :create, :edit, :update ]
 end
