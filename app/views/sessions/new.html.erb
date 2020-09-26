@@ -20,12 +20,15 @@
               <%= f.password_field :password, class: "form-control" %>
             </div>
           </div>
-
-          <%= f.label :remember_me do %>
-            <%= f.check_box :remember_me %>
-            <span>ログインしたままにする</span>
-          <% end %>
-
+          <div class="form-group row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-8">
+              <%= f.label :remember_me do %>
+                <%= f.check_box :remember_me %>
+                <span>ログインしたままにする</span>
+              <% end %>
+            </div>
+          </div>
           <div class="action__case">
             <%= f.submit "ログイン", class: "btn btn-primary action__btn" %>
             <p class="action__to-signup">初めての方は<%= link_to "新規登録", signup_path %></p>
