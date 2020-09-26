@@ -1,6 +1,6 @@
 <li class="todo__item <%#= 'routine' unless todo.routine_id.nil? %>">
   <div id="todo-status" class="todo__item-status">
-    <%= check_box_tag "todo_status_#{todo.id}", true, todo.status, {'data-id' => todo.id, remote: true, method: :post} %>
+    <%= check_box_tag "todo_status_#{todo.id}", true, todo.status, {'data-id' => todo.id, remote: true, method: :post, class: "toggle-status"} %>
     <%= label_tag "todo_status_#{todo.id}", "" %>
   </div>
   <div class="todo__item-title"><%= truncate(todo.title, length: 24, omission: "..." ) %></div>

@@ -3,7 +3,7 @@ module ApplicationHelper
     if @title.present?
       "#{@title} - ToDo App"
     else
-      "ToDo App"
+      'ToDo App'
     end
   end
 end
