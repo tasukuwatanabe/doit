@@ -1,12 +1,12 @@
 require 'date'
 
 module DateCalculationHelper
-  def format_date_id(date_id)
-    Date.parse(date_id).strftime('%Y年%1m月%1d日')
+  def format_todo_date(todo_date)
+    todo_date.strftime('%Y年%1m月%1d日')
   end
 
   def get_url_date
-    Date.parse(request.path.gsub('/', ''))
+    request.path.gsub('/dates/', '').to_date
   end
 
   def get_formatted_url_date

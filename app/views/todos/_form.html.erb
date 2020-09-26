@@ -1,3 +1,9 @@
+<% 
+@todo_date =  @todo.todo_date ||= @today
+@start_date =  @todo.start_date ||= @today
+@end_date =  @todo.end_date ||= @today
+%>
+
 <%= form_for(@todo) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="form-group row">
@@ -7,20 +13,30 @@
     </div>
   </div>
   <div class="form-group row">
-    <label for="inputBody" class="col-sm-4 col-form-label">メモ</label>
+    <label for="inputDate" class="col-sm-4 col-form-label">日付</label>
     <div class="col-sm-8">
-      <%= f.text_area :body, size: 32, class: "form-control" %>
+      <%= f.date_field(:todo_date, default: "#{@todo_date}", value: "#{@todo_date}", class: "form-control") %>
     </div>
   </div>
   <div class="form-group row">
-    <% if @todo.date_id
-      @todo_date = Date.parse(@todo.date_id)
-    else
-      @todo_date = @today
-    end %>
-    <label for="inputDate" class="col-sm-4 col-form-label">日付</label>
+    <label for="inputBody" class="col-sm-4 col-form-label">繰り返し</label>
     <div class="col-sm-8">
-      <%= f.date_field(:date_id, default: "#{@todo_date}", value: "#{@todo_date}", class: "form-control") %>
+      <div class="form-control-plaintext date-range-box date-range-box--column">
+        <div class="date-range-item">
+          <span class="date-title">開始日</span>
+          <%= f.date_field(:start_date, default: "#{@start_date}", value: "#{@start_date}", class: "form-control") %>
+        </div>
+        <div class="date-range-item">
+          <span class="date-title">終了日</span>
+          <%= f.date_field(:end_date, default: "#{@end_date}", value: "#{@end_date}", class: "form-control") %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputBody" class="col-sm-4 col-form-label">メモ</label>
+    <div class="col-sm-8">
+      <%= f.text_area :body, rows: 8, class: "form-control" %>
     </div>
   </div>
   <div class="text-center">

@@ -37,10 +37,6 @@
       margin-bottom: 15px;
     }
 
-    // &.routine {
-    //   border: 2px solid rgb(252, 175, 33);
-    // }
-
     &-title {
       margin-right: 15px;
       width: calc(100% - 158px - 15px);
@@ -69,6 +65,45 @@
     justify-content: flex-end;
   }
 }
+
+.date-range-box {
+  display: flex !important;
+
+  &--inline {
+    justify-content: flex-start;
+    align-items: center;
+
+    & > *:not(:last-child) {
+      margin-right: 15px;
+    }
+  }
+  &--column {
+    flex-direction: column;
+    align-items: flex-start;
+
+    & > *:not(:last-child) {
+      margin-bottom: 15px;
+    }
+
+    .date-range-item {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+
+  .date-range-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .date-title {
+    font-size: 10px;
+    color: #999999;
+  }
+}
+
+// ステータス用チェックボックス
 
 .todo__item-status {
   position: relative;

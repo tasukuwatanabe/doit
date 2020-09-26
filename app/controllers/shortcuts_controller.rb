@@ -53,7 +53,21 @@ class ShortcutsController < ApplicationController
     redirect_to shortcuts_path
   end
 
+  def create_todo
+    @todo = current_user.todos.build(shortcut_params)
+    @todo.start_date = @todo.todo_date
+    @todo.end_date = @todo.todo_date
+
+    if @todo.save!
+      flash[:success] = 'ToDoが追加されました。'
+      redirect_to index_path(@todo.todo_date)
+    else
+      flash[:danger] = @todo.errors.messages.values[0][0]
+      redirect_back(fallback_location: root_path)
+    end
+  end
+
   private def shortcut_params
-    params.require(:shortcut).permit(:title, :body)
+    params.require(:shortcut).permit(:title, :body, :todo_date)
   end
 end

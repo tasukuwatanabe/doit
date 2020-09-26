@@ -13,7 +13,7 @@
           <% @shortcuts.each do |shortcut| %>
             <li class="sidebar-right__item">
               <%= shortcut.title %>
-              <%= link_to(todos_path(todo: { title: shortcut.title, body: shortcut.body, date_id: get_url_date }), method: :post) do %>
+              <%= link_to(shortcut_create_todo_path(shortcut: { title: shortcut.title, body: shortcut.body, todo_date: get_url_date }), method: :post) do %>
                 <i class="fa fa-plus-circle"></i>
               <% end %>
             </li>
