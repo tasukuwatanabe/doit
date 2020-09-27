@@ -1,0 +1,9 @@
+ja:
+  helpers:
+    label:
+      session:
+        email: メールアドレス
+        password: パスワード
+        remember_me: ログインしたままにする
+      password_reset:
+        email: メールアドレス

@@ -11,51 +11,50 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2020_09_26_044526) do
-
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension 'plpgsql'
 
-  create_table "routines", force: :cascade do |t|
-    t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_routines_on_user_id"
+  create_table 'routines', force: :cascade do |t|
+    t.bigint 'user_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['user_id'], name: 'index_routines_on_user_id'
   end
 
-  create_table "shortcuts", force: :cascade do |t|
-    t.string "title", null: false
-    t.text "body"
-    t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_shortcuts_on_user_id"
+  create_table 'shortcuts', force: :cascade do |t|
+    t.string 'title', null: false
+    t.text 'body'
+    t.bigint 'user_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['user_id'], name: 'index_shortcuts_on_user_id'
   end
 
-  create_table "todos", force: :cascade do |t|
-    t.string "title", null: false
-    t.text "body"
-    t.date "todo_date", null: false
-    t.date "start_date", null: false
-    t.date "end_date", null: false
-    t.boolean "status", default: false, null: false
-    t.integer "user_id", null: false
-    t.integer "routine_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table 'todos', force: :cascade do |t|
+    t.string 'title', null: false
+    t.text 'body'
+    t.date 'todo_date', null: false
+    t.date 'start_date', null: false
+    t.date 'end_date', null: false
+    t.boolean 'status', default: false, null: false
+    t.integer 'user_id', null: false
+    t.integer 'routine_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "email"
-    t.string "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "remember_digest"
-    t.string "reset_digest"
-    t.datetime "reset_sent_at"
-    t.index ["email"], name: "index_users_on_email", unique: true
+  create_table 'users', force: :cascade do |t|
+    t.string 'username'
+    t.string 'email'
+    t.string 'password_digest'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.string 'remember_digest'
+    t.string 'reset_digest'
+    t.datetime 'reset_sent_at'
+    t.index ['email'], name: 'index_users_on_email', unique: true
   end
 
-  add_foreign_key "routines", "users"
-  add_foreign_key "shortcuts", "users"
+  add_foreign_key 'routines', 'users'
+  add_foreign_key 'shortcuts', 'users'
 end

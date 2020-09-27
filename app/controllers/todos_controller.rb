@@ -1,4 +1,5 @@
 class TodosController < ApplicationController
+  before_action :set_user, only: [ :show, :edit, :update, :destroy ]
   before_action :logged_in_user
   before_action :get_shortcuts, only: :index
 
@@ -7,12 +8,13 @@ class TodosController < ApplicationController
     @date_todos = @todos.where(todo_date: get_url_date)
   end
 
-  def show
-    @todo = Todo.find(params[:id])
-  end
+  def show; end
 
   def new
     @todo = Todo.new
+    @todo.todo_date ||= @today
+    @todo.start_date ||= @today
+    @todo.end_date ||= @today
   end
 
   def create
@@ -38,11 +40,12 @@ class TodosController < ApplicationController
   end
 
   def edit
-    @todo = Todo.find(params[:id])
+    @todo.todo_date ||= @today
+    @todo.start_date ||= @today
+    @todo.end_date ||= @today
   end
 
   def update
-    @todo = Todo.find(params[:id])
     @todo.assign_attributes(todo_params)
     if @todo.save
       flash[:success] = 'ToDoが更新されました。'
@@ -53,20 +56,23 @@ class TodosController < ApplicationController
   end
 
   def destroy
-    todo = Todo.find(params[:id])
-    todo.destroy!
+    @todo.destroy!
     flash[:success] = 'ToDoが削除されました。'
     redirect_to request.referer
   end
 
   def toggle_status
     render body: nil
-    @todo = Todo.find(params[:id])
+    @todo = Todo.find(params[:todo_id])
     @todo.status = !@todo.status
     @todo.save
   end
 
   private
+
+  def set_user
+    @todo = Todo.find(params[:id])
+  end
 
   def todo_params
     params.require(:todo).permit(:title, :body, :status, :todo_date, :start_date, :end_date)
