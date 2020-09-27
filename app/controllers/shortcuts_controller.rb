@@ -1,5 +1,6 @@
 class ShortcutsController < ApplicationController
   before_action :logged_in_user
+  before_action :set_shortcut, only: [ :edit, :update, :destroy, :create_todo ]
 
   def index
     @shortcuts = current_user.shortcuts
@@ -31,14 +32,11 @@ class ShortcutsController < ApplicationController
     redirect_to edit_shortcut_path
   end
 
-  def edit
-    @shortcut = Shortcut.find(params[:id])
-  end
+  def edit; end
 
   def update
-    @shortcut = Shortcut.find(params[:id])
     @shortcut.assign_attributes(shortcut_params)
-    if @shortcut.save
+    if @shortcut.save!
       flash[:success] = 'ショートカットを更新しました'
       redirect_to shortcuts_path
     else
@@ -47,17 +45,15 @@ class ShortcutsController < ApplicationController
   end
 
   def destroy
-    @shortcut = Shortcut.find(params[:id])
     @shortcut.destroy
     flash[:success] = 'ショートカットを削除しました。'
     redirect_to shortcuts_path
   end
 
   def create_todo
-    shortcut = Shortcut.find_by(id: params[:shortcut_id])
     @todo = current_user.todos.build(
-      title: shortcut.title,
-      body: shortcut.body,
+      title: @shortcut.title,
+      body: @shortcut.body,
       todo_date: params[:date]
     )
 
@@ -70,7 +66,13 @@ class ShortcutsController < ApplicationController
     end
   end
 
-  private def shortcut_params
+  private
+
+  def set_shortcut
+    @shortcut = Shortcut.find(params[:id])
+  end
+
+  def shortcut_params
     params.require(:shortcut).permit(:title, :body, :todo_date)
   end
 end

@@ -1,4 +1,6 @@
 class PasswordsController < ApplicationController
+  before_action :logged_in_user
+
   def show
     redirect_to user_path(current_user)
   end
