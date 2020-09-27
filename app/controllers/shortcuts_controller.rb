@@ -54,9 +54,12 @@ class ShortcutsController < ApplicationController
   end
 
   def create_todo
-    @todo = current_user.todos.build(shortcut_params)
-    @todo.start_date = @todo.todo_date
-    @todo.end_date = @todo.todo_date
+    shortcut = Shortcut.find_by(id: params[:shortcut_id])
+    @todo = current_user.todos.build(
+      title: shortcut.title,
+      body: shortcut.body,
+      todo_date: params[:date]
+    )
 
     if @todo.save!
       flash[:success] = 'ToDoが追加されました。'

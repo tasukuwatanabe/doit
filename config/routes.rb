@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'top#dashboard'
   get '/dates/:date' => 'todos#index', as: 'index'
+  post '/dates/:date/create_todo/:shortcut_id', to: 'shortcuts#create_todo', as: 'shortcut_create_todo'
   get '/signup', to: 'users#new'
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
@@ -12,7 +13,6 @@ Rails.application.routes.draw do
     post '/toggle_status', to: 'todos#toggle_status', as: 'toggle_status'
   end
   resources :shortcuts
-  post '/create_todo', to: 'shortcuts#create_todo', as: 'shortcut_create_todo'
-  resources :routines, only: [ :create, :update ]
+  resources :routines
   resources :password_resets, only: [ :new, :create, :edit, :update ]
 end

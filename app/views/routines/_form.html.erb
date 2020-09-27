@@ -1,25 +1,30 @@
-<%= render 'shared/error_messages', object: f.object %>
-<div class="form-group row">
-  <label for="inputTitle" class="col-sm-4 col-form-label">タイトル</label>
-  <div class="col-sm-8">
-    <%= f.text_field :title, class: "form-control" %>
+<%= form_with(model: @routine, local: true) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <div class="form-group row">
+    <%= f.label :title, class: "col-sm-4 col-form-label" %>
+    <div class="col-sm-8">
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
   </div>
-</div>
-<div class="form-group row">
-  <label for="inputBody" class="col-sm-4 col-form-label">メモ</label>
-  <div class="col-sm-8">
-    <%= f.text_area :body, size: 32, class: "form-control" %>
+  <div class="form-group row">
+    <%= f.label :body, class: "col-sm-4 col-form-label" %>
+    <div class="col-sm-8">
+      <%= f.text_area :body, size: 32, class: "form-control" %>
+    </div>
   </div>
-</div>
-<div class="form-group row">
-  <label for="inputDate" class="col-sm-4 col-form-label">開始日</label>
-  <div class="col-sm-8">
-    <%= f.date_field(:start_date, default: @routine.start_date, value: @today, class: "form-control") %>
+  <div class="form-group row">
+    <%= f.label :start_date, class: "col-sm-4 col-form-label" %>
+    <div class="col-sm-8">
+      <%= f.date_field(:start_date, default: @routine.start_date, value: @today, class: "form-control") %>
+    </div>
   </div>
-</div>
-<div class="form-group row">
-  <label for="inputDate" class="col-sm-4 col-form-label">終了日</label>
-  <div class="col-sm-8">
-    <%= f.date_field(:end_date, default: @routine.end_date, value: Date.parse(@today).tomorrow, class: "form-control") %>
+  <div class="form-group row">
+    <%= f.label :end_date, class: "col-sm-4 col-form-label" %>
+    <div class="col-sm-8">
+      <%= f.date_field(:end_date, default: @routine.end_date, value: Date.parse(@today).tomorrow, class: "form-control") %>
+    </div>
   </div>
-</div>
+  <div class="text-center">
+    <%= f.submit yield(:button_text), class: "btn btn-info mt-4" %>
+  </div>
+<% end %>

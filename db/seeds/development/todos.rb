@@ -16,9 +16,6 @@ titles = %w[
     title: (titles[n % titles.length]).to_s,
     body: n.even? ? 'メモを残すことができます' : nil,
     user_id: User.find_by(email: 'testuser1@example.com').id,
-    todo_date: Date.today,
-    start_date: (Date.today - 3.days),
-    end_date: (Date.today 2.days),
-    routine_id: 1
+    todo_date: Date.today
   )
 end

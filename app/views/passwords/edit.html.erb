@@ -1,5 +1,4 @@
 <% @title = "パスワード変更" %>
-<% provide(:button_text, "更新する") %>
 
 <div class="container d-flex justify-content-between">
   <%= render "shared/sidebar_left" %>
@@ -10,26 +9,26 @@
     <%= form_with(model: @change_password_form, url: :user_password, method: :patch, local: true) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <div class="form-group row">
-        <label for="inputBody" class="col-sm-4 col-form-label">現在のパスワード</label>
+        <%= f.label :current_password, class: "col-sm-4 col-form-label" %>
         <div class="col-sm-8">
           <%= f.password_field :current_password, class: "form-control" %>
         </div>
       </div>
       <div class="form-group row">
-        <label for="inputBody" class="col-sm-4 col-form-label">新しいパスワード</label>
+        <%= f.label :new_password, class: "col-sm-4 col-form-label" %>
         <div class="col-sm-8">
           <%= f.password_field :new_password, class: "form-control" %>
         </div>
       </div>
       <div class="form-group row">
-        <label for="inputBody" class="col-sm-4 col-form-label">新しいパスワード(確認)</label>
+        <%= f.label :new_password_confirmation, class: "col-sm-4 col-form-label" %>
         <div class="col-sm-8">
           <%= f.password_field :new_password_confirmation, class: "form-control" %>
         </div>
       </div>
 
       <div class="action__case">
-        <%= f.submit yield(:button_text), class: "btn btn-primary action__btn" %>
+        <%= f.submit "パスワードを更新する", class: "btn btn-primary action__btn" %>
       </div>
     <% end %>
   </div>

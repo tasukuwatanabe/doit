@@ -1,0 +1,12 @@
+ja:
+  activerecord:
+    models:
+      routine: ルーティーン
+    attributes:
+      routine:
+        title: タイトル
+        body: メモ
+        start_date: 開始日
+        end_date: 終了日
+        skip_days: 休日
+        progress_display: 達成度グラフに表示

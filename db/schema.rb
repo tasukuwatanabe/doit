@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_26_044526) do
+ActiveRecord::Schema.define(version: 2020_09_27_025537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,12 @@ ActiveRecord::Schema.define(version: 2020_09_26_044526) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "title", null: false
+    t.text "body"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.text "skip_days", default: [], array: true
+    t.boolean "progress_display", default: true, null: false
     t.index ["user_id"], name: "index_routines_on_user_id"
   end
 
@@ -35,8 +41,6 @@ ActiveRecord::Schema.define(version: 2020_09_26_044526) do
     t.string "title", null: false
     t.text "body"
     t.date "todo_date", null: false
-    t.date "start_date", null: false
-    t.date "end_date", null: false
     t.boolean "status", default: false, null: false
     t.integer "user_id", null: false
     t.integer "routine_id"
