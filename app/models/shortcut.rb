@@ -7,7 +7,9 @@ class Shortcut < ApplicationRecord
     self.title = remove_space(title)
   end
 
-  validates :title, presence: true, uniqueness: true
+  validates :title, presence: true, uniqueness: {
+    message: '同じタイトルのショートカットが存在します'
+  }
 
   MAX_SHORTCUT_COUNT = 10
 

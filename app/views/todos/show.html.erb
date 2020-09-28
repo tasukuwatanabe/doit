@@ -29,9 +29,18 @@
         </div>
       </div>
       <div class="todo__btn-case">
-        <p><%= link_to "ショートカットに登録", shortcuts_path(shortcut: { title: @todo.title, body: @todo.body }), method: :post, class: "btn btn-outline-success mr-3 btn-sm" %></p>
-        <p><%= link_to "編集", [ :edit, @todo ], class: "btn btn-outline-warning mr-3 btn-sm" %></p>
-        <p><%= link_to "削除", @todo, method: :delete, class: "btn btn-outline-danger btn-sm", data: { confirm: "本当に削除しますか？" } %></p>
+        <div>
+          <%= link_to "戻る", index_path(@todo.todo_date), class: "btn btn-outline-info mr-3 btn-sm" %>
+        </div>
+        <div>
+          <%= link_to "ショートカットに登録", todo_create_shortcut_path(@todo.id), method: :post, class: "btn btn-outline-success mr-3 btn-sm" %>
+        </div>
+        <div>
+          <%= link_to "編集", [ :edit, @todo ], class: "btn btn-outline-warning mr-3 btn-sm" %>
+        </div>
+        <div>
+          <%= link_to "削除", @todo, method: :delete, class: "btn btn-outline-danger btn-sm", data: { confirm: "本当に削除しますか？" } %>
+        </div>
       </div>
     </div>
   <%= render "shared/sidebar_right" %>

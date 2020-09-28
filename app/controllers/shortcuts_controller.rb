@@ -57,7 +57,7 @@ class ShortcutsController < ApplicationController
       todo_date: params[:date]
     )
 
-    if @todo.save!
+    if @todo.save
       flash[:success] = 'ToDoが追加されました。'
       redirect_to index_path(@todo.todo_date)
     else
