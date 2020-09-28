@@ -1,12 +1,16 @@
 header {
   margin-bottom: 1rem;
-  background-color: #fff;
+  background-color: #facb27;
   border-bottom: 1px solid #e4e4e4;
 
   .navbar {
-    padding: 0.7em 1em;
+    padding: 0.5em 1em;
 
-    .navbar-collapse {
+    &-brand img {
+      height: 30px;
+    }
+
+    &-collapse {
       flex-grow: unset !important;
     }
     .nav-item {
@@ -15,7 +19,7 @@ header {
       align-items: center;
 
       .gravatar {
-        width: 38px;
+        width: 35px;
         border-radius: 50%;
       }
     }

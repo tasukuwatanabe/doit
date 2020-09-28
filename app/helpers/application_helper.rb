@@ -1,9 +1,9 @@
 module ApplicationHelper
   def document_title
     if @title.present?
-      "#{@title} - ToDo App"
+      "#{@title} | DoIT"
     else
-      'ToDo App'
+      'DoIT'
     end
   end
 end
