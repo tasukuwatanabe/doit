@@ -39,9 +39,21 @@ class TodosController < ApplicationController
   end
 
   def destroy
-    @todo.destroy!
+    @todo.destroy
     flash[:success] = 'ToDoが削除されました。'
     redirect_to request.referer
+  end
+
+  def create_shortcut
+    @todo = Todo.find(params[:todo_id])
+    shortcut = current_user.shortcuts.build(title: @todo.title)
+    if shortcut.save
+      flash[:success] = 'ショートカットが作成されました。'
+      redirect_to @todo
+    else
+      flash[:danger] = shortcut.errors.messages.values[0][0]
+      redirect_to @todo
+    end
   end
 
   def toggle_status
