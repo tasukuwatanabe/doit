@@ -36,7 +36,7 @@ class ShortcutsController < ApplicationController
 
   def update
     @shortcut.assign_attributes(shortcut_params)
-    if @shortcut.save!
+    if @shortcut.save
       flash[:success] = 'ショートカットを更新しました'
       redirect_to shortcuts_path
     else

@@ -8,6 +8,8 @@ class RoutinesController < ApplicationController
 
   def new
     @routine = Routine.new
+    @routine.start_date ||= @today
+    @routine.end_date ||= Date.parse(@today).tomorrow
   end
 
   def create
@@ -30,12 +32,28 @@ class RoutinesController < ApplicationController
 
   def update
     @routine.assign_attributes(routine_params)
+
     if @routine.save
-      todos = current_user.todos.where(routine_id: @routine.id)
-      todos.each do |todo|
-        todo.update_attributes(title: @routine.title)
-        todo.save
+      @routine.todos.each do |todo|
+        if todo.todo_date < @routine.start_date ||
+           todo.todo_date > @routine.end_date
+          todo.destroy
+        end
       end
+
+      routine_days = (@routine.end_date - @routine.start_date).to_i + 1
+      routine_days.times do |n|
+        todo_date = @routine.start_date + n.days
+        todo = @routine.todos.find_by(todo_date: todo_date)
+        if todo
+          todo.update(title: @routine.title)
+        else
+          todo = @routine.todos.build(title: @routine.title, body: @routine.body, user_id: current_user.id)
+          todo.todo_date = todo_date
+          todo.save!
+        end
+      end
+
       flash[:success] = 'ルーティーンを更新しました。'
       redirect_to routines_path
     else
@@ -49,6 +67,10 @@ class RoutinesController < ApplicationController
     @routine.destroy
     flash[:success] = 'ルーティーンを削除しました。'
     redirect_to routines_path
+  end
+
+  def history
+    @routines = current_user.routines.all
   end
 
   private

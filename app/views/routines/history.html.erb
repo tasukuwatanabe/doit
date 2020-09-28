@@ -1,0 +1,23 @@
+<% @title = "ルーティーンの達成度" %>
+
+<div class="container d-flex justify-content-between">
+  <%= render "shared/sidebar_left" %>
+    <div class="todo__main-col todo__main-col--index">
+      <div>
+        <div class="page__title-box">
+          <h2 class="page__title"><%= @title %></h2>
+        </div>
+        <% if @routines.any? %>
+          <ul class="todo__list">
+          <% @routines.each do |routine| %>
+            <li class="todo__item">
+              <div class="todo__item-title"><%= truncate(routine.title, length: 24, omission: "..." ) %></div>
+            </li>
+          <% end %>
+          </ul>
+        <% else %>
+          <p class="todo__no-item">表示設定になっているルーティーンはありません。</p>
+        <% end %>
+      </div>
+    </div>
+</div>
