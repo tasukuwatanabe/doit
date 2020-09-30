@@ -1,19 +1,8 @@
 <%= form_with(model: @shortcut, local: true) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="form-group row">
-    <div class="col-sm-4">
-      <%= f.label :title, class: "col-form-label" %>
-    </div>
-    <div class="col-sm-8">
-      <%= f.text_field :title, class: "form-control" %>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-sm-4">
-      <%= f.label :body, class: "col-form-label" %>
-    </div>
-    <div class="col-sm-8">
-      <%= f.text_area :body, size: 32, class: "form-control" %>
+    <div class="col-sm-12">
+      <%= f.text_field :title, class: "form-control", placeholder: "タイトル" %>
     </div>
   </div>
   <div class="text-center">

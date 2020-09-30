@@ -20,17 +20,9 @@
           </div>
         </div>
       </div>
-      <div class="form-group row">
-        <label for="inputBody" class="col-sm-4 col-form-label">メモ</label>
-        <div class="col-sm-8">
-          <div class="form-control-plaintext">
-            <%= simple_format(h(@todo.body)) %>
-          </div>
-        </div>
-      </div>
       <div class="todo__btn-case">
         <div>
-          <%= link_to "戻る", index_path(@todo.todo_date), class: "btn btn-outline-info mr-3 btn-sm" %>
+          <%= link_to "戻る", dashboard_path(@todo.todo_date), class: "btn btn-outline-info mr-3 btn-sm" %>
         </div>
         <div>
           <%= link_to "ショートカットに登録", todo_create_shortcut_path(@todo.id), method: :post, class: "btn btn-outline-success mr-3 btn-sm" %>

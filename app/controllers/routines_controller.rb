@@ -17,7 +17,7 @@ class RoutinesController < ApplicationController
     if @routine.save
       routine_days = (@routine.end_date - @routine.start_date).to_i + 1
       routine_days.times do |n|
-        todo = @routine.todos.build(routine_id: @routine.id, title: @routine.title, body: @routine.body, user_id: current_user.id)
+        todo = @routine.todos.build(routine_id: @routine.id, title: @routine.title, user_id: current_user.id)
         todo.todo_date = @routine.start_date + n.days
         todo.save!
       end
@@ -48,7 +48,7 @@ class RoutinesController < ApplicationController
         if todo
           todo.update(title: @routine.title)
         else
-          todo = @routine.todos.build(title: @routine.title, body: @routine.body, user_id: current_user.id)
+          todo = @routine.todos.build(title: @routine.title, user_id: current_user.id)
           todo.todo_date = todo_date
           todo.save!
         end
@@ -80,6 +80,6 @@ class RoutinesController < ApplicationController
   end
 
   def routine_params
-    params.require(:routine).permit(:title, :body, :start_date, :end_date)
+    params.require(:routine).permit(:title, :start_date, :end_date)
   end
 end

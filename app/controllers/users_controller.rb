@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, except: [ :new, :create ]
+  before_action :forbid_login_user, only: [ :new, :create ]
+  before_action :logged_in_user, except: [ :index, :new, :create ]
   before_action :correct_user, only: [ :edit, :update ]
+
+  def index
+    redirect_to signup_path
+  end
 
   def show
     @user = User.find(params[:id])
@@ -15,7 +20,7 @@ class UsersController < ApplicationController
     if @user.save
       log_in @user
       flash[:success] = 'ユーザー登録が完了しました。'
-      redirect_to index_path(@today)
+      redirect_to dashboard_path(@today)
     else
       render action: 'new'
     end

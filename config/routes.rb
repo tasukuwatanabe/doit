@@ -1,15 +1,15 @@
 Rails.application.routes.draw do
-  root 'top#dashboard'
-  get '/date/:date' => 'todos#index', as: 'index'
+  root 'tops#dashboard'
+  get '/date/:date' => 'tops#dashboard', as: 'dashboard'
   post '/date/:date/create_todo/:id', to: 'shortcuts#create_todo', as: 'shortcut_create_todo'
   get '/signup', to: 'users#new'
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
-  resources :users, except: [ :index ] do
+  resources :users do
     resource :password, only: [ :show, :edit, :update ]
   end
-  resources :todos, except: :index do
+  resources :todos do
     post '/toggle_status', to: 'todos#toggle_status', as: 'toggle_status'
     post '/create_shortcut', to: 'todos#create_shortcut', as: 'create_shortcut'
   end

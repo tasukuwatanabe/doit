@@ -25,6 +25,13 @@ module SessionsHelper
     end
   end
 
+  def forbid_login_user
+    if logged_in?
+      flash[:danger] = 'すでにログインしています'
+      redirect_to dashboard_path(@today)
+    end
+  end
+
   def logged_in?
     !current_user.nil?
   end

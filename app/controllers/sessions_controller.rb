@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :forbid_login_user, only: [ :new, :create ]
+
   def new; end
 
   def create
@@ -8,7 +10,7 @@ class SessionsController < ApplicationController
       log_in user
       params[:session][:remember_me] == '1' ? remember(user) : forget(user)
       flash[:success] = 'ログインしました。'
-      redirect_back_or root_path
+      redirect_back_or dashboard_path(@today)
     else
       flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
       render action: 'new'
