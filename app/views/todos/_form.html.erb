@@ -1,27 +1,14 @@
 <%= form_with(model: @todo, local: true) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="form-group row">
-    <div class="col-sm-4">
-      <%= f.label :title, class: "col-form-label" %>
-    </div>
-    <div class="col-sm-8">
-      <%= f.text_field :title, class: "form-control" %>
+    <div class="col-sm-12">
+      <%= f.text_field :title, class: "form-control", placeholder: "タイトル" %>
     </div>
   </div>
   <div class="form-group row">
-    <div class="col-sm-4">
+    <div class="col-sm-12">
       <%= f.label :todo_date, class: "col-form-label" %>
-    </div>
-    <div class="col-sm-8">
       <%= f.date_field(:todo_date, default: @todo.todo_date, value: @todo.todo_date, class: "form-control") %>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-sm-4">
-      <%= f.label :body, class: "col-form-label" %>
-    </div>
-    <div class="col-sm-8">
-      <%= f.text_area :body, rows: 8, class: "form-control" %>
     </div>
   </div>
   <div class="text-center">

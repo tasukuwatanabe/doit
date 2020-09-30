@@ -5,7 +5,6 @@ ja:
     attributes:
       routine:
         title: タイトル
-        body: メモ
         start_date: 開始日
         end_date: 終了日
         skip_days: 休日

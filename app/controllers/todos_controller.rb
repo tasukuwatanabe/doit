@@ -1,12 +1,10 @@
 class TodosController < ApplicationController
   before_action :set_user, only: [ :show, :edit, :update, :destroy ]
   before_action :logged_in_user
-  before_action :get_shortcuts, only: :index
   before_action :set_user, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @todos = Todo.where(user_id: @current_user.id, todo_date: params[:date])
-    @date_todos = @todos.where(todo_date: get_url_date)
+    redirect_to new_todo_path
   end
 
   def show; end
@@ -18,9 +16,9 @@ class TodosController < ApplicationController
 
   def create
     @todo = current_user.todos.build(todo_params)
-    if @todo.save!
+    if @todo.save
       flash[:success] = 'ToDoが追加されました。'
-      redirect_to index_path(@todo.todo_date)
+      redirect_to dashboard_path(@todo.todo_date)
     else
       render action: 'new'
     end
@@ -32,7 +30,7 @@ class TodosController < ApplicationController
     @todo.assign_attributes(todo_params)
     if @todo.save
       flash[:success] = 'ToDoが更新されました。'
-      redirect_to index_path(@todo.todo_date)
+      redirect_to dashboard_path(@todo.todo_date)
     else
       render action: 'edit'
     end

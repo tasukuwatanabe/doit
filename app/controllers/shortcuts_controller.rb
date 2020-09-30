@@ -53,13 +53,12 @@ class ShortcutsController < ApplicationController
   def create_todo
     @todo = current_user.todos.build(
       title: @shortcut.title,
-      body: @shortcut.body,
       todo_date: params[:date]
     )
 
     if @todo.save
       flash[:success] = 'ToDoが追加されました。'
-      redirect_to index_path(@todo.todo_date)
+      redirect_to dashboard_path(@todo.todo_date)
     else
       flash[:danger] = @todo.errors.messages.values[0][0]
       redirect_back(fallback_location: root_path)

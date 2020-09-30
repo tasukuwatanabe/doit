@@ -1,13 +1,13 @@
 <aside id="sidebar-left" class="sidebar-left">
   <ul class="sidebar-left__list">
     <li class="sidebar-left__item">
-      <%= link_to "ToDoリスト", index_path(@today) %>
+      <%= link_to "今日のTodo", dashboard_path(@today) %>
     </li>
     <li class="sidebar-left__item">
-      <%= link_to "ルーティーンを管理", routines_path %>
+      <%= link_to "ルーティーン", routines_path %>
     </li>
     <li class="sidebar-left__item">
-      <%= link_to "ショートカットを管理", shortcuts_path %>
+      <%= link_to "ショートカット", shortcuts_path %>
     </li>
     <li class="sidebar-left__item">
       <%= link_to "達成度を確認", history_path %>
