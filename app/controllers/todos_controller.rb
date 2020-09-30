@@ -49,11 +49,10 @@ class TodosController < ApplicationController
     shortcut = current_user.shortcuts.build(title: @todo.title)
     if shortcut.save
       flash[:success] = 'ショートカットが作成されました。'
-      redirect_to @todo
     else
       flash[:danger] = shortcut.errors.messages.values[0][0]
-      redirect_to @todo
     end
+    redirect_to request.referer
   end
 
   def toggle_status
