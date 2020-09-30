@@ -1,6 +1,6 @@
 class RoutinesController < ApplicationController
   before_action :logged_in_user
-  before_action :set_routine, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_routine, only: [ :edit, :update, :destroy ]
 
   def index
     @routines = current_user.routines.all
@@ -26,6 +26,10 @@ class RoutinesController < ApplicationController
     else
       render action: 'new'
     end
+  end
+
+  def show
+    redirect_to edit_routine_path(params[:id])
   end
 
   def edit; end

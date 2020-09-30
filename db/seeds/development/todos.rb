@@ -28,7 +28,6 @@ titles.length.times do |n|
 
   Todo.create!(
     title: titles[n],
-    body: n.even? ? 'メモを残すことができます' : nil,
     user_id: User.find_by(email: 'testuser1@example.com').id,
     todo_date: todo_date
   )
