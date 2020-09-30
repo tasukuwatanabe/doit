@@ -20,5 +20,20 @@ RSpec.describe Shortcut, type: :model do
       shortcut = build(:shortcut, title: nil)
       expect(shortcut).not_to be_valid
     end
+
+    example 'タイトルが重複している場合は無効' do
+      shortcut1 = create(:shortcut)
+      shortcut2 = build(:shortcut, title: shortcut1.title)
+      expect(shortcut2).not_to be_valid
+    end
+
+    example '11個目以上は無効' do
+      Shortcut::MAX_SHORTCUT_COUNT.times do |n|
+        shortcut = create(:shortcut, title: "shortcutタイトル#{n + 1}")
+      end
+      shortcut11 = build(:shortcut)
+      expect(shortcut11).not_to be_valid
+      expect(user.shortcuts.count).to eq(10)
+    end
   end
 end
