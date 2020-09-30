@@ -1,11 +1,23 @@
-<template> </template>
+<template>
+  <div id="app">
+    <p>{{ message }}</p>
+    <b-button variant="success">Button</b-button>
+  </div>
+</template>
 
 <script>
-import Navigation from "./component/navigation.vue";
-
 export default {
-  components: {
-    Navigation
+  data: function() {
+    return {
+      message: "Hello Vue!"
+    };
   }
 };
 </script>
+
+<style scoped>
+#app {
+  font-size: 2em;
+  text-align: center;
+}
+</style>
