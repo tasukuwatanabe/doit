@@ -15,7 +15,7 @@ ja:
           attributes:
             start_date:
               date_after_or_equal_to: には2000年1月1日以降の日付を指定してください。
-              date_before: には1年後の日付より前の日付を指定してください。
+              date_before: には今日から1年以内の日付を指定してください。
             end_date:
               date_after_or_equal_to: には開始日より後の日付を指定してください。
-              date_before: には1年後の日付より前の日付を指定してください。
+              date_before: には今日から1年以内の日付を指定してください。

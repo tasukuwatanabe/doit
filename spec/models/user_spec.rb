@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  describe '#password=' do
+  describe 'passwordの保存' do
     example '文字列を与えると、password_digestは長さ60の文字列になる' do
       user = User.new
       user.password = 'password'

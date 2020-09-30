@@ -1,13 +1,11 @@
 class TodosController < ApplicationController
-  before_action :set_user, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_user, only: [ :edit, :update, :destroy ]
   before_action :logged_in_user
-  before_action :set_user, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_user, only: [ :edit, :update, :destroy ]
 
   def index
     redirect_to new_todo_path
   end
-
-  def show; end
 
   def new
     @todo = Todo.new
@@ -22,6 +20,10 @@ class TodosController < ApplicationController
     else
       render action: 'new'
     end
+  end
+
+  def show
+    redirect_to edit_todo_path(params[:id])
   end
 
   def edit; end

@@ -13,5 +13,5 @@ class Todo < ApplicationRecord
     allow_blank: true
   }
 
-  default_scope -> { order('routine_id is null, routine_id desc, created_at desc') }
+  default_scope -> { order(Arel.sql('routine_id is null, routine_id desc, created_at desc')) }
 end
