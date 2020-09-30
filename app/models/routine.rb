@@ -5,7 +5,7 @@ class Routine < ApplicationRecord
   has_many :todos, dependent: :destroy
 
   before_validation do
-    self.title = remove_space(title)
+    self.title = normalize_as_text(title)
   end
 
   validates :title, presence: true, uniqueness: true

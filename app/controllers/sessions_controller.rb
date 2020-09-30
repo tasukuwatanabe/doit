@@ -1,9 +1,8 @@
 class SessionsController < ApplicationController
-  def new
-    @user = User.new
-  end
+  def new; end
 
   def create
+    @email = params[:session][:email]
     user = User.find_by(email: params[:session][:email])
     if user&.authenticate(params[:session][:password])
       log_in user
@@ -11,8 +10,8 @@ class SessionsController < ApplicationController
       flash[:success] = 'ログインしました。'
       redirect_back_or root_path
     else
-      flash.now[:danger] = 'メールアドレスもしくはパスワードが正しくありません。'
-      render 'new'
+      flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
+      render action: 'new'
     end
   end
 
