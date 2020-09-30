@@ -14,7 +14,6 @@ titles = %w[
 titles.each do |title|
   Shortcut.create!(
     title: title,
-    body: '頑張って取り組もう！',
     user_id: User.find_by(email: 'testuser1@example.com').id
   )
 end

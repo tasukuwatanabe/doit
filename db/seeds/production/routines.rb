@@ -8,7 +8,6 @@ titles.length.times do |n|
 
   Routine.create!(
     title: titles[n],
-    body: n.even? ? 'メモを残すことができます' : nil,
     user_id: user.id,
     start_date: Date.today - 1.days,
     end_date: Date.today + 2.days
@@ -22,7 +21,6 @@ titles.length.times do |n|
       user_id: user.id,
       routine_id: routine.id,
       title: routine.title,
-      body: routine.body,
       todo_date: todo_date
     )
   end

@@ -1,13 +1,29 @@
 class User < ApplicationRecord
+  include StringNormalizer
+
   attr_accessor :remember_token, :reset_token
+
   has_many :todos, dependent: :destroy
   has_many :shortcuts, dependent: :destroy
   has_many :routines, dependent: :destroy
 
-  before_save { email.downcase! }
-  validates :username, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.freeze
-  validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: true
+
+  before_save { email.downcase! }
+  before_validation do
+    self.username = normalize_as_text(username)
+    self.email = normalize_as_email(email)
+  end
+
+  validates :username,
+            presence: true,
+            length: { maximum: 20 }
+  validates :email,
+            presence: true,
+            length: { maximum: 255 },
+            format: { with: VALID_EMAIL_REGEX },
+            uniqueness: { case_sensitive: false }
+
   has_secure_password
 
   class << self

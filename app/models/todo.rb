@@ -4,9 +4,7 @@ class Todo < ApplicationRecord
   belongs_to :user
   belongs_to :routine, optional: true
 
-  before_validation do
-    self.title = remove_space(title)
-  end
+  before_validation { self.title = normalize_as_text(title) }
 
   validates :title, presence: true
   validates :todo_date, presence: true
