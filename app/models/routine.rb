@@ -8,7 +8,9 @@ class Routine < ApplicationRecord
     self.title = normalize_as_text(title)
   end
 
-  validates :title, presence: true, uniqueness: true
+  validates :title, presence: true, uniqueness: {
+    message: 'が他のルーティーンと重複しています'
+  }
 
   validates :start_date, presence: true, date: {
     after_or_equal_to: Date.new(2000, 1, 1),

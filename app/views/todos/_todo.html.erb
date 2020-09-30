@@ -8,6 +8,9 @@
     <i class="fas fa-calendar-alt icon-calendar"></i>
   <% end %>
   <div class="todo__item-link-box">
+    <%= link_to todo_create_shortcut_path(todo.id), method: :post, class: "mr-3" do %>
+      <i class="fas fa-share"></i>
+    <% end %>
     <%= link_to "編集", [ :edit, todo ], class: "btn btn-outline-warning btn-sm" %>
     <%= link_to "削除", todo, method: :delete, class: "btn btn-outline-danger btn-sm", data: { confirm: "本当に削除しますか？" } %>
   </div>

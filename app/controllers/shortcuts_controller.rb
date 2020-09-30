@@ -10,11 +10,11 @@ class ShortcutsController < ApplicationController
   end
 
   def new
-    @shortcuts = current_user.shortcuts
-    if @shortcuts.count >= Shortcut::MAX_SHORTCUT_COUNT
+    if current_user.shortcuts.count >= Shortcut::MAX_SHORTCUT_COUNT
       flash[:danger] = "ショートカットが登録できるのは#{Shortcut::MAX_SHORTCUT_COUNT}個までです。"
       redirect_to shortcuts_path
     end
+
     @shortcut = Shortcut.new
   end
 

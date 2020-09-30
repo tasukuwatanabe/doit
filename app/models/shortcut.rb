@@ -11,7 +11,7 @@ class Shortcut < ApplicationRecord
 
   validate :shortcut_counts_must_be_within_limit
   validates :title, presence: true, uniqueness: {
-    message: '同じタイトルのショートカットが存在します'
+    message: 'が他のショートカットと重複しています'
   }
 
   default_scope -> { order(created_at: :desc) }
