@@ -18,3 +18,16 @@
     }
   }
 }
+
+div#error {
+  width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  border: solid 4px #999;
+  background-color: #ddd;
+  text-align: center;
+  p.url {
+    font-family: monospace;
+  }
+}

@@ -1,5 +1,3 @@
-require 'date'
-
 class TopsController < ApplicationController
   before_action :logged_in_user
   before_action :get_shortcuts
@@ -17,5 +15,11 @@ class TopsController < ApplicationController
       @todos = Todo.where(user_id: @current_user.id, todo_date: get_url_date)
       @date_todos = @todos.where(todo_date: get_url_date)
     end
+  end
+
+  private
+
+  def get_shortcuts
+    @shortcuts = Shortcut.where(user_id: current_user.id)
   end
 end
