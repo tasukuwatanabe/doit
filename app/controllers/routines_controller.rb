@@ -1,4 +1,7 @@
 class RoutinesController < ApplicationController
+  include CalculationDateHelper
+  include CalculationMonthHelper
+
   before_action :logged_in_user
   before_action :set_routine, only: [ :edit, :update, :destroy ]
 
@@ -74,7 +77,27 @@ class RoutinesController < ApplicationController
   end
 
   def history
-    @routines = current_user.routines.all
+    params_array = params[:month].split('-').map(&:to_i)
+    begin
+      if params_array.count < 2 || !(1..12).cover?(params_array[1])
+        raise StandardError
+      end
+    rescue StandardError
+      flash[:danger] = 'URLに不適切な値が使われています'
+      redirect_to history_path(set_this_month)
+    else
+      @year = params_array[0]
+      @month = params_array[1]
+      url_month = Date.new(@year, @month, 1)
+
+      if month_out_of_range?(url_month)
+        flash[:danger] = '対象外の期間が設定されています'
+        redirect_to history_path(set_this_month)
+      else
+        @month_days = Date.new(@year, @month, 1).end_of_month.day.to_i
+        @routines = current_user.routines.all
+      end
+    end
   end
 
   private
