@@ -1,7 +1,7 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
-      <%= link_to dashboard_path(@today), class:"navbar-brand" do %>
+      <%= link_to index_path(@today), class:"navbar-brand" do %>
         <img src="/doit-logo-white.png" alt="DoITロゴ">
       <% end %>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,7 +12,7 @@
         <ul class="navbar-nav mr-auto">
           <% if logged_in? %>
             <li class="nav-item">
-              <%= gravatar_for current_user %>
+              <%= user_image(current_user) %>
               <%= link_to current_user.username, user_path(current_user), class:"nav-link" %>
             </li>
           <% end %>

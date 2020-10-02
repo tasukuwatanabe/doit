@@ -16,7 +16,7 @@ class TodosController < ApplicationController
     @todo = current_user.todos.build(todo_params)
     if @todo.save
       flash[:success] = 'ToDoが追加されました。'
-      redirect_to dashboard_path(@todo.todo_date)
+      redirect_to index_path(@todo.todo_date)
     else
       render action: 'new'
     end
@@ -32,7 +32,7 @@ class TodosController < ApplicationController
     @todo.assign_attributes(todo_params)
     if @todo.save
       flash[:success] = 'ToDoが更新されました。'
-      redirect_to dashboard_path(@todo.todo_date)
+      redirect_to index_path(@todo.todo_date)
     else
       render action: 'edit'
     end
