@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  root 'tops#dashboard'
-  get '/date/:date' => 'tops#dashboard', as: 'dashboard'
+  root 'tops#home'
+  get '/date/:date' => 'tops#index', as: 'index'
   post '/date/:date/create_todo/:id', to: 'shortcuts#create_todo', as: 'shortcut_create_todo'
   get '/signup', to: 'users#new'
   get '/login', to: 'sessions#new'
@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   resources :users do
     resource :password, only: [ :show, :edit, :update ]
+    post '/delete_image', to: 'users#delete_image', as: 'delete_image'
   end
   resources :todos do
     post '/toggle_status', to: 'todos#toggle_status', as: 'toggle_status'

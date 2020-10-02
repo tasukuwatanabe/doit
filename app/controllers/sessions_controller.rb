@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
       log_in user
       params[:session][:remember_me] == '1' ? remember(user) : forget(user)
       flash[:success] = 'ログインしました。'
-      redirect_back_or dashboard_path(@today)
+      redirect_back_or index_path(@today)
     else
       flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
       render action: 'new'

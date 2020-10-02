@@ -6,6 +6,7 @@ ja:
       user:
         username: ユーザー名
         email: メールアドレス
+        user_image: アイコン
         password: パスワード
         password_confirmation: パスワード(確認用)
         remember_me: ログインしたままにする

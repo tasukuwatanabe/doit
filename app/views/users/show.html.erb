@@ -8,7 +8,7 @@
       <h2 class="page__title"><%= @title %></h2>
     </div>
     <div>
-      <%= gravatar_for @user %>
+      <%= user_image(current_user) %>
       <ul>
         <li><%= @user.username %></li>
         <li><%= @user.email %></li>

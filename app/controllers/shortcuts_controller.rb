@@ -58,7 +58,7 @@ class ShortcutsController < ApplicationController
 
     if @todo.save
       flash[:success] = 'ToDoが追加されました。'
-      redirect_to dashboard_path(@todo.todo_date)
+      redirect_to index_path(@todo.todo_date)
     else
       flash[:danger] = @todo.errors.messages.values[0][0]
       redirect_back(fallback_location: root_path)
