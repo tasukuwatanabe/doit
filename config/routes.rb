@@ -16,6 +16,6 @@ Rails.application.routes.draw do
   end
   resources :shortcuts
   resources :routines
-  get 'history', to: 'routines#history'
+  get 'history/:month', to: 'routines#history', as: 'history'
   resources :password_resets, only: [ :new, :create, :edit, :update ]
 end
