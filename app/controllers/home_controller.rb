@@ -1,8 +1,8 @@
-class TopsController < ApplicationController
+class HomeController < ApplicationController
   before_action :logged_in_user
   before_action :get_shortcuts
 
-  def home
+  def root
     redirect_to index_path(@today)
   end
 

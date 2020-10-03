@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  root 'tops#home'
-  get '/date/:date' => 'tops#index', as: 'index'
+  root 'home#root'
+  get '/date/:date' => 'home#index', as: 'index'
   post '/date/:date/create_todo/:id', to: 'shortcuts#create_todo', as: 'shortcut_create_todo'
   get '/signup', to: 'users#new'
   get '/login', to: 'sessions#new'
@@ -15,6 +15,9 @@ Rails.application.routes.draw do
     post '/create_shortcut', to: 'todos#create_shortcut', as: 'create_shortcut'
   end
   resources :shortcuts
+  namespace :api, { format: 'json' } do
+    resources :shortcuts, only: [ :index, :create, :destroy ]
+  end
   resources :routines
   get 'history', to: 'routines#history'
   resources :password_resets, only: [ :new, :create, :edit, :update ]

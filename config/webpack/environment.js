@@ -14,4 +14,7 @@ environment.plugins.prepend(
   })
 );
 
+const customConfig = require("./custom");
+environment.config.merge(customConfig);
+
 module.exports = environment;
