@@ -21,29 +21,41 @@
       </button>
     </div>
     <div class="modal" :class="{ 'is-open': isModalActive }">
-      <form v-on:submit.prevent="createShortcut" novalidate="true">
-        <div class="form-group row">
-          <div class="col-sm-8">
-            <input
-              type="text"
-              placeholder="タイトル"
-              class="form-control"
-              v-model="shortcut.title"
-              required
-            />
-            <p v-if="errors.length" class="error" style="color: red;">
-              <ul>
-                <li v-for="(error, index) in errors" :key="`error-${index}`">{{ error }}</li>
+      <div class="modal__layer" @click.self="closeModal">
+        <div class="modal__box">
+          <form @submit.prevent novalidate="true">
+            <div class="modal-form">
+              <div class="fa-case" @click="closeModal">
+                <i class="fas fa-times"></i>
+              </div>
+              <input
+                type="text"
+                placeholder="タイトル"
+                class="form-control"
+                v-model="shortcut.title"
+                required
+                @keydown:enter="createShortcut"
+              />
+              <ul v-if="errors.length" class="error-list" style="color: red;">
+                <li v-for="(error, index) in errors" :key="`error-${index}`">
+                  {{ error }}
+                </li>
               </ul>
-            </p>
-          </div>
-          <div class="col-sm-4">
-            <button class="btn btn-info">
-              ショートカットを作成
-            </button>
-          </div>
+              <div class="btn-case">
+                <div
+                  @click="closeModal"
+                  class="btn-cancel btn btn-sm btn-outline-info"
+                >
+                  キャンセル
+                </div>
+                <button @click="createShortcut" class="btn btn-sm btn-info">
+                  新規作成
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -91,13 +103,15 @@ export default {
     },
     createShortcut(e) {
       this.errors = [];
-      if(!this.shortcut.title) {
+      if (!this.shortcut.title) {
         this.errors.push("タイトルは必須です");
-        return
+        return;
       }
       axios.post("/api/shortcuts/", { shortcut: this.shortcut }).then(
         (res) => {
+          this.shortcut.title = "";
           this.fetchShortcuts();
+          this.closeModal();
         },
         (error) => {
           this.errors.push("タイトルが重複しています");
@@ -110,11 +124,12 @@ export default {
       });
     },
     openModal() {
-      this.toggleModal();
+      this.isModalActive = true;
     },
-    toggleModal() {
-      this.isModalActive = !this.isModalActive;
-    },
+    closeModal() {
+      this.isModalActive = false;
+      this.errors = [];
+    }
   }
 };
 </script>

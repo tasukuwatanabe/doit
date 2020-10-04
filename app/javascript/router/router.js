@@ -4,6 +4,8 @@ import shortcutHome from "../pages/shortcut/shortcutHome.vue";
 
 Vue.use(VueRouter);
 
-const routes = [{ path: "/", name: "shortcutHome", component: shortcutHome }];
+const routes = [
+  { path: "/shortcuts", name: "shortcutHome", component: shortcutHome }
+];
 
-export default new VueRouter({ routes });
+export default new VueRouter({ mode: "history", routes });

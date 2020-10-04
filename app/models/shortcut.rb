@@ -11,6 +11,7 @@ class Shortcut < ApplicationRecord
 
   validate :shortcut_counts_must_be_within_limit
   validates :title, presence: true, uniqueness: {
+    scope: :user,
     message: 'が他のショートカットと重複しています'
   }
 
