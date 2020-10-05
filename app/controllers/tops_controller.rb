@@ -7,6 +7,7 @@ class TopsController < ApplicationController
   end
 
   def index
+    set_meta_tags title: 'ダッシュボード'
     if !date_valid?(params[:date])
       flash[:danger] = '日付が適切な値ではありません'
       redirect_to index_path(@today)
