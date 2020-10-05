@@ -1,5 +1,4 @@
 <% @title = "ルーティーンの達成度" %>
-
 <div class="container d-flex justify-content-between">
   <%= render "shared/sidebar_left" %>
     <div class="todo__main-col todo__main-col--index">
@@ -8,15 +7,38 @@
           <h2 class="page__title"><%= @title %></h2>
         </div>
         <% if @routines.any? %>
-          <ul class="todo__list">
-          <% @routines.each do |routine| %>
-            <li class="todo__item">
-              <div class="todo__item-title"><%= truncate(routine.title, length: 24, omission: "..." ) %></div>
-            </li>
-          <% end %>
-          </ul>
+          <div class="page__title-box">
+            <%= link_to "<<", history_path(set_previous_month), class: "btn btn-outline-dark btn-sm" if set_previous_month %>
+            <h2 class="page__title"><%= @year %>年<%= @month %>月</h2>
+            <%= link_to ">>", history_path(set_next_month), class: "btn btn-outline-dark btn-sm" if set_next_month %>
+          </div>
+          <table class="table">
+            <tbody>
+              <tr>
+                <td></td>
+                <% @month_days.times do |d| %>
+                  <td><%= d + 1 %></td>
+                <% end %>
+              </tr>
+              <% @routines.each do |routine| %>
+              <tr>
+                <th style="white-space: nowrap;">
+                  <%= truncate(routine.title, length: 24, omission: "..." ) %>
+                </th>
+                <% @month_days.times do |d| %>
+                  <% @todo = routine.todos.find_by(todo_date: Date.new(@year, @month, d+1)) %>
+                  <% if !@todo.nil? && @todo.status %>
+                    <td>◯</td>
+                  <% else %>
+                    <td></td>
+                  <% end %>
+                <% end %>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
         <% else %>
-          <p class="todo__no-item">表示設定になっているルーティーンはありません。</p>
+          <p class="todo__no-item">ルーティーンはありません。</p>
         <% end %>
       </div>
     </div>
