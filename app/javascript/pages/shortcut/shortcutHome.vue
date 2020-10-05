@@ -2,8 +2,38 @@
   <div id="app">
     <ul class="todo__list">
       <li class="todo__item" v-for="s in shortcuts" :key="s.id">
-        <div class="todo__item-title">
+        <div
+          v-show="s.id != editingShortcutId"
+          @dblclick="editShortcut(s)"
+          class="todo__item-title"
+        >
           {{ s.title }}
+        </div>
+        <div>
+          <div>
+            <input
+              v-show="s.id == editingShortcutId"
+              v-model="s.title"
+              v-focus
+              @keyup.enter="updateShortcut(s)"
+            />
+            <a
+              @click="fetchShortcuts"
+              v-if="
+                !s.title.length || (errors.length && s.id == editingShortcutId)
+              "
+              style="background-color: gray; border-radius: 100px;font-size: 10px; color: white; padding: 3px;"
+              >×リセット</a
+            >
+          </div>
+          <span v-if="!s.title.length" style="color: red; font-size: 12px;"
+            >タイトルが未入力です</span
+          >
+          <span
+            v-else-if="errors.length && s.id == editingShortcutId"
+            style="color: red; font-size: 12px;"
+            >{{ errors[0] }}</span
+          >
         </div>
         <div class="todo__item-link-box">
           <b-button
@@ -61,7 +91,16 @@
 </template>
 
 <script>
+import Vue from "vue";
 import axios from "axios";
+
+Vue.directive("focus", {
+  update(el) {
+    Vue.nextTick(function() {
+      el.focus();
+    });
+  }
+});
 
 export default {
   name: "ShortcutHome",
@@ -72,7 +111,9 @@ export default {
       shortcut: {
         title: ""
       },
-      errors: []
+      errors: [],
+      editingShortcutId: null,
+      editedShortcut: null
     };
   },
   mounted() {
@@ -80,6 +121,9 @@ export default {
   },
   methods: {
     fetchShortcuts() {
+      this.errors = [];
+      this.editedShortcut = null;
+      this.editingShortcutId = null;
       axios.get("/api/shortcuts.json").then(
         (response) => {
           this.shortcuts = response.data;
@@ -117,6 +161,27 @@ export default {
           this.errors.push("タイトルが重複しています");
         }
       );
+    },
+    editShortcut(shortcut) {
+      this.fetchShortcuts();
+      this.editingShortcutId = shortcut.id;
+    },
+    updateShortcut(shortcut) {
+      this.errors = [];
+      if (!shortcut.title) {
+        return;
+      }
+      this.editedShortcut = shortcut;
+      axios
+        .put(`/api/shortcuts/${shortcut.id}`, { shortcut: this.editedShortcut })
+        .then(
+          (res) => {
+            this.fetchShortcuts();
+          },
+          (error) => {
+            this.errors.push("タイトルが重複しています");
+          }
+        );
     },
     deleteShortcut(id) {
       axios.delete(`/api/shortcuts/${id}`).then((res) => {

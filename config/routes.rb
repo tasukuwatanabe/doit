@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   end
   resources :shortcuts
   namespace :api, { format: 'json' } do
-    resources :shortcuts, only: [ :index, :create, :destroy ]
+    resources :shortcuts, only: [ :index, :create, :update, :destroy ]
   end
   resources :routines
   get 'history', to: 'routines#history'
