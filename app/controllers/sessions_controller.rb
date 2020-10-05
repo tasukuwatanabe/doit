@@ -1,6 +1,4 @@
 class SessionsController < ApplicationController
-  protect_from_forgery
-
   before_action :forbid_login_user, only: [ :new, :create ]
 
   def new; end
