@@ -1,4 +1,8 @@
-<% provide(:button_text, "ToDoを更新") %>
+<% 
+@title = 'ToDoを編集'
+set_meta_tags title: @title
+provide(:button_text, "ToDoを更新") 
+%>
 
 <div class="container d-flex justify-content-between">
   <%= render "shared/sidebar_left" %>

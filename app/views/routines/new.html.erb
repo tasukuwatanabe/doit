@@ -1,4 +1,8 @@
-<% provide(:button_text, "ルーティーンを更新") %>
+<% 
+@title = 'ルーティーンの追加'
+set_meta_tags title: @title
+provide(:button_text, @title)
+%>
 
 <div class="container d-flex justify-content-between">
   <%= render "shared/sidebar_left" %>

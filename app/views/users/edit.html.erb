@@ -1,4 +1,8 @@
-<% provide(:button_text, "更新する") %>
+<% 
+@title = 'ユーザー情報の編集'
+set_meta_tags title: @title
+provide(:button_text, "更新する") 
+%>
 
 <div class="container d-flex justify-content-between">
   <%= render "shared/sidebar_left" %>

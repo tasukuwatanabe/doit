@@ -12,7 +12,6 @@ class UsersController < ApplicationController
   end
 
   def new
-    set_meta_tags title: '新規登録'
     @user = User.new
   end
 
@@ -28,7 +27,6 @@ class UsersController < ApplicationController
   end
 
   def edit
-    set_meta_tags title: 'ユーザ情報の編集'
     @user = User.find(params[:id])
   end
 

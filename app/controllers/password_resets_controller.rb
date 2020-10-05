@@ -4,7 +4,8 @@ class PasswordResetsController < ApplicationController
   before_action :check_expiration, only: [:edit, :update]
 
   def new
-    set_meta_tags title: 'パスワード再設定'
+    @title = 'パスワード再設定'
+    set_meta_tags title: @title
   end
 
   def create

@@ -1,9 +1,9 @@
 class SessionsController < ApplicationController
+  protect_from_forgery
+
   before_action :forbid_login_user, only: [ :new, :create ]
 
-  def new
-    set_meta_tags title: 'ログイン'
-  end
+  def new; end
 
   def create
     @email = params[:session][:email]

@@ -1,9 +1,15 @@
+<% 
+@title = 'パスワードの変更'
+set_meta_tags title: @title
+%>
+
 <div class="container d-flex justify-content-between">
   <%= render "shared/sidebar_left" %>
   <div class="task__main-col">
     <div class="page__title-box">
       <h2 class="page__title"><%= @title %></h2>
     </div>
+    
     <%= form_with(model: @change_password_form, url: :user_password, method: :patch, local: true) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <div class="form-group row">
