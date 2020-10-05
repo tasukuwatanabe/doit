@@ -1,7 +1,0 @@
-<li class="todo__item">
-  <div class="todo__item-title"><%= truncate(shortcut.title, length: 24, omission: "..." ) %></div>
-  <div class="todo__item-link-box">
-    <%= link_to "編集", [ :edit, shortcut ], class: "btn btn-outline-warning btn-sm" %>
-    <%= link_to "削除", shortcut, method: :delete, class: "btn btn-outline-danger btn-sm", data: { confirm: "本当に削除しますか？" } %>
-  </div>
-</li>

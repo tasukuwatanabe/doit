@@ -1,0 +1,14 @@
+.modal-form {
+  input {
+    min-width: 320px;
+  }
+  .btn-case {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+
+    .btn-cancel {
+      margin-right: 5px;
+    }
+  }
+}
