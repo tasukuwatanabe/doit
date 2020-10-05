@@ -9,6 +9,7 @@ class TopsController < ApplicationController
   end
 
   def index
+    set_meta_tags title: 'ダッシュボード'
     params_array = params[:date].split('-').map(&:to_i)
     if params_array.count < 3 || params_array.include?(0)
       raise StandardError

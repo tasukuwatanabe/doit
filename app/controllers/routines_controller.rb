@@ -6,10 +6,12 @@ class RoutinesController < ApplicationController
   before_action :set_routine, only: [ :edit, :update, :destroy ]
 
   def index
+    set_meta_tags title: 'ルーティーン'
     @routines = current_user.routines.all
   end
 
   def new
+    set_meta_tags title: 'ルーティーンの追加'
     @routine = Routine.new
     @routine.start_date ||= @today
     @routine.end_date ||= Date.parse(@today).tomorrow
@@ -35,7 +37,9 @@ class RoutinesController < ApplicationController
     redirect_to edit_routine_path(params[:id])
   end
 
-  def edit; end
+  def edit
+    set_meta_tags title: 'ルーティーンの編集'
+  end
 
   def update
     @routine.assign_attributes(routine_params)
@@ -77,6 +81,7 @@ class RoutinesController < ApplicationController
   end
 
   def history
+    set_meta_tags title: 'ルーティーンの達成度'
     params_array = params[:month].split('-').map(&:to_i)
     begin
       if params_array.count < 2 || !(1..12).cover?(params_array[1])

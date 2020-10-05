@@ -6,6 +6,7 @@ class PasswordsController < ApplicationController
   end
 
   def edit
+    set_meta_tags title: 'パスワード再設定'
     @change_password_form = ChangePasswordForm.new(object: current_user)
   end
 

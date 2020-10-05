@@ -8,6 +8,7 @@ class TodosController < ApplicationController
   end
 
   def new
+    set_meta_tags title: 'Todoの追加'
     @todo = Todo.new
     @todo.todo_date = @todo.todo_date || @today
   end
@@ -26,7 +27,9 @@ class TodosController < ApplicationController
     redirect_to edit_todo_path(params[:id])
   end
 
-  def edit; end
+  def edit
+    set_meta_tags title: 'Todoの編集'
+  end
 
   def update
     @todo.assign_attributes(todo_params)
