@@ -7,12 +7,20 @@ class HomeController < ApplicationController
   end
 
   def index
-    if !date_valid?(params[:date])
-      flash[:danger] = '日付が適切な値ではありません'
-      redirect_to index_path(@today)
-    elsif date_out_of_range?
+    set_meta_tags title: 'ダッシュボード'
+    params_array = params[:date].split('-').map(&:to_i)
+    if params_array.count < 3 || params_array.include?(0)
+      raise StandardError
+    end
+
+    Date.parse(params[:date])
+  rescue StandardError
+    flash[:danger] = '日付が適切な値ではありません'
+    redirect_to index_path(@today)
+  else
+    if date_out_of_range?(get_url_date)
       one_year_from_today = 1.year.since(@today.to_date).strftime('%Y月%1m月%1d日')
-      flash_message = '2000年1月1日〜' + one_year_from_today + 'までの日付を指定できます'
+      flash_message = '2000年1月1日〜' + one_year_from_today + 'までの日付を指定してください'
       flash[:danger] = flash_message
       redirect_to index_path(@today)
     else

@@ -5,17 +5,9 @@
     <div class="todo__main-col todo__main-col--index">
       <div>
         <div class="page__title-box">
-          <div>
-            <% unless set_previous_date < Date.parse("2000-01-01") %>
-              <%= link_to "<<", index_path(set_previous_date), class: "btn btn-outline-dark btn-sm" %>
-            <% end %>
-          </div>
+          <%= link_to("<<", index_path(set_previous_date), class: "btn btn-outline-dark btn-sm") if set_previous_date %>
           <h2 class="page__title"><%= @title %></h2>
-          <div>
-            <% unless set_next_date > 1.year.since(@today.to_date) %>
-              <%= link_to ">>", index_path(set_next_date), class: "btn btn-outline-dark btn-sm" %>
-            <% end %>
-          </div>
+          <%= link_to(">>", index_path(set_next_date), class: "btn btn-outline-dark btn-sm") if set_next_date %>
         </div>
         <% if @date_todos.any? %>
           <ul class="todo__list">
