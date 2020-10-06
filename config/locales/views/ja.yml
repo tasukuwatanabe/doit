@@ -1,8 +1,0 @@
-ja:
-  helpers:
-    label:
-      session:
-        email: メールアドレス
-        password: パスワード
-      password_reset:
-        email: メールアドレス

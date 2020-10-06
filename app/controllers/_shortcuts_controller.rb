@@ -1,5 +1,4 @@
 class ShortcutsController < ApplicationController
-  before_action :logged_in_user
   before_action :set_shortcut, only: [ :edit, :update, :destroy, :create_todo ]
 
   def index

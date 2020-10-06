@@ -1,7 +1,5 @@
 class TodosController < ApplicationController
-  before_action :set_user, only: [ :edit, :update, :destroy ]
-  before_action :logged_in_user
-  before_action :set_user, only: [ :edit, :update, :destroy ]
+  before_action :set_todo, only: [ :edit, :update, :destroy ]
 
   def index
     redirect_to new_todo_path
@@ -67,7 +65,7 @@ class TodosController < ApplicationController
 
   private
 
-  def set_user
+  def set_todo
     @todo = Todo.find(params[:id])
   end
 

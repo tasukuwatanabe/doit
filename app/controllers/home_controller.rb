@@ -1,6 +1,5 @@
 class HomeController < ApplicationController
   include CalculationDateHelper
-  before_action :logged_in_user
   before_action :get_shortcuts
 
   def root
