@@ -8,10 +8,10 @@ set_meta_tags title: @title
         <h2 class="page__title"><%= @title %></h2>
       </div>
       <div class="login__form">
-        <%= form_with(scope: :session, url: login_path, local: true, html: { novalidate: true }) do |f| %>
+        <%= form_with model: @form, url: login_path, html: { novalidate: true } do |f| %>
           <div class="form-group row">
             <div class="col-sm-4">
-              <%= f.label :email, class: "col-form-label" %>
+              <%= f.label :email, "メールアドレス", class: "col-form-label" %>
             </div>
             <div class="col-sm-8">
               <%= f.email_field :email, class: "form-control", value: @email %>
@@ -19,7 +19,7 @@ set_meta_tags title: @title
           </div>
           <div class="form-group row">
             <div class="col-sm-4">
-              <%= f.label :password, class: "col-form-label" %>
+              <%= f.label :password, "パスワード", class: "col-form-label" %>
             </div>
             <div class="col-sm-8">
               <%= f.password_field :password, class: "form-control" %>
@@ -30,7 +30,7 @@ set_meta_tags title: @title
             <div class="col-sm-4"></div>
             <div class="col-sm-8">
               <%= f.check_box :remember_me %>
-              <%= f.label :remember_me %>
+              <%= f.label :remember_me, "ログインしたままにする" %>
             </div>
           </div>
           <div class="action__case">

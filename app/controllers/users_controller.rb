@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
+  skip_before_action :logged_in_user, only: [ :index, :new, :create ]
   before_action :forbid_login_user, only: [ :new, :create ]
-  before_action :logged_in_user, except: [ :index, :new, :create ]
+  before_action :set_user, only: [ :edit, :update, :destroy ]
   before_action :correct_user, only: [ :edit, :update ]
 
   def index
@@ -26,12 +27,9 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit
-    @user = User.find(params[:id])
-  end
+  def edit; end
 
   def update
-    @user = User.find(params[:id])
     if @user.update_attributes(user_params)
       flash[:success] = 'ユーザ情報を更新しました。'
       redirect_to edit_user_path(current_user)
@@ -41,7 +39,6 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
     flash[:success] = 'アカウントを削除しました。'
     redirect_to login_path
@@ -57,6 +54,10 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:username, :password, :password_confirmation, :email, :user_image)
+  end
+
+  def set_user
+    @user = User.find(params[:id])
   end
 
   def correct_user

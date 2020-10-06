@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_action :logged_in_user
   before_action :get_today
   before_action :request_path
 
