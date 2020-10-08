@@ -23,7 +23,6 @@ development:
   <<: *default
   database: todo_app_development
 
-
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
@@ -68,6 +67,8 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 production:
   <<: *default
-  database: todo_app_production
-  username: postgres
-  password: <%= ENV['TODO_APP_DATABASE_PASSWORD'] %>
+  database: <%= ENV['RDS_DBNAME'] %>
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOSTNAME'] %>
+  port: <%= ENV['RDS_PORT'] %>
