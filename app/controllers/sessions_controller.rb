@@ -14,7 +14,12 @@ class SessionsController < ApplicationController
     end
     if Authenticator.new(user).authenticate(@form.password)
       log_in user
-      @form.remember_me == '1' ? remember(user) : forget(user)
+      if @form.remember_me?
+        remember(user)
+      else
+        forget(user)
+        session[:user_id] = user.id
+      end
       flash[:success] = 'ログインしました。'
       redirect_back_or index_path(@today)
     else
