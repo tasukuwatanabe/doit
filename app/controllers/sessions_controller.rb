@@ -4,7 +4,6 @@ class SessionsController < ApplicationController
 
   def new
     @form = LoginForm.new
-    render action: 'new'
   end
 
   def create
