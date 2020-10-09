@@ -5,12 +5,12 @@ class PasswordResetsController < ApplicationController
   before_action :check_expiration, only: [:edit, :update]
 
   def new
-    @title = 'パスワード再設定'
-    set_meta_tags title: @title
+    @form = PasswordResetForm.new
   end
 
   def create
-    @user = User.find_by(email: params[:password_reset][:email].downcase)
+    @form = PasswordResetForm.new(password_reset_params)
+    @user = User.find_by(email: @form.email)
     if @user
       @user.create_reset_digest
       @user.send_password_reset_email
@@ -38,6 +38,10 @@ class PasswordResetsController < ApplicationController
   end
 
   private
+
+  def password_reset_params
+    params.require(:password_reset_form).permit(:email)
+  end
 
   def user_params
     params.require(:user).permit(:password, :password_confirmation)
