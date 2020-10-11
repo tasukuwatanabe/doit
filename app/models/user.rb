@@ -2,7 +2,6 @@ class User < ApplicationRecord
   include StringNormalizer
 
   mount_uploader :user_image, ImageUploader
-  after_commit :remove_user_image!, on: :destroy
 
   attr_accessor :remember_token, :reset_token
 
