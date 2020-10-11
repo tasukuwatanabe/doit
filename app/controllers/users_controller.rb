@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   def edit; end
 
   def update
-    if @user.update_attributes(user_params)
+    if @user.update(user_params)
       flash[:success] = 'ユーザ情報を更新しました。'
       redirect_to edit_user_path(current_user)
     else
@@ -44,16 +44,10 @@ class UsersController < ApplicationController
     redirect_to login_path
   end
 
-  def delete_image
-    @user = User.find(params[:user_id])
-    File.delete("#{Rails.root}/public/user_images/user_image_#{@user.id}.jpg")
-    redirect_to edit_user_path(@user)
-  end
-
   private
 
   def user_params
-    params.require(:user).permit(:username, :password, :password_confirmation, :email, :user_image)
+    params.require(:user).permit(:username, :password, :password_confirmation, :email, :user_image, :remove_user_image)
   end
 
   def set_user

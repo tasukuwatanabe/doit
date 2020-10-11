@@ -25,7 +25,12 @@
       <div class="col-sm-8">
         <%= user_image(current_user) %>
         <%= f.file_field :user_image %>
-        <%= link_to("デフォルトのアイコンを使用", user_delete_image_path(current_user.id), method: :post, class: "d-block mt-2") if current_user.user_image? %>
+        <% if current_user.user_image? %>
+        <div>
+          <%= f.check_box :remove_user_image if current_user.user_image? %>
+          <%= f.label :remove_user_image, "デフォルトのアイコンを使用" %>
+        </div>
+        <% end %>
       </div>
     </div>
   <% end %>
