@@ -53,5 +53,5 @@ end
 
 group :production do
   gem 'unicorn'
-  gem 'fog'
+  gem 'fog-aws'
 end
