@@ -22,8 +22,7 @@ set :deploy_to, '/var/www/rails/doit'
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, 'config/credentials/master.key'
-append :linked_files, 'config/secrets.yml'
+append :linked_files, 'config/database.yml', 'config/credentials/master.key', '.env'
 
 # Default value for linked_dirs is []
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system'
@@ -45,6 +44,23 @@ set :rbenv_ruby, '2.6.3'
 set :log_level, :debug
 
 namespace :deploy do
+  desc 'setup config'
+  task :config do
+    on roles(:app) do |_host|
+      %w[database.yml].each do |f|
+        upload! "config/#{f}", "#{shared_path}/config/#{f}"
+      end
+
+      %w[master.key].each do |f|
+        upload! "config/#{f}", "#{shared_path}/config/credentials/#{f}"
+      end
+
+      %w[.env].each do |f|
+        upload! f.to_s, "#{shared_path}/#{f}"
+      end
+    end
+  end
+
   desc 'Restart application'
   task :restart do
     invoke 'unicorn:restart'
