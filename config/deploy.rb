@@ -22,7 +22,8 @@ set :deploy_to, '/var/www/rails/doit'
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, '.env', 'config/database.yml'
+append :linked_files, 'config/credentials/master.key'
+append :linked_files, 'config/secrets.yml'
 
 # Default value for linked_dirs is []
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system'

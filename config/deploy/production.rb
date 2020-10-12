@@ -3,7 +3,7 @@
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
-server 'doit-app.com', user: 'tasuku', roles: %w{app db web}
+server '54.238.125.60', user: 'tasuku', roles: %w{app db web}
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
@@ -36,7 +36,7 @@ server 'doit-app.com', user: 'tasuku', roles: %w{app db web}
 # Global options
 # --------------
 set :ssh_options, {
-  keys: '~/.ssh/aws-key.pem'
+  keys: '~/.ssh/id_rsa'
 }
 #
 # The server-based syntax can be used to override options:
