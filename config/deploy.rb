@@ -11,13 +11,13 @@ set :repo_url, 'git@github.com:tasukuwatanabe/doit.git'
 set :branch, 'capistrano'
 
 # deploy先のディレクトリ。
-set :deploy_to, '/var/www/rails/app'
+set :deploy_to, '/var/www/rails/doit'
 
 # secret_base_keyを読み込ませるため追記
 set :linked_files, %w[config/master.key]
 
 # シンボリックリンクをはるファイル。
-set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/settings.yml', '.env')
+set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/credentials.yml.enc', '.env')
 
 # シンボリックリンクをはるフォルダ。
 set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
@@ -26,7 +26,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', '
 set :keep_releases, 5
 
 # rubyのバージョン
-set :rbenv_ruby, '2.5.1'
+set :rbenv_ruby, '2.6.3'
 
 # 出力するログのレベル。
 set :log_level, :debug
