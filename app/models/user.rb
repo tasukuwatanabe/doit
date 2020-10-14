@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   mount_uploader :user_image, ImageUploader
 
-  attr_accessor :remember_token, :reset_token, :is_guest
+  attr_accessor :remember_token, :reset_token
 
   has_many :todos, dependent: :destroy
   has_many :shortcuts, dependent: :destroy
@@ -36,14 +36,6 @@ class User < ApplicationRecord
 
     def new_token
       SecureRandom.urlsafe_base64
-    end
-
-    def guest
-      find_or_create_by!(email: 'guest@example.com') do |user|
-        user.username = 'ゲストユーザー'
-        user.password = new_token
-        is_guest = true
-      end
     end
   end
 

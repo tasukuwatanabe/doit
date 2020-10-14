@@ -49,7 +49,7 @@ module SessionsHelper
     end
   end
 
-  def disabled_for_guest
+  def disable_for_guest
     'disabled' if user_is_guest?
   end
 

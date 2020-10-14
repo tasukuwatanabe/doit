@@ -31,6 +31,8 @@ set :rbenv_ruby, '2.6.3'
 # 出力するログのレベル。
 set :log_level, :debug
 
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+
 namespace :deploy do
   desc 'Restart application'
   task :restart do

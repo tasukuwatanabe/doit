@@ -27,6 +27,13 @@ class SessionsController < ApplicationController
     end
   end
 
+  def guest_login
+    user = User.find_by!(email: 'guest@example.com')
+    log_in(user)
+    flash[:success] = 'ゲストユーザーでログインしました。'
+    redirect_to index_path(@today)
+  end
+
   private def login_form_params
     params.require(:login_form).permit(:email, :password, :remember_me)
   end
@@ -35,12 +42,5 @@ class SessionsController < ApplicationController
     log_out if logged_in?
     flash[:success] = 'ログアウトしました。'
     redirect_to login_path
-  end
-
-  def guest_login
-    user = User.guest
-    log_in(user)
-    flash[:success] = 'ゲストユーザーでログインしました。'
-    redirect_back_or index_path(@today)
   end
 end
