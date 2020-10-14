@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :logged_in_user, only: [ :index, :new, :create ]
+  before_action :forbid_guest_user, only: :destroy
   before_action :forbid_login_user, only: [ :new, :create ]
   before_action :set_user, only: [ :edit, :update, :destroy ]
   before_action :correct_user, only: [ :edit, :update ]

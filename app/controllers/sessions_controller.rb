@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :logged_in_user, except: :destroy
-  before_action :forbid_login_user, only: [ :new, :create ]
+  before_action :forbid_login_user, only: [ :new, :create, :guest_login ]
 
   def new
     @form = LoginForm.new
@@ -25,6 +25,13 @@ class SessionsController < ApplicationController
       flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
       render action: 'new'
     end
+  end
+
+  def guest_login
+    user = User.find_by!(email: 'guest@example.com')
+    log_in(user)
+    flash[:success] = 'ゲストユーザーでログインしました。'
+    redirect_to index_path(@today)
   end
 
   private def login_form_params

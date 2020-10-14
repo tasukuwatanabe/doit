@@ -1,5 +1,5 @@
 <%
-@title = 'ログイン.'
+@title = 'ログイン'
 set_meta_tags title: @title
 %>
 <div class="container">
@@ -35,6 +35,7 @@ set_meta_tags title: @title
           </div>
           <div class="action__case">
             <%= f.submit "ログイン", class: "btn btn-primary action__btn" %>
+            <%= link_to "ゲストログイン", guest_login_path, method: :post, class: "btn btn-primary action__btn" %>
             <p class="action__to-signup">初めての方は<%= link_to "新規登録", signup_path %></p>
           </div>
         <% end %>

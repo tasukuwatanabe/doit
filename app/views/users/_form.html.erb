@@ -14,7 +14,7 @@
       <%= f.label :email, class: "col-form-label" %>
     </div>
     <div class="col-sm-8">
-      <%= f.email_field :email, class: "form-control" %>
+      <%= f.email_field :email, class: "form-control", readonly: user_is_guest? %>
     </div>
   </div>
   <% if !f.object.new_record? %>

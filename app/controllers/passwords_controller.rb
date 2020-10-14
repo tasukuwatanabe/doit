@@ -1,4 +1,6 @@
 class PasswordsController < ApplicationController
+  before_action :forbid_guest_user
+
   def show
     redirect_to user_path(current_user)
   end
