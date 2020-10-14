@@ -25,6 +25,13 @@ module SessionsHelper
     end
   end
 
+  def forbid_guest_user
+    if user_is_guest?
+      flash[:danger] = 'ゲストユーザーの変更・削除はできません'
+      redirect_to index_path(@today)
+    end
+  end
+
   def forbid_login_user
     if logged_in?
       flash[:danger] = 'すでにログインしています'
@@ -34,6 +41,16 @@ module SessionsHelper
 
   def logged_in?
     !current_user.nil?
+  end
+
+  def user_is_guest?
+    if logged_in?
+      current_user.email == 'guest@example.com'
+    end
+  end
+
+  def disabled_for_guest
+    'disabled' if user_is_guest?
   end
 
   def redirect_back_or(default)

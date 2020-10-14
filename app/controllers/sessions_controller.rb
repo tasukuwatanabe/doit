@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :logged_in_user, except: :destroy
-  before_action :forbid_login_user, only: [ :new, :create ]
+  before_action :forbid_login_user, only: [ :new, :create, :guest_login ]
 
   def new
     @form = LoginForm.new
@@ -35,5 +35,12 @@ class SessionsController < ApplicationController
     log_out if logged_in?
     flash[:success] = 'ログアウトしました。'
     redirect_to login_path
+  end
+
+  def guest_login
+    user = User.guest
+    log_in(user)
+    flash[:success] = 'ゲストユーザーでログインしました。'
+    redirect_back_or index_path(@today)
   end
 end
