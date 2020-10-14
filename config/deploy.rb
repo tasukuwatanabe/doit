@@ -8,7 +8,7 @@ set :application, 'doit'
 set :repo_url, 'git@github.com:tasukuwatanabe/doit.git'
 
 # deployするブランチ。デフォルトはmasterなのでなくても可。
-set :branch, 'capistrano'
+set :branch, 'master'
 
 # deploy先のディレクトリ。
 set :deploy_to, '/var/www/rails/doit'
@@ -31,7 +31,7 @@ set :rbenv_ruby, '2.6.3'
 # 出力するログのレベル。
 set :log_level, :debug
 
-set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 
 namespace :deploy do
   desc 'Restart application'
