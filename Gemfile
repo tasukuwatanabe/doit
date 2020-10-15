@@ -32,6 +32,7 @@ group :development, :test do
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
+  gem 'capistrano3-nginx', '~> 2.0'
 end
 
 group :development do
