@@ -33,6 +33,8 @@ set :log_level, :debug
 
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 
+set :pty, true
+
 namespace :deploy do
   desc 'Restart application'
   task :restart do
