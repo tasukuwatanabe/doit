@@ -33,13 +33,10 @@ set :log_level, :debug
 
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 
-set :pty, true
-
 namespace :deploy do
   desc 'Restart application'
   task :restart do
     invoke 'unicorn:restart'
-    invoke 'nginx:restart'
   end
 
   desc 'Create database'
@@ -61,6 +58,15 @@ namespace :deploy do
           execute :bundle, :exec, :rake, 'db:seed'
         end
       end
+    end
+  end
+
+  # アプリの再起動を行うタスク
+  desc 'Restart web server'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      execute :mkdir, '-p', release_path.join('tmp')
+      execute :touch, release_path.join('tmp/restart.txt')
     end
   end
 
