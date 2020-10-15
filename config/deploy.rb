@@ -39,6 +39,7 @@ namespace :deploy do
   desc 'Restart application'
   task :restart do
     invoke 'unicorn:restart'
+    invoke 'nginx:restart'
   end
 
   desc 'Create database'
@@ -61,11 +62,6 @@ namespace :deploy do
         end
       end
     end
-  end
-
-  desc 'Restart web server'
-  task :restart do
-    invoke 'nginx:restart'
   end
 
   after :publishing, :restart
