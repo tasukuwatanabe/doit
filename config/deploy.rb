@@ -37,6 +37,7 @@ namespace :deploy do
   desc 'Restart application'
   task :restart do
     invoke 'unicorn:restart'
+    run "#{sudo} service nginx #{command}"
   end
 
   desc 'Create database'
@@ -57,6 +58,17 @@ namespace :deploy do
         within current_path do
           execute :bundle, :exec, :rake, 'db:seed'
         end
+      end
+    end
+  end
+
+  desc 'Restart unicorn server gracefully'
+  task restart: :environment do
+    on roles(:app) do
+      if test("[ -f #{fetch(:unicorn_pid)} ]")
+        reload_unicorn
+      else
+        start_unicorn
       end
     end
   end
