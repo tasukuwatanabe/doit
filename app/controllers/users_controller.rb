@@ -31,6 +31,9 @@ class UsersController < ApplicationController
   def edit; end
 
   def update
+    if params[:user][:remove_user_image] == '1'
+      @user.twitter_profile_image = nil
+    end
     if @user.update(user_params)
       flash[:success] = 'ユーザ情報を更新しました。'
       redirect_to edit_user_path(current_user)
