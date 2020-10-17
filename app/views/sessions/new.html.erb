@@ -38,6 +38,7 @@ set_meta_tags title: @title
             <%= link_to "ゲストログイン", guest_login_path, method: :post, class: "btn btn-primary action__btn" %>
             <p class="action__to-signup">初めての方は<%= link_to "新規登録", signup_path %></p>
             <p class="action__to-signup"><%= link_to "Twitterアカウントでログイン", "/auth/twitter" %></p>
+            <p class="action__to-signup"><%= link_to "Facebookアカウントでログイン", "/auth/facebook" %></p>
           </div>
         <% end %>
       </div>

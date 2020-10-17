@@ -25,7 +25,7 @@
       <div class="col-sm-8">
         <%= user_image(current_user) %>
         <%= f.file_field :user_image %>
-        <% if current_user.user_image? || current_user.twitter_profile_image.present? %>
+        <% if current_user.user_image? || current_user.sns_profile_image.present? %>
         <div>
           <%= f.check_box :remove_user_image %>
           <%= f.label :remove_user_image, "デフォルトのアイコンを使用" %>

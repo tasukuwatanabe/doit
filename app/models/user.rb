@@ -49,14 +49,14 @@ class User < ApplicationRecord
       email = auth[:info][:email]
       image = auth[:extra][:raw_info][:profile_image_url_https]
 
-      user = User.find_by(provider: provider, uid: uid)
+      user = User.find_by(email: email) || User.find_by(provider: provider, uid: uid)
 
       unless user
         puts 'ユーザーを作成します'
         user = User.create!(
           username: name,
           email: email,
-          twitter_profile_image: image,
+          sns_profile_image: image,
           password: new_token,
           provider: provider,
           uid: uid

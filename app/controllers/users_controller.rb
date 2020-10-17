@@ -32,7 +32,7 @@ class UsersController < ApplicationController
 
   def update
     if params[:user][:remove_user_image] == '1'
-      @user.twitter_profile_image = nil
+      @user.sns_profile_image = nil
     end
     if @user.update(user_params)
       flash[:success] = 'ユーザ情報を更新しました。'
