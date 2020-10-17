@@ -7,23 +7,38 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @form = LoginForm.new(login_form_params)
-    if @form.email.present?
-      user = User.find_by('LOWER(email) = ?', @form.email.downcase)
-    end
-    if Authenticator.new(user).authenticate(@form.password)
-      log_in user
-      if @form.remember_me?
-        remember(user)
+    auth = request.env['omniauth.auth']
+    if auth.present?
+      user = User.find_or_create_from_oauth(request.env['omniauth.auth'])
+      if user.present?
+        log_in user
+        flash[:success] = 'ログインしました'
+        redirect_to root_url
       else
-        forget(user)
-        session[:user_id] = user.id
+        flash[:danger] = '認証に失敗しました'
+        redirect_to login_url
       end
-      flash[:success] = 'ログインしました。'
-      redirect_back_or index_path(@today)
     else
-      flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
-      render action: 'new'
+
+      @form = LoginForm.new(login_form_params)
+      if @form.email.present?
+        user = User.find_by('LOWER(email) = ?', @form.email.downcase)
+      end
+
+      if Authenticator.new(user).authenticate(@form.password)
+        log_in user
+        if @form.remember_me?
+          remember(user)
+        else
+          forget(user)
+          session[:user_id] = user.id
+        end
+        flash[:success] = 'ログインしました。'
+        redirect_back_or index_path(@today)
+      else
+        flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
+        render action: 'new'
+      end
     end
   end
 

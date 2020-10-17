@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get '/signup', to: 'users#new'
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
+  get '/auth/failure', to: 'users#auth_failure', as: :auth_failure
+  get '/auth/:provider/callback', to: 'sessions#create'
   post '/guest_login', to: 'sessions#guest_login'
   delete '/logout', to: 'sessions#destroy'
   resources :users do

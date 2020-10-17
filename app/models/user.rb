@@ -11,7 +11,7 @@ class User < ApplicationRecord
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.freeze
 
-  before_save { email.downcase! }
+  before_save :email_downcase
   before_validation do
     self.username = normalize_as_text(username)
     self.email = normalize_as_email(email)
@@ -28,6 +28,10 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  private def email_downcase
+    email.downcase!
+  end
+
   class << self
     def digest(string)
       cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
@@ -36,6 +40,29 @@ class User < ApplicationRecord
 
     def new_token
       SecureRandom.urlsafe_base64
+    end
+
+    def find_or_create_from_oauth(auth)
+      provider = auth[:provider]
+      uid = auth[:uid]
+      name = auth[:info][:name]
+      email = auth[:info][:email]
+      image = auth[:extra][:raw_info][:profile_image_url_https]
+
+      user = User.find_by(email: email) || User.find_by(provider: provider, uid: uid)
+
+      unless user
+        puts 'ユーザーを作成します'
+        user = User.create!(
+          username: name,
+          email: email,
+          sns_profile_image: image,
+          password: new_token,
+          provider: provider,
+          uid: uid
+        )
+      end
+      user
     end
   end
 
