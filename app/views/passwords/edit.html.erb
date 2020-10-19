@@ -11,13 +11,13 @@ set_meta_tags title: @title
     </div>
     
     <%= form_with(model: @change_password_form, url: :user_password, method: :patch, local: true) do |f| %>
-      <%= render 'shared/error_messages', object: f.object %>
       <div class="form-group row">
         <div class="col-sm-4">
           <%= f.label :current_password, class: "col-form-label" %>
         </div>
         <div class="col-sm-8">
           <%= f.password_field :current_password, class: "form-control" %>
+          <%= error_message(@change_password_form, :current_password) %>
         </div>
       </div>
       <div class="form-group row">
@@ -26,6 +26,7 @@ set_meta_tags title: @title
         </div>
         <div class="col-sm-8">
           <%= f.password_field :new_password, class: "form-control" %>
+          <%= error_message(@change_password_form, :new_password) %>
         </div>
       </div>
       <div class="form-group row">
@@ -34,6 +35,7 @@ set_meta_tags title: @title
         </div>
         <div class="col-sm-8">
           <%= f.password_field :new_password_confirmation, class: "form-control" %>
+          <%= error_message(@change_password_form, :new_password_confirmation) %>
         </div>
       </div>
 
