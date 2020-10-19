@@ -49,7 +49,16 @@ class User < ApplicationRecord
       email = auth[:info][:email]
       image = auth[:extra][:raw_info][:profile_image_url_https]
 
-      user = User.find_by(email: email) || User.find_by(provider: provider, uid: uid)
+      if user = User.find_by(email: email)
+        if provider == 'twitter' && user.twitter_uid.nil?
+          user.update(twitter_uid: uid)
+        elsif provider == 'facebook' && user.facebook_uid.nil?
+          user.update(facebook_uid: uid)
+        end
+      else
+        user = User.find_by(twitter_uid: uid) ||
+               User.find_by(facebook_uid: uid)
+      end
 
       unless user
         puts 'ユーザーを作成します'
@@ -57,10 +66,13 @@ class User < ApplicationRecord
           username: name,
           email: email,
           sns_profile_image: image,
-          password: new_token,
-          provider: provider,
-          uid: uid
+          password: new_token
         )
+        if provider == 'twitter'
+          user.update(twitter_uid: uid)
+        else
+          user.update(facebook_uid: uid)
+        end
       end
       user
     end

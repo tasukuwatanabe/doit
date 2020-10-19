@@ -8,6 +8,7 @@ class SessionsController < ApplicationController
 
   def create
     auth = request.env['omniauth.auth']
+    puts auth
     if auth.present?
       user = User.find_or_create_from_oauth(request.env['omniauth.auth'])
       if user.present?
