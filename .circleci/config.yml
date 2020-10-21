@@ -13,7 +13,7 @@ jobs:
           PGUSER: app_user_role
           PG_PASSWORD: password
           RAILS_ENV: test
-      - image: circleci/postgres:11.5-alpine
+      - image: circleci/postgres
         environment:
           POSTGRES_USER: app_user_role
           POSTGRES_DB: doit_test
