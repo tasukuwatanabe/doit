@@ -20,5 +20,5 @@ services:
   smtp:
     image: schickling/mailcatcher
     ports:
-      - "1080:1080"
+      - "1080:1080" #http://localhost:1080/でmailcatcherが開けます
       - "1025:1025"
