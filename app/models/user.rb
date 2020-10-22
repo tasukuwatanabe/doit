@@ -53,8 +53,7 @@ class User < ApplicationRecord
           user.update(facebook_uid: uid)
         end
       else
-        user = User.find_by(twitter_uid: uid) ||
-               User.find_by(facebook_uid: uid)
+        user = User.find_by(twitter_uid: uid) || User.find_by(facebook_uid: uid)
       end
 
       unless user
@@ -63,7 +62,8 @@ class User < ApplicationRecord
           username: name,
           email: email,
           sns_profile_image: image,
-          password: new_token
+          password: new_token,
+          activated: true
         )
         if provider == 'twitter'
           user.update(twitter_uid: uid)
