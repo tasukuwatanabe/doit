@@ -18,7 +18,6 @@ jobs:
           POSTGRES_USER: app_user_role
           POSTGRES_DB: doit_test
           POSTGRES_PASSWORD: password
-          POSTGRES_HOST: db
     steps:
       - checkout
 
