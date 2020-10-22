@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   mount_uploader :user_image, ImageUploader
 
-  attr_accessor :remember_token, :reset_token
+  attr_accessor :remember_token, :reset_token, :activation_token
 
   has_many :todos, dependent: :destroy
   has_many :shortcuts, dependent: :destroy
@@ -12,6 +12,7 @@ class User < ApplicationRecord
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.freeze
 
   before_save :email_downcase
+  before_create :create_activation_digest
   before_validation do
     self.username = normalize_as_text(username)
     self.email = normalize_as_email(email)
@@ -27,10 +28,6 @@ class User < ApplicationRecord
             uniqueness: { case_sensitive: false }
 
   has_secure_password
-
-  private def email_downcase
-    email.downcase!
-  end
 
   class << self
     def digest(string)
@@ -56,8 +53,7 @@ class User < ApplicationRecord
           user.update(facebook_uid: uid)
         end
       else
-        user = User.find_by(twitter_uid: uid) ||
-               User.find_by(facebook_uid: uid)
+        user = User.find_by(twitter_uid: uid) || User.find_by(facebook_uid: uid)
       end
 
       unless user
@@ -66,7 +62,8 @@ class User < ApplicationRecord
           username: name,
           email: email,
           sns_profile_image: image,
-          password: new_token
+          password: new_token,
+          activated: true
         )
         if provider == 'twitter'
           user.update(twitter_uid: uid)
@@ -76,6 +73,15 @@ class User < ApplicationRecord
       end
       user
     end
+  end
+
+  def activate
+    update_attribute(:activated, true)
+    update_attribute(:activated_at, Time.zone.now)
+  end
+
+  def send_activation_email
+    UserMailer.account_activation(self).deliver_now
   end
 
   def remember
@@ -106,5 +112,16 @@ class User < ApplicationRecord
 
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
+  end
+
+  private
+
+  def email_downcase
+    email.downcase!
+  end
+
+  def create_activation_digest
+    self.activation_token =  User.new_token
+    self.activation_digest = User.digest(activation_token)
   end
 end

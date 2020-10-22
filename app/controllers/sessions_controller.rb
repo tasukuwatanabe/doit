@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :logged_in_user, except: :destroy
-  before_action :forbid_login_user, only: [ :new, :create, :guest_login ]
+  before_action :forbid_login_user, only: %i[new create guest_login]
 
   def new
     @form = LoginForm.new
@@ -20,22 +20,19 @@ class SessionsController < ApplicationController
         redirect_to login_url
       end
     else
-
       @form = LoginForm.new(login_form_params)
-      if @form.email.present?
-        user = User.find_by('LOWER(email) = ?', @form.email.downcase)
-      end
+      user = User.find_by('LOWER(email) = ?', @form.email.downcase) if @form.email.present?
 
       if Authenticator.new(user).authenticate(@form.password)
-        log_in user
-        if @form.remember_me?
-          remember(user)
+        if user.activated?
+          log_in user
+          @form.remember_me? ? remember(user) : forget(user)
+          flash[:success] = 'ログインしました。'
+          redirect_back_or index_path(@today)
         else
-          forget(user)
-          session[:user_id] = user.id
+          flash[:danger] = 'アカウントが有効ではありません'
+          redirect_to login_path
         end
-        flash[:success] = 'ログインしました。'
-        redirect_back_or index_path(@today)
       else
         flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
         render action: 'new'

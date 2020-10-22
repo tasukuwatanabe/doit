@@ -1,6 +1,11 @@
 module SessionsHelper
   def log_in(user)
-    session[:user_id] = user.id
+    if user.activated?
+      session[:user_id] = user.id
+    else
+      flash[:danger] = 'アカウントが有効ではありません'
+      redirect_to login_path
+    end
   end
 
   def remember(user)
@@ -44,9 +49,7 @@ module SessionsHelper
   end
 
   def user_is_guest?
-    if logged_in?
-      current_user.email == 'guest@example.com'
-    end
+    current_user.email == 'guest@example.com' if logged_in?
   end
 
   def disable_for_guest
