@@ -34,7 +34,7 @@ Rails.application.configure do
 
   config.action_mailer.raise_delivery_errors = true
 
-  config.action_mailer.default_url_options = { host: Rails.application.secrets.host }
+  config.action_mailer.default_url_options = { host: 'doit-app.com' }
 
   ActionMailer::Base.smtp_settings = {
     address: 'email-smtp.ap-northeast-1.amazonaws.com',
