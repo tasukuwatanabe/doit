@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   post '/guest_login', to: 'sessions#guest_login'
   delete '/logout', to: 'sessions#destroy'
   resources :users do
-    resource :password, only: [ :show, :edit, :update ]
+    resource :password, only: %i[show edit update]
     post '/delete_image', to: 'users#delete_image', as: 'delete_image'
   end
   resources :todos do
@@ -19,9 +19,10 @@ Rails.application.routes.draw do
   end
   resources :shortcuts
   namespace :api, { format: 'json' } do
-    resources :shortcuts, only: [ :index, :create, :update, :destroy ]
+    resources :shortcuts, only: %i[index create update destroy]
   end
   resources :routines
   get 'history/:month', to: 'routines#history', as: 'history'
-  resources :password_resets, only: [ :new, :create, :edit, :update ]
+  resources :password_resets, only: %i[new create edit update]
+  resources :account_activations, only: [:edit]
 end
