@@ -8,4 +8,9 @@ class UserMailer < ApplicationMailer
     @user = user
     mail to: user.email, subject: 'パスワード再設定'
   end
+
+  def email_confirmation(user)
+    @user = user
+    mail to: user.unconfirmed_email, subject: 'メールアドレスの確認'
+  end
 end

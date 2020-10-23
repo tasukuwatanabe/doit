@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   mount_uploader :user_image, ImageUploader
 
-  attr_accessor :remember_token, :reset_token, :activation_token
+  attr_accessor :remember_token, :reset_token, :activation_token, :confirmation_token
 
   has_many :todos, dependent: :destroy
   has_many :shortcuts, dependent: :destroy
@@ -37,6 +37,11 @@ class User < ApplicationRecord
 
     def new_token
       SecureRandom.urlsafe_base64
+    end
+
+    def email_used?(email)
+      existing_user = find_by('email = ?', email)
+      existing_user.present?
     end
 
     def find_or_create_from_oauth(auth)
@@ -112,6 +117,20 @@ class User < ApplicationRecord
 
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
+  end
+
+  def set_unconfirmed_email(email)
+    self.unconfirmed_email = email
+    self.confirmation_token =  User.new_token
+    self.confirmation_digest = User.digest(confirmation_token)
+    save
+    UserMailer.email_confirmation(self).deliver_now
+  end
+
+  def update_new_email
+    self.email = unconfirmed_email
+    self.unconfirmed_email = nil
+    save
   end
 
   private
