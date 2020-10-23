@@ -1,8 +1,8 @@
 class PasswordResetsController < ApplicationController
   skip_before_action :logged_in_user
-  before_action :get_user, only: [:edit, :update]
-  before_action :valid_user, only: [:edit, :update]
-  before_action :check_expiration, only: [:edit, :update]
+  before_action :get_user, only: %i[edit update]
+  before_action :valid_user, only: %i[edit update]
+  before_action :check_expiration, only: %i[edit update]
 
   def new
     @form = PasswordResetForm.new
@@ -52,13 +52,13 @@ class PasswordResetsController < ApplicationController
   end
 
   def valid_user
-    unless @user&.authenticated?(:reset, params[:id])
-      redirect_to root_url
-    end
+    redirect_to root_url unless @user&.authenticated?(:reset, params[:id])
   end
 
   def check_expiration
-    if @user.password_reset_expired?
+    if @user.expired?(:reset)
+      @user.reset_digest = nil
+      @user.save
       flash[:danger] = 'パスワード再設定の期限が切れています'
       redirect_to new_password_reset_url
     end

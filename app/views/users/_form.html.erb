@@ -15,6 +15,10 @@
     <div class="col-sm-8">
       <%= f.email_field :email, class: "form-control", readonly: user_is_guest? %>
       <%= error_message(@user, :email) %>
+      <p><small>アドレスを変更すると、確認のため新しいアドレスにメールを送信します。新しいアドレスは確認が完了するまで有効化されません。</small></p>
+      <% if current_user.unconfirmed_email %>
+        <p><%= current_user.unconfirmed_email %>への管理者メールアドレス変更が承認待ち中です。<span><%= link_to "キャンセル", email_confirmation_path, method: :delete %></span></p>
+      <% end %>
     </div>
   </div>
   <% if !f.object.new_record? %>

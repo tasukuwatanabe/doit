@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_action :forbid_login_user, only: %i[new create]
   before_action :set_user, only: %i[edit update destroy]
   before_action :correct_user, only: %i[edit update]
+  before_action :validate_email_update, only: :update
 
   def index
     redirect_to signup_path
@@ -32,7 +33,8 @@ class UsersController < ApplicationController
 
   def update
     @user.sns_profile_image = nil if params[:user][:remove_user_image] == '1'
-    if @user.update(user_params)
+    current_user.set_unconfirmed_email(@new_email) if @new_email
+    if @user.update(user_params.except(:email))
       flash[:success] = 'ユーザ情報を更新しました'
       redirect_to edit_user_path(current_user)
     else
@@ -49,7 +51,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :password, :password_confirmation, :email, :user_image, :remove_user_image)
+    params.require(:user).permit(:username, :password, :email, :password_confirmation, :user_image, :remove_user_image)
   end
 
   def set_user
@@ -59,5 +61,16 @@ class UsersController < ApplicationController
   def correct_user
     @user = User.find(params[:id])
     redirect_to(root_url(@today)) unless current_user?(@user)
+  end
+
+  def validate_email_update
+    @new_email = params[:user][:email]
+    if @new_email == current_user.email
+      @new_email = nil
+    elsif User.email_used?(@new_email)
+      @new_email = nil
+      flash[:danger] = 'このメールアドレスはすでに使われています'
+      redirect_to edit_user_path(current_user)
+    end
   end
 end

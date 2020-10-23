@@ -6,6 +6,12 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.account_activation(user)
   end
 
+  def email_confirmation
+    user = User.first
+    user.confirmation_token = User.new_token
+    UserMailer.email_confirmation(user)
+  end
+
   def password_reset
     UserMailer.password_reset
   end

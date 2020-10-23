@@ -25,4 +25,5 @@ Rails.application.routes.draw do
   get 'history/:month', to: 'routines#history', as: 'history'
   resources :password_resets, only: %i[new create edit update]
   resources :account_activations, only: [:edit]
+  resources :email_confirmations, only: %i[edit destroy]
 end

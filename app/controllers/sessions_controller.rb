@@ -8,7 +8,6 @@ class SessionsController < ApplicationController
 
   def create
     auth = request.env['omniauth.auth']
-    puts auth
     if auth.present?
       user = User.find_or_create_from_oauth(request.env['omniauth.auth'])
       if user.present?
@@ -28,7 +27,7 @@ class SessionsController < ApplicationController
           log_in user
           @form.remember_me? ? remember(user) : forget(user)
           flash[:success] = 'ログインしました。'
-          redirect_back_or index_path(@today)
+          redirect_to root_path
         else
           flash[:danger] = 'アカウントが有効ではありません'
           redirect_to login_path
