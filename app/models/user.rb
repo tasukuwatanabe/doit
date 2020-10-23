@@ -115,14 +115,16 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver_now
   end
 
-  def password_reset_expired?
-    reset_sent_at < 2.hours.ago
+  def expired?(attribute)
+    published_time = send("#{attribute}_sent_at")
+    published_time < 1.minute.ago
   end
 
   def set_unconfirmed_email(email)
     self.unconfirmed_email = email
-    self.confirmation_token =  User.new_token
-    self.confirmation_digest = User.digest(confirmation_token)
+    self.confirmation_token = User.new_token
+    update_attribute(:confirmation_digest, User.digest(confirmation_token))
+    update_attribute(:confirmation_sent_at, Time.zone.now)
     save
     UserMailer.email_confirmation(self).deliver_now
   end

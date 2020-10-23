@@ -4,3 +4,7 @@
 
 <%= link_to "メールアドレスの利用を承認", edit_email_confirmation_url(@user.confirmation_token,
                                                     email: @user.email) %>
+
+<p>メールアドレス有効化リンクの有効期間は2時間です。</p>
+
+<p>このメールに心当たりがない場合、何も行わずにこのメールを破棄してください。</p>

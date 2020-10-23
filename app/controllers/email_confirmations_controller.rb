@@ -1,20 +1,16 @@
 class EmailConfirmationsController < ApplicationController
   skip_before_action :logged_in_user
+  before_action :check_expiration, only: [:edit]
 
   def edit
     user = User.find_by(email: params[:email])
     if user && user.authenticated?(:confirmation, params[:id])
       user.update_new_email
-      log_in user unless logged_in?
       flash[:success] = 'メールアドレスが更新されました'
-      redirect_to user
+      redirect_to logged_in? ? user : login_path
     else
       flash[:danger] = 'リンクが有効ではありません'
-      if logged_in?
-        redirect_to index_path(@today)
-      else
-        redirect_to login_path
-      end
+      redirect_to logged_in? ? root_path : login_path
     end
   end
 
@@ -25,6 +21,19 @@ class EmailConfirmationsController < ApplicationController
     if user.save
       flash[:success] = 'メールアドレス変更をキャンセルしました'
       redirect_to user
+    end
+  end
+
+  private
+
+  def check_expiration
+    user = User.find_by(email: params[:email])
+    if user && user.expired?(:confirmation)
+      user.unconfirmed_email = nil
+      user.confirmation_digest = nil
+      user.save
+      flash[:danger] = 'メールアドレス認証リンクの期限が切れています'
+      redirect_to logged_in? ? user : login_path
     end
   end
 end
