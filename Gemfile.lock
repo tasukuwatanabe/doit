@@ -194,6 +194,10 @@ GEM
       rack (>= 1.6.2, < 3)
     omniauth-facebook (8.0.0)
       omniauth-oauth2 (~> 1.2)
+    omniauth-google-oauth2 (0.8.0)
+      jwt (>= 2.0)
+      omniauth (>= 1.1.1)
+      omniauth-oauth2 (>= 1.6)
     omniauth-oauth (1.1.0)
       oauth
       omniauth (~> 1.0)
@@ -258,7 +262,7 @@ GEM
     rexml (3.2.4)
     rspec-core (3.9.3)
       rspec-support (~> 3.9.3)
-    rspec-expectations (3.9.2)
+    rspec-expectations (3.9.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-mocks (3.9.1)
@@ -272,10 +276,10 @@ GEM
       rspec-expectations (~> 3.9)
       rspec-mocks (~> 3.9)
       rspec-support (~> 3.9)
-    rspec-support (3.9.3)
+    rspec-support (3.9.4)
     rspec_junit_formatter (0.4.1)
       rspec-core (>= 2, < 4, != 2.12.0)
-    rubocop (0.93.1)
+    rubocop (1.0.0)
       parallel (~> 1.10)
       parser (>= 2.7.1.5)
       rainbow (>= 2.2.2, < 4.0)
@@ -284,7 +288,7 @@ GEM
       rubocop-ast (>= 0.6.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
-    rubocop-ast (0.8.0)
+    rubocop-ast (1.0.1)
       parser (>= 2.7.1.5)
     rubocop-rails (2.8.1)
       activesupport (>= 4.2.0)
@@ -387,6 +391,7 @@ DEPENDENCIES
   nokogiri
   omniauth
   omniauth-facebook
+  omniauth-google-oauth2
   omniauth-twitter
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)

@@ -49,16 +49,33 @@ class User < ApplicationRecord
       uid = auth[:uid]
       name = auth[:info][:name]
       email = auth[:info][:email]
-      image = auth[:extra][:raw_info][:profile_image_url_https]
+      image = if provider == 'twitter'
+                auth[:extra][:raw_info][:profile_image_url_https]
+              else
+                auth[:info][:image]
+              end
 
+      auth[:info][:image]
       if user = User.find_by(email: email)
         if provider == 'twitter' && user.twitter_uid.nil?
           user.update(twitter_uid: uid)
         elsif provider == 'facebook' && user.facebook_uid.nil?
           user.update(facebook_uid: uid)
+        elsif provider == 'google_oauth2' && user.google_uid.nil?
+          user.update(google_uid: uid)
+        end
+
+        unless user.activated?
+          user.update(
+            activated: true,
+            activated_at: Time.zone.now,
+            activation_digest: nil
+          )
         end
       else
-        user = User.find_by(twitter_uid: uid) || User.find_by(facebook_uid: uid)
+        user = User.find_by(twitter_uid: uid) ||
+               User.find_by(facebook_uid: uid) ||
+               User.find_by(google_uid: uid)
       end
 
       unless user
@@ -67,12 +84,16 @@ class User < ApplicationRecord
           email: email,
           sns_profile_image: image,
           password: new_token,
-          activated: true
+          activated: true,
+          activated_at: Time.zone.now
         )
+
         if provider == 'twitter'
           user.update(twitter_uid: uid)
-        else
+        elsif provider == 'facebook'
           user.update(facebook_uid: uid)
+        elsif provider == 'google_oauth2'
+          user.update(google_uid: uid)
         end
       end
       user
@@ -139,6 +160,8 @@ class User < ApplicationRecord
       self.twitter_uid = nil
     elsif uid == 'facebook' && facebook_uid
       self.facebook_uid = nil
+    elsif uid == 'google' && google_uid
+      self.google_uid = nil
     end
     save
   end

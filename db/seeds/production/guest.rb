@@ -2,7 +2,9 @@ user = User.create!(
   username: 'ゲストユーザー',
   email: 'guest@example.com',
   password: SecureRandom.urlsafe_base64,
-  user_image: nil
+  user_image: nil,
+  activated: true,
+  activated_at: Time.zone.now
 )
 
 titles = %w[

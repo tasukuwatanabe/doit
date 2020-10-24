@@ -8,15 +8,16 @@ class SessionsController < ApplicationController
 
   def create
     auth = request.env['omniauth.auth']
+    puts auth
     if auth.present?
-      user = User.find_or_create_from_oauth(request.env['omniauth.auth'])
+      user = User.find_or_create_from_oauth(auth)
       if user.present?
         log_in user
         flash[:success] = 'ログインしました'
-        redirect_to root_url
+        redirect_to root_path
       else
         flash[:danger] = '認証に失敗しました'
-        redirect_to login_url
+        redirect_to login_path
       end
     else
       @form = LoginForm.new(login_form_params)
