@@ -62,7 +62,6 @@ class User < ApplicationRecord
       end
 
       unless user
-        puts 'ユーザーを作成します'
         user = User.create!(
           username: name,
           email: email,
@@ -132,6 +131,15 @@ class User < ApplicationRecord
   def update_new_email
     self.email = unconfirmed_email
     self.unconfirmed_email = nil
+    save
+  end
+
+  def cancel_oauth(uid)
+    if uid == 'twitter' && twitter_uid
+      self.twitter_uid = nil
+    elsif uid == 'facebook' && facebook_uid
+      self.facebook_uid = nil
+    end
     save
   end
 
