@@ -31,7 +31,7 @@ class UsersController < ApplicationController
   def edit; end
 
   def update
-    current_user.sns_profile_image = nil if params[:user][:remove_user_image] == '1'
+    current_user.update(sns_profile_image: nil) if params[:user][:remove_user_image] == '1'
     current_user.set_unconfirmed_email(@new_email) if @new_email
     if current_user.update(user_params.except(:email))
       flash[:success] = 'ユーザ情報を更新しました'
@@ -45,6 +45,11 @@ class UsersController < ApplicationController
     current_user.destroy
     flash[:success] = 'アカウントを削除しました。'
     redirect_to signup_path
+  end
+
+  def auth_failure
+    flash[:danger] = '認証に失敗しました'
+    redirect_to login_path
   end
 
   def cancel_oauth

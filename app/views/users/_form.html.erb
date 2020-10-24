@@ -27,17 +27,17 @@
     <div class="form-group row">
       <div class="col-sm-4">
         <%= f.label :user_image, class: "col-form-label" %>
-      </div>
+      </div><br>
       <div class="col-sm-8">
         <%= user_image(current_user) %>
         <%= f.file_field :user_image %>
-        <% if current_user.user_image? || current_user.sns_profile_image.present? %>
-        <div>
-          <%= f.check_box :remove_user_image %>
-          <%= f.label :remove_user_image, "デフォルトのアイコンを使用" %>
-        </div>
-        <%= error_message(@user, :user_image) %>
+        <% if has_user_image? %>
+          <div>
+            <%= f.check_box :remove_user_image %>
+            <%= f.label :remove_user_image, "デフォルトのアイコンを使用" %>
+          </div>
         <% end %>
+        <%= error_message(@user, :user_image) %>
       </div>
     </div>
     <div class="form-group row">
@@ -55,6 +55,14 @@
           <% if @user.facebook_uid %>
             <span>連携中</span> 
             <%= link_to "連携を解除", cancel_oauth_path(uid_type: "facebook"), method: :delete %>
+          <% else %>
+            <span>未連携</span>
+          <% end %>
+        </div>
+        <div>Google :
+          <% if @user.google_uid %>
+            <span>連携中</span> 
+            <%= link_to "連携を解除", cancel_oauth_path(uid_type: "google"), method: :delete %>
           <% else %>
             <span>未連携</span>
           <% end %>
