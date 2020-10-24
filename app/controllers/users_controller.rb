@@ -2,7 +2,6 @@ class UsersController < ApplicationController
   skip_before_action :logged_in_user, only: %i[index new create]
   before_action :forbid_guest_user, only: :destroy
   before_action :forbid_login_user, only: %i[new create]
-  before_action :set_user, only: %i[edit update destroy]
   before_action :correct_user, only: %i[edit update]
   before_action :validate_email_update, only: :update
 
@@ -32,9 +31,9 @@ class UsersController < ApplicationController
   def edit; end
 
   def update
-    @user.sns_profile_image = nil if params[:user][:remove_user_image] == '1'
+    current_user.sns_profile_image = nil if params[:user][:remove_user_image] == '1'
     current_user.set_unconfirmed_email(@new_email) if @new_email
-    if @user.update(user_params.except(:email))
+    if current_user.update(user_params.except(:email))
       flash[:success] = 'ユーザ情報を更新しました'
       redirect_to edit_user_path(current_user)
     else
@@ -43,19 +42,22 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
+    current_user.destroy
     flash[:success] = 'アカウントを削除しました。'
     redirect_to signup_path
+  end
+
+  def cancel_oauth
+    uid_type = params[:uid_type]
+    current_user.cancel_oauth(uid_type)
+    flash[:success] = '連携を解除しました'
+    redirect_to current_user
   end
 
   private
 
   def user_params
     params.require(:user).permit(:username, :password, :email, :password_confirmation, :user_image, :remove_user_image)
-  end
-
-  def set_user
-    @user = User.find(params[:id])
   end
 
   def correct_user

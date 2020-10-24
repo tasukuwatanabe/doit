@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   resources :users do
     resource :password, only: %i[show edit update]
-    post '/delete_image', to: 'users#delete_image', as: 'delete_image'
   end
+  delete '/cancel_oauth/:uid_type', to: 'users#cancel_oauth', as: 'cancel_oauth'
   resources :todos do
     post '/toggle_status', to: 'todos#toggle_status', as: 'toggle_status'
     post '/create_shortcut', to: 'todos#create_shortcut', as: 'create_shortcut'

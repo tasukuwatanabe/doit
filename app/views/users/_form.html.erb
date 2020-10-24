@@ -15,9 +15,11 @@
     <div class="col-sm-8">
       <%= f.email_field :email, class: "form-control", readonly: user_is_guest? %>
       <%= error_message(@user, :email) %>
-      <p><small>アドレスを変更すると、確認のため新しいアドレスにメールを送信します。新しいアドレスは確認が完了するまで有効化されません。</small></p>
-      <% if current_user.unconfirmed_email %>
-        <p><%= current_user.unconfirmed_email %>への管理者メールアドレス変更が承認待ち中です。<span><%= link_to "キャンセル", email_confirmation_path, method: :delete %></span></p>
+      <% if !f.object.new_record? %>
+        <p><small>アドレスを変更すると、確認のため新しいアドレスにメールを送信します。新しいアドレスは確認が完了するまで有効化されません。</small></p>
+        <% if current_user.unconfirmed_email %>
+          <p><%= current_user.unconfirmed_email %>への管理者メールアドレス変更が承認待ち中です。<span><%= link_to "キャンセル", email_confirmation_path, method: :delete %></span></p>
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -41,8 +43,22 @@
     <div class="form-group row">
       <div class="col-sm-4">SNS連携</div>
       <div class="col-sm-8">
-        <div>Twitter : <%= @user.twitter_uid ? "連携中" : "未連携" %></div>
-        <div>Facebook : <%= @user.facebook_uid ? "連携中" : "未連携" %></div>
+        <div>Twitter :
+          <% if @user.twitter_uid %>
+            <span>連携中</span> 
+            <%= link_to "連携を解除", cancel_oauth_path(uid_type: "twitter"), method: :delete %>
+          <% else %>
+            <span>未連携</span>
+          <% end %>
+        </div>
+        <div>Facebook :
+          <% if @user.facebook_uid %>
+            <span>連携中</span> 
+            <%= link_to "連携を解除", cancel_oauth_path(uid_type: "facebook"), method: :delete %>
+          <% else %>
+            <span>未連携</span>
+          <% end %>
+        </div>
       </div>
     </div>
   <% end %>
