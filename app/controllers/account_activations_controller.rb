@@ -7,6 +7,7 @@ class AccountActivationsController < ApplicationController
       flash[:danger] = 'アカウントはすでに有効です'
     elsif user && user.authenticated?(:activation, params[:id])
       user.activate
+      log_in user
       flash[:success] = 'アカウントが有効化されました'
     else
       flash[:danger] = '有効化リンクが無効です'

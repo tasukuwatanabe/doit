@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   post '/guest_login', to: 'sessions#guest_login'
   delete '/logout', to: 'sessions#destroy'
   resources :users do
-    resource :password, only: %i[show edit update]
+    resource :password, only: %i[edit update]
   end
   delete '/cancel_oauth/:uid_type', to: 'users#cancel_oauth', as: 'cancel_oauth'
   resources :todos do
