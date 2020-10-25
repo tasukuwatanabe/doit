@@ -1,0 +1,10 @@
+services:
+  web:
+    volumes:
+      - .:/doit:delegated
+      - bundle:/doit/vendor/bundle
+      - node_modules:/doit/node_modules
+      - /doit/vendor
+      - /doit/tmp
+      - /doit/log
+      - /doit/.git
