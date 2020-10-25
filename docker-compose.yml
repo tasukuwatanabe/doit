@@ -1,11 +1,11 @@
-version: '3'
+version: "3"
 services:
   db:
     image: postgres
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
-      POSTGRES_HOST_AUTH_METHOD: 'trust'
+      POSTGRES_HOST_AUTH_METHOD: "trust"
     ports:
       - 5432:5432
   web:
@@ -13,6 +13,12 @@ services:
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - .:/doit
+      - bundle:/doit/vendor/bundle
+      - node_modules:/doit/node_modules
+      - /doit/vendor
+      - /doit/tmp
+      - /doit/log
+      - /doit/.git
     ports:
       - 3000:3000
     depends_on:
@@ -22,3 +28,6 @@ services:
     ports:
       - "1080:1080" #http://localhost:1080/でmailcatcherが開けます
       - "1025:1025"
+volumes:
+  bundle:
+  node_modules:
