@@ -12,6 +12,7 @@ class PasswordsController < ApplicationController
   def update
     @change_password_form = ChangePasswordForm.new(user_params)
     @change_password_form.object = current_user
+    @change_password_form.object.auto_generated_password = nil
     if @change_password_form.save
       flash[:success] = 'パスワードを変更しました。'
       redirect_to current_user
@@ -21,6 +22,6 @@ class PasswordsController < ApplicationController
   end
 
   private def user_params
-    params.require(:change_password_form).permit(:current_password, :new_password, :new_password_confirmation)
+    params.require(:change_password_form).permit(:new_password, :new_password_confirmation)
   end
 end

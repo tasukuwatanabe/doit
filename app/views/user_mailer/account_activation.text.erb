@@ -1,5 +1,9 @@
-Hi <%= @user.username %>,
+<%= @user.username %> 様
 
-Welcome to the Sample App! Click on the link below to activate your account:
+以下のリンクをクリックして、アカウントを有効化してください。
 
 <%= edit_account_activation_url(@user.activation_token, email: @user.email) %>
+
+リンクの有効期間は2時間です。
+
+このメールに心当たりがない場合、何も行わずにこのメールを破棄してください。

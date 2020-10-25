@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_24_040231) do
+ActiveRecord::Schema.define(version: 2020_10_25_030632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2020_10_24_040231) do
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.string "google_uid"
+    t.boolean "auto_generated_password", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

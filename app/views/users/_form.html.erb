@@ -37,36 +37,45 @@
             <%= f.label :remove_user_image, "デフォルトのアイコンを使用" %>
           </div>
         <% end %>
-        <%= error_message(@user, :user_image) %>
+        <%= error_message(current_user, :user_image) %>
       </div>
     </div>
     <div class="form-group row">
       <div class="col-sm-4">SNS連携</div>
       <div class="col-sm-8">
         <div>Twitter :
-          <% if @user.twitter_uid %>
-            <span>連携中</span> 
-            <%= link_to "連携を解除", cancel_oauth_path(uid_type: "twitter"), method: :delete %>
+          <% if current_user.twitter_uid %>
+            <span>連携中</span>
+            <% if !current_user.auto_generated_password %>
+              <%= link_to "連携を解除", cancel_oauth_path(uid_type: "twitter"), method: :delete %>
+            <% end %>
           <% else %>
             <span>未連携</span>
           <% end %>
         </div>
         <div>Facebook :
-          <% if @user.facebook_uid %>
+          <% if current_user.facebook_uid %>
             <span>連携中</span> 
-            <%= link_to "連携を解除", cancel_oauth_path(uid_type: "facebook"), method: :delete %>
+            <% if !current_user.auto_generated_password %>
+              <%= link_to "連携を解除", cancel_oauth_path(uid_type: "facebook"), method: :delete %>
+            <% end %>
           <% else %>
             <span>未連携</span>
           <% end %>
         </div>
         <div>Google :
-          <% if @user.google_uid %>
+          <% if current_user.google_uid %>
             <span>連携中</span> 
-            <%= link_to "連携を解除", cancel_oauth_path(uid_type: "google"), method: :delete %>
+            <% if !current_user.auto_generated_password %>
+              <%= link_to "連携を解除", cancel_oauth_path(uid_type: "google"), method: :delete %>
+            <% end %>
           <% else %>
             <span>未連携</span>
           <% end %>
         </div>
+        <% if current_user.auto_generated_password %>
+          <p>SNS連携を解除するには<%= link_to "パスワードを設定", edit_user_password_path(current_user) %>してください</p>
+        <% end %>
       </div>
     </div>
   <% end %>

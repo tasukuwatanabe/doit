@@ -84,6 +84,7 @@ class User < ApplicationRecord
           email: email,
           sns_profile_image: image,
           password: new_token,
+          auto_generated_password: true,
           activated: true,
           activated_at: Time.zone.now
         )
