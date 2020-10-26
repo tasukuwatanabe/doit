@@ -49,13 +49,7 @@ class User < ApplicationRecord
       uid = auth[:uid]
       name = auth[:info][:name]
       email = auth[:info][:email]
-      image = if provider == 'twitter'
-                auth[:extra][:raw_info][:profile_image_url_https]
-              else
-                auth[:info][:image]
-              end
 
-      auth[:info][:image]
       if user = User.find_by(email: email)
         if provider == 'twitter' && user.twitter_uid.nil?
           user.update(twitter_uid: uid)
@@ -82,7 +76,6 @@ class User < ApplicationRecord
         user = User.create!(
           username: name,
           email: email,
-          sns_profile_image: image,
           password: new_token,
           auto_generated_password: true,
           activated: true,
