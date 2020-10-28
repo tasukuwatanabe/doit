@@ -1,27 +1,18 @@
-header {
-  margin-bottom: 1rem;
-  background-color: #facb27;
-  border-bottom: 1px solid #e4e4e4;
+@import "color";
 
-  .navbar {
-    padding: 0.5em 1em;
+.header {
+  background-color: $color-main-theme;
+  text-align: center;
+  position: relative;
 
-    &-brand img {
-      height: 30px;
-    }
+  &__logo {
+    display: block;
+    margin: 0 auto;
+    padding: 15px 0;
 
-    &-collapse {
-      flex-grow: unset !important;
-    }
-    .nav-item {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      .user-icon {
-        width: 44px;
-        border-radius: 50%;
-      }
+    img {
+      height: 35px;
+      width: auto;
     }
   }
 }

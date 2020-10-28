@@ -1,4 +1,4 @@
-<footer>
+<footer class="footer">
     &copy; 2020 Tasuku Watanabe.
 </footer>
 
@@ -6,6 +6,14 @@
     $(function() {
         $(".toggle-status").click(function() {
             $.post('/todos/'+$(this).data('id')+'/toggle_status')
+        })
+    })
+    $(function() {
+        $("#hamburger").click(function() {
+            $('body').toggleClass('menu-open');
+        })
+        $("#screen-layer").click(function() {
+            $('body').removeClass('menu-open');
         })
     })
 </script>

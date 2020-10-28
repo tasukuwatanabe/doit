@@ -1,8 +1,8 @@
 class Api::ShortcutsController < ApplicationController
-  protect_from_forgery except: [:create, :update, :destroy]
+  protect_from_forgery except: %i[create update destroy]
 
   before_action :logged_in_user
-  before_action :set_shortcut, only: [ :edit, :update, :destroy, :create_todo ]
+  before_action :set_shortcut, only: %i[edit update destroy create_todo]
 
   def index
     shortcuts = current_user.shortcuts.select(:id, :title)

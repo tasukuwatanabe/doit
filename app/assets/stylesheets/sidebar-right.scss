@@ -1,0 +1,8 @@
+@import "extend";
+
+.sidebar-right {
+  @extend %section-padding;
+  @extend %sidebar-layout;
+  @extend %sidebar-display;
+  border-left: 1px solid #e1e4e8;
+}

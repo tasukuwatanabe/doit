@@ -12,11 +12,12 @@
 
   </head>
   <body>
+    <div id="screen-layer"></div>
     <%= render "shared/header" %>
+    <%= render "shared/slide-menu" %>
     <%= render "shared/flash" %>
     <main>
       <%= yield %>
-      <%= javascript_pack_tag 'main' %>
     </main>
     <%= render "shared/footer" %>
   </body>

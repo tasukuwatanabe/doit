@@ -23,11 +23,25 @@ services:
       - 3000:3000
     depends_on:
       - db
+      - webpacker
   smtp:
     image: schickling/mailcatcher
     ports:
       - "1080:1080" #http://localhost:1080/でmailcatcherが開けます
       - "1025:1025"
+  webpacker:
+    build: .
+    command: ./bin/webpack-dev-server
+    volumes:
+      - .:/doit
+    ports:
+      - '3035:3035'
+    tty: false
+    stdin_open: false
+    environment:
+      NODE_ENV: development
+      RAILS_ENV: development
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
 volumes:
   bundle:
   node_modules:

@@ -1,0 +1,22 @@
+@import "extend";
+
+$width-slide-menu: 250px;
+
+.slide-menu {
+  @extend %section-padding;
+  width: $width-slide-menu;
+  background-color: $color-light-gray;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  transform: translateX($width-slide-menu * -1);
+  transition-duration: 0.1s;
+}
+
+.menu-open {
+  .slide-menu {
+    transform: translateX(0);
+  }
+}

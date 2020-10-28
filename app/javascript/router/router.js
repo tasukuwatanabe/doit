@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import shortcutHome from "../pages/shortcut/shortcutHome.vue";
+import shortcutHome from "../components/shortcut/shortcutHome.vue";
 
 Vue.use(VueRouter);
 

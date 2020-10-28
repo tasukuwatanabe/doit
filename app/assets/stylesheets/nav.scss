@@ -1,0 +1,35 @@
+@import "color";
+@import "extend";
+
+.nav {
+  &__list {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  &__item {
+    list-style-type: none;
+
+    &:not(:last-of-type) {
+      border-bottom: 1px solid $color-border;
+    }
+  }
+  &__link {
+    @extend %link;
+    display: flex;
+    padding: 17px 2px;
+  }
+  &__icon {
+    width: 30px;
+    text-align: center;
+    display: block;
+    margin-right: 12px;
+
+    & > * {
+      color: $color-main-theme;
+      fill: $color-main-theme;
+      width: 20px;
+      font-size: 22px;
+    }
+  }
+}

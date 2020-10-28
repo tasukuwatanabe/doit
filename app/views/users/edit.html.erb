@@ -4,15 +4,10 @@ set_meta_tags title: @title
 provide(:button_text, "更新する") 
 %>
 
-<div class="container d-flex justify-content-between">
-  <%= render "shared/sidebar_left" %>
-  <div class="task__main-col">
-    <div class="page__title-box">
-      <h2 class="page__title"><%= @title %></h2>
-    </div>
-    <%= render "form" %>
-    <%= link_to "パスワードの変更", edit_user_password_path(current_user), class: "btn btn-outline-primary mr-3 btn-sm #{disable_for_guest}" %>
-    <%= link_to "退会する", user_path, method: :delete, data: { confirm: "アカウントを削除してよろしいですか？" }, class: "btn btn-outline-danger btn-sm #{disable_for_guest}" %>
-  </div>
-  <%= render "shared/sidebar_right" %>
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <h2><%= @title %></h2>
+  <%= render "form" %>
+  <%= link_to "パスワードの変更", edit_user_password_path(current_user), class: "btn btn-outline-primary mr-3 btn-sm #{disable_for_guest}" %>
+  <%= link_to "退会する", user_path, method: :delete, data: { confirm: "アカウントを削除してよろしいですか？" }, class: "btn btn-outline-danger btn-sm #{disable_for_guest}" %>
 </div>

@@ -4,19 +4,17 @@ set_meta_tags title: @title
 provide(:button_text, "登録する") 
 %>
 
-<div class="container">
+<div class="login__form">
   <div class="login__case">
-      <div class="page__title-box">
-        <h2 class="page__title"><%= @title %></h2>
+    <h2><%= @title %></h2>
+    <div class="login__form">
+      <%= render "form" %>
+      <div class="action__case">
+        <p class="action__to-signup">アカウントをお持ちの方は<%= link_to "ログイン", login_path %></p>
+        <p class="action__to-signup"><%= link_to "Twitterアカウントで新規登録", "/auth/twitter" %></p>
+        <p class="action__to-signup"><%= link_to "Facebookアカウントで新規登録", "/auth/facebook" %></p>
+        <p class="action__to-signup"><%= link_to "Googleアカウントで新規登録", "/auth/google_oauth2" %></p>
       </div>
-      <div class="login__form">
-        <%= render "form" %>
-        <div class="action__case">
-          <p class="action__to-signup">アカウントをお持ちの方は<%= link_to "ログイン", login_path %></p>
-          <p class="action__to-signup"><%= link_to "Twitterアカウントで新規登録", "/auth/twitter" %></p>
-          <p class="action__to-signup"><%= link_to "Facebookアカウントで新規登録", "/auth/facebook" %></p>
-          <p class="action__to-signup"><%= link_to "Googleアカウントで新規登録", "/auth/google_oauth2" %></p>
-        </div>
-      </div>
+    </div>
   </div>
 </div>

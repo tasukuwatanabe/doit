@@ -1,0 +1,39 @@
+@import "extend";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  color: #555 !important;
+  position: relative;
+  font-size: 14px !important;
+}
+
+main {
+  position: relative;
+  overflow: hidden;
+  display: flex !important;
+  flex: 1;
+  justify-content: space-between;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
+}
+
+.content {
+  @extend %section-padding;
+  padding-right: 30px;
+  padding-left: 30px;
+  max-width: calc(100% - 200px);
+  flex: 1;
+}
+
+img {
+  width: 100%;
+}

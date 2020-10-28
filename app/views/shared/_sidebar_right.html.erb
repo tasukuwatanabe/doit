@@ -1,17 +1,17 @@
-<aside id="sidebar-right" class="sidebar-right">
+<aside class="sidebar-right">
   <% if @path.is("home#index") %>
-    <section id="shortcut-links">
-      <p class="sidebar-right__title">ショートカット
-        <% if !@shortcuts.empty? %>
-          <%= link_to "編集", shortcuts_path, class: "sidebar-right__title-link" %>
+    <section>
+      <div>ショートカット
+        <% if @shortcuts.present? %>
+          <%= link_to "編集", shortcuts_path %>
         <% else %>
-          <%= link_to "登録", new_shortcut_path, class: "sidebar-right__title-link" %>
+          <%= link_to "登録", shortcuts_path %>
         <% end %>
-      </p>
-      <% if !@shortcuts.empty? %>
-        <ul class="sidebar-right__list">
+      </div>
+      <% if @shortcuts.present? %>
+        <ul>
           <% @shortcuts.each do |shortcut| %>
-            <li class="sidebar-right__item">
+            <li>
               <%= shortcut.title %>
               <%= link_to(shortcut_create_todo_path(get_url_date, shortcut.id), method: :post) do %>
                 <i class="fa fa-plus-circle"></i>

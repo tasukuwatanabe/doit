@@ -3,26 +3,24 @@
 set_meta_tags title: @title
 %>
 
-<div class="container d-flex justify-content-between">
-  <%= render "shared/sidebar_left" %>
-    <div class="todo__main-col todo__main-col--index">
-      <div>
-        <div class="page__title-box">
-          <h2 class="page__title"><%= @title %></h2>
-        </div>
-        <% if @routines.any? %>
-          <ul class="todo__list">
-          <% @routines.each do |routine| %>
-            <%= render routine %>
-          <% end %>
-          </ul>
-        <% else %>
-          <p class="todo__no-item">ルーティーンはまだ作成されていません。</p>
-        <% end %>
-        <div>
-        <%= link_to "ルーティーンを追加", new_routine_path, class: "float-right btn btn-outline-info btn-sm" %>
-        </div>
-      </div>
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <div>
+    <div class="page__title-box">
+      <h2 class="page__title"><%= @title %></h2>
     </div>
-  <%= render "shared/sidebar_right" %>
+    <% if @routines.any? %>
+      <ul class="todo__list">
+      <% @routines.each do |routine| %>
+        <%= render routine %>
+      <% end %>
+      </ul>
+    <% else %>
+      <p class="todo__no-item">ルーティーンはまだ作成されていません。</p>
+    <% end %>
+    <div>
+    <%= link_to "ルーティーンを追加", new_routine_path, class: "float-right btn btn-outline-info btn-sm" %>
+    </div>
+  </div>
 </div>
+<%= render "shared/sidebar_right" %>

@@ -103,7 +103,7 @@ Vue.directive("focus", {
 });
 
 export default {
-  name: "ShortcutHome",
+  name: "shortcutHome",
   data() {
     return {
       isModalActive: false,
