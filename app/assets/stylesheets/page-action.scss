@@ -1,0 +1,32 @@
+@import "extend";
+
+.page-action {
+  &__btn {
+    @extend %link;
+    border: 1px solid $color-main-theme;
+    color: $color-main-theme;
+    background-color: #fff;
+    padding: 5px 15px;
+
+    &:hover {
+      background-color: $color-main-theme;
+      color: #fff;
+
+      svg {
+        color: #fff;
+      }
+    }
+  }
+
+  &__icon {
+    svg {
+      font-size: 16px;
+      margin-right: 5px;
+      color: $color-main-theme;
+    }
+  }
+
+  &__text {
+    font-size: 16px;
+  }
+}

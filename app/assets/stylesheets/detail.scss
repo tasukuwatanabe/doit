@@ -1,0 +1,27 @@
+@import "color";
+
+.detail {
+  &__title {
+    font-weight: bold;
+  }
+
+  &__list {
+    padding: 0;
+    list-style-type: none;
+  }
+
+  &__item {
+    border-bottom: 1px solid $color-border;
+    padding: 15px 0;
+  }
+
+  &__label {
+    margin-left: 0 !important;
+  }
+
+  &__itemTitle {
+    color: #999;
+    display: block;
+    margin-bottom: 2px;
+  }
+}

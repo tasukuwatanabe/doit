@@ -1,10 +1,14 @@
 <header class="header">
-  <%= link_to index_path(@today), class: "header__logo" do %>
-    <img src="/doit-logo-white.png" alt="DoITロゴ">
-  <% end %>
-  <div id="hamburger" class="hamburger">
-    <span class="hamburger__line"></span>
-    <span class="hamburger__line"></span>
-    <span class="hamburger__line"></span>
+  <div class="container header__inner">
+    <%= link_to todo_index_path(@today), class: "header__logo" do %>
+      <img src="/doit-logo-white.png" alt="DoITロゴ">
+    <% end %>
+    <% if logged_in? %>
+      <div id="hamburger" class="hamburger">
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+        <span class="hamburger__line"></span>
+      </div>
+    <% end %>
   </div>
 </header>

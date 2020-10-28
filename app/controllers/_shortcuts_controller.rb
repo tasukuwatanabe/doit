@@ -1,11 +1,9 @@
 class ShortcutsController < ApplicationController
-  before_action :set_shortcut, only: [ :edit, :update, :destroy, :create_todo ]
+  before_action :set_shortcut, only: %i[edit update destroy create_todo]
 
   def index
     @shortcuts = current_user.shortcuts
-    if @shortcuts.count >= Shortcut::MAX_SHORTCUT_COUNT
-      @disabled = 'disabled'
-    end
+    @disabled = 'disabled' if @shortcuts.count >= Shortcut::MAX_SHORTCUT_COUNT
   end
 
   def new
@@ -57,7 +55,7 @@ class ShortcutsController < ApplicationController
 
     if @todo.save
       flash[:success] = 'ToDoが追加されました。'
-      redirect_to index_path(@todo.todo_date)
+      redirect_to todo_index_path(@todo.todo_date)
     else
       flash[:danger] = @todo.errors.messages.values[0][0]
       redirect_back(fallback_location: root_path)

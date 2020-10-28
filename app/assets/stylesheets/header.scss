@@ -2,17 +2,32 @@
 
 .header {
   background-color: $color-main-theme;
-  text-align: center;
   position: relative;
 
+  &__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    min-height: 65px;
+
+    @media (max-width: 991px) {
+      padding: 15px 0;
+    }
+  }
+
   &__logo {
-    display: block;
-    margin: 0 auto;
-    padding: 15px 0;
+    display: inline-block;
 
     img {
-      height: 35px;
+      height: 30px;
       width: auto;
+    }
+  }
+
+  &__userinfo {
+    @media (max-width: 991px) {
+      display: none !important;
     }
   }
 }

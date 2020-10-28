@@ -1,0 +1,11 @@
+.headline {
+  position: relative;
+
+  &__title {
+    margin-bottom: 15px;
+  }
+
+  &__text {
+    color: #999;
+  }
+}

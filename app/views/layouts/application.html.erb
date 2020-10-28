@@ -14,10 +14,14 @@
   <body>
     <div id="screen-layer"></div>
     <%= render "shared/header" %>
-    <%= render "shared/slide-menu" %>
+    <% if logged_in? %>
+      <%= render "shared/slide-menu" %>
+    <% end %>
     <%= render "shared/flash" %>
     <main>
-      <%= yield %>
+      <div class="container wrapper">
+        <%= yield %>
+      </div>
     </main>
     <%= render "shared/footer" %>
   </body>

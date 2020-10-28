@@ -11,27 +11,34 @@ body {
   margin: 0;
   color: #555 !important;
   position: relative;
-  font-size: 14px !important;
+  font-size: 1.4rem;
+  font-family: -apple-system, "Segoe UI", "Helvetica Neue",
+    "Hiragino Kaku Gothic ProN", メイリオ, meiryo, sans-serif;
 }
 
 main {
   position: relative;
-  overflow: hidden;
-  display: flex !important;
+  background-color: #f4f6f6;
   flex: 1;
-  justify-content: space-between;
+}
 
-  @media (max-width: 767px) {
+.wrapper {
+  display: flex !important;
+  justify-content: space-between;
+  padding: 40px 0 100px;
+
+  @media (max-width: 991px) {
     flex-direction: column;
   }
 }
 
 .content {
-  @extend %section-padding;
-  padding-right: 30px;
-  padding-left: 30px;
-  max-width: calc(100% - 200px);
   flex: 1;
+  overflow: hidden;
+
+  @media (min-width: 992px) {
+    margin-left: 30px;
+  }
 }
 
 img {

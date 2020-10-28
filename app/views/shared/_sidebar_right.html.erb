@@ -1,27 +1,89 @@
 <aside class="sidebar-right">
-  <% if @path.is("home#index") %>
-    <section>
-      <div>ショートカット
-        <% if @shortcuts.present? %>
-          <%= link_to "編集", shortcuts_path %>
-        <% else %>
-          <%= link_to "登録", shortcuts_path %>
-        <% end %>
-      </div>
-      <% if @shortcuts.present? %>
-        <ul>
-          <% @shortcuts.each do |shortcut| %>
-            <li>
-              <%= shortcut.title %>
-              <%= link_to(shortcut_create_todo_path(get_url_date, shortcut.id), method: :post) do %>
-                <i class="fa fa-plus-circle"></i>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p>ショートカットは未作成です</p>
-      <% end %>
-    </section>
-  <% end %>
+  <section class="sidebar-right__search search">
+    <%= form_tag(search_path, method: :get, class: "search__form") do %>
+      <span class="fa fa-search"></span>
+      <%= text_field_tag :search, "", class: "search__input" %>
+    <% end %>
+    <ul>
+    </ul>
+  </section>
+
+  <section class="sidebar-right__calendar calendar">
+    <div class="calendar__box">
+      <%= link_to "今日", todo_index_path(@today), class: "calendar__btn" %>
+    </div>
+    <table class="calendar__table">
+      <tr>
+        <th>日</th>
+        <th>月</th>
+        <th>火</th>
+        <th>水</th>
+        <th>木</th>
+        <th>金</th>
+        <th>土</th>
+      </tr>
+      <tr>
+        <td class="calendar__table--out">30</td>
+        <td class="calendar__table--out">31</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+        <td>10</td>
+        <td>11</td>
+        <td>12</td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td>14</td>
+        <td>15</td>
+        <td>16</td>
+        <td>17</td>
+        <td>18</td>
+        <td>19</td>
+      </tr>
+      <tr>
+        <td>20</td>
+        <td>21</td>
+        <td>22</td>
+        <td>23</td>
+        <td>24</td>
+        <td>25</td>
+        <td>26</td>
+      </tr>
+      <tr>
+        <td>27</td>
+        <td>28</td>
+        <td class="calendar__table--active">
+          <div>29</div>
+        </td>
+        <td>30</td>
+        <td>31</td>
+        <td class="calendar__table--out">1</td>
+        <td class="calendar__table--out">2</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="sidebar-right__detail">
+    <div class="detail__title">読書をする</div>
+    <ul class="detail__list">
+      <li class="detail__item">
+        <span class="label detail__label">自己投資</span>
+      </li>
+      <li class="detail__item">
+        <span>2020年10月28日</span>
+      </li>
+      <li class="detail__item">
+        <span>「嫌われる勇気」を10ページ読む</span>
+      </li>
+    </ul>
+  </section>
 </aside>

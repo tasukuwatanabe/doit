@@ -1,0 +1,59 @@
+@import "color";
+@import "extend";
+
+.index_shortcut {
+  margin-top: 50px;
+
+  &__field {
+    padding: 20px;
+    background-color: #fff;
+    text-align: center;
+  }
+
+  &__box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px;
+  }
+
+  &__title {
+    font-size: 18px;
+  }
+
+  &__edit {
+    text-decoration: underline;
+    font-size: 16px;
+    color: $color-main-theme;
+  }
+
+  &__list {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    background-color: #fff;
+    border-radius: 100px;
+    margin: 5px;
+  }
+
+  &__link {
+    @extend %link;
+    color: $color-base-font;
+    padding: 5px 10px;
+    border-radius: 3px;
+    display: block;
+    background-color: #eee;
+  }
+
+  &__no-result {
+    padding: 20px 0 30px;
+  }
+
+  &__text {
+    margin-bottom: 30px;
+  }
+}

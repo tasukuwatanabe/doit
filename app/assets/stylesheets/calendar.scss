@@ -1,0 +1,51 @@
+@import "color";
+
+.calendar {
+  &__box {
+    text-align: center;
+  }
+  &__btn {
+    color: $color-main-theme;
+    padding: 2px 7px;
+    border: 1px solid $color-main-theme;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  &__table {
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+
+    th,
+    td {
+      padding: 5px 0;
+    }
+
+    th {
+      font-weight: normal;
+      color: #777777;
+    }
+
+    td {
+      font-weight: bold;
+    }
+
+    &--active {
+      div {
+        background-color: $color-main-theme;
+        color: #fff;
+        border-radius: 50%;
+        height: 22px;
+        width: 22px;
+        text-align: center;
+        line-height: 22px;
+        margin: 0 auto;
+      }
+    }
+
+    &--out {
+      color: #bbb;
+    }
+  }
+}

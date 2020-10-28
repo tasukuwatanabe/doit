@@ -1,0 +1,17 @@
+@import "color";
+
+.item-action {
+  &__btn {
+    color: rgb(170, 170, 170);
+    font-size: 20px;
+    transition-duration: 0.2s;
+
+    &:hover {
+      color: $color-main-theme;
+    }
+
+    &:not(:last-of-type) {
+      margin-right: 35px;
+    }
+  }
+}

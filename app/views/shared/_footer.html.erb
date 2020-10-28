@@ -5,7 +5,8 @@
 <script type="text/javascript">
     $(function() {
         $(".toggle-status").click(function() {
-            $.post('/todos/'+$(this).data('id')+'/toggle_status')
+            $.post('/todos/'+$(this).data('id')+'/toggle_status');
+            $("#todo-" + $(this).data('id')).toggleClass("todo__status--checked");
         })
     })
     $(function() {

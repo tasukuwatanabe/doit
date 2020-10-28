@@ -1,22 +1,14 @@
 @import "color";
 
-%section-padding {
-  padding: 30px 15px;
-}
-
-%sidebar-layout {
-  width: 220px;
-  background-color: $color-light-gray;
-}
-
 %sidebar-display {
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     display: none;
   }
 }
 
 %link {
   color: $color-base-font;
+  transition-duration: 0.2s;
 
   &:hover {
     text-decoration: none;

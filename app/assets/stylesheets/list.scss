@@ -1,0 +1,34 @@
+@import "color";
+
+.list {
+  padding: 0;
+  margin-bottom: 30px;
+
+  &__item {
+    padding: 24px 30px 24px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $color-border;
+    }
+  }
+
+  &__block {
+    display: flex;
+    align-items: center;
+  }
+
+  &__title-group {
+  }
+
+  &__title {
+    font-size: 1.1rem;
+  }
+
+  &__label {
+    margin-left: 20px;
+  }
+}

@@ -1,12 +1,14 @@
 <aside class="sidebar-left">
-  <div class="userinfo">
-    <%= user_image(current_user) %>
-    <%= link_to current_user.username, user_path(current_user), class: "userinfo__username" %>
+  <div class="sidebar-left__userinfo userinfo">
+    <%= link_to edit_user_path(current_user) do %>
+      <%= user_image(current_user) %>
+      <%= link_to current_user.username, user_path(current_user), class: "userinfo__username" %>
+    <% end %>
   </div>
   <nav class="nav">
     <ul class="nav__list">
       <li class="nav__item">
-        <%= link_to index_path(@today), class: "nav__link" do %>
+        <%= link_to todo_index_path(@today), class: "nav__link" do %>
           <span class="nav__icon">
             <i class="fas fa-calendar-check"></i>
           </span>

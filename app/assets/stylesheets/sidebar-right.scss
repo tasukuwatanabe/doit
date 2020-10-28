@@ -1,8 +1,12 @@
 @import "extend";
 
 .sidebar-right {
-  @extend %section-padding;
-  @extend %sidebar-layout;
   @extend %sidebar-display;
-  border-left: 1px solid #e1e4e8;
+  width: 220px;
+  margin-left: 30px;
+
+  &__search,
+  &__calendar {
+    margin-bottom: 50px;
+  }
 }

@@ -1,0 +1,80 @@
+<% 
+@title = get_url_date_in_japanese
+set_meta_tags title: @title
+%>
+
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <div class="todo">
+    <section class="todo__date-section">
+      <% if set_previous_date %>
+        <%= link_to todo_index_path(set_previous_date), class: "todo__date-arrow todo__date-arrow--left" do %>
+          <i class="fas fa-caret-left"></i>
+        <% end %>
+      <% end %>
+      <div class="todo__date-box">
+        <h2 class="todo__date-title"><%= @title %></h2>
+        <p class="todo__date-day"><%= get_day() %></p>
+      </div>
+      <% if set_next_date %>
+        <%= link_to todo_index_path(set_next_date), class: "todo__date-arrow todo__date-arrow--right" do %>
+          <i class="fas fa-caret-right"></i>
+        <% end %>
+      <% end %>
+    </section>
+    <% if @date_todos.any? %>
+      <ul class="list">
+      <% @todos.each do |todo| %>
+        <%= render todo %>
+      <% end %>
+      </ul>
+    <% else %>
+      <div class="no-result todo__no-result">
+        <p class="no-result__text">ToDoは未登録です</p>
+        <div class="no-result__illustration">
+          <img src="/illustrations/il-checklist.png" alt="チェックリストのイラスト">
+        </div>
+      </div>
+    <% end %>
+    <div class="todo__page-action page-action">
+    <%= link_to new_todo_path, class: "page-action__btn" do %>
+      <span class="page-action__icon">
+        <i class="fas fa-plus"></i>
+      </span>
+      <span class="page-action__text">ToDoを追加</span>
+    <% end %>
+  </div>
+  </div>
+  <div class="index_shortcut">
+    <% if @shortcuts.present? %>
+      <div class="index_shortcut__box">
+        <h3 class="index_shortcut__title">ショートカットからToDoを作成</h3>
+        <%= link_to "編集", shortcuts_path, class: "index_shortcut__edit" %>
+      </div>
+    <% end %>
+    <div class="index_shortcut__field">
+      <% if @shortcuts.present? %>
+        <ul class="index_shortcut__list">
+          <% @shortcuts.each do |shortcut| %>
+            <li class="index_shortcut__item">
+              <%= link_to shortcut.title, shortcut_create_todo_path(get_url_date, shortcut.id), method: :post, class: "index_shortcut__link" %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <div class="index_shortcut__no-result">
+          <p class="index_shortcut__text">ショートカットが作成されていません。</p>
+          <div class="page-action">
+            <%= link_to shortcuts_path, class: "page-action__btn" do %>
+              <span class="page-action__icon">
+                <i class="fas fa-plus"></i>
+              </span>
+              <span class="page-action__text">ショートカットを追加</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<%= render "shared/sidebar_right" %>

@@ -13,5 +13,9 @@ class Todo < ApplicationRecord
     allow_blank: true
   }
 
-  default_scope -> { order(Arel.sql('routine_id is null, routine_id desc, created_at desc')) }
+  def self.search(search)
+    return nil unless search
+
+    Todo.where(['title LIKE ?', search.to_s])
+  end
 end

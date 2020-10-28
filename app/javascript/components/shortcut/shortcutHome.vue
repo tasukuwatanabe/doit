@@ -1,54 +1,76 @@
 <template>
   <div id="app">
-    <ul class="todo__list">
-      <li class="todo__item" v-for="s in shortcuts" :key="s.id">
-        <div
-          v-show="s.id != editingShortcutId"
-          @dblclick="editShortcut(s)"
-          class="todo__item-title"
-        >
-          {{ s.title }}
-        </div>
-        <div>
-          <div>
-            <input
-              v-show="s.id == editingShortcutId"
-              v-model="s.title"
-              v-focus
-              @keyup.enter="updateShortcut(s)"
-            />
-            <a
-              @click="fetchShortcuts"
-              v-if="
-                !s.title.length || (errors.length && s.id == editingShortcutId)
-              "
-              style="background-color: gray; border-radius: 100px;font-size: 10px; color: white; padding: 3px;"
-              >×リセット</a
+    <div class="headline">
+      <h2 class="headline__title">ショートカットの管理</h2>
+      <p class="headline__text">
+        使用頻度の高いToDoをショートカットとして登録できます。
+      </p>
+      <div class="page-action shortcut__page-action" v-on:click="openModal">
+        <a class="page-action__btn">
+          <span class="page-action__icon">
+            <i class="fas fa-plus"></i>
+          </span>
+          <span class="page-action__text">新規追加</span>
+        </a>
+      </div>
+    </div>
+    <ul class="list" v-if="shortcuts.length">
+      <li class="list__item" v-for="s in shortcuts" :key="s.id">
+        <div class="list__block">
+          <div class="list__title-group" style="position: relative;">
+            <div
+              v-show="s.id != editingShortcutId"
+              @dblclick="editShortcut(s)"
+              class="list__title"
+            >
+              {{ s.title }}
+            </div>
+            <div>
+              <input
+                v-show="s.id == editingShortcutId"
+                v-model="s.title"
+                v-focus
+                @keyup.enter="updateShortcut(s)"
+              />
+              <span
+                @click="fetchShortcuts"
+                v-if="
+                  !s.title.length ||
+                    (errors.length && s.id == editingShortcutId)
+                "
+                >×リセット</span
+              >
+            </div>
+            <span
+              v-if="!s.title.length"
+              style="color: red; font-size: 12px; position: absolute;"
+              >タイトルが未入力です</span
+            >
+            <span
+              v-else-if="errors.length && s.id == editingShortcutId"
+              style="color: red; font-size: 12px; position: absolute;"
+              >{{ errors[0] }}</span
             >
           </div>
-          <span v-if="!s.title.length" style="color: red; font-size: 12px;"
-            >タイトルが未入力です</span
-          >
-          <span
-            v-else-if="errors.length && s.id == editingShortcutId"
-            style="color: red; font-size: 12px;"
-            >{{ errors[0] }}</span
-          >
+          <div class="label">プログラミング</div>
         </div>
-        <div class="todo__item-link-box">
-          <b-button
-            v-on:click="deleteShortcut(s.id)"
-            pill
-            variant="outline-danger"
-            >削除</b-button
-          >
+        <div class="list__block item-action">
+          <div v-on:click="editShortcut(s.id)" class="item-action__btn">
+            <i class="fas fa-pencil-alt"></i>
+          </div>
+          <div v-on:click="deleteShortcut(s.id)" class="item-action__btn">
+            <i class="fas fa-trash"></i>
+          </div>
         </div>
       </li>
     </ul>
-    <div class="modal-trigger">
-      <button class="float-right btn btn-info btn-sm" v-on:click="openModal">
-        ショートカットを追加
-      </button>
+    <div class="shortcut__no-result no-result" v-else>
+      <div class="no-result__illustration">
+        <img
+          src="/illustrations/il-navigation.png"
+          alt="チェックリストのイラスト"
+        />
+      </div>
     </div>
     <div class="modal" :class="{ 'is-open': isModalActive }">
       <div class="modal__layer" @click.self="closeModal">

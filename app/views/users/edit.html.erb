@@ -8,6 +8,5 @@ provide(:button_text, "更新する")
 <div class="content">
   <h2><%= @title %></h2>
   <%= render "form" %>
-  <%= link_to "パスワードの変更", edit_user_password_path(current_user), class: "btn btn-outline-primary mr-3 btn-sm #{disable_for_guest}" %>
-  <%= link_to "退会する", user_path, method: :delete, data: { confirm: "アカウントを削除してよろしいですか？" }, class: "btn btn-outline-danger btn-sm #{disable_for_guest}" %>
+  <%= link_to "退会する", user_path, method: :delete, data: { confirm: "アカウントを削除してよろしいですか？" }, class: "#{disable_for_guest}" %>
 </div>
