@@ -1,0 +1,8 @@
+@import "color";
+
+.link {
+  &--default {
+    color: $color-main-theme;
+    text-decoration: underline;
+  }
+}

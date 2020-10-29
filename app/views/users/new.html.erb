@@ -4,17 +4,57 @@ set_meta_tags title: @title
 provide(:button_text, "登録する") 
 %>
 
-<div class="login__form">
-  <div class="login__case">
-    <h2><%= @title %></h2>
-    <div class="login__form">
-      <%= render "form" %>
-      <div class="action__case">
-        <p class="action__to-signup">アカウントをお持ちの方は<%= link_to "ログイン", login_path %></p>
-        <p class="action__to-signup"><%= link_to "Twitterアカウントで新規登録", "/auth/twitter" %></p>
-        <p class="action__to-signup"><%= link_to "Facebookアカウントで新規登録", "/auth/facebook" %></p>
-        <p class="action__to-signup"><%= link_to "Googleアカウントで新規登録", "/auth/google_oauth2" %></p>
+<div class="login">
+  <h2 class="login__title"><%= @title %></h2>
+  <div class="login__inner">
+    <%= form_with(model: @user, local: true, html: { novalidate: true, multipart: true },class: "form") do |f| %>
+      <div class="form__group">
+        <%= f.label :username, class: "form__label" %>
+        <%= f.text_field :username, class: "form__input" %>
+        <%= error_message(@user, :username) %>
       </div>
-    </div>
+      <div class="form__group">
+        <%= f.label :email, class: "form__label" %>
+        <%= f.email_field :email, class: "form__input", readonly: user_is_guest? %>
+        <%= error_message(@user, :email) %>
+      </div>
+      <div class="form__group">
+        <%= f.label :password, class: "form__label" %>
+        <%= f.password_field :password, class: "form__input" %>
+        <%= error_message(@user, :password) %>
+      </div>
+      <div class="form__group">
+        <%= f.label :password_confirmation, class: "form__label" %>
+        <%= f.password_field :password_confirmation, class: "form__input" %>
+        <%= error_message(@user, :password_confirmation) %>
+      </div>
+      <div class="form-group text-center">
+        <%= f.submit "新規登録", class: "btn-main btn-main--signup btn--md" %>
+      </div>
+      <ul class="form__linkList form__linkList--login">
+        <li class="form__linkItem">お試しの方は<%= link_to "ゲストログイン", guest_login_path, method: :post, class: "form__link--default" %></li>
+        <li class="form__linkItem">アカウントをお持ちの方は<%= link_to "ログイン", login_path, class: "form__link--default" %></li>
+      </ul>
+      <div class="sns-login">
+        <p class="sns-login__title">SNSで新規登録</p>
+        <ul class="sns-login__list">
+          <li class="sns-login__item">
+            <%= link_to("/auth/facebook", class: "sns-icon sns-icon--facebook") do %>
+              <i class="fab fa-facebook-f"></i>
+            <% end %>
+          </li>
+          <li class="sns-login__item">
+            <%= link_to("/auth/twitter", class: "sns-icon sns-icon--twitter") do %>
+              <i class="fab fa-twitter"></i>
+            <% end %>
+          </li>
+          <li class="sns-login__item">
+            <%= link_to("/auth/google_oauth2", class: "sns-icon sns-icon--google") do %>
+              <i class="fab fa-google"></i>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
   </div>
 </div>

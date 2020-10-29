@@ -9,7 +9,7 @@
   }
   &__item {
     list-style-type: none;
-    border-bottom: 1px solid $color-border;
+    border-bottom: 1px solid $border-color;
   }
   &__link {
     @extend %link;

@@ -1,22 +1,39 @@
-.form-group {
-  margin-bottom: 2rem !important;
-}
+@import "color";
 
-.modal-form {
-  input {
-    min-width: 320px;
+.form {
+  &__label {
+    margin-bottom: 0.4rem;
+    font-weight: bold;
+    font-size: 0.9rem;
   }
-  .btn-case {
-    margin-top: 15px;
-    display: flex;
-    justify-content: flex-end;
 
-    .btn-cancel {
-      margin-right: 5px;
+  &__input {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    height: 50px;
+    padding: 0.375rem 0.75rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &:read-only {
+      background-color: #f0f0f0;
+      color: #999;
+    }
+
+    &--email {
+      margin-bottom: 0.5rem;
     }
   }
 }
-div.field_with_errors {
+
+.field_with_errors {
   display: inline;
   padding: 0;
   label {
@@ -26,7 +43,7 @@ div.field_with_errors {
     background-color: #ffcccc;
   }
 }
-div.error-message {
+.error-message {
   color: #cc0000;
   font-size: 12px;
   padding: 5px 0 0;

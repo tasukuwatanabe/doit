@@ -1,10 +1,13 @@
 .label {
   display: inline-block;
-  padding: 4px 7px 3px;
+  padding: 6px 8px 5px;
   font-size: 12px;
   line-height: 1;
   color: #fff;
   background: #f4a41c;
   border-radius: 2em;
-  margin-left: 20px;
+
+  &--ml {
+    margin-left: 20px;
+  }
 }

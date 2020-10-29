@@ -18,8 +18,8 @@
       <p class="headline__text">
         使用頻度の高いToDoをショートカットとして登録できます。
       </p>
-      <div class="page-action shortcut__page-action" v-on:click="openModal">
-        <a class="page-action__btn btn-outlined btn-outlined--sm">
+      <div class="page-action headline__page-action" v-on:click="openModal">
+        <a class="page-action__btn btn-outlined btn--sm">
           <span class="page-action__icon">
             <i class="fas fa-plus"></i>
           </span>
@@ -65,7 +65,7 @@
               >{{ errors[0] }}</span
             >
           </div>
-          <div class="label">プログラミング</div>
+          <div class="label label--ml">プログラミング</div>
         </div>
         <div class="list__block item-action">
           <div v-on:click="editShortcut(s.id)" class="item-action__btn">

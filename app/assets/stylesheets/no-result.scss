@@ -1,5 +1,13 @@
 .no-result {
   &__illustration {
-    width: 400px;
+    width: 500px;
+  }
+  &__illustration {
+    margin-top: 80px;
+    margin-left: 100px;
+
+    @media (max-width: 991px) {
+      margin: 100px auto;
+    }
   }
 }

@@ -1,19 +1,17 @@
 @import "color";
 @import "extend";
 
-.btn-outlined {
+.btn-main {
   @extend %link;
-  border: 1px solid $color-main-theme;
-  color: $color-main-theme;
-  background-color: #fff;
+  color: #fff;
+  background-color: $color-main-theme;
+  border: none;
 
   &:hover {
-    background-color: $color-main-theme;
+    position: relative;
+    top: -1px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
     color: #fff;
-
-    * {
-      color: #fff;
-    }
   }
 
   &__icon {

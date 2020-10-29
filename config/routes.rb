@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   namespace :api, { format: 'json' } do
     resources :shortcuts, only: %i[index create update destroy]
   end
+  resources :labels, except: :new
   resources :routines
   get '/history/:month', to: 'routines#history', as: 'history'
   resources :password_resets, only: %i[new create edit update]

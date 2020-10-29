@@ -1,3 +1,5 @@
+@import "color";
+
 .headline {
   position: relative;
 
@@ -8,10 +10,17 @@
   }
 
   &__text {
-    color: #999;
+    color: $font-color-light;
   }
 
   &__icon {
-    margin-left: 10px;
+    margin-left: 15px;
+    font-size: 1.2rem;
+  }
+
+  &__page-action {
+    position: absolute;
+    top: 5px;
+    right: 0;
   }
 }

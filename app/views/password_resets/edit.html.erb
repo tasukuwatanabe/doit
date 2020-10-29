@@ -3,31 +3,21 @@
 set_meta_tags title: @title
 %>
 
-<div class="login__case">
-  <div class="page__title-box">
-    <h2 class="page__title"><%= @title %></h2>
-  </div>
-  <div class="login__form">
-    <%= form_with(model: @user, url: password_reset_path(params[:id]), local: true) do |f| %>
+<div class="login">
+  <h2 class="login__title"><%= @title %></h2>
+  <div class="login__inner">
+    <%= form_with model: @user, url: password_reset_path(params[:id]), local: true, class: "form" do |f| %>
       <%= hidden_field_tag :email, @user.email %>
-      <div class="form-group row">
-        <div class="col-sm-4">
-          <%= f.label :password, class: "col-form-label" %>
-        </div>
-        <div class="col-sm-8">
-          <%= f.password_field :password, class: "form-control" %>
-        </div>
+      <div class="form__group">
+          <%= f.label :password, class: "form__label" %>
+          <%= f.password_field :password, class: "form__input" %>
       </div>
-      <div class="form-group row">
-        <div class="col-sm-4">
-          <%= f.label :password_confirmation, class: "col-form-label" %>
-        </div>
-        <div class="col-sm-8">
-          <%= f.password_field :password_confirmation, class: "form-control" %>
-        </div>
+      <div class="form__group">
+          <%= f.label :password_confirmation, class: "form__label" %>
+          <%= f.password_field :password_confirmation, class: "form__input" %>
       </div>
-      <div class="action__case">
-        <%= f.submit "パスワードを更新する", class: "btn btn-primary action__btn" %>
+      <div class="form__group text-center">
+        <%= f.submit "パスワードを更新する", class: "btn-main btn-main--password-reset btn--sm" %>
       </div>
     <% end %>
   </div>

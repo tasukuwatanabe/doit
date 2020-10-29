@@ -1,0 +1,16 @@
+.btn {
+  &--xs {
+    padding: 2px 5px;
+    font-size: 0.8rem;
+  }
+
+  &--sm {
+    padding: 5px 15px;
+    font-size: 1.1rem;
+  }
+
+  &--md {
+    padding: 10px 30px;
+    font-size: 1.2rem;
+  }
+}
