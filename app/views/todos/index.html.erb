@@ -6,9 +6,9 @@ set_meta_tags title: @title
 <%= render "shared/sidebar_left" %>
 <div class="content">
   <div class="todo">
-    <section class="todo__date-section">
+    <section class="horizontal-arrows">
       <% if set_previous_date %>
-        <%= link_to todo_index_path(set_previous_date), class: "todo__date-arrow todo__date-arrow--left" do %>
+        <%= link_to todo_index_path(set_previous_date), class: "horizontal-arrows__btn horizontal-arrows__btn--left" do %>
           <i class="fas fa-caret-left"></i>
         <% end %>
       <% end %>
@@ -17,7 +17,7 @@ set_meta_tags title: @title
         <p class="todo__date-day"><%= get_day() %></p>
       </div>
       <% if set_next_date %>
-        <%= link_to todo_index_path(set_next_date), class: "todo__date-arrow todo__date-arrow--right" do %>
+        <%= link_to todo_index_path(set_next_date), class: "horizontal-arrows__btn horizontal-arrows__btn--right" do %>
           <i class="fas fa-caret-right"></i>
         <% end %>
       <% end %>
@@ -37,7 +37,7 @@ set_meta_tags title: @title
       </div>
     <% end %>
     <div class="todo__page-action page-action">
-    <%= link_to new_todo_path, class: "page-action__btn" do %>
+    <%= link_to new_todo_path, class: "btn-outlined btn-outlined--sm" do %>
       <span class="page-action__icon">
         <i class="fas fa-plus"></i>
       </span>
@@ -65,7 +65,7 @@ set_meta_tags title: @title
         <div class="index_shortcut__no-result">
           <p class="index_shortcut__text">ショートカットが作成されていません。</p>
           <div class="page-action">
-            <%= link_to shortcuts_path, class: "page-action__btn" do %>
+            <%= link_to shortcuts_path, class: "btn-outlined btn-outlined--sm" do %>
               <span class="page-action__icon">
                 <i class="fas fa-plus"></i>
               </span>

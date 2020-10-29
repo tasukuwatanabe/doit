@@ -7,11 +7,13 @@
 }
 
 %link {
-  color: $color-base-font;
   transition-duration: 0.2s;
+  color: $color-base-font;
+  cursor: pointer;
+  display: inline-block;
 
   &:hover {
     text-decoration: none;
-    color: $color-base-font;
+    color: inherit;
   }
 }

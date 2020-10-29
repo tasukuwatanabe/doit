@@ -9,4 +9,32 @@
   &__calendar {
     margin-bottom: 50px;
   }
+
+  &__calendar {
+    .btn-outlined {
+      margin-bottom: 10px;
+    }
+  }
+
+  .calendar-table {
+    font-size: 13px;
+
+    th,
+    td {
+      padding: 5px 0;
+    }
+
+    .calendar-table--active {
+      div {
+        background-color: $color-main-theme;
+        color: #fff;
+        border-radius: 50%;
+        height: 22px;
+        width: 22px;
+        text-align: center;
+        line-height: 22px;
+        margin: 0 auto;
+      }
+    }
+  }
 }

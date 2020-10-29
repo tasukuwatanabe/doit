@@ -8,11 +8,11 @@
     </ul>
   </section>
 
-  <section class="sidebar-right__calendar calendar">
-    <div class="calendar__box">
-      <%= link_to "今日", todo_index_path(@today), class: "calendar__btn" %>
+  <section class="sidebar-right__calendar">
+    <div class="text-center">
+      <%= link_to "今日", todo_index_path(@today), class: "btn-outlined btn-outlined--xs" %>
     </div>
-    <table class="calendar__table">
+    <table class="sidebar-right__calendar-table calendar-table">
       <tr>
         <th>日</th>
         <th>月</th>
@@ -23,8 +23,8 @@
         <th>土</th>
       </tr>
       <tr>
-        <td class="calendar__table--out">30</td>
-        <td class="calendar__table--out">31</td>
+        <td class="calendar-table--out">30</td>
+        <td class="calendar-table--out">31</td>
         <td>1</td>
         <td>2</td>
         <td>3</td>
@@ -61,13 +61,13 @@
       <tr>
         <td>27</td>
         <td>28</td>
-        <td class="calendar__table--active">
+        <td class="calendar-table--active">
           <div>29</div>
         </td>
         <td>30</td>
         <td>31</td>
-        <td class="calendar__table--out">1</td>
-        <td class="calendar__table--out">2</td>
+        <td class="calendar-table--out">1</td>
+        <td class="calendar-table--out">2</td>
       </tr>
     </table>
   </section>

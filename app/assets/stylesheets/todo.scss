@@ -2,48 +2,12 @@
 @import "extend";
 
 .todo {
-  &__date-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 auto 20px;
-  }
+  .horizontal-arrows {
+    margin-bottom: 30px;
 
-  &__date-arrow {
-    width: 30px;
-    height: 30px;
-    border: 1px solid $color-main-theme;
-    background-color: #fff;
-    border-radius: 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition-duration: 0.2s;
-
-    &:hover {
-      background-color: $color-main-theme;
-
-      svg {
-        color: #fff;
-      }
-    }
-
-    svg {
-      font-size: 24px;
-      position: relative;
-      color: $color-main-theme;
-    }
-
-    &--left {
-      svg {
-        left: -1px;
-      }
-    }
-
-    &--right {
-      svg {
-        right: -1px;
-      }
+    .horizontal-arrows__btn {
+      width: 30px;
+      height: 30px;
     }
   }
 
@@ -67,6 +31,14 @@
 
   &__no-result {
     margin-bottom: 40px;
+    margin-top: 60px;
+    text-align: center;
+
+    .no-result__text {
+      margin-bottom: 30px;
+      font-size: 18px;
+      color: #999999;
+    }
 
     .no-result__illustration {
       margin: 0 auto 10px;

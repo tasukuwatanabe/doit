@@ -2,10 +2,6 @@
 @import "extend";
 
 .nav {
-  position: sticky;
-  top: 15px;
-  z-index: 1;
-
   &__list {
     padding: 0;
     margin: 0;
@@ -22,13 +18,9 @@
   }
   &__icon {
     width: 30px;
-    text-align: center;
-    display: block;
     margin-right: 12px;
 
     & > * {
-      color: $color-main-theme;
-      fill: $color-main-theme;
       width: 20px;
       font-size: 22px;
     }

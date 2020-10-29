@@ -1,0 +1,38 @@
+.achievement {
+  &__box {
+    display: flex;
+    align-items: center;
+    margin: 35px 0 20px;
+  }
+
+  &__title {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  &__data {
+    background: #ffffff;
+    padding: 30px;
+  }
+
+  table {
+    width: 100%;
+
+    tr:not(:last-of-type) {
+      th,
+      td {
+        padding-bottom: 32px;
+      }
+    }
+
+    th {
+      font-weight: normal;
+    }
+
+    td {
+      text-align: right;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+  }
+}
