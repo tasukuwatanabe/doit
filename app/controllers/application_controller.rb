@@ -3,6 +3,9 @@ class ApplicationController < ActionController::Base
   before_action :get_today
   before_action :request_path
 
+  # エラーページ表示用のコード(コントローラー側でraise StandardErrorを書く)
+  # rescue_from StandardError, with: :rescue325
+
   class Forbidden < ActionController::ActionControllerError; end
   class IpAddressRejected < ActionController::ActionControllerError; end
 
@@ -30,4 +33,10 @@ class ApplicationController < ActionController::Base
       str.map { |s| include?(s) }.include?(true)
     end
   end
+
+  # エラーページ表示用のコード
+  # errors/〇〇の部分を設定する
+  # def rescue325(_e)
+  #   render 'errors/forbidden', status: 325
+  # end
 end

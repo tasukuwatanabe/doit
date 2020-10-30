@@ -4,7 +4,7 @@ set_meta_tags title: @title
 %>
 
 <div class="login">
-  <h2 class="login__title"><%= @title %></h2>
+  <div class="login__title"><%= @title %></div>
   <div class="login__inner">
     <%= form_with model: @form, url: password_resets_path, local: true, html: { novalidate: true }, class: "form" do |f| %>
       <div class="form__group">

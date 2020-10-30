@@ -13,7 +13,7 @@ set_meta_tags title: @title
         <% end %>
       <% end %>
       <div class="todo__date-box">
-        <h2 class="todo__date-title"><%= @title %></h2>
+        <div class="todo__date-title"><%= @title %></div>
         <p class="todo__date-day"><%= get_day() %></p>
       </div>
       <% if set_next_date %>
@@ -48,7 +48,7 @@ set_meta_tags title: @title
   <div class="index_shortcut">
     <% if @shortcuts.present? %>
       <div class="index_shortcut__box">
-        <h3 class="index_shortcut__title">ショートカットからToDoを作成</h3>
+        <div class="index_shortcut__title">ショートカットからToDoを作成</div>
         <%= link_to "編集", shortcuts_path, class: "index_shortcut__edit" %>
       </div>
     <% end %>

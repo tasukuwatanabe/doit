@@ -1,7 +1,7 @@
 <template>
   <div class="shortcut">
     <div class="headline">
-      <h2 class="headline__title">
+      <div class="headline__title">
         ショートカットの管理
         <span class="icon headline__icon">
           <svg width="20px" height="20px">
@@ -14,7 +14,7 @@
             </g>
           </svg>
         </span>
-      </h2>
+      </div>
       <p class="headline__text">
         使用頻度の高いToDoをショートカットとして登録できます。
       </p>
@@ -233,3 +233,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.error-list {
+  list-style-type: none;
+  font-size: 12px;
+  padding-left: 0;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+</style>
