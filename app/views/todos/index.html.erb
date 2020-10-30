@@ -30,7 +30,6 @@ set_meta_tags title: @title
       </ul>
     <% else %>
       <div class="no-result todo__no-result">
-        <p class="no-result__text">ToDoは未登録です</p>
         <div class="no-result__illustration">
           <img src="/illustrations/il-checklist.png" alt="チェックリストのイラスト">
         </div>
@@ -45,25 +44,25 @@ set_meta_tags title: @title
     <% end %>
   </div>
   </div>
-  <div class="index_shortcut">
+  <div class="index-shortcut">
     <% if @shortcuts.present? %>
-      <div class="index_shortcut__box">
-        <div class="index_shortcut__title">ショートカットからToDoを作成</div>
-        <%= link_to "編集", shortcuts_path, class: "index_shortcut__edit" %>
+      <div class="index-shortcut__box">
+        <div class="index-shortcut__title">ショートカットからToDoを作成</div>
+        <%= link_to "編集", shortcuts_path, class: "index-shortcut__edit" %>
       </div>
     <% end %>
-    <div class="index_shortcut__field">
+    <div class="index-shortcut__field">
       <% if @shortcuts.present? %>
-        <ul class="index_shortcut__list">
+        <ul class="index-shortcut__list">
           <% @shortcuts.each do |shortcut| %>
-            <li class="index_shortcut__item">
-              <%= link_to shortcut.title, shortcut_create_todo_path(get_url_date, shortcut.id), method: :post, class: "index_shortcut__link" %>
+            <li class="index-shortcut__item">
+              <%= link_to shortcut.title, shortcut_create_todo_path(get_url_date, shortcut.id), method: :post, class: "index-shortcut__link" %>
             </li>
           <% end %>
         </ul>
       <% else %>
-        <div class="index_shortcut__no-result">
-          <p class="index_shortcut__text">ショートカットが作成されていません。</p>
+        <div class="index-shortcut__no-result">
+          <p class="index-shortcut__text">ショートカットが作成されていません。</p>
           <div class="page-action">
             <%= link_to shortcuts_path, class: "btn-outlined btn--sm" do %>
               <span class="page-action__icon">

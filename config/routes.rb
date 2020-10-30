@@ -16,7 +16,6 @@ Rails.application.routes.draw do
   delete '/cancel_oauth/:uid_type', to: 'users#cancel_oauth', as: 'cancel_oauth'
   resources :todos, except: [:index] do
     post '/toggle_status', to: 'todos#toggle_status', as: 'toggle_status'
-    post '/create_shortcut', to: 'todos#create_shortcut', as: 'create_shortcut'
   end
   resources :shortcuts
   namespace :api, { format: 'json' } do

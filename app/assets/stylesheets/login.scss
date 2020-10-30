@@ -6,13 +6,23 @@
   background-color: #fff;
   padding: 50px 35px 70px;
 
-  &__inner {
-    width: 400px;
+  @media (max-width: 767px) {
+    width: 100%;
+    padding: 30px 20px;
     margin: 0 auto;
   }
 
+  &__inner {
+    width: 400px;
+    margin: 0 auto;
+
+    @media (max-width: 767px) {
+      width: 100%;
+    }
+  }
+
   &__title {
-    font-size: 1.6rem;
+    font-size: 1.6em;
     font-weight: bold;
     text-align: center;
     margin-bottom: 25px;
@@ -22,7 +32,7 @@
   .form {
     &__group {
       &:not(:last-of-type) {
-        margin-bottom: 1rem;
+        margin-bottom: 1em;
       }
     }
 
@@ -31,27 +41,27 @@
       margin-top: 5px;
       color: $color-main-theme;
       text-decoration: underline;
-      font-size: 0.9rem;
+      font-size: 0.9em;
     }
 
     &__linkList {
       list-style-type: none;
       text-align: center;
       padding-left: 0;
-      font-size: 0.9rem;
+      font-size: 0.9em;
 
       &--login {
-        margin-bottom: 2rem;
+        margin-bottom: 2em;
       }
 
       &--password-reset {
-        margin-top: 2rem;
+        margin-top: 2em;
       }
     }
 
     &__linkItem {
       &:not(:last-of-type) {
-        margin-bottom: 0.6rem;
+        margin-bottom: 0.6em;
       }
     }
 
@@ -65,17 +75,17 @@
 
   .btn-main {
     &--login {
-      margin-top: 0.5rem;
-      margin-bottom: 1rem;
+      margin-top: 0.5em;
+      margin-bottom: 1em;
     }
 
     &--signup {
-      margin-top: 1.5rem;
-      margin-bottom: 1rem;
+      margin-top: 1.5em;
+      margin-bottom: 1em;
     }
 
     &--password-reset {
-      margin-top: 1.5rem;
+      margin-top: 1.5em;
     }
   }
 

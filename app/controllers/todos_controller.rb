@@ -67,17 +67,6 @@ class TodosController < ApplicationController
     redirect_to request.referer
   end
 
-  def create_shortcut
-    @todo = Todo.find(params[:todo_id])
-    shortcut = current_user.shortcuts.build(title: @todo.title)
-    if shortcut.save
-      flash[:success] = 'ショートカットが作成されました。'
-    else
-      flash[:danger] = shortcut.errors.messages.values[0][0]
-    end
-    redirect_to request.referer
-  end
-
   def toggle_status
     render body: nil
     @todo = Todo.find(params[:todo_id])

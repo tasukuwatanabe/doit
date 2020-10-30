@@ -6,8 +6,13 @@
   color: #fff;
   background: #f4a41c;
   border-radius: 2em;
+  white-space: nowrap;
 
-  &--ml {
-    margin-left: 20px;
+  &--margin {
+    margin: 0 20px 0 10px;
+
+    @media (max-width: 767px) {
+      margin-left: 0;
+    }
   }
 }

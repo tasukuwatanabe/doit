@@ -30,12 +30,12 @@
         <% end %>
       </li>
       <li class="nav__item">
-        <a href="#" class="nav__link">
+        <%= link_to labels_path, class: "nav__link" do %>
           <span class="icon nav__icon">
             <i class="fas fa-tag"></i>
           </span>
           <span>ラベル</span>
-        </a>
+        <% end %>
       </li>
       <li class="nav__item">
         <%= link_to edit_user_path(current_user), class: "nav__link" do %>

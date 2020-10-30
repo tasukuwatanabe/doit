@@ -1,13 +1,21 @@
 @import "color";
 @import "extend";
 
-.index_shortcut {
+.index-shortcut {
   margin-top: 80px;
+
+  @media (max-width: 767px) {
+    margin-top: 50px;
+  }
 
   &__field {
     padding: 20px;
     background-color: #fff;
     text-align: center;
+
+    @media (max-width: 767px) {
+      padding: 10px;
+    }
   }
 
   &__box {
@@ -17,12 +25,12 @@
   }
 
   &__title {
-    font-size: 18px;
+    font-size: 0.9em;
+    font-weight: bold;
   }
 
   &__edit {
     text-decoration: underline;
-    font-size: 16px;
     color: $color-main-theme;
   }
 

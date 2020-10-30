@@ -105,7 +105,7 @@ provide(:button_text, "更新する")
         </tr>
       </table>
       <% if current_user.auto_generated_password %>
-        <p>SNS連携を解除するには<%= link_to "パスワードを設定", edit_user_password_path(current_user), class: "sns-link__password" %>してください</p>
+        <p>SNS連携を解除するには<%= link_to "パスワードを設定", edit_user_password_path(current_user), class: "link--default" %>してください</p>
       <% end %>
     </div>
     <div class="form__action">

@@ -16,13 +16,13 @@
   }
 
   &__date-title {
-    font-size: 26px;
+    font-size: 1.6em;
     margin-bottom: 0.1em;
   }
 
   &__date-day {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.8em;
   }
 
   &__page-action {
@@ -30,23 +30,27 @@
   }
 
   &__no-result {
-    margin-bottom: 40px;
-    margin-top: 60px;
+    margin-bottom: 30px;
+    margin-top: 50px;
     text-align: center;
 
-    .no-result__text {
-      margin-bottom: 30px;
-      font-size: 18px;
-      color: #999999;
+    @media (max-width: 767px) {
+      margin-top: 30px;
     }
 
     .no-result__illustration {
       width: 400px;
-      margin: 0 auto 10px;
+      margin: 0 auto 20px;
+
+      @media (max-width: 767px) {
+        width: 100%;
+      }
     }
   }
 
-  .label {
-    margin-left: 20px;
+  .list {
+    &__item {
+      padding-left: 62px;
+    }
   }
 }

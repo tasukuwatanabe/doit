@@ -18,8 +18,8 @@
       <p class="headline__text">
         使用頻度の高いToDoをショートカットとして登録できます。
       </p>
-      <div class="page-action headline__page-action" v-on:click="openModal">
-        <a class="page-action__btn btn-outlined btn--sm">
+      <div class="page-action headline__page-action">
+        <a v-on:click="openModal" class="page-action__btn btn-outlined btn--sm">
           <span class="page-action__icon">
             <i class="fas fa-plus"></i>
           </span>
@@ -29,7 +29,7 @@
     </div>
     <ul class="list" v-if="shortcuts.length">
       <li class="list__item" v-for="s in shortcuts" :key="s.id">
-        <div class="list__block">
+        <div class="list__block list__block--left">
           <div class="list__title-group" style="position: relative;">
             <div
               v-show="s.id != editingShortcutId"
@@ -65,19 +65,21 @@
               >{{ errors[0] }}</span
             >
           </div>
-          <div class="label label--ml">プログラミング</div>
         </div>
-        <div class="list__block item-action">
-          <div v-on:click="editShortcut(s.id)" class="item-action__btn">
-            <i class="fas fa-pencil-alt"></i>
-          </div>
-          <div v-on:click="deleteShortcut(s.id)" class="item-action__btn">
-            <i class="fas fa-trash"></i>
+        <div class="list__block list__block--right list__block--grow">
+          <div class="label label--margin">プログラミング</div>
+          <div class="item-action">
+            <a v-on:click="editShortcut(s.id)" class="item-action__btn">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+            <a v-on:click="deleteShortcut(s.id)" class="item-action__btn">
+              <i class="fas fa-trash"></i>
+            </a>
           </div>
         </div>
       </li>
     </ul>
-    <div class="sub__no-result no-result" v-else>
+    <div class="no-result no-result" v-else>
       <div class="no-result__illustration">
         <img
           src="/illustrations/il-navigation.png"

@@ -1,18 +1,30 @@
 .achievement {
+  @media (max-width: 767px) {
+    margin-bottom: 30px;
+  }
+
   &__box {
     display: flex;
     align-items: center;
     margin: 35px 0 20px;
+
+    @media (max-width: 767px) {
+      margin-top: 0;
+    }
   }
 
   &__title {
-    font-size: 1.2rem;
+    font-size: 1.2em;
     margin: 0 15px 0 0;
   }
 
   &__data {
     background: #ffffff;
     padding: 30px;
+
+    @media (max-width: 767px) {
+      padding: 20px;
+    }
   }
 
   table {
@@ -32,7 +44,11 @@
     td {
       text-align: right;
       font-weight: bold;
-      font-size: 1.1rem;
+      font-size: 1.1em;
+
+      @media (max-width: 767px) {
+        font-size: 1em;
+      }
     }
   }
 }
