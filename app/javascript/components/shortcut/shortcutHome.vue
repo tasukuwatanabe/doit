@@ -90,34 +90,48 @@
     <div class="modal" :class="{ 'is-open': isModalActive }">
       <div class="modal__layer" @click.self="closeModal">
         <div class="modal__box">
-          <form @submit.prevent novalidate="true">
+          <form @submit.prevent novalidate="true" class="form">
             <div class="modal-form">
               <div class="fa-case" @click="closeModal">
                 <i class="fas fa-times"></i>
               </div>
-              <input
-                type="text"
-                placeholder="タイトル"
-                class="form-control"
-                v-model="shortcut.title"
-                required
-                @keydown:enter="createShortcut"
-              />
-              <ul v-if="errors.length" class="error-list" style="color: red;">
-                <li v-for="(error, index) in errors" :key="`error-${index}`">
-                  {{ error }}
-                </li>
-              </ul>
+              <div class="form__group row">
+                <div class="col-3 form__label">
+                  タイトル
+                </div>
+                <div class="col-9">
+                  <input
+                    type="text"
+                    class="form__input"
+                    v-model="shortcut.title"
+                    required
+                    @keydown:enter="createShortcut"
+                  />
+                  <div v-if="errors.length">{{ errors[0] }}</div>
+                </div>
+              </div>
+              <div class="form__group row">
+                <div class="col-3 form__label">
+                  ラベル
+                </div>
+                <div class="col-9">
+                  <select name="label" class="form__select">
+                    <option value="" class="first" selected disabled
+                      >ラベルを選択</option
+                    >
+                    <option value="プログラミング">プログラミング</option>
+                    <option value="育児">育児</option>
+                    <option value="スポーツ">スポーツ</option>
+                  </select>
+                </div>
+              </div>
               <div class="btn-case">
-                <div
-                  @click="closeModal"
-                  class="btn-cancel btn btn-sm btn-outline-info"
-                >
+                <div @click="closeModal" class="btn-gray btn--sm">
                   キャンセル
                 </div>
-                <button @click="createShortcut" class="btn btn-sm btn-info">
+                <div @click="createShortcut" class="btn-main btn--sm">
                   新規作成
-                </button>
+                </div>
               </div>
             </div>
           </form>

@@ -4,11 +4,11 @@
   </div>
   <div class="list__block list__block--right">
     <div class="label-in-use">8個のToDoで使用中</div>
-    <div>
-      <%= link_to [ :edit, label ], class: "item-btn" do %>
+    <div class="item-action">
+      <%= link_to [ :edit, label ], class: "item-action__btn" do %>
         <i class="fas fa-pencil-alt"></i>
       <% end %>
-      <%= link_to label, method: :delete, class: "item-btn", data: { confirm: "本当に削除しますか？" } do %>
+      <%= link_to label, method: :delete, class: "item-action__btn", data: { confirm: "本当に削除しますか？" } do %>
         <i class="fas fa-trash"></i>
       <% end %>
     </div>

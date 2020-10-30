@@ -5,13 +5,11 @@
   @extend %link;
   color: #fff;
   background-color: $color-main-theme;
-  border: none;
+  border: 1px solid $color-main-theme;
 
   &:hover {
-    position: relative;
-    top: -1px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-    color: #fff;
+    background-color: #fff;
+    color: $color-main-theme;
   }
 
   &__icon {
