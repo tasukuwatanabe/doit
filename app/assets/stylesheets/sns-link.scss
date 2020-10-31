@@ -1,0 +1,17 @@
+@import "color";
+@import "extend";
+
+.sns-link {
+  &__table {
+    margin-top: 0.5em;
+    margin-bottom: 2em;
+
+    td {
+      padding: 10px 30px 10px 0;
+    }
+  }
+
+  &__cancel {
+    margin-left: 1em;
+  }
+}

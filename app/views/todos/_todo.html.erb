@@ -1,17 +1,20 @@
-<li class="todo__item <%= 'routine' unless todo.routine_id.nil? %>">
-  <div id="todo-status" class="todo__item-status">
+<li class="list__item">
+  <div id="todo-<%= todo.id %>" class="todo-status <%= "todo__status--checked" if todo.status %>">
     <%= check_box_tag "todo_status_#{todo.id}", true, todo.status, {'data-id' => todo.id, remote: true, method: :post, class: "toggle-status"} %>
     <%= label_tag "todo_status_#{todo.id}", "" %>
   </div>
-  <div class="todo__item-title"><%= truncate(todo.title, length: 24, omission: "..." ) %></div>
-  <% if !todo.routine_id.nil? %>
-    <i class="fas fa-calendar-alt icon-calendar"></i>
-  <% end %>
-  <div class="todo__item-link-box">
-    <%= link_to todo_create_shortcut_path(todo.id), method: :post, class: "mr-3" do %>
-      <i class="fas fa-share"></i>
-    <% end %>
-    <%= link_to "編集", [ :edit, todo ], class: "btn btn-outline-warning btn-sm" %>
-    <%= link_to "削除", todo, method: :delete, class: "btn btn-outline-danger btn-sm", data: { confirm: "本当に削除しますか？" } %>
+  <div class="list__block list__block--left">
+    <div class="list__title"><%= truncate(todo.title, length: 24, omission: "..." ) %></div>
+  </div>
+  <div class="list__block list__block--right list__block--grow">
+    <div class="label label--margin">プログラミング</div>
+    <div class="item-action">
+      <%= link_to [ :edit, todo ], class: "item-action__btn" do %>
+        <i class="fas fa-pencil-alt"></i>
+      <% end %>
+      <%= link_to todo, method: :delete, class: "item-action__btn", data: { confirm: "本当に削除しますか？" } do %>
+        <i class="fas fa-trash"></i>
+      <% end %>
+    </div>
   </div>
 </li>

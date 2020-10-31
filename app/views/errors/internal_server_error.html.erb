@@ -1,6 +1,27 @@
-<div style="width: 100%;">
-  <div id="error">
-    <h1>500 Internal Server Error</h1>
-    <p>申し訳ございません。システムエラーが発生しました。</p>
+<% 
+@title = "システムエラー"
+set_meta_tags title: @title
+%>
+
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <div class="headline">
+    <div class="headline__title">
+      500 Internal Server Error
+      <span class="icon headline__icon">
+        <i class="fas fa-server"></i>
+      </span>
+    </div>
+    <div class="headline__text">
+      申し訳ございません。システムエラーが発生しました。
+    </div>
+  </div>
+  <div class="no-result no-result">
+    <div class="no-result__illustration">
+      <img
+        src="/illustrations/il-server-error.png"
+        alt="500エラーのイラスト"
+      />
+    </div>
   </div>
 </div>

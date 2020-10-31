@@ -1,152 +1,56 @@
+@import "color";
+@import "extend";
+
 .todo {
-  &__main-col {
-    padding: 0 60px;
-    flex-grow: 1;
+  .horizontal-arrows {
+    margin-bottom: 30px;
 
-    @media all and(max-width: 1199px) {
-      padding: 0 50px;
-    }
-    @media all and(max-width: 991px) {
-      padding: 0 30px;
-    }
-
-    &.todo__main-col--index {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-width: 500px;
+    .horizontal-arrows__btn {
+      width: 30px;
+      height: 30px;
     }
   }
-  &__list {
-    padding: 0;
-  }
-  &__no-item {
+
+  &__date-box {
     text-align: center;
-    margin-bottom: 50px;
   }
-  &__item {
-    padding: 15px;
-    border-radius: 3px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ffffff;
-    border: 1px solid #e4e4e4;
 
-    &:not(:last-child) {
-      margin-bottom: 15px;
+  &__date-title {
+    font-size: 1.6em;
+    margin-bottom: 0.1em;
+  }
+
+  &__date-day {
+    margin: 0;
+    font-size: 0.8em;
+  }
+
+  &__page-action {
+    text-align: center;
+  }
+
+  &__no-result {
+    margin-bottom: 30px;
+    margin-top: 50px;
+    text-align: center;
+
+    @media (max-width: 767px) {
+      margin-top: 30px;
     }
 
-    &-title {
-      margin-right: 15px;
-      width: calc(100% - 158px - 15px);
-    }
+    .no-result__illustration {
+      width: 400px;
+      margin: 0 auto 20px;
 
-    .icon-calendar {
-      margin-right: 15px;
-      font-size: 20px;
-      color: rgb(252, 175, 33);
-    }
-
-    &-link-box {
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      white-space: nowrap;
-
-      a:not(:last-child) {
-        margin-right: 10px;
+      @media (max-width: 767px) {
+        width: 80%;
       }
     }
   }
-  &__btn-case {
-    display: flex;
-    margin: 20px 0 100px;
-    justify-content: flex-end;
-  }
-}
 
-.date-range-box {
-  display: flex !important;
-
-  &--inline {
-    justify-content: flex-start;
-    align-items: center;
-
-    & > *:not(:last-child) {
-      margin-right: 15px;
+  .list {
+    &__item {
+      padding-left: 62px;
     }
   }
-  &--column {
-    flex-direction: column;
-    align-items: flex-start;
-
-    & > *:not(:last-child) {
-      margin-bottom: 15px;
-    }
-
-    .date-range-item {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-    }
-  }
-
-  .date-range-item {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .date-title {
-    font-size: 10px;
-    color: #999999;
-  }
-}
-
-// ステータス用チェックボックス
-
-.todo__item-status {
-  position: relative;
-  width: 28px;
-  height: 28px;
-  margin-right: 15px;
-}
-
-.todo__item-status label {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  cursor: pointer;
-  height: 28px;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 28px;
-}
-
-.todo__item-status label:after {
-  border: 2px solid #fff;
-  border-top: none;
-  border-right: none;
-  content: "";
-  height: 6px;
-  left: 7px;
-  opacity: 0;
-  position: absolute;
-  top: 8px;
-  transform: rotate(-45deg);
-  width: 12px;
-}
-
-.todo__item-status input[type="checkbox"] {
-  visibility: hidden;
-}
-
-.todo__item-status input[type="checkbox"]:checked + label {
-  background-color: rgb(252, 175, 33);
-  border-color: rgb(252, 175, 33);
-}
-
-.todo__item-status input[type="checkbox"]:checked + label:after {
-  opacity: 1;
 }

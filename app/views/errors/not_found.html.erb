@@ -1,7 +1,27 @@
-<div style="width: 100%;">
-  <div id="error">
-    <h1>404 Not Found</h1>
-    <p>指定されたページは見つかりません。</p>
-    <p class="url"><%= request.env["REQUEST_URI"] %></p>
+<% 
+@title = "ページが見つかりません"
+set_meta_tags title: @title
+%>
+
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <div class="headline">
+    <div class="headline__title">
+      404 Not Found
+      <span class="icon headline__icon">
+        <i class="fas fa-search"></i>
+      </span>
+    </div>
+    <div class="headline__text">
+      指定されたページは見つかりませんでした。<br>URLが変わった、もしくはページが削除された可能性があります。
+    </div>
+  </div>
+  <div class="no-result no-result">
+    <div class="no-result__illustration">
+      <img
+        src="/illustrations/il-not-found.png"
+        alt="404エラーのイラスト"
+      />
+    </div>
   </div>
 </div>

@@ -1,18 +1,116 @@
 <% 
-@title = 'ユーザー情報の編集'
+@title = 'アカウント設定'
 set_meta_tags title: @title
 provide(:button_text, "更新する") 
 %>
 
-<div class="container d-flex justify-content-between">
-  <%= render "shared/sidebar_left" %>
-  <div class="task__main-col">
-    <div class="page__title-box">
-      <h2 class="page__title"><%= @title %></h2>
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <div class="headline">
+    <div class="headline__title">
+      アカウント設定
+      <span class="icon headline__icon">
+        <i class="fas fa-cog"></i>
+      </span>
     </div>
-    <%= render "form" %>
-    <%= link_to "パスワードの変更", edit_user_password_path(current_user), class: "btn btn-outline-primary mr-3 btn-sm #{disable_for_guest}" %>
-    <%= link_to "退会する", user_path, method: :delete, data: { confirm: "アカウントを削除してよろしいですか？" }, class: "btn btn-outline-danger btn-sm #{disable_for_guest}" %>
+    <p class="headline__text">
+      ユーザー名、メールアドレスなどのユーザー情報を変更することができます。
+    </p>
   </div>
-  <%= render "shared/sidebar_right" %>
+  <%= form_with(model: @user, local: true, html: { novalidate: true, multipart: true, class: "form user-form" }) do |f| %>
+    <div class="form__group">
+      <%= f.label :username, class: "form__label" %>
+      <%= f.text_field :username, class: "form__input" %>
+      <%= error_message(@user, :username) %>
+    </div>
+    <div class="form__group">
+      <%= f.label :email, class: "form__label" %>
+      <%= f.email_field :email, class: "form__input form__input--email", readonly: user_is_guest? %>
+      <%= error_message(@user, :email) %>
+      <p class="form__desc">アドレスを変更すると、確認のため新しいアドレスにメールを送信します。<strong>新しいアドレスは確認が完了するまで有効化されません。</strong></p>
+      <% if current_user.unconfirmed_email %>
+        <div class="form__notice">
+          <code><%= current_user.unconfirmed_email %></code>への管理者メールアドレス変更が承認待ち中です。
+          <span><%= link_to "キャンセル", email_confirmation_path, method: :delete, class: "link--default" %></span>
+        </div>
+      <% end %>
+    </div>
+    <div class="form__group">
+      <%= f.label :user_image, class: "form__label" %>
+      <div class="form__profile-box">
+        <%= user_image(current_user) %>
+        <%= f.file_field :user_image %>
+      </div>
+      <% if has_user_image? %>
+        <div class="form__profile-default">
+          <%= f.check_box :remove_user_image %>
+          <%= f.label :remove_user_image, "デフォルトの画像を使用" %>
+        </div>
+      <% end %>
+      <%= error_message(current_user, :user_image) %>
+    </div>
+    <div class="form__group">
+      <label class="form__label">SNS連携</label>
+      <table class="sns-link__table">
+        <tr>
+          <td>Facebook</td>
+          <td>
+            <div class="sns-icon sns-icon--facebook">
+              <i class="fab fa-facebook-f"></i>
+            </div>
+          </td>
+          <td>
+            <% if current_user.twitter_uid %>
+              <% if !current_user.auto_generated_password %>
+                <%= link_to "連携を解除", cancel_oauth_path(uid_type: "twitter"), method: :delete , class: "link--default"%>
+              <% end %>
+            <% else %>
+              <span>未連携</span>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td>Twitter</td>
+          <td>
+            <div class="sns-icon sns-icon--twitter">
+              <i class="fab fa-twitter"></i>
+            </div>
+          </td>
+          <td>
+            <% if current_user.twitter_uid %>
+              <% if !current_user.auto_generated_password %>
+                <%= link_to "連携を解除", cancel_oauth_path(uid_type: "twitter"), method: :delete, class: "link--default" %>
+              <% end %>
+            <% else %>
+              <span>未連携</span>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td>Google</td>
+          <td>
+            <div class="sns-icon sns-icon--google">
+              <i class="fab fa-google"></i>
+            </div>
+          </td>
+          <td>
+            <% if current_user.google_uid %>
+              <% if !current_user.auto_generated_password %>
+                <%= link_to "連携を解除", cancel_oauth_path(uid_type: "google"), method: :delete, class: "link--default" %>
+              <% end %>
+            <% else %>
+              <span>未連携</span>
+            <% end %>
+          </td>
+        </tr>
+      </table>
+      <% if current_user.auto_generated_password %>
+        <p>SNS連携を解除するには<%= link_to "パスワードを設定", edit_user_password_path(current_user), class: "link--default" %>してください</p>
+      <% end %>
+    </div>
+    <div class="form__action">
+      <%= f.submit yield(:button_text), class: "btn-main btn--md" %>
+      <%= link_to "退会する", user_path, method: :delete, data: { confirm: "アカウントを削除してよろしいですか？" }, class: "form__cancel #{disable_for_guest}" %>
+    </div>
+  <% end %>
 </div>

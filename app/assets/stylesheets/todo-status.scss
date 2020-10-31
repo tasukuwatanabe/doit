@@ -1,0 +1,53 @@
+@import "color";
+
+.todo-status {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  margin-right: 15px;
+
+  &--checked {
+    & + .todo__title {
+      color: #bbb;
+    }
+  }
+
+  label {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 32px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 32px;
+
+    &:after {
+      border: 2px solid #fff;
+      border-top: none;
+      border-right: none;
+      content: "";
+      height: 8px;
+      left: 8px;
+      opacity: 0;
+      position: absolute;
+      top: 9px;
+      transform: rotate(-45deg);
+      width: 15px;
+    }
+  }
+
+  input[type="checkbox"] {
+    visibility: hidden;
+
+    &:checked + label {
+      background-color: $color-main-theme;
+      border-color: $color-main-theme;
+
+      &:after {
+        opacity: 1;
+      }
+    }
+  }
+}

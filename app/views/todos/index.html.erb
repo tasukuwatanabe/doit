@@ -1,0 +1,228 @@
+<% 
+@title = get_url_date_in_japanese
+set_meta_tags title: @title
+%>
+
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <div class="todo">
+    <section class="horizontal-arrows">
+      <% if set_previous_date %>
+        <%= link_to todo_index_path(set_previous_date), class: "horizontal-arrows__btn horizontal-arrows__btn--left" do %>
+          <i class="fas fa-caret-left"></i>
+        <% end %>
+      <% end %>
+      <div class="todo__date-box">
+        <div class="todo__date-title"><%= @title %></div>
+        <p class="todo__date-day"><%= get_day() %></p>
+      </div>
+      <% if set_next_date %>
+        <%= link_to todo_index_path(set_next_date), class: "horizontal-arrows__btn horizontal-arrows__btn--right" do %>
+          <i class="fas fa-caret-right"></i>
+        <% end %>
+      <% end %>
+    </section>
+    <% if @date_todos.any? %>
+      <ul class="list">
+      <% @todos.each do |todo| %>
+        <%= render todo %>
+      <% end %>
+      </ul>
+    <% else %>
+      <div class="no-result todo__no-result">
+        <div class="no-result__illustration">
+          <img src="/illustrations/il-checklist.png" alt="チェックリストのイラスト">
+        </div>
+      </div>
+    <% end %>
+    <div class="todo__page-action page-action">
+    <div class="btn-outlined btn--sm">
+      <span class="page-action__icon">
+        <i class="fas fa-plus"></i>
+      </span>
+      <span id="modal-trigger" class="page-action__text">ToDoを追加</span>
+    </div>
+  </div>
+  </div>
+  <div class="index-shortcut">
+    <% if @shortcuts.present? %>
+      <div class="index-shortcut__box">
+        <div class="index-shortcut__title">ショートカットからToDoを作成</div>
+        <%= link_to "編集", shortcuts_path, class: "index-shortcut__edit" %>
+      </div>
+    <% end %>
+    <div class="index-shortcut__field">
+      <% if @shortcuts.present? %>
+        <ul class="index-shortcut__list">
+          <% @shortcuts.each do |shortcut| %>
+            <li class="index-shortcut__item">
+              <%= link_to shortcut.title, shortcut_create_todo_path(get_url_date, shortcut.id), method: :post, class: "index-shortcut__link" %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <div class="index-shortcut__no-result">
+          <p class="index-shortcut__text">ショートカットが作成されていません。</p>
+          <div class="page-action">
+            <%= link_to shortcuts_path, class: "btn-outlined btn--sm" do %>
+              <span class="page-action__icon">
+                <i class="fas fa-plus"></i>
+              </span>
+              <span class="page-action__text">ショートカットを追加</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="modal" id="modal">
+    <div class="modal__layer close-modal">
+      <div class="modal__box">
+        <form novalidate="true" class="form">
+          <div class="modal-form">
+            <div class="fa-case close-modal">
+              <i class="fas fa-times"></i>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  タイトル
+                </div>
+              </div>
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form__input"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  ラベル
+                </div>
+              </div>
+              <div class="col-9">
+                <select name="label" class="form__select">
+                  <option value="" class="first" selected
+                    >ラベルを選択</option
+                  >
+                  <option value="プログラミング">プログラミング</option>
+                  <option value="育児">育児</option>
+                  <option value="スポーツ">スポーツ</option>
+                </select>
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  開始日
+                </div>
+              </div>
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form__input"
+                />
+              </div>
+            </div>
+            <div class="form__group row form__group--end-day">
+              <div class="col-3">
+                <div class="form__label">
+                  終了日
+                </div>
+              </div>
+              <div class="col-9">
+                <div class="remember-me">
+                  <input
+                    type="text"
+                    class="form__input"
+                  />
+                  <div class="remember-me__checkbox">
+                    <input type="checkbox" name="remember_me" id="remember_me">
+                    <label for="remember_me">終了日を設定せず繰り返す</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  曜日指定
+                </div>
+              </div>
+              <div class="col-9">
+                <div class="day-check">
+                  <label class="day-check__label">
+                    <input type="checkbox" class="day-check__input" value="日">
+                    <span>日</span>
+                  </label>
+                  <label class="day-check__label">
+                    <input type="checkbox" class="day-check__input" value="月">
+                    <span>月</span>
+                  </label>
+                  <label class="day-check__label">
+                    <input type="checkbox" class="day-check__input" value="火">
+                    <span>火</span>
+                  </label>
+                  <label class="day-check__label">
+                    <input type="checkbox" class="day-check__input" value="水">
+                    <span>水</span>
+                  </label>
+                  <label class="day-check__label">
+                    <input type="checkbox" class="day-check__input" value="木">
+                    <span>木</span>
+                  </label>
+                  <label class="day-check__label">
+                    <input type="checkbox" class="day-check__input" value="金">
+                    <span>金</span>
+                  </label>
+                  <label class="day-check__label">
+                    <input type="checkbox" class="day-check__input" value="土">
+                    <span>土</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  メモ
+                </div>
+              </div>
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form__input"
+                />
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  達成度を表示
+                </div>
+              </div>
+              <div class="col-9">
+                <div class="btn-slide">
+                  <input type="checkbox" id="LikeNoticeSetting" class="btn-slide__input">
+                  <label for="LikeNoticeSetting" class="btn-slide__label"></label>
+                </div>
+              </div>
+            </div>
+            <div class="btn-case">
+              <div class="btn-gray btn--sm close-modal">
+                キャンセル
+              </div>
+              <div class="btn-main btn--sm">
+                新規作成
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render "shared/sidebar_right" %>

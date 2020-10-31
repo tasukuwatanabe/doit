@@ -17,6 +17,10 @@ module CalculationDateHelper
     get_url_date.strftime('%Y年%1m月%1d日')
   end
 
+  def get_day
+    %w[日 月 火 水 木 金 土][get_url_date.wday] + '曜日'
+  end
+
   def set_previous_date
     if !date_out_of_range?(get_url_date.yesterday)
       get_url_date.yesterday

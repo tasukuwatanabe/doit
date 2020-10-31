@@ -1,0 +1,60 @@
+@import "color";
+
+.list {
+  padding: 0;
+  margin-bottom: 30px;
+
+  &__item {
+    padding: 24px 30px 24px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    position: relative;
+
+    @media (max-width: 767px) {
+      padding: 18px 22px;
+      display: block;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $border-color;
+    }
+
+    .todo-status {
+      position: absolute;
+      left: 16px;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
+
+  &__block {
+    display: flex;
+    align-items: center;
+
+    &--right {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &--left {
+      @media (max-width: 767px) {
+        margin-bottom: 8px;
+      }
+    }
+
+    &--grow {
+      flex-grow: 1;
+    }
+  }
+
+  &__title {
+    font-size: 1.1em;
+    @media (max-width: 767px) {
+      font-size: 1em;
+      line-height: 1.4;
+    }
+  }
+}

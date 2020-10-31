@@ -1,11 +1,37 @@
-<footer>
+<footer class="footer">
     &copy; 2020 Tasuku Watanabe.
 </footer>
 
 <script type="text/javascript">
+
+    // チェックリストのステータス切り替え
     $(function() {
         $(".toggle-status").click(function() {
-            $.post('/todos/'+$(this).data('id')+'/toggle_status')
+            $.post('/todos/'+$(this).data('id')+'/toggle_status');
+            $("#todo-" + $(this).data('id')).toggleClass("todo__status--checked");
+        })
+    })
+
+    // SPサイズでスライドメニューを表示
+    $(function() {
+        $("#hamburger").click(function() {
+            $('body').addClass('menu-open');
+        })
+        $("#screen-layer").click(function() {
+            $('body').removeClass('menu-open');
+        })
+    })
+
+    // ToDoのモーダルを表示する
+    $(function() {
+        $("#modal-trigger").click(function() {
+            $('#modal').addClass('is-open');
+        })
+        $(".close-modal").click(function(e) {
+            $('#modal').removeClass('is-open');
+        })
+        $(".modal__box").click(function(e) {
+            e.stopPropagation();
         })
     })
 </script>

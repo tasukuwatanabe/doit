@@ -1,0 +1,40 @@
+@import "color";
+
+.headline {
+  margin-bottom: 40px;
+  position: relative;
+
+  &__title {
+    font-size: 1.6em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    @media (max-width: 767px) {
+      font-size: 1.2em;
+    }
+  }
+
+  &__text {
+    color: $font-color-light;
+  }
+
+  &__icon {
+    margin-left: 12px;
+
+    @media (max-width: 767px) {
+      transform: scale(0.8);
+      margin-left: 8px;
+    }
+  }
+
+  &__page-action {
+    position: absolute;
+    top: 5px;
+    right: 0;
+
+    @media (max-width: 767px) {
+      position: static;
+      text-align: right;
+    }
+  }
+}

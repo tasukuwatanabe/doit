@@ -3,37 +3,33 @@
 set_meta_tags title: @title
 %>
 
-<div class="container d-flex justify-content-between">
-  <%= render "shared/sidebar_left" %>
-  <div class="task__main-col">
-    <div class="page__title-box">
-      <h2 class="page__title"><%= @title %></h2>
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <div class="headline">
+    <div class="headline__title">
+      パスワードの変更
+      <span class="icon headline__icon">
+        <i class="fas fa-cog"></i>
+      </span>
     </div>
-    
-    <%= form_with(model: @change_password_form, url: :user_password, method: :patch, local: true) do |f| %>
-      <div class="form-group row">
-        <div class="col-sm-4">
-          <%= f.label :new_password, class: "col-form-label" %>
-        </div>
-        <div class="col-sm-8">
-          <%= f.password_field :new_password, class: "form-control" %>
-          <%= error_message(@change_password_form, :new_password) %>
-        </div>
-      </div>
-      <div class="form-group row">
-        <div class="col-sm-4">
-          <%= f.label :new_password_confirmation, class: "col-form-label" %>
-        </div>
-        <div class="col-sm-8">
-          <%= f.password_field :new_password_confirmation, class: "form-control" %>
-          <%= error_message(@change_password_form, :new_password_confirmation) %>
-        </div>
-      </div>
-
-      <div class="action__case">
-        <%= f.submit "パスワードを更新する", class: "btn btn-primary action__btn" %>
-      </div>
-    <% end %>
+    <p class="headline__text">
+      ログインに必要なパスワードを変更することができます。
+    </p>
   </div>
-  <%= render "shared/sidebar_right" %>
+  <%= form_with(model: @change_password_form, url: :user_password, method: :patch, local: true, class: "form user-form") do |f| %>
+    <div class="form__group">
+      <%= f.label :new_password, class: "form__label" %>
+      <%= f.password_field :new_password, class: "form__input" %>
+      <%= error_message(@change_password_form, :new_password) %>
+    </div>
+    <div class="form__group">
+      <%= f.label :new_password_confirmation, class: "form__label" %>
+      <%= f.password_field :new_password_confirmation, class: "form__input" %>
+      <%= error_message(@change_password_form, :new_password_confirmation) %>
+    </div>
+
+    <div class="form__action">
+      <%= f.submit "パスワードを更新する", class: "btn-main btn--md" %>
+    </div>
+  <% end %>
 </div>

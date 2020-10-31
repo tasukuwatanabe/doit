@@ -3,22 +3,21 @@
 set_meta_tags title: @title
 %>
 
-<div class="container">
-  <div class="login__case">
-      <div class="page__title-box">
-        <h2 class="page__title"><%= @title %></h2>
+<div class="login">
+  <div class="login__title"><%= @title %></div>
+  <div class="login__inner">
+    <%= form_with model: @form, url: password_resets_path, local: true, html: { novalidate: true }, class: "form" do |f| %>
+      <div class="form__group">
+        <%= f.label "メールアドレス", class: "form__label" %>
+        <%= f.email_field :email, class: "form__input" %>
       </div>
-      <div class="login__form">
-        <%= form_with model: @form, url: password_resets_path, local: true, html: { novalidate: true } do |f| %>
-          <div class="form-group row">
-            <div class="col-sm-12">
-              <%= f.email_field :email, class: "form-control", placeholder: "メールアドレス" %>
-            </div>
-          </div>
-          <div class="action__case">
-            <%= f.submit "再設定用のメールを発行", class: "btn btn-primary action__btn" %>
-          </div>
-        <% end %>
+      <div class="form__group text-center">
+        <%= f.submit "再設定用のメールを発行", class: "btn-main btn-main--password-reset btn--sm" %>
       </div>
+      <ul class="form__linkList form__linkList--password-reset">
+        <li class="form__linkItem">お試しの方は<%= link_to "ゲストログイン", guest_login_path, method: :post, class: "form__link--default" %></li>
+        <li class="form__linkItem">アカウントをお持ちの方は<%= link_to "ログイン", login_path, class: "form__link--default" %></li>
+      </ul>
+    <% end %>
   </div>
 </div>

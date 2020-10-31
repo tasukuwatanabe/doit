@@ -1,0 +1,15 @@
+@import "extend";
+
+.userinfo {
+  display: flex;
+  align-items: center;
+
+  .profile-img {
+    width: 45px;
+    margin-right: 10px;
+  }
+
+  &__username {
+    @extend %link;
+  }
+}

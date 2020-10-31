@@ -1,27 +1,33 @@
-header {
-  margin-bottom: 1rem;
-  background-color: #facb27;
-  border-bottom: 1px solid #e4e4e4;
+@import "color";
 
-  .navbar {
-    padding: 0.5em 1em;
+.header {
+  background-color: $color-main-theme;
+  position: relative;
 
-    &-brand img {
+  &__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    min-height: 65px;
+
+    @media (max-width: 991px) {
+      padding: 15px 0;
+    }
+  }
+
+  &__logo {
+    display: inline-block;
+
+    img {
       height: 30px;
+      width: auto;
     }
+  }
 
-    &-collapse {
-      flex-grow: unset !important;
-    }
-    .nav-item {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      .user-icon {
-        width: 44px;
-        border-radius: 50%;
-      }
+  &__userinfo {
+    @media (max-width: 991px) {
+      display: none !important;
     }
   }
 }

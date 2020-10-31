@@ -1,0 +1,42 @@
+@import "color";
+
+.day-check {
+  display: flex;
+  justify-content: space-between;
+
+  &__label {
+    margin-right: 5px;
+    margin-bottom: 0;
+  }
+
+  &__input {
+    display: none;
+
+    &:checked + span {
+      color: #fff;
+      background: $color-main-theme;
+      border: 1px solid $color-main-theme;
+    }
+  }
+
+  span {
+    color: #aaa;
+    font-size: 14px;
+    border: 1px solid #aaa;
+    border-radius: 20px;
+    width: 28px;
+    height: 28px;
+    line-height: 26px;
+    text-align: center;
+    display: block;
+    cursor: pointer;
+    transition-duration: 0.3s;
+
+    @media (max-width: 767px) {
+      width: 23px;
+      height: 23px;
+      line-height: 21px;
+      font-size: 12px;
+    }
+  }
+}

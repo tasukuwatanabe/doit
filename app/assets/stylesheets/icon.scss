@@ -1,0 +1,12 @@
+@import "color";
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > * {
+    color: $color-main-theme;
+    fill: $color-main-theme;
+  }
+}

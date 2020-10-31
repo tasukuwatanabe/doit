@@ -1,8 +1,19 @@
-<div style="width: 100%;">
-  <div id="error">
-    <h1>403 Forbidden</h1>
-    <p>
-      <%= 
+<% 
+@title = "権限がありません"
+set_meta_tags title: @title
+%>
+
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <div class="headline">
+    <div class="headline__title">
+      403 Forbidden
+      <span class="icon headline__icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </span>
+    </div>
+    <div class="headline__text">
+      <%=
         case @exception
         when ApplicationController::IpAddressRejected
           "あなたのIPアドレス(#{request.ip})からは利用できません。"
@@ -10,6 +21,14 @@
           "指定されたページを閲覧する権限がありません。"
         end
       %>
-    </p>
+    </div>
+  </div>
+  <div class="no-result no-result">
+    <div class="no-result__illustration">
+      <img
+        src="/illustrations/il-forbidden.png"
+        alt="403エラーのイラスト"
+      />
+    </div>
   </div>
 </div>

@@ -4,13 +4,8 @@ set_meta_tags title: @title
 provide(:button_text, @title)
 %>
 
-<div class="container d-flex justify-content-between">
-  <%= render "shared/sidebar_left" %>
-  <div class="todo__main-col">
-    <div class="page__title-box">
-      <h2 class="page__title"><%= @title %></h2>
-    </div>
-    <%= render "form" %>
-  </div>
-  <%= render "shared/sidebar_right" %>
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <div><%= @title %></div>
+  <%= render "form" %>
 </div>

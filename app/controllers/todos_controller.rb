@@ -1,12 +1,34 @@
 class TodosController < ApplicationController
-  before_action :set_todo, only: [ :edit, :update, :destroy ]
+  include CalculationDateHelper
+
+  before_action :get_shortcuts
+  before_action :set_todo, only: %i[edit update destroy]
 
   def index
-    redirect_to new_todo_path
+    params_array = params[:date].split('-').map(&:to_i)
+    raise StandardError if params_array.count < 3 || params_array.include?(0)
+
+    Date.parse(params[:date])
+  rescue StandardError
+    flash[:danger] = '日付が適切な値ではありません'
+    redirect_to todo_index_path(@today)
+  else
+    if date_out_of_range?(get_url_date)
+      one_year_from_today = 1.year.since(@today.to_date).strftime('%Y月%1m月%1d日')
+      flash_message = '2000年1月1日〜' + one_year_from_today + 'までの日付を指定してください'
+      flash[:danger] = flash_message
+      redirect_to todo_index_path(@today)
+    else
+      @todos = Todo.where(user_id: @current_user.id, todo_date: get_url_date).order(created_at: :asc)
+      @date_todos = @todos.where(todo_date: get_url_date)
+    end
+  end
+
+  def search
+    @todos = Todo.search(params[:search])
   end
 
   def new
-    set_meta_tags title: 'Todoの追加'
     @todo = Todo.new
     @todo.todo_date = @todo.todo_date || @today
   end
@@ -15,7 +37,7 @@ class TodosController < ApplicationController
     @todo = current_user.todos.build(todo_params)
     if @todo.save
       flash[:success] = 'ToDoが追加されました。'
-      redirect_to index_path(@todo.todo_date)
+      redirect_to todo_index_path(@todo.todo_date)
     else
       render action: 'new'
     end
@@ -33,7 +55,7 @@ class TodosController < ApplicationController
     @todo.assign_attributes(todo_params)
     if @todo.save
       flash[:success] = 'ToDoが更新されました。'
-      redirect_to index_path(@todo.todo_date)
+      redirect_to todo_index_path(@todo.todo_date)
     else
       render action: 'edit'
     end
@@ -41,18 +63,7 @@ class TodosController < ApplicationController
 
   def destroy
     @todo.destroy
-    flash[:success] = 'ToDoが削除されました。'
-    redirect_to request.referer
-  end
-
-  def create_shortcut
-    @todo = Todo.find(params[:todo_id])
-    shortcut = current_user.shortcuts.build(title: @todo.title)
-    if shortcut.save
-      flash[:success] = 'ショートカットが作成されました。'
-    else
-      flash[:danger] = shortcut.errors.messages.values[0][0]
-    end
+    flash[:success] = 'ToDoを削除しました'
     redirect_to request.referer
   end
 
@@ -71,5 +82,9 @@ class TodosController < ApplicationController
 
   def todo_params
     params.require(:todo).permit(:title, :body, :status, :todo_date)
+  end
+
+  def get_shortcuts
+    @shortcuts = Shortcut.where(user_id: current_user.id)
   end
 end

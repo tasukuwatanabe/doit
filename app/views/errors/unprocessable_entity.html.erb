@@ -1,6 +1,27 @@
-<div style="width: 100%;">
-  <div id="error">
-    <h1>422 Unprocessable Entity</h1>
-    <p>指定されたページは表示できません。</p>
+<% 
+@title = "このページは表示できません"
+set_meta_tags title: @title
+%>
+
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <div class="headline">
+    <div class="headline__title">
+      422 Unprocessable Entity
+      <span class="icon headline__icon">
+        <i class="fas fa-eye-slash"></i>
+      </span>
+    </div>
+    <div class="headline__text">
+    指定されたページは表示できません。
+    </div>
+  </div>
+  <div class="no-result no-result">
+    <div class="no-result__illustration">
+      <img
+        src="/illustrations/il-checklist.png"
+        alt="422エラーのイラスト"
+      />
+    </div>
   </div>
 </div>

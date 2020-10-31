@@ -1,0 +1,92 @@
+<% 
+@title = 'ラベルの管理'
+set_meta_tags title: @title
+%>
+
+<%= render 'shared/sidebar_left' %>
+<div class="content">
+  <%# <div id="app"></div> %>
+  <div class="headline">
+    <div class="headline__title">
+      ラベルの管理
+      <span class="icon headline__icon">
+        <i class="fas fa-tag"></i>
+      </span>
+    </div>
+    <p class="headline__text">
+      ラベルを追加することでToDoを分類することができます。
+    </p>
+    <div class="page-action headline__page-action">
+      <a class="page-action__btn btn-outlined btn--sm">
+        <span class="page-action__icon">
+          <i class="fas fa-plus"></i>
+        </span>
+        <span id="modal-trigger" class="page-action__text">新規追加</span>
+      </a>
+    </div>
+  </div>
+  <% if current_user.labels.any? %>
+    <ul class="list">
+    <% @labels.each do |label| %>
+      <%= render label %>
+    <% end %>
+    </ul>
+  <% else %>
+    <div class="no-result no-result">
+      <div class="no-result__illustration">
+        <img
+          src="/illustrations/il-mindmap.png"
+          alt="目標達成のイラスト"
+        />
+      </div>
+    </div>
+  <% end %>
+  <div class="modal" id="modal">
+    <div class="modal__layer close-modal">
+      <div class="modal__box">
+        <form novalidate="true" class="form">
+          <div class="modal-form">
+            <div class="fa-case close-modal">
+              <i class="fas fa-times"></i>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  タイトル
+                </div>
+              </div>
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form__input"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  ラベルの色
+                </div>
+              </div>
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form__input"
+                />
+              </div>
+            </div>
+            <div class="btn-case">
+              <div class="btn-gray btn--sm close-modal">
+                キャンセル
+              </div>
+              <div class="btn-main btn--sm">
+                新規作成
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

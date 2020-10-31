@@ -1,0 +1,101 @@
+@import "color";
+
+.login {
+  width: 600px;
+  margin: 30px auto;
+  background-color: #fff;
+  padding: 50px 35px 70px;
+
+  @media (max-width: 767px) {
+    width: 100%;
+    padding: 30px 20px;
+    margin: 0 auto;
+  }
+
+  &__inner {
+    width: 400px;
+    margin: 0 auto;
+
+    @media (max-width: 767px) {
+      width: 100%;
+    }
+  }
+
+  &__title {
+    font-size: 1.6em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+    color: $color-main-theme;
+  }
+
+  .form {
+    &__group {
+      &:not(:last-of-type) {
+        margin-bottom: 1em;
+      }
+    }
+
+    &__reset-link {
+      display: inline-block;
+      margin-top: 5px;
+      color: $color-main-theme;
+      text-decoration: underline;
+    }
+
+    &__linkList {
+      list-style-type: none;
+      text-align: center;
+      padding-left: 0;
+      font-size: 0.9em;
+
+      &--login {
+        margin-bottom: 2em;
+      }
+
+      &--password-reset {
+        margin-top: 2em;
+      }
+    }
+
+    &__linkItem {
+      &:not(:last-of-type) {
+        margin-bottom: 0.6em;
+      }
+    }
+
+    &__link {
+      &--default {
+        color: $color-main-theme;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .btn-main {
+    &--login {
+      margin-top: 0.5em;
+      margin-bottom: 1em;
+    }
+
+    &--signup {
+      margin-top: 1.5em;
+      margin-bottom: 1em;
+    }
+
+    &--password-reset {
+      margin-top: 1.5em;
+    }
+  }
+
+  .sns-icon {
+    width: 50px;
+    height: 50px;
+
+    &:hover {
+      color: #fff;
+      transform: scale(1.1);
+      opacity: 0.9;
+    }
+  }
+}
