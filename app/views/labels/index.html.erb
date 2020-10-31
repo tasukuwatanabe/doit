@@ -21,7 +21,7 @@ set_meta_tags title: @title
         <span class="page-action__icon">
           <i class="fas fa-plus"></i>
         </span>
-        <span class="page-action__text">新規追加</span>
+        <span id="modal-trigger" class="page-action__text">新規追加</span>
       </a>
     </div>
   </div>
@@ -41,4 +41,52 @@ set_meta_tags title: @title
       </div>
     </div>
   <% end %>
+  <div class="modal" id="modal">
+    <div class="modal__layer close-modal">
+      <div class="modal__box">
+        <form novalidate="true" class="form">
+          <div class="modal-form">
+            <div class="fa-case close-modal">
+              <i class="fas fa-times"></i>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  タイトル
+                </div>
+              </div>
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form__input"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  ラベルの色
+                </div>
+              </div>
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form__input"
+                />
+              </div>
+            </div>
+            <div class="btn-case">
+              <div class="btn-gray btn--sm close-modal">
+                キャンセル
+              </div>
+              <div class="btn-main btn--sm">
+                新規作成
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
