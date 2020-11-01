@@ -17,13 +17,13 @@ Rails.application.routes.draw do
   resources :todos, except: [:index] do
     post '/toggle_status', to: 'todos#toggle_status', as: 'toggle_status'
   end
+  get '/history', to: 'todos#history', as: 'history'
   resources :shortcuts
+  resources :labels, except: %i[new edit]
   namespace :api, { format: 'json' } do
     resources :shortcuts, only: %i[index create update destroy]
+    resources :labels, except: %i[new edit]
   end
-  resources :labels, except: :new
-  resources :routines
-  get '/history/:month', to: 'routines#history', as: 'history'
   resources :password_resets, only: %i[new create edit update]
   resources :account_activations, only: [:edit]
   resources :email_confirmations, only: %i[edit destroy]

@@ -60,9 +60,11 @@ provide(:button_text, "更新する")
             </div>
           </td>
           <td>
-            <% if current_user.twitter_uid %>
+            <% if current_user.facebook_uid %>
               <% if !current_user.auto_generated_password %>
                 <%= link_to "連携を解除", cancel_oauth_path(uid_type: "twitter"), method: :delete , class: "link--default"%>
+              <% else %>
+                <span>未連携</span>
               <% end %>
             <% else %>
               <span>未連携</span>
@@ -80,6 +82,8 @@ provide(:button_text, "更新する")
             <% if current_user.twitter_uid %>
               <% if !current_user.auto_generated_password %>
                 <%= link_to "連携を解除", cancel_oauth_path(uid_type: "twitter"), method: :delete, class: "link--default" %>
+              <% else %>
+                <span>連携されています</span>
               <% end %>
             <% else %>
               <span>未連携</span>
@@ -97,6 +101,8 @@ provide(:button_text, "更新する")
             <% if current_user.google_uid %>
               <% if !current_user.auto_generated_password %>
                 <%= link_to "連携を解除", cancel_oauth_path(uid_type: "google"), method: :delete, class: "link--default" %>
+              <% else %>
+                <span>連携されています</span>
               <% end %>
             <% else %>
               <span>未連携</span>

@@ -22,7 +22,7 @@ set_meta_tags title: @title
         <% end %>
       <% end %>
     </section>
-    <% if @date_todos.any? %>
+    <% if @todos.any? %>
       <ul class="list">
       <% @todos.each do |todo| %>
         <%= render todo %>
@@ -40,7 +40,7 @@ set_meta_tags title: @title
       <span class="page-action__icon">
         <i class="fas fa-plus"></i>
       </span>
-      <span id="modal-trigger" class="page-action__text">ToDoを追加</span>
+      <span class="page-action__text modal-trigger">ToDoを追加</span>
     </div>
   </div>
   </div>
@@ -78,7 +78,7 @@ set_meta_tags title: @title
   <div class="modal" id="modal">
     <div class="modal__layer close-modal">
       <div class="modal__box">
-        <form novalidate="true" class="form">
+        <%= form_with(model: @todo, local: true, class: "form") do |f| %>
           <div class="modal-form">
             <div class="fa-case close-modal">
               <i class="fas fa-times"></i>
@@ -90,11 +90,7 @@ set_meta_tags title: @title
                 </div>
               </div>
               <div class="col-9">
-                <input
-                  type="text"
-                  class="form__input"
-                  required
-                />
+                <%= f.text_field :title, class: "form__input" %>
               </div>
             </div>
             <div class="form__group row">
@@ -104,14 +100,7 @@ set_meta_tags title: @title
                 </div>
               </div>
               <div class="col-9">
-                <select name="label" class="form__select">
-                  <option value="" class="first" selected
-                    >ラベルを選択</option
-                  >
-                  <option value="プログラミング">プログラミング</option>
-                  <option value="育児">育児</option>
-                  <option value="スポーツ">スポーツ</option>
-                </select>
+                <%= f.select :label_id, current_user.labels.map { |i| [i.title, i.id]}, { include_blank: "選択してください"}, { class: "form__select", required: false } %>
               </div>
             </div>
             <div class="form__group row">
@@ -121,10 +110,7 @@ set_meta_tags title: @title
                 </div>
               </div>
               <div class="col-9">
-                <input
-                  type="text"
-                  class="form__input"
-                />
+                <%= f.date_field(:start_date, default: get_url_date, value: get_url_date, class: "form__input") %>
               </div>
             </div>
             <div class="form__group row form__group--end-day">
@@ -135,10 +121,7 @@ set_meta_tags title: @title
               </div>
               <div class="col-9">
                 <div class="remember-me">
-                  <input
-                    type="text"
-                    class="form__input"
-                  />
+                  <%= f.date_field(:end_date, default: get_url_date, value: get_url_date, class: "form__input") %>
                   <div class="remember-me__checkbox">
                     <input type="checkbox" name="remember_me" id="remember_me">
                     <label for="remember_me">終了日を設定せず繰り返す</label>
@@ -154,34 +137,12 @@ set_meta_tags title: @title
               </div>
               <div class="col-9">
                 <div class="day-check">
-                  <label class="day-check__label">
-                    <input type="checkbox" class="day-check__input" value="日">
-                    <span>日</span>
-                  </label>
-                  <label class="day-check__label">
-                    <input type="checkbox" class="day-check__input" value="月">
-                    <span>月</span>
-                  </label>
-                  <label class="day-check__label">
-                    <input type="checkbox" class="day-check__input" value="火">
-                    <span>火</span>
-                  </label>
-                  <label class="day-check__label">
-                    <input type="checkbox" class="day-check__input" value="水">
-                    <span>水</span>
-                  </label>
-                  <label class="day-check__label">
-                    <input type="checkbox" class="day-check__input" value="木">
-                    <span>木</span>
-                  </label>
-                  <label class="day-check__label">
-                    <input type="checkbox" class="day-check__input" value="金">
-                    <span>金</span>
-                  </label>
-                  <label class="day-check__label">
-                    <input type="checkbox" class="day-check__input" value="土">
-                    <span>土</span>
-                  </label>
+                  <% for i in 0..6 %>
+                    <label class="day-check__label">
+                      <%= f.check_box :apply_days, {multiple: true, checked: true, class: "day-check__input"}, i, false %>
+                      <span><%= @days[i] %></span>
+                    </label>
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -192,10 +153,7 @@ set_meta_tags title: @title
                 </div>
               </div>
               <div class="col-9">
-                <input
-                  type="text"
-                  class="form__input"
-                />
+                <%= f.text_field :body, class: "form__input" %>
               </div>
             </div>
             <div class="form__group row">
@@ -206,8 +164,8 @@ set_meta_tags title: @title
               </div>
               <div class="col-9">
                 <div class="btn-slide">
-                  <input type="checkbox" id="LikeNoticeSetting" class="btn-slide__input">
-                  <label for="LikeNoticeSetting" class="btn-slide__label"></label>
+                  <%= f.check_box :history_display, {id: "history_display", class: "btn-slide__input"}, 1, 0 %>
+                  <label for="history_display" class="btn-slide__label"></label>
                 </div>
               </div>
             </div>
@@ -215,12 +173,10 @@ set_meta_tags title: @title
               <div class="btn-gray btn--sm close-modal">
                 キャンセル
               </div>
-              <div class="btn-main btn--sm">
-                新規作成
-              </div>
+              <%= f.submit "新規作成", class: "btn-main btn--sm" %>
             </div>
           </div>
-        </form>
+        <% end %>
       </div>
     </div>
   </div>

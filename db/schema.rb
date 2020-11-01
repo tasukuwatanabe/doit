@@ -10,28 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_29_064406) do
+ActiveRecord::Schema.define(version: 2020_10_31_140900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "labels", force: :cascade do |t|
-    t.string "title", default: "f"
-    t.string "color", default: "f"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "title"
+    t.string "color"
     t.index ["user_id"], name: "index_labels_on_user_id"
-  end
-
-  create_table "routines", force: :cascade do |t|
-    t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "title", null: false
-    t.date "start_date", null: false
-    t.date "end_date"
-    t.index ["user_id"], name: "index_routines_on_user_id"
   end
 
   create_table "shortcuts", force: :cascade do |t|
@@ -39,7 +29,15 @@ ActiveRecord::Schema.define(version: 2020_10_29_064406) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "label_id"
     t.index ["user_id"], name: "index_shortcuts_on_user_id"
+  end
+
+  create_table "todo_parents", force: :cascade do |t|
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_todo_parents_on_user_id"
   end
 
   create_table "todos", force: :cascade do |t|
@@ -49,8 +47,14 @@ ActiveRecord::Schema.define(version: 2020_10_29_064406) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
-    t.bigint "routine_id"
-    t.index ["routine_id"], name: "index_todos_on_routine_id"
+    t.date "start_date", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.date "end_date"
+    t.boolean "continue_without_end", default: false
+    t.integer "apply_days", array: true
+    t.boolean "history_display", default: false
+    t.text "body"
+    t.integer "label_id"
+    t.integer "todo_parent_id"
     t.index ["user_id"], name: "index_todos_on_user_id"
   end
 
@@ -79,8 +83,7 @@ ActiveRecord::Schema.define(version: 2020_10_29_064406) do
   end
 
   add_foreign_key "labels", "users"
-  add_foreign_key "routines", "users"
   add_foreign_key "shortcuts", "users"
-  add_foreign_key "todos", "routines"
+  add_foreign_key "todo_parents", "users"
   add_foreign_key "todos", "users"
 end

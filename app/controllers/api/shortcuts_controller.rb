@@ -5,7 +5,7 @@ class Api::ShortcutsController < ApplicationController
   before_action :set_shortcut, only: %i[edit update destroy create_todo]
 
   def index
-    shortcuts = current_user.shortcuts.select(:id, :title)
+    shortcuts = current_user.shortcuts.select(:id, :title, :label_id)
     render json: shortcuts
   end
 
@@ -41,6 +41,6 @@ class Api::ShortcutsController < ApplicationController
   end
 
   def shortcut_params
-    params.fetch(:shortcut, {}).permit(:id, :title)
+    params.fetch(:shortcut, {}).permit(:id, :title, :label_id)
   end
 end

@@ -21,7 +21,7 @@ set_meta_tags title: @title
         <span class="page-action__icon">
           <i class="fas fa-plus"></i>
         </span>
-        <span id="modal-trigger" class="page-action__text">新規追加</span>
+        <span class="page-action__text modal-trigger">新規追加</span>
       </a>
     </div>
   </div>
@@ -44,7 +44,7 @@ set_meta_tags title: @title
   <div class="modal" id="modal">
     <div class="modal__layer close-modal">
       <div class="modal__box">
-        <form novalidate="true" class="form">
+        <%= form_with(model: @label, local: true, class: "form") do |f| %>
           <div class="modal-form">
             <div class="fa-case close-modal">
               <i class="fas fa-times"></i>
@@ -56,11 +56,7 @@ set_meta_tags title: @title
                 </div>
               </div>
               <div class="col-9">
-                <input
-                  type="text"
-                  class="form__input"
-                  required
-                />
+                <%= f.text_field :title, class: "form__input" %>
               </div>
             </div>
             <div class="form__group row">
@@ -70,22 +66,17 @@ set_meta_tags title: @title
                 </div>
               </div>
               <div class="col-9">
-                <input
-                  type="text"
-                  class="form__input"
-                />
+                <%= f.text_field :color, class: "form__input" %>
               </div>
             </div>
             <div class="btn-case">
               <div class="btn-gray btn--sm close-modal">
                 キャンセル
               </div>
-              <div class="btn-main btn--sm">
-                新規作成
-              </div>
+              <%= f.submit "新規作成", class: "btn-main btn--sm" %>
             </div>
           </div>
-        </form>
+        <% end %>
       </div>
     </div>
   </div>

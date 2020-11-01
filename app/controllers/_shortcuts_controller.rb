@@ -50,7 +50,8 @@ class ShortcutsController < ApplicationController
   def create_todo
     @todo = current_user.todos.build(
       title: @shortcut.title,
-      todo_date: params[:date]
+      todo_date: params[:date],
+      label_id: @shortcut.label_id
     )
 
     if @todo.save
@@ -69,6 +70,6 @@ class ShortcutsController < ApplicationController
   end
 
   def shortcut_params
-    params.require(:shortcut).permit(:title, :body, :todo_date)
+    params.require(:shortcut).permit(:title, :label_id)
   end
 end

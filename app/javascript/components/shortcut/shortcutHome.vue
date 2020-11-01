@@ -67,9 +67,19 @@
           </div>
         </div>
         <div class="list__block list__block--right list__block--grow">
-          <div class="label label--margin">プログラミング</div>
+          <div
+            class="label label--margin"
+            v-if="getShortcutLabel(s)"
+            :style="{
+              color: colorOnRgb(getShortcutLabel(s).color),
+              backgroundColor: '#' + getShortcutLabel(s).color
+            }"
+          >
+            {{ getShortcutLabel(s).title }}
+          </div>
+          <div v-else></div>
           <div class="item-action">
-            <a v-on:click="editShortcut(s.id)" class="item-action__btn">
+            <a v-on:click="modalEditShortcut(s)" class="item-action__btn">
               <i class="fas fa-pencil-alt"></i>
             </a>
             <a v-on:click="deleteShortcut(s.id)" class="item-action__btn">
@@ -100,13 +110,26 @@
                   タイトル
                 </div>
                 <div class="col-9">
-                  <input
-                    type="text"
-                    class="form__input"
-                    v-model="shortcut.title"
-                    required
-                    @keydown:enter="createShortcut"
-                  />
+                  <div v-if="modalEditingShortcut">
+                    <input
+                      type="text"
+                      class="form__input"
+                      v-if="modalEditingShortcut"
+                      v-model="modalEditingShortcut.title"
+                      required
+                      @keydown:enter="createShortcut"
+                    />
+                  </div>
+                  <div v-else>
+                    <input
+                      type="text"
+                      class="form__input"
+                      v-if="shortcut"
+                      v-model="shortcut.title"
+                      required
+                      @keydown:enter="createShortcut"
+                    />
+                  </div>
                   <div v-if="errors.length">{{ errors[0] }}</div>
                 </div>
               </div>
@@ -115,21 +138,39 @@
                   ラベル
                 </div>
                 <div class="col-9">
-                  <select name="label" class="form__select">
-                    <option value="" class="first" selected disabled
-                      >ラベルを選択</option
+                  <div v-if="modalEditingShortcut">
+                    <select
+                      v-model="modalEditingShortcut.label_id"
+                      class="form__select"
                     >
-                    <option value="プログラミング">プログラミング</option>
-                    <option value="育児">育児</option>
-                    <option value="スポーツ">スポーツ</option>
-                  </select>
+                      <option>ラベルを選択</option>
+                      <option v-for="l in labels" :key="l.id" :value="l.id">{{
+                        l.title
+                      }}</option>
+                    </select>
+                  </div>
+                  <div v-else>
+                    <select v-model="shortcut.label_id" class="form__select">
+                      <option>ラベルを選択</option>
+                      <option v-for="l in labels" :key="l.id" :value="l.id">{{
+                        l.title
+                      }}</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div class="btn-case">
                 <div @click="closeModal" class="btn-gray btn--sm">
                   キャンセル
                 </div>
-                <div @click="createShortcut" class="btn-main btn--sm">
+                <div
+                  @click="updateShortcut(modalEditingShortcut)"
+                  class="btn-main btn--sm"
+                  v-if="modalEditingShortcut"
+                >
+                  更新する
+                </div>
+                <div @click="createShortcut()" class="btn-main btn--sm" v-else>
                   新規作成
                 </div>
               </div>
@@ -160,17 +201,53 @@ export default {
       isModalActive: false,
       shortcuts: [],
       shortcut: {
-        title: ""
+        title: "",
+        label_id: ""
+      },
+      shortcutLabel: "",
+      labels: [],
+      label: {
+        title: "",
+        color: ""
       },
       errors: [],
       editingShortcutId: null,
-      editedShortcut: null
+      editedShortcut: null,
+      modalEditingShortcut: null
     };
   },
   mounted() {
     this.fetchShortcuts();
   },
   methods: {
+    getShortcutLabel(shortcut) {
+      return this.labels.filter((label) => label.id === shortcut.label_id)[0];
+    },
+    colorOnRgb(hex) {
+      if (hex.slice(0, 1) == "#") hex = hex.slice(1);
+      if (hex.length == 3)
+        hex =
+          hex.slice(0, 1) +
+          hex.slice(0, 1) +
+          hex.slice(1, 2) +
+          hex.slice(1, 2) +
+          hex.slice(2, 3) +
+          hex.slice(2, 3);
+
+      var rgb = [hex.slice(0, 2), hex.slice(2, 4), hex.slice(4, 6)].map(
+        function(str) {
+          return parseInt(str, 16);
+        }
+      );
+
+      var red = rgb[0],
+        green = rgb[1],
+        blue = rgb[2];
+
+      if (red * 0.299 + green * 0.587 + blue * 0.114 < 186) {
+        return "white";
+      }
+    },
     fetchShortcuts() {
       this.errors = [];
       this.editedShortcut = null;
@@ -178,6 +255,14 @@ export default {
       axios.get("/api/shortcuts.json").then(
         (response) => {
           this.shortcuts = response.data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+      axios.get("/api/labels.json").then(
+        (response) => {
+          this.labels = response.data;
         },
         (error) => {
           console.log(error);
@@ -196,37 +281,49 @@ export default {
         }
       );
     },
-    createShortcut(e) {
+    createShortcut(shortcut) {
       this.errors = [];
       if (!this.shortcut.title) {
         this.errors.push("タイトルは必須です");
         return;
       }
-      axios.post("/api/shortcuts/", { shortcut: this.shortcut }).then(
-        (res) => {
-          this.shortcut.title = "";
-          this.fetchShortcuts();
-          this.closeModal();
-        },
-        (error) => {
-          this.errors.push("タイトルが重複しています");
-        }
-      );
+      axios
+        .post("/api/shortcuts/", {
+          shortcut: this.shortcut
+        })
+        .then(
+          (res) => {
+            this.shortcut.title = "";
+            this.shortcut.label_id = "";
+            this.fetchShortcuts();
+            this.closeModal();
+          },
+          (error) => {
+            this.errors.push("タイトルが重複しています");
+          }
+        );
     },
     editShortcut(shortcut) {
       this.fetchShortcuts();
       this.editingShortcutId = shortcut.id;
+    },
+    modalEditShortcut(shortcut) {
+      this.modalEditingShortcut = shortcut;
+      this.openModal();
+      this.fetchShortcuts();
     },
     updateShortcut(shortcut) {
       this.errors = [];
       if (!shortcut.title) {
         return;
       }
+      this.closeModal();
       this.editedShortcut = shortcut;
       axios
         .put(`/api/shortcuts/${shortcut.id}`, { shortcut: this.editedShortcut })
         .then(
           (res) => {
+            this.modalEditingShortcut = null;
             this.fetchShortcuts();
           },
           (error) => {
@@ -244,6 +341,7 @@ export default {
     },
     closeModal() {
       this.isModalActive = false;
+      this.modalEditingShortcut = null;
       this.errors = [];
     }
   }

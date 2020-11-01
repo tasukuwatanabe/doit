@@ -7,11 +7,18 @@
     <div class="list__title"><%= truncate(todo.title, length: 24, omission: "..." ) %></div>
   </div>
   <div class="list__block list__block--right list__block--grow">
-    <div class="label label--margin">プログラミング</div>
+    <% if todo.label_id %>
+      <% label = Label.find(todo.label_id) %>
+      <label class="label label--margin" style="background-color: #<%= label.color %>;">
+        <%= label.title %>
+      </label>
+    <% else %>
+      <label></label>
+    <% end %>
     <div class="item-action">
-      <%= link_to [ :edit, todo ], class: "item-action__btn" do %>
+      <a class="item-action__btn modal-trigger">
         <i class="fas fa-pencil-alt"></i>
-      <% end %>
+      </a>
       <%= link_to todo, method: :delete, class: "item-action__btn", data: { confirm: "本当に削除しますか？" } do %>
         <i class="fas fa-trash"></i>
       <% end %>
