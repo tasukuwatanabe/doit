@@ -1,6 +1,10 @@
 class Api::LabelsController < ApplicationController
+  protect_from_forgery except: %i[create update destroy]
+
+  before_action :logged_in_user
+
   def index
-    labels = current_user.labels.all.to_json
+    labels = current_user.labels.order(created_at: :desc).all
     render json: labels
   end
 
@@ -9,20 +13,41 @@ class Api::LabelsController < ApplicationController
     if label.save
       head :no_content
     else
-      render json: { error: shortcut.errors.full_messages.join(' ') }, status: :unprocessable_entity
+      render json: { error: label.errors.full_messages.join(' ') }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    label = Label.find(params[:id])
+    if label.update(label_params)
+      head :no_content
+    else
+      render json: { error: label.errors.full_messages.join(' ') }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @label = Label.find(params[:id])
-    @label.destroy
-    flash[:success] = 'ラベルを削除しました'
-    redirect_to labels_path
+    label = Label.find(params[:id])
+    todos = Todo.where(label_id: label.id)
+    todos.each do |todo|
+      todo.label_id = nil
+    end
+
+    shortcuts = Shortcut.where(label_id: label.id)
+    shortcuts.each do |shortcut|
+      shortcut.label_id = nil
+    end
+
+    if label.destroy
+      head :no_content
+    else
+      render json: { error: shortcut.errors.full_messages.join(' ') }, status: :unprocessable_entity
+    end
   end
 
   private
 
   def label_params
-    params.require(:label, {}).permit(:id, :title, :color)
+    params.fetch(:label, {}).permit(:id, :title, :color)
   end
 end

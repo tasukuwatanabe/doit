@@ -1,75 +1,46 @@
-class ShortcutsController < ApplicationController
-  before_action :set_shortcut, only: %i[edit update destroy create_todo]
+# class ShortcutsController < ApplicationController
+#   protect_from_forgery except: %i[create update destroy]
 
-  def index
-    @shortcuts = current_user.shortcuts
-    @disabled = 'disabled' if @shortcuts.count >= Shortcut::MAX_SHORTCUT_COUNT
-  end
+#   before_action :logged_in_user
+#   before_action :set_shortcut, only: %i[edit update destroy create_todo]
 
-  def new
-    if current_user.shortcuts.count >= Shortcut::MAX_SHORTCUT_COUNT
-      flash[:danger] = "ショートカットが登録できるのは#{Shortcut::MAX_SHORTCUT_COUNT}個までです。"
-      redirect_to shortcuts_path
-    end
+#   def index
+#     shortcuts = current_user.shortcuts.order(created_at: :desc).all
+#     render json: shortcuts
+#   end
 
-    @shortcut = Shortcut.new
-  end
+#   def create
+#     shortcut = current_user.shortcuts.build(shortcut_params)
+#     if shortcut.save
+#       head :no_content
+#     else
+#       render json: { error: shortcut.errors.full_messages.join(' ') }, status: :unprocessable_entity
+#     end
+#   end
 
-  def create
-    @shortcut = current_user.shortcuts.build(shortcut_params)
-    if @shortcut.save
-      flash[:success] = 'ショートカットを作成しました'
-      redirect_to shortcuts_path
-    else
-      render action: 'new'
-    end
-  end
+#   def update
+#     if @shortcut.update(shortcut_params)
+#       head :no_content
+#     else
+#       render json: { error: @shortcut.errors.full_messages.join(' ') }, status: :unprocessable_entity
+#     end
+#   end
 
-  def show
-    redirect_to edit_shortcut_path
-  end
+#   def destroy
+#     if @shortcut.destroy
+#       head :no_content
+#     else
+#       render json: { error: shortcut.errors.full_messages.join(' ') }, status: :unprocessable_entity
+#     end
+#   end
 
-  def edit; end
+#   private
 
-  def update
-    @shortcut.assign_attributes(shortcut_params)
-    if @shortcut.save
-      flash[:success] = 'ショートカットを更新しました'
-      redirect_to shortcuts_path
-    else
-      render action: 'edit'
-    end
-  end
+#   def set_shortcut
+#     @shortcut = Shortcut.find(params[:id])
+#   end
 
-  def destroy
-    @shortcut.destroy
-    flash[:success] = 'ショートカットを削除しました。'
-    redirect_to shortcuts_path
-  end
-
-  def create_todo
-    @todo = current_user.todos.build(
-      title: @shortcut.title,
-      todo_date: params[:date],
-      label_id: @shortcut.label_id
-    )
-
-    if @todo.save
-      flash[:success] = 'ToDoが追加されました。'
-      redirect_to todo_index_path(@todo.todo_date)
-    else
-      flash[:danger] = @todo.errors.messages.values[0][0]
-      redirect_back(fallback_location: root_path)
-    end
-  end
-
-  private
-
-  def set_shortcut
-    @shortcut = Shortcut.find(params[:id])
-  end
-
-  def shortcut_params
-    params.require(:shortcut).permit(:title, :label_id)
-  end
-end
+#   def shortcut_params
+#     params.fetch(:shortcut, {}).permit(:id, :title, :label_id)
+#   end
+# end

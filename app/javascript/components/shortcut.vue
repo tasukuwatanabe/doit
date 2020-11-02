@@ -1,5 +1,5 @@
 <template>
-  <div class="shortcut">
+  <div class="shortcut content">
     <div class="headline">
       <div class="headline__title">
         ショートカットの管理
@@ -110,26 +110,20 @@
                   タイトル
                 </div>
                 <div class="col-9">
-                  <div v-if="modalEditingShortcut">
-                    <input
-                      type="text"
-                      class="form__input"
-                      v-if="modalEditingShortcut"
-                      v-model="modalEditingShortcut.title"
-                      required
-                      @keydown:enter="createShortcut"
-                    />
-                  </div>
-                  <div v-else>
-                    <input
-                      type="text"
-                      class="form__input"
-                      v-if="shortcut"
-                      v-model="shortcut.title"
-                      required
-                      @keydown:enter="createShortcut"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    class="form__input"
+                    v-if="modalEditingShortcut"
+                    v-model="modalEditingShortcut.title"
+                    required
+                  />
+                  <input
+                    type="text"
+                    class="form__input"
+                    v-else
+                    v-model="shortcut.title"
+                    required
+                  />
                   <div v-if="errors.length">{{ errors[0] }}</div>
                 </div>
               </div>
@@ -138,25 +132,26 @@
                   ラベル
                 </div>
                 <div class="col-9">
-                  <div v-if="modalEditingShortcut">
-                    <select
-                      v-model="modalEditingShortcut.label_id"
-                      class="form__select"
-                    >
-                      <option>ラベルを選択</option>
-                      <option v-for="l in labels" :key="l.id" :value="l.id">{{
-                        l.title
-                      }}</option>
-                    </select>
-                  </div>
-                  <div v-else>
-                    <select v-model="shortcut.label_id" class="form__select">
-                      <option>ラベルを選択</option>
-                      <option v-for="l in labels" :key="l.id" :value="l.id">{{
-                        l.title
-                      }}</option>
-                    </select>
-                  </div>
+                  <select
+                    v-if="modalEditingShortcut"
+                    v-model="modalEditingShortcut.label_id"
+                    class="form__select"
+                  >
+                    <option>ラベルを選択</option>
+                    <option v-for="l in labels" :key="l.id" :value="l.id">{{
+                      l.title
+                    }}</option>
+                  </select>
+                  <select
+                    v-else
+                    v-model="shortcut.label_id"
+                    class="form__select"
+                  >
+                    <option selected value="">ラベルを選択</option>
+                    <option v-for="l in labels" :key="l.id" :value="l.id">{{
+                      l.title
+                    }}</option>
+                  </select>
                 </div>
               </div>
               <div class="btn-case">
@@ -195,7 +190,6 @@ Vue.directive("focus", {
 });
 
 export default {
-  name: "shortcutHome",
   data() {
     return {
       isModalActive: false,

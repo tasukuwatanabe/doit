@@ -7,8 +7,8 @@
     <div class="list__title"><%= truncate(todo.title, length: 24, omission: "..." ) %></div>
   </div>
   <div class="list__block list__block--right list__block--grow">
-    <% if todo.label_id %>
-      <% label = Label.find(todo.label_id) %>
+    <% label = Label.find_by(id: todo.label_id) %>
+    <% if label %>
       <label class="label label--margin" style="background-color: #<%= label.color %>;">
         <%= label.title %>
       </label>

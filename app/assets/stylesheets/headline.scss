@@ -22,8 +22,11 @@
     margin-left: 12px;
 
     @media (max-width: 767px) {
-      transform: scale(0.8);
       margin-left: 8px;
+    }
+
+    & > * {
+      font-size: 0.8em;
     }
   }
 

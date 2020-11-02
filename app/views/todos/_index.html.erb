@@ -1,0 +1,184 @@
+<% 
+@title = get_url_date_in_japanese
+set_meta_tags title: @title
+%>
+
+<%= render "shared/sidebar_left" %>
+<div class="content">
+  <div class="todo">
+    <section class="horizontal-arrows">
+      <% if set_previous_date %>
+        <%= link_to root_path(set_previous_date), class: "horizontal-arrows__btn horizontal-arrows__btn--left" do %>
+          <i class="fas fa-caret-left"></i>
+        <% end %>
+      <% end %>
+      <div class="todo__date-box">
+        <div class="todo__date-title"><%= @title %></div>
+        <p class="todo__date-day"><%= get_day() %></p>
+      </div>
+      <% if set_next_date %>
+        <%= link_to root_path(set_next_date), class: "horizontal-arrows__btn horizontal-arrows__btn--right" do %>
+          <i class="fas fa-caret-right"></i>
+        <% end %>
+      <% end %>
+    </section>
+    <% if @todos.any? %>
+      <ul class="list">
+      <% @todos.each do |todo| %>
+        <%= render todo %>
+      <% end %>
+      </ul>
+    <% else %>
+      <div class="no-result todo__no-result">
+        <div class="no-result__illustration">
+          <img src="/illustrations/il-checklist.png" alt="チェックリストのイラスト">
+        </div>
+      </div>
+    <% end %>
+    <div class="todo__page-action page-action">
+    <div class="btn-outlined btn--sm">
+      <span class="page-action__icon">
+        <i class="fas fa-plus"></i>
+      </span>
+      <span class="page-action__text modal-trigger">ToDoを追加</span>
+    </div>
+  </div>
+  </div>
+  <div class="index-shortcut">
+    <% if @shortcuts.present? %>
+      <div class="index-shortcut__box">
+        <div class="index-shortcut__title">ショートカットからToDoを作成</div>
+        <%= link_to "編集", shortcuts_path, class: "index-shortcut__edit" %>
+      </div>
+    <% end %>
+    <div class="index-shortcut__field">
+      <% if @shortcuts.present? %>
+        <ul class="index-shortcut__list">
+          <% @shortcuts.each do |shortcut| %>
+            <li class="index-shortcut__item">
+              <%= link_to shortcut.title, shortcut_create_todo_path(get_url_date, shortcut.id), method: :post, class: "index-shortcut__link" %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <div class="index-shortcut__no-result">
+          <p class="index-shortcut__text">ショートカットが作成されていません。</p>
+          <div class="page-action">
+            <%#= link_to shortcuts_path, class: "btn-outlined btn--sm" do %>
+              <span class="page-action__icon">
+                <i class="fas fa-plus"></i>
+              </span>
+              <span class="page-action__text">ショートカットを追加</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="modal" id="modal">
+    <div class="modal__layer close-modal">
+      <div class="modal__box">
+        <%= form_with(model: @todo, local: true, class: "form") do |f| %>
+          <div class="modal-form">
+            <div class="fa-case close-modal">
+              <i class="fas fa-times"></i>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  タイトル
+                </div>
+              </div>
+              <div class="col-9">
+                <%= f.text_field :title, class: "form__input" %>
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  ラベル
+                </div>
+              </div>
+              <div class="col-9">
+                <%= f.select :label_id, current_user.labels.map { |i| [i.title, i.id]}, { include_blank: "選択してください"}, { class: "form__select", required: false } %>
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  開始日
+                </div>
+              </div>
+              <div class="col-9">
+                <%= f.date_field(:start_date, default: get_url_date, value: get_url_date, class: "form__input") %>
+              </div>
+            </div>
+            <div class="form__group row form__group--end-day">
+              <div class="col-3">
+                <div class="form__label">
+                  終了日
+                </div>
+              </div>
+              <div class="col-9">
+                <div class="remember-me">
+                  <%= f.date_field(:end_date, default: get_url_date, value: get_url_date, class: "form__input") %>
+                  <div class="remember-me__checkbox">
+                    <input type="checkbox" name="remember_me" id="remember_me">
+                    <label for="remember_me">終了日を設定せず繰り返す</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  曜日指定
+                </div>
+              </div>
+              <div class="col-9">
+                <div class="day-check">
+                  <% for i in 0..6 %>
+                    <label class="day-check__label">
+                      <%= f.check_box :apply_days, {multiple: true, checked: true, class: "day-check__input"}, i, false %>
+                      <span><%= @days[i] %></span>
+                    </label>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  メモ
+                </div>
+              </div>
+              <div class="col-9">
+                <%= f.text_field :body, class: "form__input" %>
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div class="form__label">
+                  達成度を表示
+                </div>
+              </div>
+              <div class="col-9">
+                <div class="btn-slide">
+                  <%= f.check_box :history_display, {id: "history_display", class: "btn-slide__input"}, 1, 0 %>
+                  <label for="history_display" class="btn-slide__label"></label>
+                </div>
+              </div>
+            </div>
+            <div class="btn-case">
+              <div class="btn-gray btn--sm close-modal">
+                キャンセル
+              </div>
+              <%= f.submit "新規作成", class: "btn-main btn--sm" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render "shared/sidebar_right" %>

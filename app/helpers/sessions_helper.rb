@@ -33,14 +33,14 @@ module SessionsHelper
   def forbid_guest_user
     if user_is_guest?
       flash[:danger] = 'ゲストユーザーの変更・削除はできません'
-      redirect_to todo_index_path(@today)
+      redirect_to root_path(@today)
     end
   end
 
   def forbid_login_user
     if logged_in?
       flash[:danger] = 'すでにログインしています'
-      redirect_to todo_index_path(@today)
+      redirect_to root_path(@today)
     end
   end
 
