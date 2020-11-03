@@ -5,7 +5,12 @@ class Api::LabelsController < ApplicationController
 
   def index
     labels = current_user.labels.order(created_at: :desc).all
-    render json: labels
+    todos = current_user.todos.where.not(label_id: nil).select(:id)
+    api_array = [
+      labels: labels,
+      todos: todos
+    ]
+    render json: api_array
   end
 
   def create

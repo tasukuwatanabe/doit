@@ -21,17 +21,4 @@
             $('body').removeClass('menu-open');
         })
     })
-
-    // ToDoのモーダルを表示する
-    $(function() {
-        $(".modal-trigger").click(function() {
-            $('#modal').addClass('is-open');
-        })
-        $(".close-modal").click(function(e) {
-            $('#modal').removeClass('is-open');
-        })
-        $(".modal__box").click(function(e) {
-            e.stopPropagation();
-        })
-    })
 </script>

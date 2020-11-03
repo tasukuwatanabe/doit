@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root 'todos#index'
-  get '/history', to: 'todos#history'
+  get '/history', to: 'todos#index'
+  get '/shortcuts', to: 'todos#index'
+  get '/labels', to: 'todos#index'
   namespace :api do
     resources :todos, except: %i[new edit show]
     resources :shortcuts, except: %i[new edit show]

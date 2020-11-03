@@ -11,7 +11,7 @@
         ラベルを追加することでToDoを分類することができます。
       </p>
       <div class="page-action headline__page-action">
-        <a v-on:click="openModal" class="page-action__btn btn-outlined btn--sm">
+        <a @click="openModal" class="page-action__btn btn-outlined btn--sm">
           <span class="page-action__icon">
             <i class="fas fa-plus"></i>
           </span>
@@ -37,10 +37,10 @@
             {{ labelTodosCount(label) }}個のToDoで使用中
           </div>
           <div class="item-action">
-            <a v-on:click="modalEditLabel(label)" class="item-action__btn">
+            <a @click="modalEditLabel(label)" class="item-action__btn">
               <i class="fas fa-pencil-alt"></i>
             </a>
-            <a v-on:click="deleteLabel(label.id)" class="item-action__btn">
+            <a @click="deleteLabel(label.id)" class="item-action__btn">
               <i class="fas fa-trash"></i>
             </a>
           </div>
@@ -119,7 +119,7 @@
                 >
                   更新する
                 </div>
-                <div @click="createLabel()" class="btn-main btn--sm" v-else>
+                <div @click="createLabel" class="btn-main btn--sm" v-else>
                   新規作成
                 </div>
               </div>
@@ -155,7 +155,11 @@ export default {
   },
   methods: {
     labelTodosCount(label) {
-      return this.todos.filter((todo) => todo.label_id === label.id).length;
+      if (this.todos.length) {
+        return this.todos.filter((todo) => todo.label_id === label.id).length;
+      } else {
+        return 0;
+      }
     },
     colorOnRgb(hex) {
       if (hex.slice(0, 1) == "#") hex = hex.slice(1);
@@ -188,7 +192,8 @@ export default {
       this.editingLabelId = null;
       axios.get("/api/labels.json").then(
         (response) => {
-          this.labels = response.data;
+          this.labels = response.data[0].labels;
+          this.todos = response.data[0].todos;
         },
         (error) => {
           console.log(error);
@@ -222,7 +227,7 @@ export default {
         return;
       }
       axios
-        .post("/labels", {
+        .post("/api/labels", {
           label: this.label
         })
         .then(
@@ -233,7 +238,7 @@ export default {
             this.closeModal();
           },
           (error) => {
-            this.errors.push("タイトルが重複しています");
+            this.errors.push("エラー発生");
           }
         );
     },
@@ -253,7 +258,7 @@ export default {
       }
       this.closeModal();
       this.editedLabel = label;
-      axios.put(`/labels/${label.id}`, { label: this.editedLabel }).then(
+      axios.put(`/api/labels/${label.id}`, { label: this.editedLabel }).then(
         (res) => {
           this.modalEditingLabel = null;
           this.fetchLabels();
@@ -264,7 +269,7 @@ export default {
       );
     },
     deleteLabel(id) {
-      axios.delete(`/labels/${id}`).then((res) => {
+      axios.delete(`/api/labels/${id}`).then((res) => {
         this.fetchLabels();
       });
     },

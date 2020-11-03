@@ -34,6 +34,7 @@ const router = new VueRouter({
       component: PasswordEdit,
       name: "password_edit"
     }
+    // { path: "*", component: NotFoundComponent }
   ]
 });
 

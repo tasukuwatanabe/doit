@@ -6,7 +6,12 @@ class Api::ShortcutsController < ApplicationController
 
   def index
     shortcuts = current_user.shortcuts.order(created_at: :desc).all
-    render json: shortcuts
+    labels = current_user.labels.order(created_at: :desc).all
+    api_array = {
+      shortcuts: shortcuts,
+      labels: labels
+    }
+    render json: api_array
   end
 
   def create
