@@ -219,7 +219,7 @@
                   キャンセル
                 </div>
                 <div
-                  v-if="todo.update"
+                  v-if="todoUpdate"
                   @click="updateTodo(todo)"
                   class="btn-main btn--sm"
                 >
@@ -246,6 +246,7 @@ export default {
       isModalActive: false,
       todos: [],
       todo: {},
+      todoUpdate: false,
       labels: [],
       days: ["日", "月", "火", "水", "木", "金", "土"],
       day: null,
@@ -340,7 +341,7 @@ export default {
     },
     todoReset() {
       this.todo = new Object();
-      this.todo.update = false;
+      this.todoUpdate = false;
       this.todo.apply_days = [0, 1, 2, 3, 4, 5, 6];
       axios.get("/api/todos.json").then((res) => {
         this.todo.start_date = res.data.selected_date;
@@ -349,7 +350,7 @@ export default {
     },
     editTodo(todo) {
       this.todo = todo;
-      this.todo.update = true;
+      this.todoUpdate = true;
       this.openModal();
     },
     updateTodo(todo) {
