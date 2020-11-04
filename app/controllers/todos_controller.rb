@@ -1,8 +1,6 @@
 class TodosController < ApplicationController
   def index; end
 
-  def history; end
-
   #   include CalculationDateHelper
   #   include CalculationMonthHelper
 

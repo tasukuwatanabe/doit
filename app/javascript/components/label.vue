@@ -53,7 +53,7 @@
       </div>
     </div>
     <div class="modal" :class="{ 'is-open': isModalActive }">
-      <div class="modal__layer" @click.self="closeModal">
+      <div class="modal__layer">
         <div class="modal__box">
           <form @submit.prevent novalidate="true" class="form">
             <div class="modal-form">
@@ -194,14 +194,6 @@ export default {
         (response) => {
           this.labels = response.data[0].labels;
           this.todos = response.data[0].todos;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-      axios.get("/api/todos.json").then(
-        (response) => {
-          this.todos = response.data;
         },
         (error) => {
           console.log(error);
