@@ -146,18 +146,16 @@
                     class="form__input"
                     :readonly="todo.continue_without_end"
                   />
-                  <div class="remember-me">
-                    <div class="remember-me__checkbox">
-                      <input
-                        type="checkbox"
-                        name="continue_without_end"
-                        id="continue_without_end"
-                        v-model="todo.continue_without_end"
-                      />
-                      <label for="continue_without_end"
-                        >終了日を設定せず繰り返す</label
-                      >
-                    </div>
+                  <div class="checkbox-with-text ">
+                    <input
+                      type="checkbox"
+                      name="continue_without_end"
+                      id="continue_without_end"
+                      v-model="todo.continue_without_end"
+                    />
+                    <label for="continue_without_end"
+                      >終了日を設定せず繰り返す</label
+                    >
                   </div>
                 </div>
               </div>

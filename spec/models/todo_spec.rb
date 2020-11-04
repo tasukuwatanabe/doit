@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Todo, type: :model do
   let!(:user) { create(:user) }
+  let!(:todo_parent) { create(:todo_parent) }
 
   describe '値の正規化' do
     example 'タイトルを半角カナで入力すると全角に変換' do
@@ -10,7 +11,7 @@ RSpec.describe Todo, type: :model do
     end
 
     example 'タイトル前後の余白を除去' do
-      todo = create(:todo, title: ' テスト ')
+          todo = create(:todo, title: ' テスト ')
       expect(todo.title).to eq('テスト')
     end
   end
