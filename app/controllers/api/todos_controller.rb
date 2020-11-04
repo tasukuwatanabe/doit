@@ -1,5 +1,5 @@
 class Api::TodosController < ApplicationController
-  protect_from_forgery except: %i[create update destroy]
+  protect_from_forgery except: %i[create update destroy toggle_status]
 
   include CalculationDateHelper
   # include CalculationMonthHelper
@@ -46,54 +46,60 @@ class Api::TodosController < ApplicationController
   def create
     start_date = Date.parse(todo_params[:start_date])
     end_date = Date.parse(todo_params[:end_date])
+    todo_term = (end_date - start_date).to_i + 1
 
     todos = []
-    todo_parent = current_user.todo_parents.build
-
-    todo_term = (end_date - start_date).to_i + 1
-    todo_term.times do |n|
-      todo = current_user.todos.build(todo_params)
-      todo.todo_parent_id = todo_parent.id
-      todo.todo_date = todo.start_date + n.days
-      todos.push(todo) if todo.apply_days.include?(todo.todo_date.wday)
-    end
 
     begin
       Todo.transaction do
-        todos.each do |todo|
-          todo.save!
+        todo_parent = TodoParent.create(user_id: current_user.id)
+        todo_term.times do |n|
+          todo = current_user.todos.build(todo_params)
+          todo.todo_parent_id = todo_parent.id
+          todo.todo_date = todo.start_date + n.days
+          todo.save
+          todos.push(todo)
         end
       end
       head :no_content
     rescue StandardError
-      render json: { error: shortcut.errors.full_messages.join(' ') }, status: :unprocessable_entity
+      render json: { error: todos.errors.full_messages.join(' ') }, status: :unprocessable_entity
     end
   end
 
-  # def update
-  #   todo.assign_attributes(todo_params)
+  def update
+    todo = Todo.find_by(id: params[:id])
+    todos = Todo.where(id: todo.todo_parent_id)
 
-  #   begin
-  #     Todo.transaction do
-  #       todos.each do |todo|
-  #         todo.save!
-  #       end
-  #     end
-  #   rescue StandardError
-  #   end
-  # end
+    begin
+      Todo.transaction do
+        todos.each do |todo|
+          todo.assign_attributes(todo_params)
+          todo.save
+        end
+      end
+      head :no_content
+    rescue StandardError
+      render json: { error: todos.errors.full_messages.join(' ') }, status: :unprocessable_entity
+    end
+  end
 
-  # def destroy
-  #   todo_parent = TodoParent.find(todo.todo_parent_id)
-  #   todo_parent.destroy
-  # end
+  def destroy
+    todo = Todo.find_by(id: params[:id])
+    puts todo.todo_parent_id
+    puts todo.todo_parent_id
+    puts todo.todo_parent_id
+    puts todo.todo_parent_id
+    todo_parent = TodoParent.find_by(id: todo.todo_parent_id)
+    todo_parent.destroy
+  end
 
-  # def toggle_status
-  #   render body: nil
-  #   todo = Todo.find(params[:todo_id])
-  #   todo.status = !todo.status
-  #   todo.save
-  # end
+  def toggle_status
+    todo = Todo.find_by(id: params[:todo_id])
+    todo.status = !todo.status
+    todo.save
+    head :no_content
+  end
 
   # def history; end
 

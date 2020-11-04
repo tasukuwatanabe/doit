@@ -20,18 +20,34 @@
         </div>
       </section>
       <div v-if="todos.length">
-        <ul v-for="todo in todos" class="list" :key="todo.id">
-          <li class="list__item">
-            <div id="todo-<%= todo.id %>" class="todo-status"></div>
+        <ul class="list">
+          <li v-for="todo in todos" class="list__item" :key="todo.id">
+            <div
+              class="todo-status"
+              :class="{ 'todo__status--checked': todo.status }"
+            >
+              <input
+                :id="'todo_status_' + todo.id"
+                type="checkbox"
+                v-model="todo.status"
+                @click="toggleStatus(todo)"
+              />
+              <label :for="'todo_status_' + todo.id"></label>
+            </div>
             <div class="list__block list__block--left">
               <div class="list__title">{{ todo.title }}</div>
             </div>
             <div class="list__block list__block--right list__block--grow">
-              <label
+              <div
                 class="label label--margin"
-                style="background-color: #<%= label.color %>;"
+                v-if="getTodoLabel(todo)"
+                :style="{
+                  color: colorOnRgb(getTodoLabel(todo).color),
+                  backgroundColor: '#' + getTodoLabel(todo).color
+                }"
               >
-              </label>
+                {{ getTodoLabel(todo).title }}
+              </div>
               <div class="item-action">
                 <a @click="modalEditTodo(todo)" class="item-action__btn">
                   <i class="fas fa-pencil-alt"></i>
@@ -132,10 +148,9 @@
                 <div class="col-9">
                   <input
                     type="date"
-                    name="start_date"
+                    v-model="todo.start_date"
                     class="form__input"
                     :default="selected_date"
-                    :value="selected_date"
                   />
                 </div>
               </div>
@@ -148,19 +163,29 @@
                 <div class="col-9">
                   <input
                     type="date"
-                    name="end_date"
+                    v-model="todo.end_date"
                     class="form__input"
                     :default="selected_date"
-                    :value="selected_date"
                   />
                   <div class="remember-me">
                     <div class="remember-me__checkbox">
                       <input
                         type="checkbox"
-                        name="remember_me"
-                        id="remember_me"
+                        name="continue_without_end"
+                        id="continue_without_end"
+                        v-if="modalEditingTodo"
+                        v-model="modalEditingTodo.continue_without_end"
                       />
-                      <label for="remember_me">終了日を設定せず繰り返す</label>
+                      <input
+                        v-else
+                        type="checkbox"
+                        name="continue_without_end"
+                        id="continue_without_end"
+                        v-model="todo.continue_without_end"
+                      />
+                      <label for="continue_without_end"
+                        >終了日を設定せず繰り返す</label
+                      >
                     </div>
                   </div>
                 </div>
@@ -176,10 +201,10 @@
                     <label v-for="n in 7" class="day-check__label" :key="n - 1">
                       <input
                         type="checkbox"
-                        name="apply_days"
+                        :value="n - 1"
+                        :checked="true"
                         class="day-check__input"
                         multiple
-                        checked
                       />
                       <span>{{ days[n - 1] }}</span>
                     </label>
@@ -217,12 +242,22 @@
                   <div class="btn-slide">
                     <input
                       type="checkbox"
-                      name="history_selected"
-                      id="history_selected"
+                      v-if="modalEditingTodo"
+                      name="history_display"
+                      id="history_display"
                       class="btn-slide__input"
+                      v-model="modalEditingTodo.history_display"
+                    />
+                    <input
+                      v-else
+                      type="checkbox"
+                      name="history_display"
+                      id="history_display"
+                      class="btn-slide__input"
+                      v-model="todo.history_display"
                     />
                     <label
-                      for="history_selected"
+                      for="history_display"
                       class="btn-slide__label"
                     ></label>
                   </div>
@@ -260,7 +295,15 @@ export default {
       isModalActive: false,
       todos: [],
       todo: {
-        title: ""
+        title: "",
+        status: "",
+        label_id: "",
+        start_date: "",
+        end_date: "",
+        continue_without_end: "",
+        history_display: "",
+        apply_days: [],
+        body: ""
       },
       labels: [],
       days: ["日", "月", "火", "水", "木", "金", "土"],
@@ -280,6 +323,34 @@ export default {
     this.fetchData();
   },
   methods: {
+    getTodoLabel(todo) {
+      return this.labels.filter((label) => todo.label_id == label.id)[0];
+    },
+    colorOnRgb(hex) {
+      if (hex.slice(0, 1) == "#") hex = hex.slice(1);
+      if (hex.length == 3)
+        hex =
+          hex.slice(0, 1) +
+          hex.slice(0, 1) +
+          hex.slice(1, 2) +
+          hex.slice(1, 2) +
+          hex.slice(2, 3) +
+          hex.slice(2, 3);
+
+      var rgb = [hex.slice(0, 2), hex.slice(2, 4), hex.slice(4, 6)].map(
+        function(str) {
+          return parseInt(str, 16);
+        }
+      );
+
+      var red = rgb[0],
+        green = rgb[1],
+        blue = rgb[2];
+
+      if (red * 0.299 + green * 0.587 + blue * 0.114 < 186) {
+        return "white";
+      }
+    },
     setResponse(res) {
       const data = res.data;
       this.todos = data.todos;
@@ -313,7 +384,7 @@ export default {
         })
         .then(
           (res) => {
-            this.todo.title = "";
+            this.clearTodoValue();
             this.fetchData();
             this.closeModal();
           },
@@ -321,6 +392,17 @@ export default {
             this.errors.push("エラー発生");
           }
         );
+    },
+    clearTodoValue() {
+      this.todo.title = "";
+      this.todo.status = "";
+      this.todo.label_id = "";
+      this.todo.start_date = "";
+      this.todo.end_date = "";
+      this.todo.continue_without_end = "";
+      this.todo.history_display = "";
+      this.todo.apply_days = [];
+      this.todo.body = "";
     },
     editTodo(todo) {
       this.fetchData();
@@ -340,6 +422,7 @@ export default {
       this.editedTodo = todo;
       axios.put(`/api/todos/${todo.id}`, { todo: this.editedTodo }).then(
         (res) => {
+          this.clearTodoValue();
           this.modalEditingTodo = null;
           this.fetchData();
         },
@@ -352,6 +435,13 @@ export default {
       axios.delete(`/api/todos/${id}`).then((res) => {
         this.fetchData();
       });
+    },
+    toggleStatus(todo) {
+      axios
+        .put(`/api/todos/${todo.id}/toggle_status`, { todo: todo })
+        .then((error) => {
+          this.errors.push("エラーがあります");
+        });
     },
     openModal() {
       this.isModalActive = true;

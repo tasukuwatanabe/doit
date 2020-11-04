@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   get '/shortcuts', to: 'todos#index'
   get '/labels', to: 'todos#index'
   namespace :api do
-    resources :todos, except: %i[new edit show]
+    resources :todos, except: %i[new edit show] do
+      put '/toggle_status', to: 'todos#toggle_status'
+    end
     resources :shortcuts, except: %i[new edit show]
     resources :labels, except: %i[new edit show]
     get '/current_user', to: 'users#current_user'
