@@ -10,7 +10,7 @@
         </div>
         <div class="todo__date-box">
           <div class="todo__date-title">{{ selected_format_date }}</div>
-          <p class="todo__date-day">曜日</p>
+          <p class="todo__date-day">{{ getDay(day) }}曜日</p>
         </div>
         <div
           @click="changeDay(next_date)"
@@ -144,6 +144,7 @@
                     type="date"
                     v-model="todo.end_date"
                     class="form__input"
+                    :readonly="todo.continue_without_end"
                   />
                   <div class="remember-me">
                     <div class="remember-me__checkbox">
@@ -151,7 +152,6 @@
                         type="checkbox"
                         name="continue_without_end"
                         id="continue_without_end"
-                        v-if="todo"
                         v-model="todo.continue_without_end"
                       />
                       <label for="continue_without_end"
@@ -174,7 +174,6 @@
                         type="checkbox"
                         v-model="todo.apply_days"
                         :value="n - 1"
-                        :checked="true"
                         class="day-check__input"
                         multiple
                       />
@@ -249,6 +248,7 @@ export default {
       todo: {},
       labels: [],
       days: ["日", "月", "火", "水", "木", "金", "土"],
+      day: null,
       selected_date: null,
       selected_format_date: null,
       previous_date: null,
@@ -264,6 +264,9 @@ export default {
     this.fetchData();
   },
   methods: {
+    getDay(day) {
+      return this.days[this.day];
+    },
     getTodoLabel(todo) {
       return this.labels.filter((label) => todo.label_id == label.id)[0];
     },
@@ -297,23 +300,22 @@ export default {
       this.todos = data.todos;
       this.labels = data.labels;
       this.selected_date = data.selected_date;
-      this.todo.start_date = data.selected_date;
-      this.todo.end_date = data.selected_date;
       this.selected_format_date = data.selected_format_date;
       this.previous_date = data.previous_date;
       this.previous_format_date = data.previous_format_date;
       this.next_date = data.next_date;
       this.next_format_date = data.next_format_date;
+      this.day = data.day;
     },
     fetchData() {
-      axios
-        .get("/api/todos.json")
-        .then((response) => this.setResponse(response));
+      axios.get("/api/todos.json").then((res) => this.setResponse(res));
     },
     changeDay(date) {
-      axios
-        .get("/api/todos.json", { params: { date: date } })
-        .then((response) => this.setResponse(response));
+      axios.get("/api/todos.json", { params: { date: date } }).then((res) => {
+        this.setResponse(res);
+        this.todo.start_date = res.data.selected_date;
+        this.todo.end_date = res.data.selected_date;
+      });
     },
     createTodo(todo) {
       this.errors = [];
@@ -339,6 +341,11 @@ export default {
     todoReset() {
       this.todo = new Object();
       this.todo.update = false;
+      this.todo.apply_days = [0, 1, 2, 3, 4, 5, 6];
+      axios.get("/api/todos.json").then((res) => {
+        this.todo.start_date = res.data.selected_date;
+        this.todo.end_date = res.data.selected_date;
+      });
     },
     editTodo(todo) {
       this.todo = todo;
@@ -354,10 +361,7 @@ export default {
       this.todo = todo;
       axios.put(`/api/todos/${todo.id}`, { todo: this.todo }).then(
         (res) => {
-          this.$router.push("/", {
-            params: { date: this.todo.start_date }
-          });
-          this.fetchData();
+          this.changeDay(this.todo.start_date);
         },
         (error) => {
           this.errors.push("エラーがあります");
