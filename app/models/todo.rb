@@ -12,6 +12,7 @@ class Todo < ApplicationRecord
     before: ->(_obj) { 1.year.from_now.to_date },
     allow_blank: true
   }
+  validates :todo_parent_id, presence: true
 
   def self.search(search)
     return nil unless search
