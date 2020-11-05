@@ -3,13 +3,15 @@
     <div class="sidebar-left__userinfo userinfo">
       <%= link_to edit_user_path(current_user) do %>
         <%= user_image(current_user) %>
-        <%= link_to current_user.username, user_path(current_user), class: "userinfo__username" %>
+        <div class="userinfo__username">
+          <%= current_user.username %>
+        </div>
       <% end %>
     </div>
     <nav class="nav">
       <ul class="nav__list">
         <li class="nav__item">
-          <%= link_to todo_index_path(@today), class: "nav__link" do %>
+          <%= link_to root_path, class: "nav__link" do %>
             <span class="icon nav__icon">
               <i class="fas fa-calendar-check"></i>
             </span>
@@ -25,7 +27,8 @@
           <% end %>
         </li>
         <li class="nav__item">
-          <%= link_to shortcuts_path, class: "nav__link" do %>
+          <%#= link_to shortcuts_path, class: "nav__link" do %>
+          <a href="/shortcuts" class="nav__link">
             <span class="icon nav__icon">
               <svg width="20px" height="20px">
                 <g transform="translate(10.000000, 10.000000) scale(-1, 1) translate(-10.000000, -10.000000)">
@@ -34,15 +37,18 @@
               </svg>
             </span>
             <span>ショートカット</span>
-          <% end %>
+          </a>
+          <%# end %>
         </li>
         <li class="nav__item">
-          <%= link_to labels_path, class: "nav__link" do %>
+          <%#= link_to labels_path, class: "nav__link" do %>
+          <a href="/labels" class="nav__link">
             <span class="icon nav__icon">
               <i class="fas fa-tag"></i>
             </span>
             <span>ラベル</span>
-          <% end %>
+          </a>
+          <%# end %>
         </li>
         <li class="nav__item">
           <%= link_to edit_user_path(current_user), class: "nav__link" do %>

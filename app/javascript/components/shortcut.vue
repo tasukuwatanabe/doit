@@ -1,5 +1,5 @@
 <template>
-  <div class="shortcut">
+  <div class="shortcut content">
     <div class="headline">
       <div class="headline__title">
         ショートカットの管理
@@ -28,58 +28,48 @@
       </div>
     </div>
     <ul class="list" v-if="shortcuts.length">
-      <li class="list__item" v-for="s in shortcuts" :key="s.id">
+      <li class="list__item" v-for="shortcut in shortcuts" :key="shortcut.id">
         <div class="list__block list__block--left">
           <div class="list__title-group" style="position: relative;">
             <div
-              v-show="s.id != editingShortcutId"
-              @dblclick="editShortcut(s)"
+              v-show="shortcut.id !== editingShortcutId"
+              @dblclick="editShortcut(shortcut)"
               class="list__title"
             >
-              {{ s.title }}
+              {{ shortcut.title }}
             </div>
             <div>
               <input
-                v-show="s.id == editingShortcutId"
-                v-model="s.title"
+                v-show="shortcut.id == editingShortcutId"
+                v-model="shortcut.title"
                 v-focus
-                @keyup.enter="updateShortcut(s)"
+                @keyup.enter="updateShortcut(shortcut)"
               />
-              <span
-                @click="fetchShortcuts"
-                v-if="
-                  !s.title.length ||
-                    (errors.length && s.id == editingShortcutId)
-                "
-                >×リセット</span
-              >
             </div>
             <span
-              v-if="!s.title.length"
+              v-if="!shortcut.title.length"
               style="color: red; font-size: 12px; position: absolute;"
               >タイトルが未入力です</span
-            >
-            <span
-              v-else-if="errors.length && s.id == editingShortcutId"
-              style="color: red; font-size: 12px; position: absolute;"
-              >{{ errors[0] }}</span
             >
           </div>
         </div>
         <div class="list__block list__block--right list__block--grow">
           <div
             class="label label--margin"
-            v-if="getShortcutLabel(s)"
+            v-if="getShortcutLabel(shortcut)"
             :style="{
-              color: colorOnRgb(getShortcutLabel(s).color),
-              backgroundColor: '#' + getShortcutLabel(s).color
+              color: colorOnRgb(getShortcutLabel(shortcut).color),
+              backgroundColor: '#' + getShortcutLabel(shortcut).color
             }"
           >
-            {{ getShortcutLabel(s).title }}
+            {{ getShortcutLabel(shortcut).title }}
           </div>
           <div v-else></div>
           <div class="item-action">
-            <a v-on:click="modalEditShortcut(s)" class="item-action__btn">
+            <a
+              v-on:click="modalEditShortcut(shortcut)"
+              class="item-action__btn"
+            >
               <i class="fas fa-pencil-alt"></i>
             </a>
             <a v-on:click="deleteShortcut(s.id)" class="item-action__btn">
@@ -98,7 +88,7 @@
       </div>
     </div>
     <div class="modal" :class="{ 'is-open': isModalActive }">
-      <div class="modal__layer" @click.self="closeModal">
+      <div class="modal__layer">
         <div class="modal__box">
           <form @submit.prevent novalidate="true" class="form">
             <div class="modal-form">
@@ -110,26 +100,20 @@
                   タイトル
                 </div>
                 <div class="col-9">
-                  <div v-if="modalEditingShortcut">
-                    <input
-                      type="text"
-                      class="form__input"
-                      v-if="modalEditingShortcut"
-                      v-model="modalEditingShortcut.title"
-                      required
-                      @keydown:enter="createShortcut"
-                    />
-                  </div>
-                  <div v-else>
-                    <input
-                      type="text"
-                      class="form__input"
-                      v-if="shortcut"
-                      v-model="shortcut.title"
-                      required
-                      @keydown:enter="createShortcut"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    class="form__input"
+                    v-if="modalEditingShortcut"
+                    v-model="modalEditingShortcut.title"
+                    required
+                  />
+                  <input
+                    type="text"
+                    class="form__input"
+                    v-else
+                    v-model="shortcut.title"
+                    required
+                  />
                   <div v-if="errors.length">{{ errors[0] }}</div>
                 </div>
               </div>
@@ -138,25 +122,32 @@
                   ラベル
                 </div>
                 <div class="col-9">
-                  <div v-if="modalEditingShortcut">
-                    <select
-                      v-model="modalEditingShortcut.label_id"
-                      class="form__select"
+                  <select
+                    v-if="modalEditingShortcut"
+                    v-model="modalEditingShortcut.label_id"
+                    class="form__select"
+                  >
+                    <option>ラベルを選択</option>
+                    <option
+                      v-for="label in labels"
+                      :key="label.id"
+                      :value="label.id"
+                      >{{ label.title }}</option
                     >
-                      <option>ラベルを選択</option>
-                      <option v-for="l in labels" :key="l.id" :value="l.id">{{
-                        l.title
-                      }}</option>
-                    </select>
-                  </div>
-                  <div v-else>
-                    <select v-model="shortcut.label_id" class="form__select">
-                      <option>ラベルを選択</option>
-                      <option v-for="l in labels" :key="l.id" :value="l.id">{{
-                        l.title
-                      }}</option>
-                    </select>
-                  </div>
+                  </select>
+                  <select
+                    v-else
+                    v-model="shortcut.label_id"
+                    class="form__select"
+                  >
+                    <option selected value="">ラベルを選択</option>
+                    <option
+                      v-for="label in labels"
+                      :key="label.id"
+                      :value="label.id"
+                      >{{ label.title }}</option
+                    >
+                  </select>
                 </div>
               </div>
               <div class="btn-case">
@@ -195,7 +186,6 @@ Vue.directive("focus", {
 });
 
 export default {
-  name: "shortcutHome",
   data() {
     return {
       isModalActive: false,
@@ -204,7 +194,6 @@ export default {
         title: "",
         label_id: ""
       },
-      shortcutLabel: "",
       labels: [],
       label: {
         title: "",
@@ -216,12 +205,12 @@ export default {
       modalEditingShortcut: null
     };
   },
-  mounted() {
+  created() {
     this.fetchShortcuts();
   },
   methods: {
     getShortcutLabel(shortcut) {
-      return this.labels.filter((label) => label.id === shortcut.label_id)[0];
+      return this.labels.filter((label) => shortcut.label_id == label.id)[0];
     },
     colorOnRgb(hex) {
       if (hex.slice(0, 1) == "#") hex = hex.slice(1);
@@ -254,27 +243,8 @@ export default {
       this.editingShortcutId = null;
       axios.get("/api/shortcuts.json").then(
         (response) => {
-          this.shortcuts = response.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-      axios.get("/api/labels.json").then(
-        (response) => {
-          this.labels = response.data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
-    setShortcutTitle(id) {
-      axios.get("/api/shortcuts").then(
-        (res) => {
-          for (let i = 0; i < res.data.shortcuts.length; i++) {
-            this.shortcuts.push(res.data.shortcuts[i]);
-          }
+          this.shortcuts = response.data.shortcuts;
+          this.labels = response.data.labels;
         },
         (error) => {
           console.log(error);

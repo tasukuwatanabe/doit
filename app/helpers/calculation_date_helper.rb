@@ -5,6 +5,10 @@ module CalculationDateHelper
     date < Date.new(2000, 1, 1) || date > 1.year.from_now.to_date
   end
 
+  def get_today
+    Date.today.strftime('%Y年%1m月%1d日')
+  end
+
   def get_url_date
     Date.parse(params[:date])
   end

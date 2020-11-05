@@ -5,8 +5,13 @@ class Api::ShortcutsController < ApplicationController
   before_action :set_shortcut, only: %i[edit update destroy create_todo]
 
   def index
-    shortcuts = current_user.shortcuts.select(:id, :title, :label_id)
-    render json: shortcuts
+    shortcuts = current_user.shortcuts.order(created_at: :desc).all
+    labels = current_user.labels.order(created_at: :desc).all
+    api_array = {
+      shortcuts: shortcuts,
+      labels: labels
+    }
+    render json: api_array
   end
 
   def create

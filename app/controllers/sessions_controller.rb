@@ -44,7 +44,7 @@ class SessionsController < ApplicationController
     user = User.find_by!(email: 'guest@example.com')
     log_in(user)
     flash[:success] = 'ゲストユーザーでログインしました。'
-    redirect_to todo_index_path(@today)
+    redirect_to root_path(@today)
   end
 
   private def login_form_params

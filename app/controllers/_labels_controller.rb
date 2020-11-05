@@ -1,29 +1,53 @@
-class LabelsController < ApplicationController
-  def index
-    @label = Label.new
-    @labels = current_user.labels.all
-  end
+# class LabelsController < ApplicationController
+#   protect_from_forgery except: %i[create update destroy]
 
-  def create
-    @label = current_user.labels.build(label_params)
-    if @label.save
-      flash[:success] = 'ラベルを作成しました'
-    else
-      flash[:danger] = 'ラベルの作成に失敗しました'
-    end
-    redirect_to labels_path
-  end
+#   before_action :logged_in_user
 
-  def destroy
-    @label = Label.find(params[:id])
-    @label.destroy
-    flash[:success] = 'ラベルを削除しました'
-    redirect_to labels_path
-  end
+#   def index
+#     labels = current_user.labels.order(created_at: :desc).all
+#     render json: labels
+#   end
 
-  private
+#   def create
+#     label = current_user.labels.build(label_params)
+#     if label.save
+#       head :no_content
+#     else
+#       render json: { error: label.errors.full_messages.join(' ') }, status: :unprocessable_entity
+#     end
+#   end
 
-  def label_params
-    params.require(:label).permit(:title, :color)
-  end
-end
+#   def update
+#     label = Label.find(params[:id])
+#     if label.update(label_params)
+#       head :no_content
+#     else
+#       render json: { error: label.errors.full_messages.join(' ') }, status: :unprocessable_entity
+#     end
+#   end
+
+#   def destroy
+#     label = Label.find(params[:id])
+#     todos = Todo.where(label_id: label.id)
+#     todos.each do |todo|
+#       todo.label_id = nil
+#     end
+
+#     shortcuts = Shortcut.where(label_id: label.id)
+#     shortcuts.each do |shortcut|
+#       shortcut.label_id = nil
+#     end
+
+#     if label.destroy
+#       head :no_content
+#     else
+#       render json: { error: shortcut.errors.full_messages.join(' ') }, status: :unprocessable_entity
+#     end
+#   end
+
+#   private
+
+#   def label_params
+#     params.fetch(:label, {}).permit(:id, :title, :color)
+#   end
+# end
