@@ -22,18 +22,5 @@ Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 
 document.addEventListener("turbolinks:load", () => {
-  let apps = [
-    { elem: "#todos", object: Router },
-    { elem: "#history", object: Router },
-    { elem: "#labels", object: Router },
-    { elem: "#shortcuts", object: Router },
-    { elem: "#user_edit", object: Router },
-    { elem: "#password_edit", object: Router }
-  ];
-
-  apps.forEach((app) => {
-    if ($(app.elem).length) {
-      new Vue(app.object).$mount(app.elem);
-    }
-  });
+  new Vue(Router).$mount("#app");
 });

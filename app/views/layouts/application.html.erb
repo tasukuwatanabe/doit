@@ -12,17 +12,6 @@
     <%= javascript_pack_tag 'main' %>
   </head>
   <body>
-    <div id="screen-layer"></div>
-    <%= render "shared/header" %>
-    <% if logged_in? %>
-      <%= render "shared/slide-menu" %>
-    <% end %>
-    <%= render "shared/flash" %>
-    <main>
-      <div class="container">
-        <%= yield %>
-      </div>
-    </main>
-    <%= render "shared/footer" %>
+    <div id="app"></div>
   </body>
 </html>

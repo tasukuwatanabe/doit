@@ -5,7 +5,7 @@
         <router-link
           :to="{
             name: 'user_edit',
-            params: { userId: currentUser.id }
+            params: { userId: this.$parent.currentUser.id }
           }"
         >
           <img
@@ -13,13 +13,15 @@
             class="profile-img"
             src="/user_images/default.jpg"
           />
-          <div class="userinfo__username">{{ currentUser.username }}</div>
+          <div class="userinfo__username">
+            {{ this.$parent.currentUser.username }}
+          </div>
         </router-link>
       </div>
       <nav class="nav">
         <ul class="nav__list">
           <li class="nav__item">
-            <router-link to="/" class="nav__link">
+            <router-link :to="{ name: 'todos' }" class="nav__link">
               <span class="icon nav__icon">
                 <i class="fas fa-calendar-check"></i>
               </span>
@@ -27,7 +29,7 @@
             </router-link>
           </li>
           <li class="nav__item">
-            <router-link to="/history" class="nav__link">
+            <router-link :to="{ name: 'history' }" class="nav__link">
               <span class="icon nav__icon">
                 <i class="fas fa-crown"></i>
               </span>
@@ -35,7 +37,7 @@
             </router-link>
           </li>
           <li class="nav__item">
-            <router-link to="/shortcuts" class="nav__link">
+            <router-link :to="{ name: 'shortcuts' }" class="nav__link">
               <span class="icon nav__icon">
                 <svg width="20px" height="20px">
                   <g
@@ -51,7 +53,7 @@
             </router-link>
           </li>
           <li class="nav__item">
-            <router-link to="/labels" class="nav__link">
+            <router-link :to="{ name: 'labels' }" class="nav__link">
               <span class="icon nav__icon">
                 <i class="fas fa-tag"></i>
               </span>
@@ -62,7 +64,7 @@
             <router-link
               :to="{
                 name: 'user_edit',
-                params: { userId: currentUser.id }
+                params: { userId: this.$parent.currentUser.id }
               }"
               class="nav__link"
             >
@@ -76,7 +78,7 @@
             <router-link
               :to="{
                 name: 'password_edit',
-                params: { userId: currentUser.id }
+                params: { userId: this.$parent.currentUser.id }
               }"
               class="nav__link"
             >
@@ -101,29 +103,11 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
-  props: ["userId"],
   data() {
     return {
-      currentUser: []
+      today: new Date()
     };
-  },
-  mounted() {
-    axios
-      .get("/api/current_user.json")
-      .then((response) => (this.currentUser = response.data));
   }
 };
 </script>
-
-<style scoped>
-.error-list {
-  list-style-type: none;
-  font-size: 12px;
-  padding-left: 0;
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-</style>

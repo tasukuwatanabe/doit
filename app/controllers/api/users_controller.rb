@@ -6,7 +6,7 @@ class Api::UsersController < ApplicationController
   # before_action :validate_email_update, only: :update
 
   def current_user
-    current_user = User.find_by(id: session[:user_id])
+    current_user = User.where(id: session[:user_id]).select(:id, :username, :email)
     render json: current_user
   end
 
@@ -34,7 +34,7 @@ class Api::UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :password, :email, :password_confirmation, :user_image, :remove_user_image)
+    params.fetch(:user, {}).permit(:id, :username, :password, :email, :password_confirmation, :user_image, :remove_user_image)
   end
 
   def correct_user
