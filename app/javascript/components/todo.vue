@@ -232,13 +232,18 @@
         </div>
       </div>
     </div>
+    <index-shortcut @shortcut-create-todo="createTodo"></index-shortcut>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import IndexShortcut from "./index_shortcut.vue";
 
 export default {
+  components: {
+    "index-shortcut": IndexShortcut
+  },
   data() {
     return {
       isModalActive: false,
@@ -316,8 +321,9 @@ export default {
         this.todo.end_date = res.data.selected_date;
       });
     },
-    createTodo(todo) {
+    createTodo(title) {
       this.errors = [];
+      this.todo.title = title;
       if (!this.todo.title) {
         this.errors.push("タイトルは必須です");
         return;
