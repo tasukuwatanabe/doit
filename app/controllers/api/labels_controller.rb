@@ -1,15 +1,11 @@
 class Api::LabelsController < ApplicationController
-  protect_from_forgery except: %i[create update destroy]
-
-  before_action :logged_in_user
-
   def index
     labels = current_user.labels.order(created_at: :desc).all
     todos = current_user.todos.where.not(label_id: nil).select(:id)
-    api_array = [
+    api_array = {
       labels: labels,
       todos: todos
-    ]
+    }
     render json: api_array
   end
 
@@ -18,7 +14,7 @@ class Api::LabelsController < ApplicationController
     if label.save
       head :no_content
     else
-      render json: { error: label.errors.full_messages.join(' ') }, status: :unprocessable_entity
+      render json: label.errors, status: :unprocessable_entity
     end
   end
 
@@ -27,7 +23,7 @@ class Api::LabelsController < ApplicationController
     if label.update(label_params)
       head :no_content
     else
-      render json: { error: label.errors.full_messages.join(' ') }, status: :unprocessable_entity
+      render json: label.errors, status: :unprocessable_entity
     end
   end
 
@@ -46,7 +42,7 @@ class Api::LabelsController < ApplicationController
     if label.destroy
       head :no_content
     else
-      render json: { error: shortcut.errors.full_messages.join(' ') }, status: :unprocessable_entity
+      render json: label.errors, status: :unprocessable_entity
     end
   end
 

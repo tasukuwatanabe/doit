@@ -39,21 +39,11 @@ import axios from "axios";
 export default {
   data() {
     return {
-      shortcuts: [],
-      todo: {
-        title: ""
-      }
+      todo: {},
+      shortcuts: this.$parent.$data.shortcuts
     };
   },
-  created() {
-    this.fetchShortcuts();
-  },
   methods: {
-    fetchShortcuts() {
-      axios.get("/api/shortcuts.json").then((res) => {
-        this.shortcuts = res.data.shortcuts;
-      });
-    },
     createTodo(shortcut) {
       this.todo.title = shortcut.title;
       this.$emit("shortcut-create-todo", this.todo.title);

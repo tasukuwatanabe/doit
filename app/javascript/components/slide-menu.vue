@@ -1,10 +1,10 @@
 <template>
-  <aside id="slide-menu" class="slide-menu">
+  <aside v-if="currentUser" id="slide-menu" class="slide-menu">
     <div class="sidebar-left__userinfo userinfo">
       <router-link
         :to="{
           name: 'user_edit',
-          params: { userId: this.$parent.currentUser.id }
+          params: { userId: this.currentUser.id }
         }"
       >
         <img
@@ -13,7 +13,7 @@
           src="/user_images/default.jpg"
         />
         <div class="userinfo__username">
-          {{ this.$parent.currentUser.username }}
+          {{ this.currentUser.username }}
         </div>
       </router-link>
     </div>
@@ -63,7 +63,7 @@
           <router-link
             :to="{
               name: 'user_edit',
-              params: { userId: this.$parent.currentUser.id }
+              params: { userId: this.currentUser.id }
             }"
             class="nav__link"
           >
@@ -77,7 +77,7 @@
           <router-link
             :to="{
               name: 'password_edit',
-              params: { userId: this.$parent.currentUser.id }
+              params: { userId: this.currentUser.id }
             }"
             class="nav__link"
           >
@@ -99,3 +99,32 @@
     </nav>
   </aside>
 </template>
+
+<script>
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      currentUser: {}
+    };
+  },
+  created() {
+    axios.get("/api/current_user").then((response) => {
+      this.currentUser = response.data[0];
+    });
+  },
+  computed: {
+    logged_in() {
+      return this.currentUser;
+    }
+  },
+  methods: {
+    logout() {
+      axios.delete(`/api/logout`).then((response) => {
+        this.$router.push({ name: "login" });
+      });
+    }
+  }
+};
+</script>

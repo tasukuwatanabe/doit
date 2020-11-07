@@ -21,6 +21,8 @@ services:
       - /doit/.git
     ports:
       - 3000:3000
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=webpacker
     depends_on:
       - db
       - webpacker

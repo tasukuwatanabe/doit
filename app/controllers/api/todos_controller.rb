@@ -1,7 +1,5 @@
 class Api::TodosController < ApplicationController
-  protect_from_forgery except: %i[create update destroy toggle_status]
-
-  # before_action :date_params, only: %i[create update]
+  skip_before_action :verify_authenticity_token
 
   include CalculationDateHelper
 
@@ -14,25 +12,17 @@ class Api::TodosController < ApplicationController
 
     todos = current_user.todos.where(todo_date: selected_date).order(created_at: :desc).select(:id, :title, :status, :start_date, :end_date, :continue_without_end, :history_display, :body, :label_id, :apply_days)
 
-    labels = current_user.labels.order(created_at: :desc).all
-
-    selected_date = selected_date
     selected_format_date = selected_date.strftime('%Y年%1m月%1d日')
     previous_date = selected_date.yesterday
-    previous_format_date = selected_date.yesterday.strftime('%Y年%1m月%1d日')
     next_date = selected_date.tomorrow
-    next_format_date = selected_date.tomorrow.strftime('%Y年%1m月%1d日')
     day = selected_date.wday
 
     api_data = {
       todos: todos,
-      labels: labels,
       selected_date: selected_date,
       selected_format_date: selected_format_date,
       previous_date: previous_date,
-      previous_format_date: previous_format_date,
       next_date: next_date,
-      next_format_date: next_format_date,
       day: day
     }
 
@@ -49,9 +39,11 @@ class Api::TodosController < ApplicationController
     todo_term = (end_date - start_date).to_i + 1
     apply_days = todo_params[:apply_days]
 
+    # begin
     Todo.transaction do
       todo_parent = TodoParent.create(user_id: current_user.id)
       todo_term.times do |n|
+        z
         todo = current_user.todos.build(todo_params)
         todo_date = todo.start_date + n.days
         day = todo_date.wday
@@ -66,7 +58,8 @@ class Api::TodosController < ApplicationController
     end
     head :no_content
     # rescue StandardError
-    #   render json: { error: todo.errors.full_messages.join(' ') }, status: :unprocessable_entity
+    #   render json: todo.errors, status: :unprocessable_entity
+    # end
   end
 
   def update
@@ -104,6 +97,7 @@ class Api::TodosController < ApplicationController
             end
           elsif apply_days.include?(day)
             new_todo = current_user.todos.build(todo_params.except(:id))
+            new_todo.status = false
             new_todo.todo_parent_id = todo.todo_parent_id
             new_todo.todo_date = start_date + n.days
             new_todo.save
@@ -112,14 +106,18 @@ class Api::TodosController < ApplicationController
       end
       head :no_content
     rescue StandardError
-      render json: { error: todos.errors.full_messages.join(' ') }, status: :unprocessable_entity
+      render json: todo.errors, status: :unprocessable_entity
     end
   end
 
   def destroy
     todo = Todo.find_by(id: params[:id])
     todo_parent = TodoParent.find_by(id: todo.todo_parent_id)
-    todo_parent.destroy
+    if todo_parent.destroy
+      render json: 'deleted'
+    else
+      render json: todo.errors, status: :unprocessable_entity
+    end
   end
 
   def toggle_status
@@ -136,19 +134,4 @@ class Api::TodosController < ApplicationController
   def todo_params
     params.fetch(:todo, {}).permit(:id, :title, :status, :start_date, :end_date, :continue_without_end, :history_display, :body, :label_id, apply_days: [])
   end
-
-  # def date_params
-  #   start_date = Date.parse(todo_params[:start_date])
-  #   end_date = if todo_params[:continue_without_end]
-  #                1.year.since(Date.today)
-  #              else
-  #                Date.parse(todo_params[:end_date])
-  #              end
-  #   todo_term = (end_date - start_date).to_i + 1
-  #   apply_days = todo_params[:apply_days]
-  # end
-
-  # def get_shortcuts
-  #   shortcuts = Shortcut.where(user_id: current_user.id)
-  # end
 end

@@ -1,7 +1,9 @@
 class ApplicationController < ActionController::Base
-  before_action :logged_in_user
-  before_action :get_today
-  before_action :request_path
+  protect_from_forgery with: :exception
+
+  # before_action :logged_in_user
+  # before_action :get_today
+  # before_action :request_path
 
   # エラーページ表示用のコード(コントローラー側でraise StandardErrorを書く)
   # rescue_from StandardError, with: :rescue325
@@ -20,11 +22,14 @@ class ApplicationController < ActionController::Base
   end
 
   def logged_in_user
-    unless logged_in?
-      store_location
-      flash[:danger] = 'ログインが必要です'
-      redirect_to login_path
-    end
+    # render json: 'ログインしてください'
+
+    # unless logged_in?
+    # respond_to do |_format|
+    #   format html: { redirect_to: '/login', notice: 'ログインしてください' }
+    #   # render json: 'ログインしてください' unless logged_in?
+    # end
+    # end
   end
 
   def request_path

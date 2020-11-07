@@ -1,294 +1,296 @@
 <template>
-  <div class="content">
-    <div class="history">
-      <div class="headline">
-        <div class="headline__title">
-          達成度の確認
-          <span class="icon headline__icon">
-            <i class="fas fa-crown"></i>
-          </span>
-        </div>
-        <p class="headline__text">
-          ToDoの達成度を数値で確認することができます。
-        </p>
-      </div>
-      <ul class="history__list">
-        <li class="history__item">
-          <div class="row">
-            <div class="col-md-6 achievement">
-              <div class="achievement__box">
-                <div class="achievement__title">読書をする</div>
-                <div>
-                  <span class="label">自己投資</span>
+  <div>
+    <div class="container inner">
+      <sidebar-left></sidebar-left>
+      <div class="content">
+        <div class="history">
+          <div class="headline">
+            <div class="headline__title">
+              達成度の確認
+              <span class="icon headline__icon">
+                <i class="fas fa-crown"></i>
+              </span>
+            </div>
+            <p class="headline__text">
+              ToDoの達成度を数値で確認することができます。
+            </p>
+          </div>
+          <ul class="history__list">
+            <li class="history__item">
+              <div class="row">
+                <div class="col-md-6 achievement">
+                  <div class="achievement__box">
+                    <div class="achievement__title">読書をする</div>
+                    <div>
+                      <span class="label">自己投資</span>
+                    </div>
+                  </div>
+                  <div class="achievement__data">
+                    <table class="achievement__table">
+                      <tr>
+                        <th>開始日</th>
+                        <td>2020年10月28日</td>
+                      </tr>
+                      <tr>
+                        <th>終了日</th>
+                        <td>2020年10月30日</td>
+                      </tr>
+                      <tr>
+                        <th>完了した日数</th>
+                        <td>40日</td>
+                      </tr>
+                      <tr>
+                        <th>現在の継続日数</th>
+                        <td>10日</td>
+                      </tr>
+                      <tr>
+                        <th>最長継続日数</th>
+                        <td>12日</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-md-6 history__calendar">
+                  <div class="horizontal-arrows">
+                    <a
+                      class="horizontal-arrows__btn horizontal-arrows__btn--left"
+                    >
+                      <i class="fas fa-caret-left"></i>
+                    </a>
+                    <div class="horizontal-arrows__title">2020年10月</div>
+                    <a
+                      class="horizontal-arrows__btn horizontal-arrows__btn--right"
+                    >
+                      <i class="fas fa-caret-right"></i>
+                    </a>
+                  </div>
+                  <table class="calendar-table">
+                    <tr>
+                      <th>日</th>
+                      <th>月</th>
+                      <th>火</th>
+                      <th>水</th>
+                      <th>木</th>
+                      <th>金</th>
+                      <th>土</th>
+                    </tr>
+                    <tr>
+                      <td class="calendar-table--out">
+                        30
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td class="calendar-table--out">
+                        31
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td>
+                        1
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        2
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td>
+                        3
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        4
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        5
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        6
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td>
+                        7
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td>
+                        8
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        9
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td>
+                        10
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        11
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        12
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="calendar-table--today">
+                        13
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        14
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td>
+                        15
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td>
+                        16
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        17
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        18
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td>
+                        19
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        20
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td>
+                        21
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        22
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td>
+                        23
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        24
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        25
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        26
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        27
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        28
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td>
+                        <div>29</div>
+                      </td>
+                      <td>
+                        30
+                        <span class="icon calendar-table__icon">
+                          <i class="fas fa-crown"></i>
+                        </span>
+                      </td>
+                      <td>
+                        31
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td class="calendar-table--out">
+                        1
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                      <td class="calendar-table--out">
+                        2
+                        <span class="icon calendar-table__icon"></span>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <div class="text-center">
+                    <a class="btn-outlined btn--xs">今日へ移動</a>
+                  </div>
                 </div>
               </div>
-              <div class="achievement__data">
-                <table class="achievement__table">
-                  <tr>
-                    <th>開始日</th>
-                    <td>2020年10月28日</td>
-                  </tr>
-                  <tr>
-                    <th>終了日</th>
-                    <td>2020年10月30日</td>
-                  </tr>
-                  <tr>
-                    <th>完了した日数</th>
-                    <td>40日</td>
-                  </tr>
-                  <tr>
-                    <th>現在の継続日数</th>
-                    <td>10日</td>
-                  </tr>
-                  <tr>
-                    <th>最長継続日数</th>
-                    <td>12日</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-            <div class="col-md-6 history__calendar">
-              <div class="horizontal-arrows">
-                <a class="horizontal-arrows__btn horizontal-arrows__btn--left">
-                  <i class="fas fa-caret-left"></i>
-                </a>
-                <div class="horizontal-arrows__title">2020年10月</div>
-                <a class="horizontal-arrows__btn horizontal-arrows__btn--right">
-                  <i class="fas fa-caret-right"></i>
-                </a>
-              </div>
-              <table class="calendar-table">
-                <tr>
-                  <th>日</th>
-                  <th>月</th>
-                  <th>火</th>
-                  <th>水</th>
-                  <th>木</th>
-                  <th>金</th>
-                  <th>土</th>
-                </tr>
-                <tr>
-                  <td class="calendar-table--out">
-                    30
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td class="calendar-table--out">
-                    31
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td>
-                    1
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    2
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td>
-                    3
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    4
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    5
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    6
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td>
-                    7
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td>
-                    8
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    9
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td>
-                    10
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    11
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    12
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="calendar-table--today">
-                    13
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    14
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td>
-                    15
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td>
-                    16
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    17
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    18
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td>
-                    19
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    20
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td>
-                    21
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    22
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td>
-                    23
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    24
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    25
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    26
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    27
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    28
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td>
-                    <div>29</div>
-                  </td>
-                  <td>
-                    30
-                    <span class="icon calendar-table__icon">
-                      <i class="fas fa-crown"></i>
-                    </span>
-                  </td>
-                  <td>
-                    31
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td class="calendar-table--out">
-                    1
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                  <td class="calendar-table--out">
-                    2
-                    <span class="icon calendar-table__icon"></span>
-                  </td>
-                </tr>
-              </table>
-
-              <div class="text-center">
-                <a class="btn-outlined btn--xs">今日へ移動</a>
-              </div>
-            </div>
+            </li>
+          </ul>
+          <!-- <div class="no-result no-result">
+          <div class="no-result__illustration">
+            <img
+              src="/illustrations/il-goal.png"
+              alt="目標達成のイラスト"
+            />
           </div>
-        </li>
-      </ul>
-      <!-- <div class="no-result no-result">
-        <div class="no-result__illustration">
-          <img
-            src="/illustrations/il-goal.png"
-            alt="目標達成のイラスト"
-          />
+        </div> -->
+          <sidebar-right></sidebar-right>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import SidebarLeft from "./sidebar_left.vue";
+import SidebarRight from "./sidebar_right.vue";
 
 export default {
-  data() {
-    return {};
+  components: {
+    "sidebar-left": SidebarLeft,
+    "sidebar-right": SidebarRight
   }
 };
 </script>
-
-<style scoped>
-.error-list {
-  list-style-type: none;
-  font-size: 12px;
-  padding-left: 0;
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-</style>

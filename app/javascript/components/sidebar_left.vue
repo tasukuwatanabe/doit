@@ -1,11 +1,11 @@
 <template>
-  <aside class="sidebar-left">
+  <aside v-if="loggedIn" class="sidebar-left">
     <div class="sidebar-left__stickey-part">
       <div class="sidebar-left__userinfo userinfo">
         <router-link
           :to="{
             name: 'user_edit',
-            params: { userId: this.$parent.currentUser.id }
+            params: { userId: currentUser.id }
           }"
         >
           <img
@@ -14,7 +14,7 @@
             src="/user_images/default.jpg"
           />
           <div class="userinfo__username">
-            {{ this.$parent.currentUser.username }}
+            {{ currentUser.username }}
           </div>
         </router-link>
       </div>
@@ -64,7 +64,7 @@
             <router-link
               :to="{
                 name: 'user_edit',
-                params: { userId: this.$parent.currentUser.id }
+                params: { userId: currentUser.id }
               }"
               class="nav__link"
             >
@@ -78,7 +78,7 @@
             <router-link
               :to="{
                 name: 'password_edit',
-                params: { userId: this.$parent.currentUser.id }
+                params: { userId: currentUser.id }
               }"
               class="nav__link"
             >
@@ -89,12 +89,12 @@
             </router-link>
           </li>
           <li class="nav__item">
-            <a href="#" class="nav__link">
+            <div @click="logout" class="nav__link">
               <span class="icon nav__icon">
                 <i class="fas fa-sign-out-alt"></i>
               </span>
               <span>ログアウト</span>
-            </a>
+            </div>
           </li>
         </ul>
       </nav>
@@ -103,11 +103,25 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  data() {
-    return {
-      today: new Date()
-    };
+  computed: {
+    todoItems() {
+      return this.$store.state.todos;
+    },
+    currentUser() {
+      return this.$store.state.current_user;
+    },
+    loggedIn() {
+      return this.$store.state.logged_in;
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logoutAction");
+      this.$router.push({ name: "login" });
+    }
   }
 };
 </script>

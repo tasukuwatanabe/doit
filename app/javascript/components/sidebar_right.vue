@@ -1,5 +1,5 @@
 <template>
-  <aside class="sidebar-right">
+  <aside v-if="root" class="sidebar-right">
     <section class="sidebar-right__search search">
       <form action="" class="search__form">
         <span class="fa fa-search"></span>
@@ -105,6 +105,11 @@ export default {
       editedTodo: null,
       modalEditingTodo: null
     };
+  },
+  computed: {
+    root() {
+      return this.$route.path === "/";
+    }
   }
 };
 </script>
