@@ -5,11 +5,11 @@
       <form class="form">
         <div class="form__group">
           <label class="form__label">メールアドレス</label>
-          <input class="form__input" type="email" v-model="user.email" />
+          <input class="form__input" type="email" v-model="email" />
         </div>
         <div class="form__group">
           <label class="form__label">パスワード</label>
-          <input class="form__input" type="email" v-model="user.email" />
+          <input class="form__input" type="email" v-model="password" />
           <a class="form__reset-link">パスワード再設定</a>
         </div>
         <div class="form__group">
@@ -51,6 +51,7 @@
           </ul>
         </div>
       </form>
+      {{ message }}
     </div>
   </div>
 </template>
@@ -61,24 +62,16 @@ import axios from "axios";
 export default {
   data() {
     return {
-      user: {
-        email: null,
-        password: null
-      }
+      email: null,
+      password: null,
+      message: null
     };
-  },
-  computed: {
-    currentUser() {
-      return this.$store.state.current_user;
-    },
-    loggedIn() {
-      return this.$store.state.logged_in;
-    }
   },
   methods: {
     guestLogin() {
-      this.$store.dispatch("loginAction");
-      this.$router.push({ name: "todos" });
+      axios.post("/api/guest_login").then((response) => {
+        localStorage.setItem("currentUser", JSON.stringify(response.data));
+      });
     }
   }
 };

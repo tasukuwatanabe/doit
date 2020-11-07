@@ -1,9 +1,8 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
+  # protect_from_forgery with: :exception
 
-  # before_action :logged_in_user
-  # before_action :get_today
-  # before_action :request_path
+  # before_action :require_login
+  # before_action :set_csrf_cookie
 
   # エラーページ表示用のコード(コントローラー側でraise StandardErrorを書く)
   # rescue_from StandardError, with: :rescue325
@@ -15,29 +14,18 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include UserImageHelper
 
-  private
+  # private
 
-  def get_today
-    @today = Date.today.strftime('%Y-%m-%d')
-  end
+  # def set_csrf_cookie
+  #   cookies['CSRF-TOKEN'] = form_authenticity_token
+  # end
 
-  def logged_in_user
-    # render json: 'ログインしてください'
+  # def require_login
+  #   @current_user = User.find_by(id: session[:user_id])
+  #   return if @current_user
 
-    # unless logged_in?
-    # respond_to do |_format|
-    #   format html: { redirect_to: '/login', notice: 'ログインしてください' }
-    #   # render json: 'ログインしてください' unless logged_in?
-    # end
-    # end
-  end
-
-  def request_path
-    @path = controller_path + '#' + action_name
-    def @path.is(*str)
-      str.map { |s| include?(s) }.include?(true)
-    end
-  end
+  #   render json: { error: 'unauthorized' }, status: :unauthorized
+  # end
 
   # エラーページ表示用のコード
   # errors/〇〇の部分を設定する

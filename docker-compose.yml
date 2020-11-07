@@ -12,17 +12,14 @@ services:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
-      - .:/doit
+      - .:/doit:delegated
       - bundle:/doit/vendor/bundle
       - node_modules:/doit/node_modules
-      - /doit/vendor
-      - /doit/tmp
-      - /doit/log
-      - /doit/.git
     ports:
       - 3000:3000
     environment:
-      - WEBPACKER_DEV_SERVER_HOST=webpacker
+      RAILS_ENV: development
+      WEBPACKER_DEV_SERVER_HOST: webpacker
     depends_on:
       - db
       - webpacker
@@ -37,7 +34,7 @@ services:
     volumes:
       - .:/doit
     ports:
-      - '3035:3035'
+      - '0.0.0.0:3035:3035'
     tty: false
     stdin_open: false
     environment:

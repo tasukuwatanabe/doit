@@ -51,7 +51,6 @@ export default new VueRouter({
     // { path: "*", component: NotFoundComponent }
   ]
 });
-
 export const state = {
   message: "hello vuex"
 };

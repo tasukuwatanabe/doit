@@ -40,10 +40,18 @@ export default {
   data() {
     return {
       todo: {},
-      shortcuts: this.$parent.$data.shortcuts
+      shortcuts: []
     };
   },
+  created() {
+    this.fetchShortcut();
+  },
   methods: {
+    fetchShortcut() {
+      axios.get("/api/shortcuts").then((res) => {
+        this.shortcuts = res.data;
+      });
+    },
     createTodo(shortcut) {
       this.todo.title = shortcut.title;
       this.$emit("shortcut-create-todo", this.todo.title);

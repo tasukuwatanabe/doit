@@ -37,5 +37,12 @@ var app = new Vue({
     "v-flash": Flash,
     "sidebar-left": SidebarLeft,
     "sidebar-right": SidebarRight
+  },
+  methods: {
+    onExecute: function () {
+      axios.defaults.xsrfCookieName = "CSRF-TOKEN";
+      axios.defaults.xsrfHeaderName = "X-CSRF-Token";
+      axios.defaults.withCredentials = true;
+    }
   }
 });

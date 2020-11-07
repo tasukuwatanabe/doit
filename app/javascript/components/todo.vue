@@ -263,7 +263,9 @@ export default {
   },
   created() {
     this.fetchTodo();
-    // this.fetchShortcut();
+  },
+  mounted: async function () {
+    await this.checkLogin();
   },
   computed: {
     selected_date() {
@@ -289,16 +291,29 @@ export default {
     }
   },
   methods: {
+    checkLogin: async function () {
+      const self = this;
+      const result = await axios.get("/api/current_user").catch(function () {
+        self.$router.push("/login");
+        console.log("1");
+        return;
+      });
+
+      if (result === undefined) {
+        return;
+      }
+
+      if (result.status != "200") {
+        this.$router.push("/login");
+        console.log("2");
+        return;
+      }
+    },
     fetchTodo() {
       axios.get("/api/todos").then((res) => {
         this.todos = res.data.todos;
       });
     },
-    // fetchShortcut() {
-    //   axios.get("/api/shortcuts").then((res) => {
-    //     this.shortcuts = res.data;
-    //   });
-    // },
     getTodoLabel(todo) {
       return this.labels.filter((label) => todo.label_id == label.id)[0];
     },
@@ -405,4 +420,5 @@ export default {
     }
   }
 };
+// aaa
 </script>

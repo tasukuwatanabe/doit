@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import createPersistedState from "vuex-persistedstate";
 import axios from "axios";
 
 Vue.use(Vuex);
@@ -15,7 +14,6 @@ const store = new Vuex.Store({
     next_date: null,
     day: null
   },
-  // aasdfas
   mutations: {
     fetchDate(state, data) {
       state.selected_date = data.selected_date;
@@ -61,12 +59,7 @@ const store = new Vuex.Store({
         .then((res) => res.data)
         .then(() => commit("logout"));
     }
-  },
-  plugins: [
-    createPersistedState({
-      storage: window.sessionStorage
-    })
-  ]
+  }
 });
 
 export default store;

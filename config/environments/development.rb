@@ -44,4 +44,6 @@ Rails.application.configure do
   config.assets.quiet = true
 
   config.file_watcher = ActiveSupport::FileUpdateChecker
+
+  config.public_file_server.enabled = true
 end

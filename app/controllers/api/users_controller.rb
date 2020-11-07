@@ -1,7 +1,7 @@
 class Api::UsersController < ApplicationController
   def current_user
     current_user = User.where(id: session[:user_id]).select(:id, :username, :email)
-    render json: current_user
+    render json: { state: 'success', user: { id: user.id, username: user.username, email: user.email } }, status: 200
   end
 
   def create
