@@ -1,5 +1,5 @@
 <template>
-  <aside v-if="loggedIn" class="sidebar-left">
+  <aside class="sidebar-left">
     <div class="sidebar-left__stickey-part">
       <div class="sidebar-left__userinfo userinfo">
         <router-link
@@ -106,20 +106,16 @@
 import axios from "axios";
 
 export default {
-  computed: {
-    todoItems() {
-      return this.$store.state.todos;
-    },
-    currentUser() {
-      return this.$store.state.current_user;
-    },
-    loggedIn() {
-      return this.$store.state.logged_in;
-    }
+  data() {
+    return {
+      currentUser: {
+        id: 4,
+        username: "ユーザー名"
+      }
+    };
   },
   methods: {
     logout() {
-      this.$store.dispatch("logoutAction");
       this.$router.push({ name: "login" });
     }
   }

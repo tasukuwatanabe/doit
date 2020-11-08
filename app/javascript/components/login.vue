@@ -51,7 +51,6 @@
           </ul>
         </div>
       </form>
-      {{ message }}
     </div>
   </div>
 </template>
@@ -63,14 +62,13 @@ export default {
   data() {
     return {
       email: null,
-      password: null,
-      message: null
+      password: null
     };
   },
   methods: {
     guestLogin() {
       axios.post("/api/guest_login").then((response) => {
-        localStorage.setItem("currentUser", JSON.stringify(response.data));
+        this.$router.push({ name: "todos" });
       });
     }
   }

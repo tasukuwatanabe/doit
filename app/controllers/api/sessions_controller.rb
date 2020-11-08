@@ -1,4 +1,16 @@
 class Api::SessionsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
+  include SessionsHelper
+
+  def logged_in
+    if !current_user.nil?
+      render json: { state: 'Logged in' }
+    else
+      render json: { state: 'Logged out' }
+    end
+  end
+
   def create
     auth = request.env['omniauth.auth']
     if auth.present?
@@ -26,12 +38,9 @@ class Api::SessionsController < ApplicationController
   end
 
   def guest_login
-    user = User.find_by!(email: 'guest@example.com')
-    if log_in(user)
-      render json: { state: 'success', msg: 'Login Success', user: { id: user.id, username: user.username, email: user.email } }, status: 200
-    else
-      render json: { state: 'failure', msg: 'Error' }, status: 403
-    end
+    user = User.find_by(email: 'guest@example.com')
+    log_in user
+    render json: { state: 'success', msg: 'Login Success', user: { id: user.id, username: user.username, email: user.email } }, status: 200
   end
 
   def destroy

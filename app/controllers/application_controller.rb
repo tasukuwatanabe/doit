@@ -1,8 +1,8 @@
 class ApplicationController < ActionController::Base
-  # protect_from_forgery with: :exception
+  protect_from_forgery with: :null_session
 
   # before_action :require_login
-  # before_action :set_csrf_cookie
+  # before_action :logged_in?
 
   # エラーページ表示用のコード(コントローラー側でraise StandardErrorを書く)
   # rescue_from StandardError, with: :rescue325
@@ -14,11 +14,15 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include UserImageHelper
 
-  # private
+  private
 
-  # def set_csrf_cookie
-  #   cookies['CSRF-TOKEN'] = form_authenticity_token
-  # end
+  def logged_in?
+    if !current_user.nil?
+      render json: { status: 'logged in' }, status: 200
+    else
+      render json: { error: 'unauthorized' }, status: :unauthorized
+    end
+  end
 
   # def require_login
   #   @current_user = User.find_by(id: session[:user_id])

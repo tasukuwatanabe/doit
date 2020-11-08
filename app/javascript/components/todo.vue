@@ -262,11 +262,11 @@ export default {
     };
   },
   created() {
-    this.fetchTodo();
+    // this.fetchTodo();
   },
-  mounted: async function () {
-    await this.checkLogin();
-  },
+  // mounted: async function () {
+  //   await this.checkLogin();
+  // },
   computed: {
     selected_date() {
       return this.$store.state.selected_date;
@@ -291,24 +291,24 @@ export default {
     }
   },
   methods: {
-    checkLogin: async function () {
-      const self = this;
-      const result = await axios.get("/api/current_user").catch(function () {
-        self.$router.push("/login");
-        console.log("1");
-        return;
-      });
+    // checkLogin: async function () {
+    //   const self = this;
+    //   const result = await axios.get("/api/current_user").catch(function () {
+    //     self.$router.push("/login");
+    //     console.log("1");
+    //     return;
+    //   });
 
-      if (result === undefined) {
-        return;
-      }
+    //   if (result === undefined) {
+    //     return;
+    //   }
 
-      if (result.status != "200") {
-        this.$router.push("/login");
-        console.log("2");
-        return;
-      }
-    },
+    //   if (result.status != "200") {
+    //     this.$router.push("/login");
+    //     console.log("2");
+    //     return;
+    //   }
+    // },
     fetchTodo() {
       axios.get("/api/todos").then((res) => {
         this.todos = res.data.todos;

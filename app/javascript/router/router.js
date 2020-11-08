@@ -7,8 +7,21 @@ import Label from "../components/label.vue";
 import UserEdit from "../components/user_edit.vue";
 import PasswordEdit from "../components/password_edit.vue";
 import Login from "../components/login.vue";
+import store from "../packs/store";
+import Vuex from "vuex";
 
 Vue.use(VueRouter);
+Vue.use(Vuex);
+
+function isLoggedIn(to, from, next) {
+  store.dispatch("isLoggedInAction").then(() => {
+    if (store.state.isLoggedIn) {
+      next();
+    } else {
+      next({ path: "/login" });
+    }
+  });
+}
 
 export default new VueRouter({
   mode: "history",
@@ -16,32 +29,38 @@ export default new VueRouter({
     {
       path: "/",
       component: Todo,
-      name: "todos"
+      name: "todos",
+      beforeEnter: isLoggedIn()
     },
     {
       path: "/history",
       component: History,
-      name: "history"
+      name: "history",
+      beforeEnter: isLoggedIn()
     },
     {
       path: "/shortcuts",
       component: Shortcut,
-      name: "shortcuts"
+      name: "shortcuts",
+      beforeEnter: isLoggedIn()
     },
     {
       path: "/labels",
       component: Label,
-      name: "labels"
+      name: "labels",
+      beforeEnter: isLoggedIn()
     },
     {
       path: "/user/:userId/edit",
       component: UserEdit,
-      name: "user_edit"
+      name: "user_edit",
+      beforeEnter: isLoggedIn()
     },
     {
       path: "/password/:userId/edit",
       component: PasswordEdit,
-      name: "password_edit"
+      name: "password_edit",
+      beforeEnter: isLoggedIn()
     },
     {
       path: "/login",
@@ -51,6 +70,3 @@ export default new VueRouter({
     // { path: "*", component: NotFoundComponent }
   ]
 });
-export const state = {
-  message: "hello vuex"
-};

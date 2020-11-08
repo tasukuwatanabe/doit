@@ -109,11 +109,11 @@ export default {
       currentUser: {}
     };
   },
-  created() {
-    axios.get("/api/current_user").then((response) => {
-      this.currentUser = response.data[0];
-    });
-  },
+  // created() {
+  //   axios.get("/api/current_user").then((response) => {
+  //     this.currentUser = response.data[0];
+  //   });
+  // },
   computed: {
     logged_in() {
       return this.currentUser;
