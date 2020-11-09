@@ -47,7 +47,7 @@
                   v-if="getTodoLabel(todo)"
                   :style="{
                     color: colorOnRgb(getTodoLabel(todo).color),
-                    backgroundColor: '#' + getTodoLabel(todo).color
+                    backgroundColor: getTodoLabel(todo).color
                   }"
                 >
                   {{ getTodoLabel(todo).title }}
@@ -215,7 +215,7 @@
                       キャンセル
                     </div>
                     <div
-                      v-if="todoUpdate"
+                      v-if="isEditing"
                       @click="updateTodo(todo)"
                       class="btn-main btn--sm"
                     >
@@ -256,7 +256,7 @@ export default {
       labels: [],
       isModalActive: false,
       todo: {},
-      todoUpdate: false,
+      isEditing: false,
       days: ["日", "月", "火", "水", "木", "金", "土"],
       errors: []
     };
@@ -369,7 +369,7 @@ export default {
         );
     },
     // todoReset() {
-    // this.todoUpdate = false;
+    // this.isEditing = false;
     // this.todo = null;
     // this.todo.apply_days = [0, 1, 2, 3, 4, 5, 6];
     // axios.get("/api/todos").then((res) => {
@@ -379,7 +379,7 @@ export default {
     // },
     editTodo(todo) {
       this.todo = todo;
-      this.todoUpdate = true;
+      this.isEditing = true;
       this.openModal();
     },
     updateTodo(todo) {
@@ -416,6 +416,7 @@ export default {
     closeModal() {
       this.isModalActive = false;
       // this.todoReset();
+      this.isEdting = false;
       this.errors = [];
     }
   }

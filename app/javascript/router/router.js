@@ -30,37 +30,37 @@ export default new VueRouter({
       path: "/",
       component: Todo,
       name: "todos",
-      beforeEnter: isLoggedIn()
+      beforeEnter: isLoggedIn
     },
     {
       path: "/history",
       component: History,
       name: "history",
-      beforeEnter: isLoggedIn()
+      beforeEnter: isLoggedIn
     },
     {
       path: "/shortcuts",
       component: Shortcut,
       name: "shortcuts",
-      beforeEnter: isLoggedIn()
+      beforeEnter: isLoggedIn
     },
     {
       path: "/labels",
       component: Label,
       name: "labels",
-      beforeEnter: isLoggedIn()
+      beforeEnter: isLoggedIn
     },
     {
       path: "/user/:userId/edit",
       component: UserEdit,
       name: "user_edit",
-      beforeEnter: isLoggedIn()
+      beforeEnter: isLoggedIn
     },
     {
       path: "/password/:userId/edit",
       component: PasswordEdit,
       name: "password_edit",
-      beforeEnter: isLoggedIn()
+      beforeEnter: isLoggedIn
     },
     {
       path: "/login",

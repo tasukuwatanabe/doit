@@ -1,6 +1,8 @@
 class Api::LabelsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def index
-    labels = current_user.labels.order(created_at: :desc).all
+    labels = current_user.labels.order(created_at: :desc).select(:id, :title, :color)
     todos = current_user.todos.where.not(label_id: nil).select(:id)
     api_array = {
       labels: labels,

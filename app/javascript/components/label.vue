@@ -29,7 +29,7 @@
                 class="label label--margin"
                 :style="{
                   color: colorOnRgb(label.color),
-                  backgroundColor: '#' + label.color
+                  backgroundColor: label.color
                 }"
               >
                 {{ label.title }}
@@ -40,7 +40,7 @@
                 {{ labelTodosCount(label) }}個のToDoで使用中
               </div>
               <div class="item-action">
-                <a @click="modalEditLabel(label)" class="item-action__btn">
+                <a @click="editLabel(label)" class="item-action__btn">
                   <i class="fas fa-pencil-alt"></i>
                 </a>
                 <a @click="deleteLabel(label.id)" class="item-action__btn">
@@ -71,15 +71,8 @@
                       <input
                         type="text"
                         class="form__input"
-                        v-if="modalEditingLabel"
-                        v-model="modalEditingLabel.title"
-                        required
-                      />
-                      <input
-                        type="text"
-                        class="form__input"
-                        v-else
-                        v-model="label.title"
+                        v-if="label"
+                        v-model.lazy="label.title"
                         required
                       />
                       <div v-if="errors.length">{{ errors[0] }}</div>
@@ -90,20 +83,44 @@
                       <div class="form__label">ラベルの色</div>
                     </div>
                     <div class="col-9">
-                      <input
-                        type="text"
-                        class="form__input"
-                        v-if="modalEditingLabel"
-                        v-model="modalEditingLabel.color"
-                        required
-                      />
-                      <input
-                        type="text"
-                        class="form__input"
-                        v-else
-                        v-model="label.color"
-                        required
-                      />
+                      <div
+                        style="
+                          display: flex;
+                          font-size: 0.8em;
+                          align-items: center;
+                        "
+                      >
+                        <div
+                          ref="colorDisplay"
+                          @click="toggleColorPicker"
+                          style="
+                            padding: 2px 8px 2px 2px;
+                            border: 1px solid #ccc;
+                            display: flex;
+                            border-radius: 2px;
+                            align-items: center;
+                            color: #666;
+                            cursor: pointer;
+                            user-select: none;
+                          "
+                        >
+                          <div
+                            :style="{
+                              width: '25px',
+                              height: '25px',
+                              marginRight: '7px',
+                              backgroundColor: colorPicker.hex
+                            }"
+                          ></div>
+                          {{ colorPicker.hex }}
+                        </div>
+                      </div>
+                      <div ref="colorPicker">
+                        <compact-picker
+                          v-if="displayColorPicker"
+                          v-model="colorPicker"
+                        ></compact-picker>
+                      </div>
                       <div v-if="errors.length">{{ errors[0] }}</div>
                     </div>
                   </div>
@@ -112,9 +129,9 @@
                       キャンセル
                     </div>
                     <div
-                      @click="updateLabel(modalEditingLabel)"
+                      @click="updateLabel"
                       class="btn-main btn--sm"
-                      v-if="modalEditingLabel"
+                      v-if="isEditing"
                     >
                       更新する
                     </div>
@@ -134,28 +151,65 @@
 </template>
 
 <script>
+import Vue from "vue";
 import axios from "axios";
 import SidebarLeft from "./sidebar_left.vue";
 import SidebarRight from "./sidebar_right.vue";
+import { Compact } from "vue-color";
+
+var defaultColor = "#F44E3B";
 
 export default {
+  name: "Label",
   components: {
     "sidebar-left": SidebarLeft,
-    "sidebar-right": SidebarRight
+    "sidebar-right": SidebarRight,
+    "compact-picker": Compact
   },
   data() {
     return {
       isModalActive: false,
+      labels: [],
+      todos: [],
       label: {},
-      errors: []
+      errors: [],
+      isEditing: false,
+      colorPicker: {
+        hex: defaultColor
+      },
+      displayColorPicker: false
     };
   },
-  computed: {
-    labelItems() {
-      return this.$store.state.labels;
-    }
+  created() {
+    this.fetchLabel();
+  },
+  mounted() {
+    window.addEventListener(
+      "click",
+      (this._onBlurHandler = (event) => {
+        if (
+          this.$refs.colorPicker.contains(event.target) ||
+          this.$refs.colorDisplay.contains(event.target)
+        ) {
+          return;
+        }
+        this.displayColorPicker = false;
+      })
+    );
+  },
+  beforeDestroy() {
+    window.removeEventListener("click", this._onBlurHandler);
   },
   methods: {
+    toggleColorPicker() {
+      this.displayColorPicker = !this.displayColorPicker;
+    },
+    fetchLabel() {
+      axios.get("/api/labels").then((res) => {
+        this.labels = res.data.labels;
+        this.todos = res.data.todos;
+      });
+    },
     labelTodosCount(label) {
       if (this.todos.length) {
         return this.todos.filter((todo) => todo.label_id === label.id).length;
@@ -189,64 +243,46 @@ export default {
       }
     },
     createLabel(label) {
-      this.errors = [];
-      if (!this.label.title) {
-        this.errors.push("タイトルは必須です");
-        return;
-      }
+      this.label.color = this.colorPicker.hex;
       axios
         .post("/api/labels", {
           label: this.label
         })
-        .then(
-          (res) => {
-            this.label.title = "";
-            this.label.color = "";
-            this.fetchLabels();
-            this.closeModal();
-          },
-          (error) => {
-            this.errors.push("エラー発生");
-          }
-        );
+        .then((res) => {
+          this.label = {};
+          this.fetchLabel();
+          this.closeModal();
+        });
     },
     editLabel(label) {
-      this.fetchLabels();
-      this.editingLabelId = label.id;
-    },
-    modalEditLabel(label) {
-      this.modalEditingLabel = label;
+      this.label = label;
+      this.colorPicker.hex = this.label.color;
+      this.isEditing = true;
       this.openModal();
-      this.fetchLabels();
     },
-    updateLabel(label) {
-      this.errors = [];
-      if (!label.title || !label.color) {
-        return;
-      }
-      this.closeModal();
-      this.editedLabel = label;
-      axios.put(`/api/labels/${label.id}`, { label: this.editedLabel }).then(
-        (res) => {
-          this.modalEditingLabel = null;
-          this.fetchLabels();
-        },
-        (error) => {
-          this.errors.push("エラーがあります");
-        }
-      );
+    updateLabel() {
+      this.label.color = this.colorPicker.hex;
+      axios
+        .put(`/api/labels/${this.label.id}`, { label: this.label })
+        .then((res) => {
+          this.closeModal();
+        });
     },
     deleteLabel(id) {
       axios.delete(`/api/labels/${id}`).then((res) => {
-        this.fetchLabels();
+        this.fetchLabel();
       });
     },
     openModal() {
       this.isModalActive = true;
     },
     closeModal() {
+      this.fetchLabel();
       this.isModalActive = false;
-      this.modalEditingLabel = null;
+      this.displatColorPicker = false;
+      this.isEditing = false;
+      this.label = {};
+      this.colorPicker.hex = defaultColor;
       this.errors = [];
     }
   }
@@ -254,11 +290,8 @@ export default {
 </script>
 
 <style scoped>
-.error-list {
-  list-style-type: none;
-  font-size: 12px;
-  padding-left: 0;
-  margin-top: 5px;
-  margin-bottom: 10px;
+.vc-compact {
+  position: absolute;
+  margin-top: 7px;
 }
 </style>
