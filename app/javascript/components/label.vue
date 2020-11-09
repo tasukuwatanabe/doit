@@ -84,42 +84,25 @@
                     </div>
                     <div class="col-9">
                       <div
-                        style="
-                          display: flex;
-                          font-size: 0.8em;
-                          align-items: center;
-                        "
+                        class="color-select"
+                        ref="colorDisplay"
+                        @click="toggleColorPicker"
                       >
-                        <div
-                          ref="colorDisplay"
-                          @click="toggleColorPicker"
-                          style="
-                            padding: 2px 8px 2px 2px;
-                            border: 1px solid #ccc;
-                            display: flex;
-                            border-radius: 2px;
-                            align-items: center;
-                            color: #666;
-                            cursor: pointer;
-                            user-select: none;
-                          "
-                        >
+                        <div class="color-select__box">
                           <div
+                            class="color-select__palette"
                             :style="{
-                              width: '25px',
-                              height: '25px',
-                              marginRight: '7px',
                               backgroundColor: colorPicker.hex
                             }"
                           ></div>
                           {{ colorPicker.hex }}
                         </div>
-                      </div>
-                      <div ref="colorPicker">
-                        <compact-picker
-                          v-if="displayColorPicker"
-                          v-model="colorPicker"
-                        ></compact-picker>
+                        <div class="color-select__picker" ref="colorPicker">
+                          <compact-picker
+                            v-if="displayColorPicker"
+                            v-model="colorPicker"
+                          ></compact-picker>
+                        </div>
                       </div>
                       <div v-if="errors.length">{{ errors[0] }}</div>
                     </div>
@@ -288,10 +271,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.vc-compact {
-  position: absolute;
-  margin-top: 7px;
-}
-</style>

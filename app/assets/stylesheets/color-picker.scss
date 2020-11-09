@@ -1,0 +1,28 @@
+.color-select {
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 2px 8px 2px 2px;
+  border: 1px solid #ccc;
+  position: relative;
+  border-radius: 3px;
+
+  &__box {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #666;
+    user-select: none;
+  }
+
+  &__palette {
+    width: 25px;
+    height: 25px;
+    margin-right: 7px;
+  }
+
+  &__picker {
+    position: absolute;
+    margin-top: 8px;
+    left: 0;
+  }
+}
