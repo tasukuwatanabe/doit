@@ -44,12 +44,8 @@ class Api::SessionsController < ApplicationController
   end
 
   def destroy
-    if logged_in?
-      log_out
-      render json: { state: 'success', msg: 'Log out' }, status: 200
-    else
-      render json: { state: 'failure', msg: 'Error' }, status: 403
-    end
+    log_out
+    render json: { state: 'success', msg: 'Log out' }, status: 200
   end
 
   private def session_params

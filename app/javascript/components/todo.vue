@@ -6,19 +6,19 @@
         <div class="todo">
           <section class="horizontal-arrows">
             <div
-              @click="changeDate(previous_date)"
+              @click="fetchDate('previous')"
               class="horizontal-arrows__btn horizontal-arrows__btn--left"
             >
               <i class="fas fa-caret-left"></i>
             </div>
             <div class="todo__date-box">
               <div class="todo__date-title">
-                {{ selected_format_date }}
+                {{ setDate }}
               </div>
-              <p class="todo__date-day">{{ days[day] }}曜日</p>
+              <p class="todo__date-day">{{ setDay }}</p>
             </div>
             <div
-              @click="changeDate(next_date)"
+              @click="fetchDate('next')"
               class="horizontal-arrows__btn horizontal-arrows__btn--right"
             >
               <i class="fas fa-caret-right"></i>
@@ -173,7 +173,7 @@
                             class="day-check__input"
                             multiple
                           />
-                          <span>{{ days[n - 1] }}</span>
+                          <!-- <span>{{ weeks[n - 1] }}</span> -->
                         </label>
                       </div>
                     </div>
@@ -239,6 +239,7 @@
 
 <script>
 import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 import IndexShortcut from "./index_shortcut.vue";
 import SidebarLeft from "./sidebar_left.vue";
 import SidebarRight from "./sidebar_right.vue";
@@ -256,61 +257,42 @@ export default {
       labels: [],
       isModalActive: false,
       todo: {},
-      isEditing: false,
-      days: ["日", "月", "火", "水", "木", "金", "土"],
-      errors: []
+      isEditing: false
     };
   },
   created() {
-    // this.fetchTodo();
+    this.fetchDate();
+    this.fetchTodo();
   },
-  // mounted: async function () {
-  //   await this.checkLogin();
-  // },
   computed: {
-    selected_date() {
-      return this.$store.state.selected_date;
+    ...mapGetters(["selectedDate"]),
+    setDate() {
+      const selected_date = this.selectedDate
+        ? new Date(this.selectedDate)
+        : new Date();
+      const year = selected_date.getFullYear();
+      const month = selected_date.getMonth() + 1;
+      const date = selected_date.getDate();
+
+      return `${year}年${month}月${date}日`;
     },
-    selected_format_date() {
-      return this.$store.state.selected_format_date;
-    },
-    previous_date() {
-      return this.$store.state.previous_date;
-    },
-    next_date() {
-      return this.$store.state.next_date;
-    },
-    day() {
-      return this.$store.state.next_date;
-    },
-    currentUser() {
-      return this.$store.state.current_user;
-    },
-    loggedIn() {
-      return this.$store.state.logged_in;
+    setDay() {
+      const weeks = ["日", "月", "火", "水", "木", "金", "土"];
+      const selected_date = this.selectedDate
+        ? new Date(this.selectedDate)
+        : new Date();
+      const week = selected_date.getDay();
+
+      return `${weeks[week]}曜日`;
     }
   },
   methods: {
-    // checkLogin: async function () {
-    //   const self = this;
-    //   const result = await axios.get("/api/current_user").catch(function () {
-    //     self.$router.push("/login");
-    //     console.log("1");
-    //     return;
-    //   });
-
-    //   if (result === undefined) {
-    //     return;
-    //   }
-
-    //   if (result.status != "200") {
-    //     this.$router.push("/login");
-    //     console.log("2");
-    //     return;
-    //   }
-    // },
-    fetchTodo() {
-      axios.get("/api/todos").then((res) => {
+    ...mapActions(["setDateAction"]),
+    fetchDate(select) {
+      this.setDateAction(select);
+    },
+    fetchTodo(date) {
+      axios.get("/api/todos", { params: { date: date } }).then((res) => {
         this.todos = res.data.todos;
       });
     },
@@ -342,39 +324,23 @@ export default {
         return "white";
       }
     },
-    changeDate(date) {
-      this.$store.dispatch("fetchTodoAction", date);
-    },
     createTodo(value) {
-      this.errors = [];
-      if (!this.todo.title) {
-        this.todo.title = value;
-      }
-      if (!this.todo.title && !value) {
-        this.errors.push("タイトルは必須です");
-        return;
-      }
       axios
         .post("/api/todos", {
           todo: this.todo
         })
-        .then(
-          (res) => {
-            this.changeDate(this.todo.end_date);
-            this.closeModal();
-          },
-          (error) => {
-            this.errors.push("エラー発生");
-          }
-        );
+        .then((res) => {
+          this.changeDate(this.todo.end_date);
+          this.closeModal();
+        });
     },
     // todoReset() {
     // this.isEditing = false;
     // this.todo = null;
     // this.todo.apply_days = [0, 1, 2, 3, 4, 5, 6];
     // axios.get("/api/todos").then((res) => {
-    //   this.todo.start_date = res.data.selected_date;
-    //   this.todo.end_date = res.data.selected_date;
+    //   this.todo.start_date = res.data.selectedDate;
+    //   this.todo.end_date = res.data.selectedDate;
     // });
     // },
     editTodo(todo) {
@@ -383,32 +349,18 @@ export default {
       this.openModal();
     },
     updateTodo(todo) {
-      this.errors = [];
-      this.todo = todo;
-      if (!this.todo.title) {
-        return;
-      }
-      axios.put(`/api/todos/${todo.id}`, { todo: this.todo }).then(
-        (res) => {
-          this.changeDate(this.todo.end_date);
-        },
-        (error) => {
-          this.errors.push("エラーがあります");
-        }
-      );
+      axios.put(`/api/todos/${todo.id}`, { todo: this.todo }).then((res) => {
+        this.changeDate(this.todo.end_date);
+      });
       this.closeModal();
     },
     deleteTodo(id) {
       axios.delete(`/api/todos/${id}`).then((res) => {
-        this.changeDate(this.$store.state.selected_date);
+        this.changeDate(this.$store.getters.selectedDate);
       });
     },
     toggleStatus(todo) {
-      axios
-        .put(`/api/todos/${todo.id}/toggle_status`, { todo: todo })
-        .then((error) => {
-          this.errors.push("エラーがあります");
-        });
+      axios.put(`/api/todos/${todo.id}/toggle_status`, { todo: todo });
     },
     openModal() {
       this.isModalActive = true;
@@ -417,9 +369,7 @@ export default {
       this.isModalActive = false;
       // this.todoReset();
       this.isEdting = false;
-      this.errors = [];
     }
   }
 };
-// aaa
 </script>

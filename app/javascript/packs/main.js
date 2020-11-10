@@ -17,7 +17,7 @@ import BootstrapVue from "bootstrap-vue";
 Vue.use(BootstrapVue);
 
 import Vue from "vue/dist/vue.esm.js";
-import store from "./store";
+import store from "./store.js";
 import Router from "../router/router";
 import Header from "../components/header.vue";
 import Footer from "../components/footer.vue";

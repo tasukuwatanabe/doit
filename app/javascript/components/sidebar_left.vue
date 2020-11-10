@@ -116,7 +116,9 @@ export default {
   },
   methods: {
     logout() {
-      this.$router.push({ name: "login" });
+      axios.delete("/api/logout").then((response) => {
+        this.$router.push({ name: "login" });
+      });
     }
   }
 };

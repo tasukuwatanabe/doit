@@ -65,6 +65,11 @@ export default {
       password: null
     };
   },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
+    }
+  },
   methods: {
     guestLogin() {
       axios.post("/api/guest_login").then((response) => {

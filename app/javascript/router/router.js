@@ -23,6 +23,16 @@ function isLoggedIn(to, from, next) {
   });
 }
 
+function isLoggedOut(to, from, next) {
+  store.dispatch("isLoggedInAction").then(() => {
+    if (!store.state.isLoggedIn) {
+      next();
+    } else {
+      next({ path: "/" });
+    }
+  });
+}
+
 export default new VueRouter({
   mode: "history",
   routes: [
@@ -65,7 +75,8 @@ export default new VueRouter({
     {
       path: "/login",
       component: Login,
-      name: "login"
+      name: "login",
+      beforeEnter: isLoggedOut
     }
     // { path: "*", component: NotFoundComponent }
   ]

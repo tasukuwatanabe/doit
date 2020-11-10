@@ -20,6 +20,7 @@ services:
     environment:
       RAILS_ENV: development
       WEBPACKER_DEV_SERVER_HOST: webpacker
+      WEBPACKER_DEV_SERVER_PUBLIC: 0.0.0.0:3035
     depends_on:
       - db
   smtp:
@@ -39,7 +40,6 @@ services:
     environment:
       NODE_ENV: development
       RAILS_ENV: development
-      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
     depends_on:
       - web
 volumes:
