@@ -127,8 +127,6 @@ class Api::TodosController < ApplicationController
     head :no_content
   end
 
-  # def history; end
-
   private
 
   def todo_params

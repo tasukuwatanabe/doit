@@ -29,14 +29,6 @@
             </router-link>
           </li>
           <li class="nav__item">
-            <router-link :to="{ name: 'history' }" class="nav__link">
-              <span class="icon nav__icon">
-                <i class="fas fa-crown"></i>
-              </span>
-              <span>達成度を確認</span>
-            </router-link>
-          </li>
-          <li class="nav__item">
             <router-link :to="{ name: 'shortcuts' }" class="nav__link">
               <span class="icon nav__icon">
                 <svg width="20px" height="20px">

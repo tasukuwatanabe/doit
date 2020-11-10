@@ -2,7 +2,6 @@ import Vue from "vue/dist/vue.esm.js";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
 import Todo from "../components/todo-list.vue";
-import History from "../components/history-list.vue";
 import Shortcut from "../components/shortcut-list.vue";
 import Label from "../components/label-list.vue";
 import UserEdit from "../components/user-edit.vue";
@@ -40,12 +39,6 @@ export default new VueRouter({
       path: "/",
       component: Todo,
       name: "todos",
-      beforeEnter: isLoggedIn
-    },
-    {
-      path: "/history",
-      component: History,
-      name: "history",
       beforeEnter: isLoggedIn
     },
     {

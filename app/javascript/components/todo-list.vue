@@ -190,7 +190,7 @@
                       />
                     </div>
                   </div>
-                  <div class="form__group row">
+                  <!-- <div class="form__group row">
                     <div class="col-3">
                       <div class="form__label">達成度を表示</div>
                     </div>
@@ -209,7 +209,7 @@
                         ></label>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="btn-case">
                     <div @click="closeModal" class="btn-gray btn--sm">
                       キャンセル

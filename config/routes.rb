@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   root 'home#index'
-  get '/history', to: 'home#index'
   get '/shortcuts', to: 'home#index'
   get '/labels', to: 'home#index'
   get '/user/:id/edit', to: 'home#index'
