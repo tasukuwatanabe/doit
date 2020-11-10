@@ -1,10 +1,10 @@
 <template>
-  <div class="modal" :class="{ 'is-open': isModalActive }">
+  <div class="modal" :class="{ 'is-open': modalActive }">
     <div class="modal__layer">
       <div class="modal__box">
         <form @submit.prevent novalidate="true" class="form">
           <div class="modal-form">
-            <div class="fa-case" @click="closeModal">
+            <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
             </div>
             <div class="form__group row">
@@ -27,13 +27,12 @@
               </div>
             </div>
             <div class="btn-case">
-              <div @click="closeModal" class="btn-gray btn--sm">キャンセル</div>
-              <div @click="updateShortcut(shortcut)" class="btn-main btn--sm">
-                更新する
+              <div @click="toggleModal" class="btn-gray btn--sm">
+                キャンセル
               </div>
-              <!-- <div @click="createShortcut()" class="btn-main btn--sm" v-else>
-                新規作成
-              </div> -->
+              <div @click="submitShortcut(shortcut)" class="btn-main btn--sm">
+                {{ btnText }}
+              </div>
             </div>
           </div>
         </form>
@@ -50,29 +49,33 @@ export default {
   name: "ShortcutModal",
   data() {
     return {
-      labels: []
+      labels: [],
+      btnText: ""
     };
   },
   mixins: [Modal, ColorOnRgb],
   methods: {
-    createShortcut(shortcut) {
-      axios
-        .post("/api/shortcuts/", {
-          shortcut: this.shortcut
-        })
-        .then((res) => {
-          this.shortcut = {};
-          this.fetchShortcuts();
-          this.closeModal();
-        });
+    setShortcutValue(shortcut) {
+      this.modalActive = true;
+      if (shortcut) {
+        this.shortcut.title = shortcut.title;
+        this.shortcut.label_id = shortcut.label_id;
+      }
+      this.btnText = shortcut ? "更新する" : "新規作成";
     },
-    updateShortcut(shortcut) {
-      axios
-        .put(`/api/shortcuts/${shortcut.id}`, { shortcut: this.editedShortcut })
-        .then((res) => {
-          this.fetchShortcuts();
-          this.closeModal();
+    async shortcutSubmit(shortcut) {
+      if (shortcut) {
+        await axios.put(`/api/shortcuts/${this.shortcut.id}`, {
+          params: { shortcut: this.shortcut }
         });
+      } else {
+        await axios.post("/api/shortcuts", {
+          params: { shortcut: this.shortcut }
+        });
+      }
+      this.shortcut = {};
+      this.modalActive = false;
+      this.$emit("fetch-shortcuts");
     }
   }
 };

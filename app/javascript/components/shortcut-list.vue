@@ -23,7 +23,7 @@
           </p>
           <div class="page-action headline__page-action">
             <a
-              v-on:click="openModal"
+              @click="setShortcut"
               class="page-action__btn btn-outlined btn--sm"
             >
               <span class="page-action__icon">
@@ -80,7 +80,7 @@
             />
           </div>
         </div>
-        <shortcut-modal></shortcut-modal>
+        <shortcut-modal ref="shortcutModal"></shortcut-modal>
       </div>
       <sidebar-right></sidebar-right>
     </div>
@@ -90,7 +90,6 @@
 <script>
 import axios from "axios";
 import ShortcutModal from "./shortcut-modal.vue";
-import Modal from "./mixins/modal";
 import ColorOnRgb from "./mixins/color-on-rgb";
 
 export default {
@@ -108,7 +107,7 @@ export default {
   created() {
     this.fetchShortcut();
   },
-  mixins: [Modal, ColorOnRgb],
+  mixins: [ColorOnRgb],
   methods: {
     fetchShortcut() {
       axios.get("/api/shortcuts").then((res) => {
@@ -118,8 +117,8 @@ export default {
     getShortcutLabel(shortcut) {
       return this.labels.filter((label) => shortcut.label_id == label.id)[0];
     },
-    editShortcut(shortcut) {
-      this.fetchShortcuts();
+    setShortcut(label) {
+      this.$refs.shortcutModal.setShortcutValue(shortcut);
     },
     deleteShortcut(id) {
       axios.delete(`/api/shortcuts/${id}`).then((res) => {

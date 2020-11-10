@@ -54,7 +54,10 @@ export default {
     },
     createTodo(shortcut) {
       this.todo.title = shortcut.title;
-      this.$emit("shortcut-create-todo", this.todo.title);
+      axios.post("/api/todos", { params: { todo: this.todo } }).then(() => {
+        this.$emit("fetch-todos");
+        this.todo = {};
+      });
     }
   }
 };

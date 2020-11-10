@@ -14,7 +14,7 @@
             ラベルを追加することでToDoを分類することができます。
           </p>
           <div class="page-action headline__page-action">
-            <a @click="openModal" class="page-action__btn btn-outlined btn--sm">
+            <a @click="setLabel" class="page-action__btn btn-outlined btn--sm">
               <span class="page-action__icon">
                 <i class="fas fa-plus"></i>
               </span>
@@ -40,10 +40,10 @@
                 {{ labelTodosCount(label) }}個のToDoで使用中
               </div>
               <div class="item-action">
-                <a @click="editLabel(label)" class="item-action__btn">
+                <a @click="setLabel(label)" class="item-action__btn">
                   <i class="fas fa-pencil-alt"></i>
                 </a>
-                <a @click="deleteLabel(label.id)" class="item-action__btn">
+                <a @click="deleteLabel(label)" class="item-action__btn">
                   <i class="fas fa-trash"></i>
                 </a>
               </div>
@@ -55,7 +55,7 @@
             <img src="/illustrations/il-mindmap.png" alt="目標達成のイラスト" />
           </div>
         </div>
-        <label-modal></label-modal>
+        <label-modal @fetch-labels="fetchLabels" ref="labelModal"></label-modal>
       </div>
       <sidebar-right></sidebar-right>
     </div>
@@ -65,53 +65,48 @@
 <script>
 import axios from "axios";
 import LabelModal from "./label-modal.vue";
-import Modal from "./mixins/modal";
 import ColorOnRgb from "./mixins/color-on-rgb";
 
 export default {
-  name: "Label",
+  name: "LabelList",
   components: {
     "label-modal": LabelModal
   },
   data() {
     return {
       labels: [],
-      todos: [],
-      label: {}
+      todos: []
     };
   },
   created() {
-    this.fetchLabel();
+    this.fetchLabels();
   },
-  mixins: [Modal, ColorOnRgb],
+  mixins: [ColorOnRgb],
+  computed: {
+    labelTodosCount: function () {
+      return function (label) {
+        if (this.todos.length) {
+          return this.todos.filter((todo) => todo.label_id === label.id).length;
+        } else {
+          return 0;
+        }
+      };
+    }
+  },
   methods: {
-    fetchLabel() {
+    fetchLabels() {
       axios.get("/api/labels").then((res) => {
         this.labels = res.data.labels;
         this.todos = res.data.todos;
       });
     },
-    labelTodosCount(label) {
-      if (this.todos.length) {
-        return this.todos.filter((todo) => todo.label_id === label.id).length;
-      } else {
-        return 0;
-      }
+    setLabel(label) {
+      this.$refs.labelModal.setLabelValue(label);
     },
-    editLabel(label) {
-      this.label = label;
-      this.colorPicker.hex = this.label.color;
-      this.isEditing = true;
-      this.openModal();
-    },
-    deleteLabel(id) {
-      axios.delete(`/api/labels/${id}`).then((res) => {
-        this.fetchLabel();
+    deleteLabel(label) {
+      axios.delete(`/api/labels/${label.id}`).then((res) => {
+        this.fetchLabels();
       });
-    },
-    resetLabel() {
-      this.fetchLabel();
-      this.label = {};
     }
   }
 };

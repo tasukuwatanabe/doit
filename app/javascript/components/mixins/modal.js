@@ -1,15 +1,12 @@
 export default {
   data() {
     return {
-      isModalActive: false
+      modalActive: false
     };
   },
   methods: {
-    openModal() {
-      this.isModalActive = true;
-    },
-    closeModal() {
-      this.isModalActive = false;
+    toggleModal() {
+      this.modalActive = !this.modalActive;
     }
   }
 };

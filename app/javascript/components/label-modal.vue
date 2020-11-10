@@ -1,10 +1,10 @@
 <template>
-  <div class="modal" :class="{ 'is-open': isModalActive }">
+  <div class="modal" :class="{ 'is-open': modalActive }">
     <div class="modal__layer">
       <div class="modal__box">
         <form @submit.prevent novalidate="true" class="form">
           <div class="modal-form">
-            <div class="fa-case" @click="closeModal">
+            <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
             </div>
             <div class="form__group row">
@@ -13,6 +13,7 @@
               </div>
               <div class="col-9">
                 <input
+                  ref="inputLabelTitle"
                   type="text"
                   class="form__input"
                   v-model="label.title"
@@ -49,11 +50,12 @@
               </div>
             </div>
             <div class="btn-case">
-              <div @click="closeModal" class="btn-gray btn--sm">キャンセル</div>
-              <div @click="updateLabel" class="btn-main btn--sm">更新する</div>
-              <!-- <div @click="createLabel" class="btn-main btn--sm" v-else>
-                新規作成
-              </div> -->
+              <div @click="toggleModal" class="btn-gray btn--sm">
+                キャンセル
+              </div>
+              <div @click="labelSubmit" class="btn-main btn--sm">
+                {{ btnText }}
+              </div>
             </div>
           </div>
         </form>
@@ -74,11 +76,16 @@ export default {
   name: "LabelModal",
   data() {
     return {
-      label: {},
+      label: {
+        id: undefined,
+        title: undefined,
+        color: undefined
+      },
       colorPicker: {
         hex: defaultColor
       },
-      displayColorPicker: false
+      displayColorPicker: false,
+      btnText: ""
     };
   },
   components: {
@@ -102,32 +109,39 @@ export default {
   beforeDestroy() {
     window.removeEventListener("click", this._onBlurHandler);
   },
+  computed: {
+    labelColor: function () {
+      return function (label) {
+        return this.label.color;
+      };
+    }
+  },
   methods: {
-    createLabel(label) {
-      this.label.color = this.colorPicker.hex;
-      axios
-        .post("/api/labels", {
-          label: this.label
-        })
-        .then((res) => {
-          this.label = {};
-          this.fetchLabel();
-          this.closeModal();
-        });
+    setLabelValue(val) {
+      this.toggleModal();
+      this.label.id = val.id;
+      this.label.title = val.title;
+      this.colorPicker.hex = val.color || defaultColor;
+      this.btnText = val.title ? "更新する" : "新規作成";
     },
-    updateLabel() {
+    async labelSubmit(val) {
       this.label.color = this.colorPicker.hex;
-      axios
-        .put(`/api/labels/${this.label.id}`, { label: this.label })
-        .then((res) => {
-          this.closeModal();
-        });
+      if (this.label.id) {
+        await axios.put(`/api/labels/${this.label.id}`, { label: this.label });
+      } else {
+        await axios.post("/api/labels", { label: this.label });
+      }
+      this.label = {};
+      this.toggleModal();
+      this.$emit("fetch-labels");
     },
     toggleColorPicker() {
       this.displayColorPicker = !this.displayColorPicker;
+    },
+    toggleModal() {
+      this.modalActive = !this.modalActive;
+      this.colorPicker.hex = defaultColor;
     }
-    // this.displatColorPicker = false;
-    //   this.colorPicker.hex = defaultColor;
   }
 };
 </script>

@@ -18,8 +18,6 @@ class Shortcut < ApplicationRecord
   default_scope -> { order(created_at: :desc) }
 
   private def shortcut_counts_must_be_within_limit
-    if user.shortcuts.count >= MAX_SHORTCUT_COUNT
-      errors.add(:base, "ショートカットが登録できるのは#{MAX_SHORTCUT_COUNT}個までです")
-    end
+    errors.add(:base, "ショートカットが登録できるのは#{MAX_SHORTCUT_COUNT}個までです") if user.shortcuts.count >= MAX_SHORTCUT_COUNT
   end
 end

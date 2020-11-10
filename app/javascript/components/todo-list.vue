@@ -54,7 +54,7 @@
                 </div>
                 <div v-else></div>
                 <div class="item-action">
-                  <a @click="editTodo(todo)" class="item-action__btn">
+                  <a @click="setTodo(todo)" class="item-action__btn">
                     <i class="fas fa-pencil-alt"></i>
                   </a>
                   <a @click="deleteTodo(todo.id)" class="item-action__btn">
@@ -73,7 +73,7 @@
             </div>
           </div>
           <div class="todo__page-action page-action">
-            <a @click="openModal" class="btn-outlined btn--sm">
+            <a @click="setTodo" class="btn-outlined btn--sm">
               <span class="page-action__icon">
                 <i class="fas fa-plus"></i>
               </span>
@@ -81,152 +81,8 @@
             </a>
           </div>
         </div>
-        <div class="modal" :class="{ 'is-open': isModalActive }">
-          <div class="modal__layer">
-            <div class="modal__box">
-              <form @submit.prevent novalidate="true" class="form">
-                <div class="modal-form">
-                  <div class="fa-case" @click="closeModal">
-                    <i class="fas fa-times"></i>
-                  </div>
-                  <div class="form__group row">
-                    <div class="col-3">
-                      <div class="form__label">タイトル</div>
-                    </div>
-                    <div class="col-9">
-                      <input
-                        type="text"
-                        class="form__input"
-                        v-model="todo.title"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div class="form__group row">
-                    <div class="col-3">
-                      <div class="form__label">ラベル</div>
-                    </div>
-                    <div class="col-9">
-                      <select v-model="todo.label_id" class="form__select">
-                        <option>ラベルを選択</option>
-                        <option
-                          v-for="label in labels"
-                          :key="label.id"
-                          :value="label.id"
-                        >
-                          {{ label.title }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form__group row">
-                    <div class="col-3">
-                      <div class="form__label">開始日</div>
-                    </div>
-                    <div class="col-9">
-                      <input
-                        type="date"
-                        v-model="todo.start_date"
-                        class="form__input"
-                      />
-                    </div>
-                  </div>
-                  <div class="form__group row form__group--end-day">
-                    <div class="col-3">
-                      <div class="form__label">終了日</div>
-                    </div>
-                    <div class="col-9">
-                      <input
-                        type="date"
-                        v-model="todo.end_date"
-                        class="form__input"
-                        :readonly="todo.continue_without_end"
-                      />
-                      <div class="checkbox-with-text">
-                        <input
-                          type="checkbox"
-                          name="continue_without_end"
-                          id="continue_without_end"
-                          v-model="todo.continue_without_end"
-                        />
-                        <label for="continue_without_end"
-                          >終了日を設定せず繰り返す</label
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form__group row">
-                    <div class="col-3">
-                      <div class="form__label">曜日指定</div>
-                    </div>
-                    <div class="col-9">
-                      <div class="day-check">
-                        <label
-                          v-for="n in 7"
-                          class="day-check__label"
-                          :key="n - 1"
-                        >
-                          <input
-                            type="checkbox"
-                            v-model="todo.apply_days"
-                            :value="n - 1"
-                            class="day-check__input"
-                            multiple
-                          />
-                          <!-- <span>{{ weeks[n - 1] }}</span> -->
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form__group row">
-                    <div class="col-3">
-                      <div class="form__label">メモ</div>
-                    </div>
-                    <div class="col-9">
-                      <input
-                        type="text"
-                        class="form__input"
-                        v-model="todo.body"
-                      />
-                    </div>
-                  </div>
-                  <!-- <div class="form__group row">
-                    <div class="col-3">
-                      <div class="form__label">達成度を表示</div>
-                    </div>
-                    <div class="col-9">
-                      <div class="btn-slide">
-                        <input
-                          type="checkbox"
-                          name="history_display"
-                          id="history_display"
-                          class="btn-slide__input"
-                          v-model="todo.history_display"
-                        />
-                        <label
-                          for="history_display"
-                          class="btn-slide__label"
-                        ></label>
-                      </div>
-                    </div>
-                  </div> -->
-                  <div class="btn-case">
-                    <div @click="closeModal" class="btn-gray btn--sm">
-                      キャンセル
-                    </div>
-                    <div @click="updateTodo(todo)" class="btn-main btn--sm">
-                      更新する
-                    </div>
-                    <!-- <div v-else @click="createTodo" class="btn-main btn--sm">
-                      新規作成
-                    </div> -->
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <todo-shortcut @shortcut-create-todo="createTodo"></todo-shortcut>
+        <todo-modal @fetch-todos="fetchTodos" ref="todoModal"></todo-modal>
+        <todo-shortcut @fetch-todos="fetchTodos"></todo-shortcut>
       </div>
       <sidebar-right></sidebar-right>
     </div>
@@ -237,25 +93,25 @@
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import TodoShortcut from "./todo-shortcut.vue";
-import Modal from "./mixins/modal";
+import TodoModal from "./todo-modal.vue";
 import ColorOnRgb from "./mixins/color-on-rgb";
 
 export default {
   components: {
-    "todo-shortcut": TodoShortcut
+    "todo-shortcut": TodoShortcut,
+    "todo-modal": TodoModal
   },
   data() {
     return {
       todos: [],
       shortcuts: [],
-      labels: [],
-      todo: {}
+      labels: []
     };
   },
-  mixins: [Modal, ColorOnRgb],
+  mixins: [ColorOnRgb],
   created() {
     this.fetchDate();
-    this.fetchTodo();
+    this.fetchTodos();
   },
   computed: {
     ...mapGetters(["selectedDate"]),
@@ -284,7 +140,7 @@ export default {
     fetchDate(select) {
       this.setDateAction(select);
     },
-    fetchTodo(date) {
+    fetchTodos(date) {
       axios.get("/api/todos", { params: { date: date } }).then((res) => {
         this.todos = res.data.todos;
       });
@@ -292,33 +148,8 @@ export default {
     getTodoLabel(todo) {
       return this.labels.filter((label) => todo.label_id == label.id)[0];
     },
-    createTodo(value) {
-      axios
-        .post("/api/todos", {
-          todo: this.todo
-        })
-        .then((res) => {
-          this.changeDate(this.todo.end_date);
-          this.closeModal();
-        });
-    },
-    // todoReset() {
-    // this.todo = null;
-    // this.todo.apply_days = [0, 1, 2, 3, 4, 5, 6];
-    // axios.get("/api/todos").then((res) => {
-    //   this.todo.start_date = res.data.selectedDate;
-    //   this.todo.end_date = res.data.selectedDate;
-    // });
-    // },
-    editTodo(todo) {
-      this.todo = todo;
-      this.openModal();
-    },
-    updateTodo(todo) {
-      axios.put(`/api/todos/${todo.id}`, { todo: this.todo }).then((res) => {
-        this.changeDate(this.todo.end_date);
-      });
-      this.closeModal();
+    setTodo(label) {
+      this.$refs.todoModal.setTodoValue(todo);
     },
     deleteTodo(id) {
       axios.delete(`/api/todos/${id}`).then((res) => {
@@ -327,13 +158,6 @@ export default {
     },
     toggleStatus(todo) {
       axios.put(`/api/todos/${todo.id}/toggle_status`, { todo: todo });
-    },
-    openModal() {
-      this.isModalActive = true;
-    },
-    closeModal() {
-      this.isModalActive = false;
-      // this.todoReset();
     }
   }
 };

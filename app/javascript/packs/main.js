@@ -32,7 +32,7 @@ Vue.component("slide-menu", SlideMenu);
 Vue.component("v-flash", Flash);
 Vue.component("sidebar-left", SidebarLeft);
 Vue.component("sidebar-right", SidebarRight);
-
+//av
 const app = new Vue({
   el: "#app",
   store,
