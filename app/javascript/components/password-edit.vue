@@ -29,14 +29,7 @@
 </template>
 
 <script>
-import SidebarLeft from "./sidebar_left.vue";
-import SidebarRight from "./sidebar_right.vue";
-
 export default {
-  components: {
-    "sidebar-left": SidebarLeft,
-    "sidebar-right": SidebarRight
-  },
   props: ["userId"],
   data() {
     return {};

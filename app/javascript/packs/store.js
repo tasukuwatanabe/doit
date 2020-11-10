@@ -4,7 +4,7 @@ import axios from "axios";
 import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
-// aaaaaaxxea
+
 const store = new Vuex.Store({
   state: {
     isLoggedIn: false,

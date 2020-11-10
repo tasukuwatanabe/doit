@@ -95,15 +95,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      isModalActive: false,
       todos: [],
-      todo: {
-        title: ""
-      },
-      errors: [],
-      editingTodoId: null,
-      editedTodo: null,
-      modalEditingTodo: null
+      todo: {}
     };
   },
   computed: {
@@ -113,13 +106,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.error-list {
-  list-style-type: none;
-  font-size: 12px;
-  padding-left: 0;
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-</style>

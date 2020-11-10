@@ -19,23 +19,22 @@ Vue.use(BootstrapVue);
 import Vue from "vue/dist/vue.esm.js";
 import store from "./store.js";
 import Router from "../router/router";
-import Header from "../components/header.vue";
-import Footer from "../components/footer.vue";
-import SlideMenu from "../components/slide-menu.vue";
-import Flash from "../components/flash.vue";
-import SidebarLeft from "../components/sidebar_left.vue";
-import SidebarRight from "../components/sidebar_right.vue";
+import Header from "../components/shared/v-header.vue";
+import Footer from "../components/shared/v-footer.vue";
+import Flash from "../components/shared/v-flash.vue";
+import SidebarLeft from "../components/shared/sidebar-left.vue";
+import SidebarRight from "../components/shared/sidebar-right.vue";
+import SlideMenu from "../components/shared/slide-menu.vue";
 
-var app = new Vue({
+Vue.component("v-header", Header);
+Vue.component("v-footer", Footer);
+Vue.component("slide-menu", SlideMenu);
+Vue.component("v-flash", Flash);
+Vue.component("sidebar-left", SidebarLeft);
+Vue.component("sidebar-right", SidebarRight);
+
+const app = new Vue({
   el: "#app",
   store,
-  router: Router,
-  components: {
-    "v-header": Header,
-    "v-footer": Footer,
-    "slide-menu": SlideMenu,
-    "v-flash": Flash,
-    "sidebar-left": SidebarLeft,
-    "sidebar-right": SidebarRight
-  }
+  router: Router
 });

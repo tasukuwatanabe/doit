@@ -106,22 +106,15 @@ import axios from "axios";
 export default {
   data() {
     return {
-      currentUser: {}
+      currentUser: {
+        id: 4,
+        username: "ユーザー名"
+      }
     };
-  },
-  // created() {
-  //   axios.get("/api/current_user").then((response) => {
-  //     this.currentUser = response.data[0];
-  //   });
-  // },
-  computed: {
-    logged_in() {
-      return this.currentUser;
-    }
   },
   methods: {
     logout() {
-      axios.delete(`/api/logout`).then((response) => {
+      axios.delete("/api/logout").then((response) => {
         this.$router.push({ name: "login" });
       });
     }

@@ -62,15 +62,9 @@
 
 <script>
 import axios from "axios";
-import SidebarLeft from "./sidebar_left.vue";
-import SidebarRight from "./sidebar_right.vue";
 
 export default {
   props: ["userId"],
-  components: {
-    "sidebar-left": SidebarLeft,
-    "sidebar-right": SidebarRight
-  },
   data() {
     return {
       currentUser: []

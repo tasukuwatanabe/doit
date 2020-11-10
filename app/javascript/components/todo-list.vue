@@ -214,23 +214,19 @@
                     <div @click="closeModal" class="btn-gray btn--sm">
                       キャンセル
                     </div>
-                    <div
-                      v-if="isEditing"
-                      @click="updateTodo(todo)"
-                      class="btn-main btn--sm"
-                    >
+                    <div @click="updateTodo(todo)" class="btn-main btn--sm">
                       更新する
                     </div>
-                    <div v-else @click="createTodo" class="btn-main btn--sm">
+                    <!-- <div v-else @click="createTodo" class="btn-main btn--sm">
                       新規作成
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </form>
             </div>
           </div>
         </div>
-        <index-shortcut @shortcut-create-todo="createTodo"></index-shortcut>
+        <todo-shortcut @shortcut-create-todo="createTodo"></todo-shortcut>
       </div>
       <sidebar-right></sidebar-right>
     </div>
@@ -240,26 +236,23 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-import IndexShortcut from "./index_shortcut.vue";
-import SidebarLeft from "./sidebar_left.vue";
-import SidebarRight from "./sidebar_right.vue";
+import TodoShortcut from "./todo-shortcut.vue";
+import Modal from "./mixins/modal";
+import ColorOnRgb from "./mixins/color-on-rgb";
 
 export default {
   components: {
-    "index-shortcut": IndexShortcut,
-    "sidebar-left": SidebarLeft,
-    "sidebar-right": SidebarRight
+    "todo-shortcut": TodoShortcut
   },
   data() {
     return {
       todos: [],
       shortcuts: [],
       labels: [],
-      isModalActive: false,
-      todo: {},
-      isEditing: false
+      todo: {}
     };
   },
+  mixins: [Modal, ColorOnRgb],
   created() {
     this.fetchDate();
     this.fetchTodo();
@@ -299,31 +292,6 @@ export default {
     getTodoLabel(todo) {
       return this.labels.filter((label) => todo.label_id == label.id)[0];
     },
-    colorOnRgb(hex) {
-      if (hex.slice(0, 1) == "#") hex = hex.slice(1);
-      if (hex.length == 3)
-        hex =
-          hex.slice(0, 1) +
-          hex.slice(0, 1) +
-          hex.slice(1, 2) +
-          hex.slice(1, 2) +
-          hex.slice(2, 3) +
-          hex.slice(2, 3);
-
-      var rgb = [hex.slice(0, 2), hex.slice(2, 4), hex.slice(4, 6)].map(
-        function (str) {
-          return parseInt(str, 16);
-        }
-      );
-
-      var red = rgb[0],
-        green = rgb[1],
-        blue = rgb[2];
-
-      if (red * 0.299 + green * 0.587 + blue * 0.114 < 186) {
-        return "white";
-      }
-    },
     createTodo(value) {
       axios
         .post("/api/todos", {
@@ -335,7 +303,6 @@ export default {
         });
     },
     // todoReset() {
-    // this.isEditing = false;
     // this.todo = null;
     // this.todo.apply_days = [0, 1, 2, 3, 4, 5, 6];
     // axios.get("/api/todos").then((res) => {
@@ -345,7 +312,6 @@ export default {
     // },
     editTodo(todo) {
       this.todo = todo;
-      this.isEditing = true;
       this.openModal();
     },
     updateTodo(todo) {
@@ -368,7 +334,6 @@ export default {
     closeModal() {
       this.isModalActive = false;
       // this.todoReset();
-      this.isEdting = false;
     }
   }
 };

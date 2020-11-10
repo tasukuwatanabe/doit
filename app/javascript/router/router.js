@@ -1,14 +1,14 @@
 import Vue from "vue/dist/vue.esm.js";
-import VueRouter from "vue-router";
-import Todo from "../components/todo.vue";
-import History from "../components/history.vue";
-import Shortcut from "../components/shortcut.vue";
-import Label from "../components/label.vue";
-import UserEdit from "../components/user_edit.vue";
-import PasswordEdit from "../components/password_edit.vue";
-import Login from "../components/login.vue";
-import store from "../packs/store";
 import Vuex from "vuex";
+import VueRouter from "vue-router";
+import Todo from "../components/todo-list.vue";
+import History from "../components/history-list.vue";
+import Shortcut from "../components/shortcut-list.vue";
+import Label from "../components/label-list.vue";
+import UserEdit from "../components/user-edit.vue";
+import PasswordEdit from "../components/password-edit.vue";
+import Login from "../components/login-form.vue";
+import store from "../packs/store";
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
