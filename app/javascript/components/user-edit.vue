@@ -64,26 +64,6 @@
 import axios from "axios";
 
 export default {
-  props: ["userId"],
-  data() {
-    return {
-      currentUser: []
-    };
-  },
-  mounted() {
-    axios
-      .get("/api/current_user.json")
-      .then((response) => (this.currentUser = response.data));
-  }
+  props: ["userId"]
 };
 </script>
-
-<style scoped>
-.error-list {
-  list-style-type: none;
-  font-size: 12px;
-  padding-left: 0;
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-</style>

@@ -8,29 +8,34 @@ import UserEdit from "../components/user-edit.vue";
 import PasswordEdit from "../components/password-edit.vue";
 import Login from "../components/login-form.vue";
 import Signup from "../components/signup-form.vue";
-import store from "../packs/store";
+import Store from "../packs/store";
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
-function isLoggedIn(to, from, next) {
-  store.dispatch("isLoggedInAction").then(() => {
-    if (store.state.isLoggedIn) {
-      next();
-    } else {
-      next({ path: "/login" });
-    }
-  });
+function readCookie() {
+  return document.cookie.replace(
+    /(?:(?:^|.*;\s*)user_id\s*\=\s*([^;]*).*$)|^.*$/,
+    "$1"
+  );
 }
 
-function isLoggedOut(to, from, next) {
-  store.dispatch("isLoggedInAction").then(() => {
-    if (!store.state.isLoggedIn) {
+function login(to, from, next) {
+  if (readCookie()) {
+    next();
+  } else {
+    next({ path: "/login" });
+  }
+}
+
+function logout(to, from, next) {
+  if (!readCookie()) {
+    Store.dispatch("clearDateAction").then(() => {
       next();
-    } else {
-      next({ path: "/" });
-    }
-  });
+    });
+  } else {
+    next({ path: "/" });
+  }
 }
 
 export default new VueRouter({
@@ -40,67 +45,67 @@ export default new VueRouter({
       path: "/",
       component: Todo,
       name: "todos",
-      beforeEnter: isLoggedIn
+      beforeEnter: login
     },
     {
       path: "/shortcuts",
       component: Shortcut,
       name: "shortcuts",
-      beforeEnter: isLoggedIn
+      beforeEnter: login
     },
     {
       path: "/labels",
       component: Label,
       name: "labels",
-      beforeEnter: isLoggedIn
+      beforeEnter: login
     },
     {
       path: "/user/:userId/edit",
       component: UserEdit,
       name: "user_edit",
-      beforeEnter: isLoggedIn
+      beforeEnter: login
     },
     {
       path: "/password/:userId/edit",
       component: PasswordEdit,
       name: "password_edit",
-      beforeEnter: isLoggedIn
+      beforeEnter: login
     },
     {
       path: "/login",
       component: Login,
       name: "login",
-      beforeEnter: isLoggedOut
+      beforeEnter: logout
     },
     {
       path: "/signup",
       component: Signup,
       name: "signup",
-      beforeEnter: isLoggedOut
+      beforeEnter: logout
     }
     // {
     //   path: "/password_resets/new",
     //   component: PasswordNew,
     //   name: "password_resets_new",
-    //   beforeEnter: isLoggedOut
+    //   beforeEnter: logout
     // },
     // {
     //   path: "/password_resets/:userId/edit",
     //   component: PasswordEdit,
     //   name: "password_resets_edit",
-    //   beforeEnter: isLoggedOut
+    //   beforeEnter: logout
     // },
     // {
     //   path: "/account_activations/:userId/edit",
     //   component: AccountActivation,
     //   name: "account_activations",
-    //   beforeEnter: isLoggedOut
+    //   beforeEnter: logout
     // },
     // {
     //   path: "/email_confirmations/:userId/edit",
     //   component: EmailConfirmations,
     //   name: "email_confirmations",
-    //   beforeEnter: isLoggedOut
+    //   beforeEnter: logout
     // }
     // { path: "*", component: NotFoundComponent }
   ]

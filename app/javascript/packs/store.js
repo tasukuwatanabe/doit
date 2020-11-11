@@ -1,20 +1,15 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
 import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    isLoggedIn: false,
-    selectedDate: null
+    selectedDate: undefined
   },
 
   getters: {
-    isLoggedIn(state) {
-      return state.isLoggedIn;
-    },
     selectedDate(state) {
       return state.selectedDate;
     },
@@ -26,17 +21,12 @@ const store = new Vuex.Store({
       return `${year}-${month}-${date}`;
     }
   },
-
   mutations: {
-    isLoggedIn(state) {
-      state.isLoggedIn = true;
-    },
-    isLoggedOut(state) {
-      state.isLoggedIn = false;
-      state.selectedDate = null;
-    },
     setDate(state, date) {
       state.selectedDate = date;
+    },
+    clearDate(state) {
+      state.selectedDate = undefined;
     }
   },
   actions: {
@@ -49,17 +39,10 @@ const store = new Vuex.Store({
       } else if (select === "previous") {
         set_date.setDate(set_date.getDate() - 1);
       }
-
       commit("setDate", set_date);
     },
-    isLoggedInAction({ commit }) {
-      return axios.get(`/api/logged_in`).then((res) => {
-        if (res.data.state === "Logged in") {
-          commit("isLoggedIn");
-        } else {
-          commit("isLoggedOut");
-        }
-      });
+    clearDateAction({ commit }) {
+      commit("clearDate");
     }
   },
   plugins: [createPersistedState({ storage: window.sessionStorage })]

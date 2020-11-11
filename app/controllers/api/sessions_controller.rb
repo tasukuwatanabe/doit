@@ -28,7 +28,6 @@ class Api::SessionsController < ApplicationController
       if Authenticator.new(user).authenticate(session_params[:password])
         if user.activated?
           log_in user
-          session_params[:remember_me?] ? remember(user) : forget(user)
           render json: { state: 'success', msg: 'Login Success', user: { id: user.id, username: user.username, email: user.email } }, status: 200
         else
           render json: { state: 'failure', msg: 'Error' }, status: 403
