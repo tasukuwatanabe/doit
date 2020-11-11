@@ -44,20 +44,20 @@
               <div class="list__block list__block--right list__block--grow">
                 <div
                   class="label label--margin"
-                  v-if="getTodoLabel(todo)"
+                  v-if="todoLabel(todo)"
                   :style="{
-                    color: colorOnRgb(getTodoLabel(todo).color),
-                    backgroundColor: getTodoLabel(todo).color
+                    color: colorOnRgb(todoLabel(todo).color),
+                    backgroundColor: todoLabel(todo).color
                   }"
                 >
-                  {{ getTodoLabel(todo).title }}
+                  {{ todoLabel(todo).title }}
                 </div>
                 <div v-else></div>
                 <div class="item-action">
                   <a @click="setTodo(todo)" class="item-action__btn">
                     <i class="fas fa-pencil-alt"></i>
                   </a>
-                  <a @click="deleteTodo(todo.id)" class="item-action__btn">
+                  <a @click="deleteTodo(todo)" class="item-action__btn">
                     <i class="fas fa-trash"></i>
                   </a>
                 </div>
@@ -111,7 +111,6 @@ export default {
   mixins: [ColorOnRgb],
   created() {
     this.fetchDate();
-    this.fetchTodos();
   },
   computed: {
     ...mapGetters(["selectedDate"]),
@@ -133,27 +132,31 @@ export default {
       const week = selected_date.getDay();
 
       return `${weeks[week]}曜日`;
+    },
+    todoLabel() {
+      return function (todo) {
+        return this.labels.filter((label) => todo.label_id == label.id)[0];
+      };
     }
   },
   methods: {
     ...mapActions(["setDateAction"]),
     fetchDate(select) {
       this.setDateAction(select);
+      this.fetchTodos(this.selectedDate);
     },
     fetchTodos(date) {
       axios.get("/api/todos", { params: { date: date } }).then((res) => {
         this.todos = res.data.todos;
+        this.labels = res.data.labels;
       });
     },
-    getTodoLabel(todo) {
-      return this.labels.filter((label) => todo.label_id == label.id)[0];
-    },
-    setTodo(label) {
+    setTodo(todo) {
       this.$refs.todoModal.setTodoValue(todo);
     },
-    deleteTodo(id) {
-      axios.delete(`/api/todos/${id}`).then((res) => {
-        this.changeDate(this.$store.getters.selectedDate);
+    deleteTodo(todo) {
+      axios.delete(`/api/todos/${todo.id}`).then((res) => {
+        this.fetchTodos(this.selectedDate);
       });
     },
     toggleStatus(todo) {

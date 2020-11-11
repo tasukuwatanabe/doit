@@ -4,26 +4,16 @@ class Api::TodosController < ApplicationController
   include CalculationDateHelper
 
   def index
-    selected_date = if params[:date]
-                      Date.parse(params[:date])
-                    else
-                      Date.today
-                    end
+    todos = current_user.todos.where(todo_date: params[:date]).order(created_at: :desc).select(:id, :title, :status, :start_date, :end_date, :continue_without_end, :history_display, :body, :label_id, :apply_days)
 
-    todos = current_user.todos.where(todo_date: selected_date).order(created_at: :desc).select(:id, :title, :status, :start_date, :end_date, :continue_without_end, :history_display, :body, :label_id, :apply_days)
-
-    selected_format_date = selected_date.strftime('%Y年%1m月%1d日')
-    previous_date = selected_date.yesterday
-    next_date = selected_date.tomorrow
-    day = selected_date.wday
+    labels = current_user.labels.order(created_at: :desc).select(:id, :title, :color)
+    todos.each do |todo|
+      labels.select { |label| label.id == todo.label_id }
+    end
 
     api_data = {
       todos: todos,
-      selected_date: selected_date,
-      selected_format_date: selected_format_date,
-      previous_date: previous_date,
-      next_date: next_date,
-      day: day
+      labels: labels
     }
 
     render json: api_data
@@ -43,7 +33,6 @@ class Api::TodosController < ApplicationController
     Todo.transaction do
       todo_parent = TodoParent.create(user_id: current_user.id)
       todo_term.times do |n|
-        z
         todo = current_user.todos.build(todo_params)
         todo_date = todo.start_date + n.days
         day = todo_date.wday
@@ -72,8 +61,8 @@ class Api::TodosController < ApplicationController
     todo_term = (end_date - start_date).to_i + 1
     apply_days = todo_params[:apply_days]
 
-    todo = Todo.find_by(id: todo_params[:id])
-    todos = Todo.where(todo_parent_id: todo.todo_parent_id)
+    todo = current_user.todos.find(params[:id])
+    todos = current_user.todos.where(todo_parent_id: todo.todo_parent_id)
 
     begin
       Todo.transaction do

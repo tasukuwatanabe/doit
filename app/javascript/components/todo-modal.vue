@@ -87,7 +87,7 @@
                       class="day-check__input"
                       multiple
                     />
-                    <!-- <span>{{ weeks[n - 1] }}</span> -->
+                    <span>{{ weeks[n - 1] }}</span>
                   </label>
                 </div>
               </div>
@@ -124,8 +124,8 @@
               <div @click="toggleModal" class="btn-gray btn--sm">
                 キャンセル
               </div>
-              <div @click="updateTodo(todo)" class="btn-main btn--sm">
-                更新する
+              <div @click="todoSubmit" class="btn-main btn--sm">
+                {{ btnText }}
               </div>
             </div>
           </div>
@@ -136,43 +136,73 @@
 </template>
 
 <script>
+import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 import Modal from "./mixins/modal";
 import ColorOnRgb from "./mixins/color-on-rgb";
+
 export default {
   data() {
     return {
       labels: [],
-      todo: {},
+      todo: {
+        id: undefined,
+        title: undefined,
+        label_id: undefined,
+        start_date: undefined,
+        end_date: undefined,
+        apply_days: undefined,
+        continue_without_end: undefined,
+        body: undefined
+      },
+      weeks: ["日", "月", "火", "水", "木", "金", "土"],
       btnText: ""
     };
   },
+  created() {
+    this.fetchLabels();
+  },
+  computed: {
+    ...mapGetters(["selectedDate", "formatDate"])
+  },
   mixins: [Modal, ColorOnRgb],
   methods: {
-    setTodoValue(todo) {
-      this.modalActive = true;
-      if (todo) {
-        this.todo.title = todo.title;
-        this.todo.label_id = todo.label_id;
-        this.todo.start_date = todo.start_date;
-        this.todo.end_date = todo.end_date;
-        this.todo.continue_without_end = todo.continue_without_end;
-        this.todo.apply_days = todo.apply_days;
-        this.todo.body = todo.body;
-      }
-      this.btnText = todo ? "更新する" : "新規作成";
+    fetchLabels() {
+      axios.get("/api/labels").then((res) => {
+        this.labels = res.data.labels;
+      });
     },
-    async todoSubmit(label) {
-      this.todo.color = this.colorPicker.hex;
-      if (todo) {
-        await axios.put(`/api/todos/${this.todo.id}`, {
-          params: { todo: this.todo }
-        });
+    setTodoValue(val) {
+      this.toggleModal();
+      this.todo.id = val.id;
+      this.todo.title = val.title;
+      this.todo.label_id = val.label_id;
+      this.todo.start_date = val.start_date || this.formatDate;
+      this.todo.end_date = val.end_date || this.formatDate;
+      this.todo.apply_days = val.apply_days || [...Array(7).keys()];
+      this.todo.continue_without_end = val.continue_without_end;
+      this.todo.body = val.body;
+      this.btnText = val.title ? "更新する" : "新規作成";
+    },
+    async todoSubmit() {
+      const todo_id = this.todo.id;
+      const todo_params = {
+        title: this.todo.title,
+        label_id: this.todo.label_id,
+        start_date: this.todo.start_date,
+        end_date: this.todo.end_date,
+        apply_days: this.todo.apply_days,
+        continue_without_end: this.todo.continue_without_end,
+        body: this.todo.body
+      };
+      if (todo_id) {
+        await axios.put(`/api/todos/${todo_id}`, { todo: todo_params });
       } else {
-        await axios.post("/api/todos", { params: { todo: this.todo } });
+        await axios.post("/api/todos", { todo: todo_params });
       }
+      this.toggleModal();
+      this.$emit("fetch-todos", this.selectedDate);
       this.todo = {};
-      this.modalActive = false;
-      this.$emit("fetch-todos");
     }
   }
 };

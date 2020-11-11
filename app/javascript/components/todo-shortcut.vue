@@ -35,6 +35,7 @@
 
 <script>
 import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
@@ -46,18 +47,30 @@ export default {
   created() {
     this.fetchShortcut();
   },
+  computed: {
+    ...mapGetters(["selectedDate"])
+  },
   methods: {
     fetchShortcut() {
       axios.get("/api/shortcuts").then((res) => {
-        this.shortcuts = res.data;
+        this.shortcuts = res.data.shortcuts;
       });
     },
     createTodo(shortcut) {
-      this.todo.title = shortcut.title;
-      axios.post("/api/todos", { params: { todo: this.todo } }).then(() => {
-        this.$emit("fetch-todos");
-        this.todo = {};
-      });
+      axios
+        .post("/api/todos", {
+          todo: {
+            title: shortcut.title,
+            start_date: this.selectedDate,
+            end_date: this.selectedDate,
+            apply_days: [...Array(7).keys()],
+            label_id: shortcut.label_id
+          }
+        })
+        .then(() => {
+          this.$emit("fetch-todos", this.selectedDate);
+          this.todo = {};
+        });
     }
   }
 };

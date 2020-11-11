@@ -17,6 +17,13 @@ const store = new Vuex.Store({
     },
     selectedDate(state) {
       return state.selectedDate;
+    },
+    formatDate(state) {
+      const year = state.selectedDate.getFullYear();
+      const month = state.selectedDate.getMonth() + 1;
+      const date = state.selectedDate.getDate();
+
+      return `${year}-${month}-${date}`;
     }
   },
 

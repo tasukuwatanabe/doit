@@ -3,7 +3,7 @@ class Api::LabelsController < ApplicationController
 
   def index
     labels = current_user.labels.order(created_at: :desc).select(:id, :title, :color)
-    todos = current_user.todos.where.not(label_id: nil).select(:id)
+    todos = current_user.todos.where.not(label_id: nil).select(:label_id)
     api_array = {
       labels: labels,
       todos: todos
