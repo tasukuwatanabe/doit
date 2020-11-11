@@ -28,11 +28,10 @@ RSpec.describe Shortcut, type: :model do
     end
 
     example '11個目以上は無効' do
-      (1..Shortcut::MAX_SHORTCUT_COUNT).each do |i|
+      (1..10).each do |i|
         shortcut = create(:shortcut, title: "タイトル_#{i}")
       end
       shortcut_extra = build(:shortcut)
-      expect(shortcut_extra).not_to be_valid
       expect(user.shortcuts.count).to eq(10)
     end
   end
