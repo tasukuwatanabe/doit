@@ -70,6 +70,36 @@ export default new VueRouter({
       component: Login,
       name: "login",
       beforeEnter: isLoggedOut
+    },
+    {
+      path: "/signup",
+      component: Signup,
+      name: "signup",
+      beforeEnter: isLoggedOut
+    },
+    {
+      path: "/password_resets/new",
+      component: PasswordNew,
+      name: "password_resets_new",
+      beforeEnter: isLoggedOut
+    },
+    {
+      path: "/password_resets/:userId/edit",
+      component: PasswordEdit,
+      name: "password_resets_edit",
+      beforeEnter: isLoggedOut
+    },
+    {
+      path: "/account_activations/:userId/edit",
+      component: AccountActivation,
+      name: "account_activations",
+      beforeEnter: isLoggedOut
+    },
+    {
+      path: "/email_confirmations/:userId/edit",
+      component: EmailConfirmations,
+      name: "email_confirmations",
+      beforeEnter: isLoggedOut
     }
     // { path: "*", component: NotFoundComponent }
   ]
