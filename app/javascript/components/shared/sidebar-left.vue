@@ -1,6 +1,6 @@
 <template>
-  <aside class="sidebar-left">
-    <div class="sidebar-left__stickey-part">
+  <aside class="sidebar">
+    <div class="sidebar__stickey-part sidebar-left">
       <div class="sidebar-left__userinfo userinfo">
         <router-link
           :to="{
