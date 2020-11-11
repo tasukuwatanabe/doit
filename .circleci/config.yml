@@ -49,17 +49,11 @@ jobs:
             - rails-demo-yarn-
 
       - run:
-          name: Setup NodeJS and Yarn
+          name: Install Node.js 10.21.0 with build in nvm tool
           command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
-            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            source $BASH_ENV
-
-            nvm install v12.19.0
-            nvm alias default v12.19.0
-
-            npm install -g yarn@1.22.5
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm install v10.21.0 && nvm use v10.21.0 && nvm alias default v10.21.0
 
       - run:
           name: Yarn Install
