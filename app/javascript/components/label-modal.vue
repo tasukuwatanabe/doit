@@ -124,7 +124,7 @@ export default {
       this.colorPicker.hex = val.color || defaultColor;
       this.btnText = val.title ? "更新する" : "新規作成";
     },
-    async labelSubmit(val) {
+    async labelSubmit() {
       this.label.color = this.colorPicker.hex;
       if (this.label.id) {
         await axios.put(`/api/labels/${this.label.id}`, { label: this.label });
