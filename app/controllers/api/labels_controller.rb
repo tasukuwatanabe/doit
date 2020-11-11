@@ -31,15 +31,8 @@ class Api::LabelsController < ApplicationController
 
   def destroy
     label = Label.find(params[:id])
-    todos = Todo.where(label_id: label.id)
-    todos.each do |todo|
-      todo.label_id = nil
-    end
-
-    shortcuts = Shortcut.where(label_id: label.id)
-    shortcuts.each do |shortcut|
-      shortcut.label_id = nil
-    end
+    todos = Todo.where(label_id: label.id).update_all(label_id: nil)
+    shortcuts = Shortcut.where(label_id: label.id).update_all(label_id: nil)
 
     if label.destroy
       head :no_content

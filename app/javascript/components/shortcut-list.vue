@@ -33,7 +33,7 @@
             </a>
           </div>
         </div>
-        <ul class="list" v-if="shortcuts">
+        <ul class="list" v-if="shortcuts.length">
           <li
             class="list__item"
             v-for="shortcut in shortcuts"
@@ -49,23 +49,20 @@
             <div class="list__block list__block--right list__block--grow">
               <div
                 class="label label--margin"
-                v-if="getShortcutLabel(shortcut)"
+                v-if="shortcut.label_id"
                 :style="{
-                  color: colorOnRgb(getShortcutLabel(shortcut).color),
-                  backgroundColor: '#' + getShortcutLabel(shortcut).color
+                  color: colorOnRgb(getLabel(shortcut).color),
+                  backgroundColor: getLabel(shortcut).color
                 }"
               >
-                {{ getShortcutLabel(shortcut).title }}
+                {{ getLabel(shortcut).title }}
               </div>
               <div v-else></div>
               <div class="item-action">
-                <a
-                  v-on:click="modalEditShortcut(shortcut)"
-                  class="item-action__btn"
-                >
+                <a @click="setShortcut(shortcut)" class="item-action__btn">
                   <i class="fas fa-pencil-alt"></i>
                 </a>
-                <a v-on:click="deleteShortcut(s.id)" class="item-action__btn">
+                <a @click="deleteShortcut(shortcut)" class="item-action__btn">
                   <i class="fas fa-trash"></i>
                 </a>
               </div>
@@ -80,7 +77,10 @@
             />
           </div>
         </div>
-        <shortcut-modal ref="shortcutModal"></shortcut-modal>
+        <shortcut-modal
+          @fetch-shortcuts="fetchShortcuts"
+          ref="shortcutModal"
+        ></shortcut-modal>
       </div>
       <sidebar-right></sidebar-right>
     </div>
@@ -105,23 +105,28 @@ export default {
     };
   },
   created() {
-    this.fetchShortcut();
+    this.fetchShortcuts();
   },
   mixins: [ColorOnRgb],
+  computed: {
+    getLabel: function () {
+      return function (shortcut) {
+        return this.labels.filter((label) => shortcut.label_id == label.id)[0];
+      };
+    }
+  },
   methods: {
-    fetchShortcut() {
+    fetchShortcuts() {
       axios.get("/api/shortcuts").then((res) => {
-        this.shortcuts = res.data;
+        this.shortcuts = res.data.shortcuts;
+        this.labels = res.data.labels;
       });
     },
-    getShortcutLabel(shortcut) {
-      return this.labels.filter((label) => shortcut.label_id == label.id)[0];
-    },
-    setShortcut(label) {
+    setShortcut(shortcut) {
       this.$refs.shortcutModal.setShortcutValue(shortcut);
     },
-    deleteShortcut(id) {
-      axios.delete(`/api/shortcuts/${id}`).then((res) => {
+    deleteShortcut(shortcut) {
+      axios.delete(`/api/shortcuts/${shortcut.id}`).then((res) => {
         this.fetchShortcuts();
       });
     }

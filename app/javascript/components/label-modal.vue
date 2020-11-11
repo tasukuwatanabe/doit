@@ -78,8 +78,7 @@ export default {
     return {
       label: {
         id: undefined,
-        title: undefined,
-        color: undefined
+        title: undefined
       },
       colorPicker: {
         hex: defaultColor
@@ -125,11 +124,15 @@ export default {
       this.btnText = val.title ? "更新する" : "新規作成";
     },
     async labelSubmit() {
-      this.label.color = this.colorPicker.hex;
-      if (this.label.id) {
-        await axios.put(`/api/labels/${this.label.id}`, { label: this.label });
+      const label_id = this.label.id;
+      const label_params = {
+        title: this.label.title,
+        color: this.colorPicker.hex
+      };
+      if (label_id) {
+        await axios.put(`/api/labels/${label_id}`, label_params);
       } else {
-        await axios.post("/api/labels", { label: this.label });
+        await axios.post("/api/labels", label_params);
       }
       this.label = {};
       this.toggleModal();

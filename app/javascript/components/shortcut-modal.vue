@@ -10,19 +10,26 @@
             <div class="form__group row">
               <div class="col-3 form__label">タイトル</div>
               <div class="col-9">
-                <input type="text" class="form__input" required />
+                <input
+                  type="text"
+                  v-model="shortcut.title"
+                  class="form__input"
+                  required
+                />
               </div>
             </div>
             <div class="form__group row">
               <div class="col-3 form__label">ラベル</div>
               <div class="col-9">
-                <select class="form__select">
+                <select class="form__select" v-model="shortcut.label_id">
                   <option>ラベルを選択</option>
                   <option
                     v-for="label in labels"
                     :key="label.id"
                     :value="label.id"
-                  ></option>
+                  >
+                    {{ label.title }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -30,7 +37,7 @@
               <div @click="toggleModal" class="btn-gray btn--sm">
                 キャンセル
               </div>
-              <div @click="submitShortcut(shortcut)" class="btn-main btn--sm">
+              <div @click="shortcutSubmit" class="btn-main btn--sm">
                 {{ btnText }}
               </div>
             </div>
@@ -42,6 +49,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import Modal from "./mixins/modal";
 import ColorOnRgb from "./mixins/color-on-rgb";
 
@@ -49,32 +57,54 @@ export default {
   name: "ShortcutModal",
   data() {
     return {
+      shortcut: {
+        id: undefined,
+        title: undefined,
+        label_id: undefined
+      },
+      shortcuts: [],
       labels: [],
       btnText: ""
     };
   },
+  created() {
+    this.fetchLabels();
+  },
   mixins: [Modal, ColorOnRgb],
   methods: {
-    setShortcutValue(shortcut) {
-      this.modalActive = true;
-      if (shortcut) {
-        this.shortcut.title = shortcut.title;
-        this.shortcut.label_id = shortcut.label_id;
-      }
-      this.btnText = shortcut ? "更新する" : "新規作成";
+    fetchLabels() {
+      axios.get("/api/shortcuts").then((res) => {
+        this.labels = res.data.labels;
+      });
     },
-    async shortcutSubmit(shortcut) {
-      if (shortcut) {
-        await axios.put(`/api/shortcuts/${this.shortcut.id}`, {
-          params: { shortcut: this.shortcut }
-        });
+    setShortcutValue(val) {
+      this.toggleModal();
+      this.shortcut.id = val.id;
+      this.shortcut.title = val.title;
+      this.shortcut.label_id = val.label_id;
+      this.btnText = val.title ? "更新する" : "新規作成";
+    },
+    async shortcutSubmit() {
+      const shortcut_id = this.shortcut.id;
+      const shortcut_params = {
+        title: this.shortcut.title,
+        label_id: this.shortcut.label_id
+      };
+      if (shortcut_id) {
+        await axios
+          .put(`/api/shortcuts/${shortcut_id}`, {
+            shortcut: shortcut_params
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } else {
         await axios.post("/api/shortcuts", {
-          params: { shortcut: this.shortcut }
+          shortcut: shortcut_params
         });
       }
       this.shortcut = {};
-      this.modalActive = false;
+      this.toggleModal();
       this.$emit("fetch-shortcuts");
     }
   }
