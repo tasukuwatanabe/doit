@@ -82,7 +82,7 @@
           </div>
         </div>
         <todo-modal @fetch-todos="fetchTodos" ref="todoModal"></todo-modal>
-        <todo-shortcut @fetch-todos="fetchTodos()"></todo-shortcut>
+        <todo-shortcut @fetch-todos="fetchTodos"></todo-shortcut>
       </div>
       <sidebar-right></sidebar-right>
     </div>

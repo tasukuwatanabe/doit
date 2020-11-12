@@ -2,12 +2,16 @@
   <div class="index-shortcut">
     <div class="index-shortcut__box">
       <div class="index-shortcut__title">ショートカットからToDoを作成</div>
-      <router-link to="/shortcuts" class="index-shortcut__edit">
+      <router-link
+        to="/shortcuts"
+        v-if="shortcuts.length"
+        class="index-shortcut__edit"
+      >
         編集
       </router-link>
     </div>
     <div class="index-shortcut__field">
-      <ul v-if="shortcuts" class="index-shortcut__list">
+      <ul v-if="shortcuts.length" class="index-shortcut__list">
         <li
           v-for="shortcut in shortcuts"
           :key="shortcut.id"
@@ -40,7 +44,6 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      todo: {},
       shortcuts: []
     };
   },
@@ -57,18 +60,14 @@ export default {
       });
     },
     createTodo(shortcut) {
-      axios
-        .post("/api/todos", {
-          todo: {
-            title: shortcut.title,
-            todo_date: this.selectedDate,
-            label_id: shortcut.label_id
-          }
-        })
-        .then(() => {
-          this.$emit("fetch-todos", this.selectedDate);
-          this.todo = {};
-        });
+      const todo_params = {
+        title: shortcut.title,
+        todo_date: this.selectedDate,
+        label_id: shortcut.label_id
+      };
+      axios.post("/api/todos", { todo: todo_params }).then(() => {
+        this.$emit("fetch-todos", this.selectedDate);
+      });
     }
   }
 };
