@@ -5,15 +5,21 @@
       <form class="form">
         <div class="form__group">
           <label class="form__label">メールアドレス</label>
-          <input class="form__input" type="email" v-model="user.email" />
+          <input class="form__input" type="email" v-model="session.email" />
         </div>
         <div class="form__group">
           <label class="form__label">パスワード</label>
-          <input class="form__input" type="email" v-model="user.password" />
+          <input
+            class="form__input"
+            type="password"
+            v-model="session.password"
+          />
           <a class="form__reset-link">パスワード再設定</a>
         </div>
         <div class="form-group text-center">
-          <div class="btn-main btn-main--login btn--md">ログイン</div>
+          <div @click="submitLogin()" class="btn-main btn-main--login btn--md">
+            ログイン
+          </div>
         </div>
         <ul class="form__linkList form__linkList--login">
           <li class="form__linkItem">
@@ -60,7 +66,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      user: {
+      session: {
         email: undefined,
         password: undefined
       }
@@ -68,7 +74,16 @@ export default {
   },
   methods: {
     guestLogin() {
-      axios.post("/api/guest_login").then((response) => {
+      axios.post("/api/guest_login").then(() => {
+        this.$router.push({ name: "todos" });
+      });
+    },
+    submitLogin() {
+      const session_params = {
+        email: this.session.email,
+        password: this.session.password
+      };
+      axios.post("/api/login", { session: session_params }).then(() => {
         this.$router.push({ name: "todos" });
       });
     }

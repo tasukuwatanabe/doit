@@ -18,9 +18,16 @@ function cookieStatus() {
 }
 
 function login(to, from, next) {
+  Store.dispatch("setToggleCloseAction");
   Store.dispatch("checkCookieAction").then(() => {
     if (cookieStatus()) {
-      next();
+      if (Store.getters.getCurrentUser == null) {
+        Store.dispatch("currentUserAction").then(() => {
+          next();
+        });
+      } else {
+        next();
+      }
     } else {
       next({ path: "/login" });
     }
@@ -28,11 +35,12 @@ function login(to, from, next) {
 }
 
 function logout(to, from, next) {
+  Store.dispatch("setToggleCloseAction");
   Store.dispatch("checkCookieAction").then(() => {
     if (!cookieStatus()) {
-      Store.dispatch("clearDateAction").then(() => {
-        next();
-      });
+      Store.dispatch("clearDateAction");
+      Store.dispatch("currentUserAction");
+      next();
     } else {
       next({ path: "/" });
     }
