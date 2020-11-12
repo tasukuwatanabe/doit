@@ -3,10 +3,7 @@ class Api::ShortcutsController < ApplicationController
 
   def index
     shortcuts = current_user.shortcuts.order(created_at: :desc).select(:id, :title, :label_id)
-    labels = current_user.labels.order(created_at: :desc).select(:id, :title, :color)
-    shortcuts.each do |shortcut|
-      labels.select { |label| label.id == shortcut.label_id }
-    end
+    labels = current_user.labels.select(:id, :title, :color)
     api_array = {
       shortcuts: shortcuts,
       labels: labels

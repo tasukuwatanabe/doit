@@ -1,11 +1,22 @@
 class Api::UsersController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
+  include SessionsHelper
+
   def current_user
-    current_user = User.where(id: session[:user_id]).select(:id, :username, :email)
-    if !current_user.empty?
-      render json: { state: 'success', user: current_user }, status: 200
+    if user_id = cookies.signed[:user_id]
+      current_user = User.find(user_id)
+      current_user = {
+        id: current_user.id,
+        username: current_user.username,
+        email: current_user.email,
+        user_image: current_user.user_image.url
+      }
     else
-      render json: { error: 'unauthorized' }, status: :unauthorized
+      current_user = nil
     end
+
+    render json: current_user
   end
 
   def create

@@ -1,13 +1,21 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import axios from "axios";
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
     selectedDate: undefined,
-    cookieStatus: undefined
+    cookieStatus: undefined,
+    currentUser: {
+      id: undefined,
+      username: undefined,
+      email: undefined,
+      user_image: undefined
+    },
+    toggleStatus: false
   },
 
   getters: {
@@ -23,6 +31,12 @@ const store = new Vuex.Store({
     },
     cookieStatus(state) {
       return state.cookieStatus;
+    },
+    getCurrentUser(state) {
+      return state.currentUser;
+    },
+    getToggleStatus(state) {
+      return state.toggleStatus;
     }
   },
   mutations: {
@@ -34,6 +48,15 @@ const store = new Vuex.Store({
     },
     checkCookie(state, status) {
       state.cookieStatus = status;
+    },
+    setCurrentUser(state, user) {
+      state.currentUser = user;
+    },
+    setToggleStatus(state) {
+      state.toggleStatus = !state.toggleStatus;
+    },
+    setToggleClose(state) {
+      state.toggleStatus = false;
     }
   },
   actions: {
@@ -60,6 +83,28 @@ const store = new Vuex.Store({
         return cookie != "" && cookie != undefined;
       };
       commit("checkCookie", cookieStatus());
+    },
+    async currentUserAction({ commit }) {
+      await axios.get("/api/current_user").then((res) => {
+        let user;
+        if (res.data != null) {
+          user = {
+            id: res.data.id,
+            username: res.data.username,
+            email: res.data.email,
+            user_image: res.data.user_image
+          };
+        } else {
+          user = null;
+        }
+        commit("setCurrentUser", user);
+      });
+    },
+    setToggleStatusAction({ commit }) {
+      commit("setToggleStatus");
+    },
+    setToggleCloseAction({ commit }) {
+      commit("setToggleClose");
     }
   },
   plugins: [createPersistedState({ storage: window.sessionStorage })]

@@ -3,14 +3,6 @@ class Api::SessionsController < ApplicationController
 
   include SessionsHelper
 
-  def logged_in
-    if !current_user.nil?
-      render json: { state: 'Logged in' }
-    else
-      render json: { state: 'Logged out' }
-    end
-  end
-
   def create
     auth = request.env['omniauth.auth']
     if auth.present?
@@ -48,6 +40,6 @@ class Api::SessionsController < ApplicationController
   end
 
   private def session_params
-    params.require(:login_form).permit(:email, :password, :remember_me)
+    params.require(:session).permit(:email, :password)
   end
 end
