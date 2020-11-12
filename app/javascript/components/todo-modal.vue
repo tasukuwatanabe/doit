@@ -39,57 +39,14 @@
             </div>
             <div class="form__group row">
               <div class="col-3">
-                <div class="form__label">開始日</div>
+                <div class="form__label">適用日</div>
               </div>
               <div class="col-9">
                 <input
                   type="date"
-                  v-model="todo.start_date"
+                  v-model="todo.todo_date"
                   class="form__input"
                 />
-              </div>
-            </div>
-            <div class="form__group row form__group--end-day">
-              <div class="col-3">
-                <div class="form__label">終了日</div>
-              </div>
-              <div class="col-9">
-                <input
-                  type="date"
-                  v-model="todo.end_date"
-                  class="form__input"
-                  :readonly="todo.continue_without_end"
-                />
-                <div class="checkbox-with-text">
-                  <input
-                    type="checkbox"
-                    name="continue_without_end"
-                    id="continue_without_end"
-                    v-model="todo.continue_without_end"
-                  />
-                  <label for="continue_without_end"
-                    >終了日を設定せず繰り返す</label
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="form__group row">
-              <div class="col-3">
-                <div class="form__label">曜日指定</div>
-              </div>
-              <div class="col-9">
-                <div class="day-check">
-                  <label v-for="n in 7" class="day-check__label" :key="n - 1">
-                    <input
-                      type="checkbox"
-                      v-model="todo.apply_days"
-                      :value="n - 1"
-                      class="day-check__input"
-                      multiple
-                    />
-                    <span>{{ weeks[n - 1] }}</span>
-                  </label>
-                </div>
               </div>
             </div>
             <div class="form__group row">
@@ -100,26 +57,6 @@
                 <input type="text" class="form__input" v-model="todo.body" />
               </div>
             </div>
-            <!-- <div class="form__group row">
-                    <div class="col-3">
-                      <div class="form__label">達成度を表示</div>
-                    </div>
-                    <div class="col-9">
-                      <div class="btn-slide">
-                        <input
-                          type="checkbox"
-                          name="history_display"
-                          id="history_display"
-                          class="btn-slide__input"
-                          v-model="todo.history_display"
-                        />
-                        <label
-                          for="history_display"
-                          class="btn-slide__label"
-                        ></label>
-                      </div>
-                    </div>
-                  </div> -->
             <div class="btn-case">
               <div @click="toggleModal()" class="btn-gray btn--sm">
                 キャンセル
@@ -149,13 +86,9 @@ export default {
         id: undefined,
         title: undefined,
         label_id: undefined,
-        start_date: undefined,
-        end_date: undefined,
-        apply_days: undefined,
-        continue_without_end: undefined,
+        todo_date: undefined,
         body: undefined
       },
-      weeks: ["日", "月", "火", "水", "木", "金", "土"],
       btnText: ""
     };
   },
@@ -167,6 +100,7 @@ export default {
   },
   mixins: [Modal, ColorOnRgb],
   methods: {
+    ...mapActions(["setDateAction"]),
     fetchLabels() {
       axios.get("/api/labels").then((res) => {
         this.labels = res.data.labels;
@@ -174,25 +108,22 @@ export default {
     },
     setTodoValue(val) {
       this.toggleModal();
-      this.todo.id = val.id;
-      this.todo.title = val.title;
-      this.todo.label_id = val.label_id;
-      this.todo.start_date = val.start_date || this.formatDate;
-      this.todo.end_date = val.end_date || this.formatDate;
-      this.todo.apply_days = val.apply_days || [...Array(7).keys()];
-      this.todo.continue_without_end = val.continue_without_end;
-      this.todo.body = val.body;
-      this.btnText = val.title ? "更新する" : "新規作成";
+      const hasValue = function () {
+        return val != undefined;
+      };
+      this.todo.id = hasValue() ? val.id : undefined;
+      this.todo.title = hasValue() ? val.title : undefined;
+      this.todo.label_id = hasValue() ? val.label_id : undefined;
+      this.todo.body = hasValue() ? val.body : undefined;
+      this.todo.todo_date = hasValue() ? val.todo_date : this.formatDate;
+      this.btnText = hasValue() ? "更新する" : "新規作成";
     },
     async todoSubmit() {
       const todo_id = this.todo.id;
       const todo_params = {
         title: this.todo.title,
         label_id: this.todo.label_id,
-        start_date: this.todo.start_date,
-        end_date: this.todo.end_date,
-        apply_days: this.todo.apply_days,
-        continue_without_end: this.todo.continue_without_end,
+        todo_date: this.todo.todo_date,
         body: this.todo.body
       };
       if (todo_id) {
@@ -201,7 +132,8 @@ export default {
         await axios.post("/api/todos", { todo: todo_params });
       }
       this.toggleModal();
-      this.$emit("fetch-todos", this.selectedDate);
+      this.setDateAction(this.todo.todo_date);
+      this.$emit("fetch-todos", this.todo.todo_date);
       this.todo = {};
     }
   }

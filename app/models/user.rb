@@ -6,9 +6,7 @@ class User < ApplicationRecord
   attr_accessor :remember_token, :reset_token, :activation_token, :confirmation_token
 
   has_many :todos, dependent: :destroy
-  has_many :todo_parents, dependent: :destroy
   has_many :shortcuts, dependent: :destroy
-  has_many :routines, dependent: :destroy
   has_many :labels, dependent: :destroy
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.freeze

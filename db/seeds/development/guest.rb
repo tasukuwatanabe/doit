@@ -56,22 +56,3 @@ end
     title: titles[n]
   )
 end
-
-# Routineを作成
-3.times do |n|
-  user.routines.create!(
-    title: titles[n],
-    start_date: Date.today - 3.days,
-    end_date: Date.today + 3.days
-  )
-
-  7.times do |m|
-    routine = Routine.find_by(title: titles[n])
-    user.todos.create!(
-      title: routine.title,
-      routine_id: routine.id,
-      todo_date: routine.start_date + m.days,
-      status: m.even?
-    )
-  end
-end
