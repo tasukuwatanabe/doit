@@ -133,9 +133,9 @@ export default {
         color: this.colorPicker.hex
       };
       if (label_id) {
-        await axios.put(`/api/labels/${label_id}`, label_params);
+        await axios.put(`/api/labels/${label_id}`, { label: label_params });
       } else {
-        await axios.post("/api/labels", label_params);
+        await axios.post("/api/labels", { label: label_params });
       }
       this.label = {};
       this.toggleModal();
