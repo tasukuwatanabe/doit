@@ -52,14 +52,10 @@ module SessionsHelper
     session.delete(:forwarding_url)
   end
 
-  def store_location
-    session[:forwarding_url] = request.original_url if request.get?
-  end
-
   def forget(user)
-    user.forget
-    cookies.delete(:user_id)
-    cookies.delete(:remember_token)
+    user.forget if user
+    cookies.delete(:user_id) if cookies[:user_id]
+    cookies.delete(:remember_token) if cookies[:remember_token]
   end
 
   def log_out

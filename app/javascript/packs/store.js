@@ -6,7 +6,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    selectedDate: undefined
+    selectedDate: undefined,
+    cookieStatus: undefined
   },
 
   getters: {
@@ -19,6 +20,9 @@ const store = new Vuex.Store({
       const date = state.selectedDate.getDate();
 
       return `${year}-${month}-${date}`;
+    },
+    cookieStatus(state) {
+      return state.cookieStatus;
     }
   },
   mutations: {
@@ -27,6 +31,9 @@ const store = new Vuex.Store({
     },
     clearDate(state) {
       state.selectedDate = undefined;
+    },
+    checkCookie(state, status) {
+      state.cookieStatus = status;
     }
   },
   actions: {
@@ -43,6 +50,16 @@ const store = new Vuex.Store({
     },
     clearDateAction({ commit }) {
       commit("clearDate");
+    },
+    checkCookieAction({ commit }) {
+      const cookie = document.cookie.replace(
+        /(?:(?:^|.*;\s*)user_id\s*\=\s*([^;]*).*$)|^.*$/,
+        "$1"
+      );
+      const cookieStatus = () => {
+        return cookie != "" && cookie != undefined;
+      };
+      commit("checkCookie", cookieStatus());
     }
   },
   plugins: [createPersistedState({ storage: window.sessionStorage })]

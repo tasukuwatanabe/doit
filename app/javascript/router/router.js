@@ -13,29 +13,30 @@ import Store from "../packs/store";
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
-function readCookie() {
-  return document.cookie.replace(
-    /(?:(?:^|.*;\s*)user_id\s*\=\s*([^;]*).*$)|^.*$/,
-    "$1"
-  );
+function cookieStatus() {
+  return Store.getters.cookieStatus;
 }
 
 function login(to, from, next) {
-  if (readCookie()) {
-    next();
-  } else {
-    next({ path: "/login" });
-  }
+  Store.dispatch("checkCookieAction").then(() => {
+    if (cookieStatus()) {
+      next();
+    } else {
+      next({ path: "/login" });
+    }
+  });
 }
 
 function logout(to, from, next) {
-  if (!readCookie()) {
-    Store.dispatch("clearDateAction").then(() => {
-      next();
-    });
-  } else {
-    next({ path: "/" });
-  }
+  Store.dispatch("checkCookieAction").then(() => {
+    if (!cookieStatus()) {
+      Store.dispatch("clearDateAction").then(() => {
+        next();
+      });
+    } else {
+      next({ path: "/" });
+    }
+  });
 }
 
 export default new VueRouter({
