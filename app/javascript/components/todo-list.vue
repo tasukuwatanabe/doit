@@ -6,7 +6,7 @@
         <div class="todo">
           <section class="horizontal-arrows">
             <div
-              @click="fetchDate('previous')"
+              @click="fetchDate(setYesterday)"
               class="horizontal-arrows__btn horizontal-arrows__btn--left"
             >
               <i class="fas fa-caret-left"></i>
@@ -18,7 +18,7 @@
               <p class="todo__date-day">{{ setDay }}</p>
             </div>
             <div
-              @click="fetchDate('next')"
+              @click="fetchDate(setTomorrow)"
               class="horizontal-arrows__btn horizontal-arrows__btn--right"
             >
               <i class="fas fa-caret-right"></i>
@@ -81,7 +81,7 @@
             </a>
           </div>
         </div>
-        <todo-modal @fetch-todos="fetchTodos()" ref="todoModal"></todo-modal>
+        <todo-modal @fetch-todos="fetchTodos" ref="todoModal"></todo-modal>
         <todo-shortcut @fetch-todos="fetchTodos()"></todo-shortcut>
       </div>
       <sidebar-right></sidebar-right>
@@ -115,9 +115,7 @@ export default {
   computed: {
     ...mapGetters(["selectedDate"]),
     setDate() {
-      const selected_date = this.selectedDate
-        ? new Date(this.selectedDate)
-        : new Date();
+      const selected_date = new Date(this.selectedDate);
       const year = selected_date.getFullYear();
       const month = selected_date.getMonth() + 1;
       const date = selected_date.getDate();
@@ -126,12 +124,20 @@ export default {
     },
     setDay() {
       const weeks = ["日", "月", "火", "水", "木", "金", "土"];
-      const selected_date = this.selectedDate
-        ? new Date(this.selectedDate)
-        : new Date();
+      const selected_date = new Date(this.selectedDate);
       const week = selected_date.getDay();
 
       return `${weeks[week]}曜日`;
+    },
+    setYesterday() {
+      let selected_date = new Date(this.selectedDate);
+      const yesterday = selected_date.setDate(selected_date.getDate() - 1);
+      return new Date(yesterday);
+    },
+    setTomorrow() {
+      const selected_date = new Date(this.selectedDate);
+      const tomorrow = selected_date.setDate(selected_date.getDate() + 1);
+      return new Date(tomorrow);
     },
     todoLabel() {
       return function (todo) {

@@ -37,16 +37,16 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    setDateAction({ commit, state }, select) {
-      let set_date = state.selectedDate
-        ? new Date(state.selectedDate)
-        : new Date();
-      if (select === "next") {
-        set_date.setDate(set_date.getDate() + 1);
-      } else if (select === "previous") {
-        set_date.setDate(set_date.getDate() - 1);
+    setDateAction({ commit, state }, set_date) {
+      let selected_date;
+      if (set_date) {
+        selected_date = new Date(set_date);
+      } else if (state.selectedDate) {
+        selected_date = new Date(state.selectedDate);
+      } else {
+        selected_date = new Date();
       }
-      commit("setDate", set_date);
+      commit("setDate", selected_date);
     },
     clearDateAction({ commit }) {
       commit("clearDate");

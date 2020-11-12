@@ -84,7 +84,7 @@ export default {
         hex: defaultColor
       },
       displayColorPicker: false,
-      btnText: ""
+      btnText: undefined
     };
   },
   components: {
@@ -118,10 +118,13 @@ export default {
   methods: {
     setLabelValue(val) {
       this.toggleModal();
-      this.label.id = val.id;
-      this.label.title = val.title;
-      this.colorPicker.hex = val.color || defaultColor;
-      this.btnText = val.title ? "更新する" : "新規作成";
+      const hasValue = function () {
+        return val != undefined;
+      };
+      this.label.id = hasValue() ? val.id : undefined;
+      this.label.title = hasValue() ? val.title : undefined;
+      this.colorPicker.hex = hasValue() ? val.color : defaultColor;
+      this.btnText = hasValue() ? "更新する" : "新規作成";
     },
     async labelSubmit() {
       const label_id = this.label.id;

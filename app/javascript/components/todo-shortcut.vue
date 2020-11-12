@@ -61,9 +61,7 @@ export default {
         .post("/api/todos", {
           todo: {
             title: shortcut.title,
-            start_date: this.selectedDate,
-            end_date: this.selectedDate,
-            apply_days: [...Array(7).keys()],
+            todo_date: this.selectedDate,
             label_id: shortcut.label_id
           }
         })
