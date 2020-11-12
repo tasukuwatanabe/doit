@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" :class="{ 'is-open': modalActive }">
+  <div class="modal" v-if="modalActive">
     <div class="modal__layer">
       <div class="modal__box">
         <form @submit.prevent novalidate="true" class="form">

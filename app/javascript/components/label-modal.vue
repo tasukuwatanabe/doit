@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" :class="{ 'is-open': modalActive }">
+  <div class="modal" v-if="modalActive">
     <div class="modal__layer">
       <div class="modal__box">
         <form @submit.prevent novalidate="true" class="form">
@@ -26,11 +26,7 @@
                 <div class="form__label">ラベルの色</div>
               </div>
               <div class="col-9">
-                <div
-                  class="color-select"
-                  ref="colorDisplay"
-                  @click="toggleColorPicker()"
-                >
+                <div class="color-select" @click="toggleColorPicker()">
                   <div class="color-select__box">
                     <div
                       class="color-select__palette"
@@ -40,7 +36,7 @@
                     ></div>
                     {{ colorPicker.hex }}
                   </div>
-                  <div class="color-select__picker" ref="colorPicker">
+                  <div class="color-select__picker">
                     <compact-picker
                       v-if="displayColorPicker"
                       v-model="colorPicker"
@@ -91,23 +87,6 @@ export default {
     "compact-picker": Compact
   },
   mixins: [Modal, ColorOnRgb],
-  mounted() {
-    window.addEventListener(
-      "click",
-      (this._onBlurHandler = (event) => {
-        if (
-          this.$refs.colorPicker.contains(event.target) ||
-          this.$refs.colorDisplay.contains(event.target)
-        ) {
-          return;
-        }
-        this.displayColorPicker = false;
-      })
-    );
-  },
-  beforeDestroy() {
-    window.removeEventListener("click", this._onBlurHandler);
-  },
   computed: {
     labelColor: function () {
       return function (label) {
@@ -146,6 +125,7 @@ export default {
     },
     toggleModal() {
       this.modalActive = !this.modalActive;
+      this.displayColorPicker = false;
       this.colorPicker.hex = defaultColor;
     }
   }

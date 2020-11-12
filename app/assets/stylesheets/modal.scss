@@ -5,10 +5,8 @@
   top: 0;
   right: 0;
   left: 0;
-  overflow-y: auto;
-  visibility: hidden;
-  opacity: 0;
   z-index: -1;
+  display: block !important;
 
   .form__group {
     margin-bottom: 1.2em;
@@ -55,13 +53,6 @@
       font-size: 20px;
       cursor: pointer;
     }
-  }
-
-  &.is-open {
-    visibility: visible;
-    opacity: 1;
-    z-index: 100;
-    display: block;
   }
 
   .btn-case {
