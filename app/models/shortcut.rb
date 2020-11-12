@@ -8,10 +8,7 @@ class Shortcut < ApplicationRecord
   end
 
   validate :shortcut_counts_must_be_within_limit
-  validates :title, presence: true, uniqueness: {
-    scope: :user,
-    message: 'タイトルが重複しています'
-  }
+  validates :title, presence: true, uniqueness: { scope: :user }
 
   def shortcut_counts_must_be_within_limit
     errors.add(:base, 'ショートカットが登録できるのは10個までです') if user && user.shortcuts.size > 10

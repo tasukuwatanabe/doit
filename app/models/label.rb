@@ -8,7 +8,7 @@ class Label < ApplicationRecord
     self.color = normalize_as_color(color)
   end
 
-  validates :title, presence: true, uniqueness: true
+  validates :title, presence: true, uniqueness: { scope: :user }
   validates :color, presence: true
   validate :label_color_must_be_hex_style
   validate :label_counts_must_be_within_limit
