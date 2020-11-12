@@ -5,7 +5,7 @@
         <router-link :to="{ name: 'todos' }" class="header__logo">
           <img src="/doit-logo-white.png" alt="DoITロゴ" />
         </router-link>
-        <div id="hamburger" class="hamburger">
+        <div @click="toggleSlide()" id="hamburger" class="hamburger">
           <span class="hamburger__line"></span>
           <span class="hamburger__line"></span>
           <span class="hamburger__line"></span>
@@ -21,11 +21,17 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
     ...mapGetters(["cookieStatus"])
+  },
+  methods: {
+    ...mapActions(["setToggleStatusAction"]),
+    toggleSlide() {
+      this.setToggleStatusAction();
+    }
   }
 };
 </script>
