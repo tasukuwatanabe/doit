@@ -4,7 +4,7 @@
       <div class="modal__box">
         <form @submit.prevent novalidate="true" class="form">
           <div class="modal-form">
-            <div class="fa-case" @click="toggleModal">
+            <div class="fa-case" @click="toggleModal()">
               <i class="fas fa-times"></i>
             </div>
             <div class="form__group row">
@@ -29,7 +29,7 @@
                 <div
                   class="color-select"
                   ref="colorDisplay"
-                  @click="toggleColorPicker"
+                  @click="toggleColorPicker()"
                 >
                   <div class="color-select__box">
                     <div
@@ -50,10 +50,10 @@
               </div>
             </div>
             <div class="btn-case">
-              <div @click="toggleModal" class="btn-gray btn--sm">
+              <div @click="toggleModal()" class="btn-gray btn--sm">
                 キャンセル
               </div>
-              <div @click="labelSubmit" class="btn-main btn--sm">
+              <div @click="labelSubmit()" class="btn-main btn--sm">
                 {{ btnText }}
               </div>
             </div>

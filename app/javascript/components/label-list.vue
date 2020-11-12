@@ -14,7 +14,10 @@
             ラベルを追加することでToDoを分類することができます。
           </p>
           <div class="page-action headline__page-action">
-            <a @click="setLabel" class="page-action__btn btn-outlined btn--sm">
+            <a
+              @click="setLabel()"
+              class="page-action__btn btn-outlined btn--sm"
+            >
               <span class="page-action__icon">
                 <i class="fas fa-plus"></i>
               </span>

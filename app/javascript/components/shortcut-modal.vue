@@ -4,7 +4,7 @@
       <div class="modal__box">
         <form @submit.prevent novalidate="true" class="form">
           <div class="modal-form">
-            <div class="fa-case" @click="toggleModal">
+            <div class="fa-case" @click="toggleModal()">
               <i class="fas fa-times"></i>
             </div>
             <div class="form__group row">
@@ -34,10 +34,10 @@
               </div>
             </div>
             <div class="btn-case">
-              <div @click="toggleModal" class="btn-gray btn--sm">
+              <div @click="toggleModal()" class="btn-gray btn--sm">
                 キャンセル
               </div>
-              <div @click="shortcutSubmit" class="btn-main btn--sm">
+              <div @click="shortcutSubmit()" class="btn-main btn--sm">
                 {{ btnText }}
               </div>
             </div>

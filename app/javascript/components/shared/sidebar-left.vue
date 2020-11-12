@@ -81,7 +81,7 @@
             </router-link>
           </li>
           <li class="nav__item">
-            <div @click="logout" class="nav__link">
+            <div @click="logout()" class="nav__link">
               <span class="icon nav__icon">
                 <i class="fas fa-sign-out-alt"></i>
               </span>

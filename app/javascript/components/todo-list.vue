@@ -73,7 +73,7 @@
             </div>
           </div>
           <div class="todo__page-action page-action">
-            <a @click="setTodo" class="btn-outlined btn--sm">
+            <a @click="setTodo()" class="btn-outlined btn--sm">
               <span class="page-action__icon">
                 <i class="fas fa-plus"></i>
               </span>
@@ -81,8 +81,8 @@
             </a>
           </div>
         </div>
-        <todo-modal @fetch-todos="fetchTodos" ref="todoModal"></todo-modal>
-        <todo-shortcut @fetch-todos="fetchTodos"></todo-shortcut>
+        <todo-modal @fetch-todos="fetchTodos()" ref="todoModal"></todo-modal>
+        <todo-shortcut @fetch-todos="fetchTodos()"></todo-shortcut>
       </div>
       <sidebar-right></sidebar-right>
     </div>

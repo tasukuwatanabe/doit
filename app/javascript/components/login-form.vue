@@ -12,17 +12,13 @@
           <input class="form__input" type="email" v-model="user.password" />
           <a class="form__reset-link">パスワード再設定</a>
         </div>
-        <div class="form__group">
-          <input type="checkbox" />
-          <label>ログインしたままにする</label>
-        </div>
         <div class="form-group text-center">
           <div class="btn-main btn-main--login btn--md">ログイン</div>
         </div>
         <ul class="form__linkList form__linkList--login">
           <li class="form__linkItem">
             お試しの方は
-            <a @click="guestLogin" class="form__link--default">
+            <a @click="guestLogin()" class="form__link--default">
               ゲストログイン
             </a>
           </li>
