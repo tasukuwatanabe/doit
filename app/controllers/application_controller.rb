@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
-  before_action :logged_in_user
-  before_action :get_today
-  before_action :request_path
+  protect_from_forgery with: :null_session
+
+  # before_action :require_login
+  # before_action :logged_in?
 
   # エラーページ表示用のコード(コントローラー側でraise StandardErrorを書く)
   # rescue_from StandardError, with: :rescue325
@@ -15,24 +16,20 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def get_today
-    @today = Date.today.strftime('%Y-%m-%d')
-  end
-
-  def logged_in_user
-    unless logged_in?
-      store_location
-      flash[:danger] = 'ログインが必要です'
-      redirect_to login_path
+  def logged_in?
+    if !current_user.nil?
+      render json: { status: 'logged in' }, status: 200
+    else
+      render json: { error: 'unauthorized' }, status: :unauthorized
     end
   end
 
-  def request_path
-    @path = controller_path + '#' + action_name
-    def @path.is(*str)
-      str.map { |s| include?(s) }.include?(true)
-    end
-  end
+  # def require_login
+  #   @current_user = User.find_by(id: session[:user_id])
+  #   return if @current_user
+
+  #   render json: { error: 'unauthorized' }, status: :unauthorized
+  # end
 
   # エラーページ表示用のコード
   # errors/〇〇の部分を設定する

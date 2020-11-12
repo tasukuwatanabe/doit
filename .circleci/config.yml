@@ -49,6 +49,20 @@ jobs:
             - rails-demo-yarn-
 
       - run:
+          name: Setup Node.js via nvm
+          command: |
+            curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
+            echo 'source "$NVM_DIR/nvm.sh" --no-use' >> $BASH_ENV 
+            source $BASH_ENV
+            nvm install v10.21.0 && nvm use v10.21.0 && nvm alias default v10.21.0
+            sed -i -e 's/ --no-use//' $BASH_ENV
+
+      - run:
+          name: Verify
+          command: node -v && npm -v
+
+      - run:
           name: Yarn Install
           command: yarn install --cache-folder ~/.cache/yarn
 

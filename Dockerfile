@@ -14,8 +14,6 @@ COPY Gemfile /doit/Gemfile
 COPY Gemfile.lock /doit/Gemfile.lock
 RUN gem install bundler
 RUN bundle install
-RUN yarn install --check-files
-RUN bundle exec rails assets:precompile
 COPY . /doit
 
 # Add a script to be executed every time the container starts.

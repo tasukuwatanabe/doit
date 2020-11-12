@@ -12,18 +12,17 @@ services:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
-      - .:/doit
+      - .:/doit:delegated
       - bundle:/doit/vendor/bundle
       - node_modules:/doit/node_modules
-      - /doit/vendor
-      - /doit/tmp
-      - /doit/log
-      - /doit/.git
     ports:
       - 3000:3000
+    environment:
+      RAILS_ENV: development
+      WEBPACKER_DEV_SERVER_HOST: webpacker
+      WEBPACKER_DEV_SERVER_PUBLIC: 0.0.0.0:3035
     depends_on:
       - db
-      - webpacker
   smtp:
     image: schickling/mailcatcher
     ports:
@@ -31,7 +30,7 @@ services:
       - "1025:1025"
   webpacker:
     build: .
-    command: ./bin/webpack-dev-server
+    command: bash -c "bin/webpack-dev-server"
     volumes:
       - .:/doit
     ports:
@@ -41,7 +40,8 @@ services:
     environment:
       NODE_ENV: development
       RAILS_ENV: development
-      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+    depends_on:
+      - web
 volumes:
   bundle:
   node_modules:

@@ -1,0 +1,47 @@
+<div class="login">
+  <div class="login__title">ログイン</div>
+  <div class="login__inner">
+    <%= form_with model: @form, url: login_path, local: true, html: { novalidate: true }, class: "form" do |f| %>
+      <div class="form__group">
+        <%= f.label :email, "メールアドレス", class: "form__label" %>
+        <%= f.email_field :email, class: "form__input" %>
+      </div>
+      <div class="form__group">
+        <%= f.label :password, "パスワード", class: "form__label" %>
+        <%= f.password_field :password, class: "form__input" %>
+        <%= link_to "パスワード再設定", new_password_reset_path, class: "form__reset-link" %>
+      </div>
+      <div class="form__group">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me, "ログインしたままにする" %>
+      </div>
+      <div class="form-group text-center">
+        <%= f.submit "ログイン", class: "btn-main btn-main--login btn--md" %>
+      </div>
+      <ul class="form__linkList form__linkList--login">
+        <li class="form__linkItem">お試しの方は<%= link_to "ゲストログイン", guest_login_path, method: :post, class: "form__link--default" %></li>
+        <li class="form__linkItem">初めての方は<%= link_to "新規登録", signup_path, class: "form__link--default" %></li>
+      </ul>
+      <div class="sns-login">
+        <p class="sns-login__title">SNSでログイン</p>
+        <ul class="sns-login__list">
+          <li class="sns-login__item">
+            <%= link_to("/auth/facebook", class: "sns-icon sns-icon--facebook") do %>
+              <i class="fab fa-facebook-f"></i>
+            <% end %>
+          </li>
+          <li class="sns-login__item">
+            <%= link_to("/auth/twitter", class: "sns-icon sns-icon--twitter") do %>
+              <i class="fab fa-twitter"></i>
+            <% end %>
+          </li>
+          <li class="sns-login__item">
+            <%= link_to("/auth/google_oauth2", class: "sns-icon sns-icon--google") do %>
+              <i class="fab fa-google"></i>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+</div>

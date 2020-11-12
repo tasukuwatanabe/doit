@@ -10,30 +10,31 @@ global.FontAwesome.config.mutateApproach = "sync";
 require("bootstrap");
 import "../stylesheets/application";
 
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Router from "./router.vue";
-
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import BootstrapVue from "bootstrap-vue";
 
 Vue.use(BootstrapVue);
-Vue.use(VueRouter);
 
-document.addEventListener("turbolinks:load", () => {
-  let apps = [
-    { elem: "#todos", object: Router },
-    { elem: "#history", object: Router },
-    { elem: "#labels", object: Router },
-    { elem: "#shortcuts", object: Router },
-    { elem: "#user_edit", object: Router },
-    { elem: "#password_edit", object: Router }
-  ];
+import Vue from "vue/dist/vue.esm.js";
+import store from "./store.js";
+import Router from "../router/router";
+import Header from "../components/shared/v-header.vue";
+import Footer from "../components/shared/v-footer.vue";
+import Flash from "../components/shared/v-flash.vue";
+import SidebarLeft from "../components/shared/sidebar-left.vue";
+import SidebarRight from "../components/shared/sidebar-right.vue";
+import SlideMenu from "../components/shared/slide-menu.vue";
 
-  apps.forEach((app) => {
-    if ($(app.elem).length) {
-      new Vue(app.object).$mount(app.elem);
-    }
-  });
+Vue.component("v-header", Header);
+Vue.component("v-footer", Footer);
+Vue.component("slide-menu", SlideMenu);
+Vue.component("v-flash", Flash);
+Vue.component("sidebar-left", SidebarLeft);
+Vue.component("sidebar-right", SidebarRight);
+
+const app = new Vue({
+  el: "#app",
+  store,
+  router: Router
 });

@@ -4,11 +4,6 @@
   @extend %sidebar-display;
   width: 200px;
 
-  &__stickey-part {
-    position: sticky;
-    top: 15px;
-    z-index: 1;
-  }
   &__userinfo {
     margin-bottom: 15px;
   }

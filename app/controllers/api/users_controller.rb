@@ -1,13 +1,11 @@
 class Api::UsersController < ApplicationController
-  # skip_before_action :logged_in_user, only: %i[new create]
-  # before_action :forbid_guest_user, only: :destroy
-  # before_action :forbid_login_user, only: %i[new create]
-  # before_action :correct_user, only: %i[edit update]
-  # before_action :validate_email_update, only: :update
-
   def current_user
-    current_user = User.find_by(id: session[:user_id])
-    render json: current_user
+    current_user = User.where(id: session[:user_id]).select(:id, :username, :email)
+    if !current_user.empty?
+      render json: { state: 'success', user: current_user }, status: 200
+    else
+      render json: { error: 'unauthorized' }, status: :unauthorized
+    end
   end
 
   def create
@@ -34,22 +32,6 @@ class Api::UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :password, :email, :password_confirmation, :user_image, :remove_user_image)
-  end
-
-  def correct_user
-    @user = User.find(params[:id])
-    redirect_to(root_url(@today)) unless current_user?(@user)
-  end
-
-  def validate_email_update
-    @new_email = params[:user][:email]
-    if @new_email == current_user.email
-      @new_email = nil
-    elsif User.email_used?(@new_email)
-      @new_email = nil
-      flash[:danger] = 'このメールアドレスはすでに使われています'
-      redirect_to edit_user_path(current_user)
-    end
+    params.fetch(:user, {}).permit(:id, :username, :password, :email, :password_confirmation, :user_image, :remove_user_image)
   end
 end
