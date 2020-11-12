@@ -6,12 +6,5 @@
   right: 0;
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.3);
-  display: none;
   transition-duration: 0.1s;
-}
-
-.menu-open {
-  #screen-layer {
-    display: block;
-  }
 }

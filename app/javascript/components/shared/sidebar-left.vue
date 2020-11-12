@@ -5,16 +5,16 @@
         <router-link
           :to="{
             name: 'user_edit',
-            params: { userId: currentUser.id }
+            params: { userId: this.getCurrentUser.id }
           }"
         >
           <img
             alt="ゲストユーザーアイコン"
             class="profile-img"
-            src="/user_images/default.jpg"
+            :src="this.getCurrentUser.user_image"
           />
           <div class="userinfo__username">
-            {{ currentUser.username }}
+            {{ this.getCurrentUser.username }}
           </div>
         </router-link>
       </div>
@@ -56,7 +56,7 @@
             <router-link
               :to="{
                 name: 'user_edit',
-                params: { userId: currentUser.id }
+                params: { userId: this.getCurrentUser.id }
               }"
               class="nav__link"
             >
@@ -70,7 +70,7 @@
             <router-link
               :to="{
                 name: 'password_edit',
-                params: { userId: currentUser.id }
+                params: { userId: this.getCurrentUser.id }
               }"
               class="nav__link"
             >
@@ -96,15 +96,11 @@
 
 <script>
 import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  data() {
-    return {
-      currentUser: {
-        id: 4,
-        username: "ユーザー名"
-      }
-    };
+  computed: {
+    ...mapGetters(["getCurrentUser"])
   },
   methods: {
     logout() {
