@@ -14,11 +14,15 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 
 function cookieStatus() {
-  const cookie = document.cookie.replace(
+  const cookie_user_id = document.cookie.replace(
     /(?:(?:^|.*;\s*)user_id\s*\=\s*([^;]*).*$)|^.*$/,
     "$1"
   );
-  return cookie != "";
+  const cookie_remember_token = document.cookie.replace(
+    /(?:(?:^|.*;\s*)remember_token\s*\=\s*([^;]*).*$)|^.*$/,
+    "$1"
+  );
+  return cookie_user_id != "" && cookie_remember_token != "";
 }
 
 function getCurrentUser() {
