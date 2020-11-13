@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   get '/password/:id/edit', to: 'home#index'
   get '/signup', to: 'home#index'
   get '/login', to: 'home#index'
+  get '/auth/failure', to: 'home#index'
+  get '/auth/:provider/callback', to: 'oauth#create'
+  delete '/cancel_oauth/:uid_type', to: 'oauth#cancel_oauth', as: 'cancel_oauth'
+
   namespace :api do
     resources :todos, except: %i[new edit show] do
       put '/toggle_status', to: 'todos#toggle_status'
@@ -16,15 +20,11 @@ Rails.application.routes.draw do
     resources :users, only: %i[edit update destroy] do
       resource :password, only: %i[edit update]
     end
-    get '/logged_in', to: 'sessions#logged_in'
     post '/login', to: 'sessions#create'
     post '/guest_login', to: 'sessions#guest_login'
     delete '/logout', to: 'sessions#destroy'
-    delete '/cancel_oauth/:uid_type', to: 'users#cancel_oauth', as: 'cancel_oauth'
   end
 
-  # get '/auth/failure', to: 'home#index'
-  # get '/auth/:provider/callback', to: 'home#index'
   # get '/search', to: 'todos#search', as: 'search'
   resources :password_resets, only: %i[new create edit update]
   resources :account_activations, only: [:edit]

@@ -5,8 +5,7 @@ module SessionsHelper
       cookies.permanent.signed[:user_id] = user.id
       cookies.permanent[:remember_token] = user.remember_token
     else
-      flash[:danger] = 'アカウントが有効ではありません'
-      redirect_to login_path
+      redirect_to root_path
     end
   end
 
@@ -22,34 +21,15 @@ module SessionsHelper
   end
 
   def forbid_guest_user
-    if user_is_guest?
-      flash[:danger] = 'ゲストユーザーの変更・削除はできません'
-      redirect_to root_path(@today)
-    end
-  end
-
-  def forbid_login_user
-    if logged_in?
-      flash[:danger] = 'すでにログインしています'
-      redirect_to root_path(@today)
-    end
-  end
-
-  def logged_in?
-    !current_user.nil?
+    redirect_to root_path if user_is_guest?
   end
 
   def user_is_guest?
-    current_user.email == 'guest@example.com' if logged_in?
+    current_user.email == 'guest@example.com'
   end
 
   def disable_for_guest
     'disabled' if user_is_guest?
-  end
-
-  def redirect_back_or(default)
-    redirect_to(session[:forwarding_url] || default)
-    session.delete(:forwarding_url)
   end
 
   def forget(user)
