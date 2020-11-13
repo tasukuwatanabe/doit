@@ -33,13 +33,6 @@ class Api::UsersController < ApplicationController
     current_user.destroy
   end
 
-  def cancel_oauth
-    uid_type = params[:uid_type]
-    current_user.cancel_oauth(uid_type)
-    flash[:success] = '連携を解除しました'
-    redirect_to current_user
-  end
-
   private
 
   def user_params

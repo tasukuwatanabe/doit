@@ -13,6 +13,7 @@
             class="form__input"
             type="password"
             v-model="session.password"
+            autocomplete="on"
           />
           <a class="form__reset-link">パスワード再設定</a>
         </div>
