@@ -14,37 +14,41 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 
 function cookieStatus() {
-  return Store.getters.cookieStatus;
+  const cookie = document.cookie.replace(
+    /(?:(?:^|.*;\s*)user_id\s*\=\s*([^;]*).*$)|^.*$/,
+    "$1"
+  );
+  return cookie != "";
+}
+
+function getCurrentUser() {
+  return Store.getters.getCurrentUser;
 }
 
 function login(to, from, next) {
   Store.dispatch("setToggleCloseAction");
-  Store.dispatch("checkCookieAction").then(() => {
-    if (cookieStatus()) {
-      if (Store.getters.getCurrentUser == null) {
-        Store.dispatch("currentUserAction").then(() => {
-          next();
-        });
-      } else {
+  if (cookieStatus()) {
+    if (getCurrentUser() === null || getCurrentUser().id === undefined) {
+      Store.dispatch("currentUserAction").then(() => {
         next();
-      }
+      });
     } else {
-      next({ path: "/login" });
+      next();
     }
-  });
+  } else {
+    next({ path: "/login" });
+  }
 }
 
 function logout(to, from, next) {
   Store.dispatch("setToggleCloseAction");
-  Store.dispatch("checkCookieAction").then(() => {
-    if (!cookieStatus()) {
-      Store.dispatch("clearDateAction");
-      Store.dispatch("currentUserAction");
-      next();
-    } else {
-      next({ path: "/" });
-    }
-  });
+  if (!cookieStatus()) {
+    Store.dispatch("clearDateAction");
+    Store.dispatch("currentUserAction");
+    next();
+  } else {
+    next({ path: "/" });
+  }
 }
 
 export default new VueRouter({

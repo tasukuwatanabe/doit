@@ -8,7 +8,6 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     selectedDate: undefined,
-    cookieStatus: undefined,
     currentUser: {
       id: undefined,
       username: undefined,
@@ -29,9 +28,6 @@ const store = new Vuex.Store({
 
       return `${year}-${month}-${date}`;
     },
-    cookieStatus(state) {
-      return state.cookieStatus;
-    },
     getCurrentUser(state) {
       return state.currentUser;
     },
@@ -45,9 +41,6 @@ const store = new Vuex.Store({
     },
     clearDate(state) {
       state.selectedDate = undefined;
-    },
-    checkCookie(state, status) {
-      state.cookieStatus = status;
     },
     setCurrentUser(state, user) {
       state.currentUser = user;
@@ -73,16 +66,6 @@ const store = new Vuex.Store({
     },
     clearDateAction({ commit }) {
       commit("clearDate");
-    },
-    checkCookieAction({ commit }) {
-      const cookie = document.cookie.replace(
-        /(?:(?:^|.*;\s*)user_id\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-      const cookieStatus = () => {
-        return cookie != "" && cookie != undefined;
-      };
-      commit("checkCookie", cookieStatus());
     },
     async currentUserAction({ commit }) {
       await axios.get("/api/current_user").then((res) => {
