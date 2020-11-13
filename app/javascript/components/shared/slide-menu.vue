@@ -113,12 +113,13 @@ export default {
     ...mapGetters(["getCurrentUser", "getToggleStatus"])
   },
   methods: {
-    ...mapActions(["setToggleStatusAction"]),
+    ...mapActions(["setToggleStatusAction", "logoutAction"]),
     toggleSlide() {
       this.setToggleStatusAction();
     },
     logout() {
-      axios.delete("/api/logout").then((response) => {
+      axios.delete("/api/logout").then(() => {
+        this.logoutAction();
         this.$router.push({ name: "login" });
       });
     }
