@@ -17,16 +17,17 @@ Rails.application.routes.draw do
     resources :shortcuts, except: %i[new edit show]
     resources :labels, except: %i[new edit show]
     get '/current_user', to: 'users#current_user'
-    resources :users, only: %i[edit update destroy] do
+    resources :users, only: %i[create edit update destroy] do
       resource :password, only: %i[edit update]
     end
     post '/login', to: 'sessions#create'
     post '/guest_login', to: 'sessions#guest_login'
     delete '/logout', to: 'sessions#destroy'
+    delete '/cancel_oauth/:uid_type', to: 'users#cancel_oauth', as: 'cancel_oauth'
+    resources :account_activations, only: [:edit]
+    resources :password_resets, only: %i[new create edit update]
+    resources :email_confirmations, only: %i[edit destroy]
   end
 
   # get '/search', to: 'todos#search', as: 'search'
-  resources :password_resets, only: %i[new create edit update]
-  resources :account_activations, only: [:edit]
-  resources :email_confirmations, only: %i[edit destroy]
 end

@@ -20,8 +20,14 @@ class Api::UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    @user.send_activation_email
+    user = User.new(user_params)
+    if user.save
+      user.send_activation_email
+      puts 'メールが送信されました'
+    else
+      puts '入力に不備があります'
+    end
+    redirect_to '/login'
   end
 
   def update
