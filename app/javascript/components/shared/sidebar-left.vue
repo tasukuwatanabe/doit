@@ -7,6 +7,7 @@
             name: 'user_edit',
             params: { userId: this.getCurrentUser.id }
           }"
+          class="userinfo__link"
         >
           <img
             alt="ゲストユーザーアイコン"

@@ -9,6 +9,13 @@
     margin-right: 10px;
   }
 
+  &__link {
+    &:hover {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+
   &__username {
     @extend %link;
   }
