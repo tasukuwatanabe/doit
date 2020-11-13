@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="container">
-      <div v-if="this.cookieStatus" class="header__inner">
+      <div v-if="this.getCurrentUser" class="header__inner">
         <router-link :to="{ name: 'todos' }" class="header__logo">
           <img src="/doit-logo-white.png" alt="DoITロゴ" />
         </router-link>
@@ -25,7 +25,7 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["cookieStatus"])
+    ...mapGetters(["getCurrentUser"])
   },
   methods: {
     ...mapActions(["setToggleStatusAction"]),
