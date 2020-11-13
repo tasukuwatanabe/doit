@@ -14,22 +14,7 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include UserImageHelper
 
-  private
-
-  def logged_in?
-    if !current_user.nil?
-      render json: { status: 'logged in' }, status: 200
-    else
-      render json: { error: 'unauthorized' }, status: :unauthorized
-    end
-  end
-
-  # def require_login
-  #   @current_user = User.find_by(id: session[:user_id])
-  #   return if @current_user
-
-  #   render json: { error: 'unauthorized' }, status: :unauthorized
-  # end
+  # private
 
   # エラーページ表示用のコード
   # errors/〇〇の部分を設定する
