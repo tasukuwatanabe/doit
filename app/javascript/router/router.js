@@ -32,7 +32,7 @@ function getCurrentUser() {
 function login(to, from, next) {
   Store.dispatch("setToggleCloseAction");
   if (cookieStatus()) {
-    if (getCurrentUser() === null || getCurrentUser().id === undefined) {
+    if (getCurrentUser() == null || getCurrentUser().id == undefined) {
       Store.dispatch("currentUserAction").then(() => {
         next();
       });
@@ -46,12 +46,16 @@ function login(to, from, next) {
 
 function logout(to, from, next) {
   Store.dispatch("setToggleCloseAction");
-  if (!cookieStatus()) {
-    Store.dispatch("clearDateAction");
-    Store.dispatch("currentUserAction");
-    next();
-  } else {
+  if (cookieStatus()) {
     next({ path: "/" });
+  } else {
+    if (getCurrentUser() == null || getCurrentUser().id == undefined) {
+      next();
+    } else {
+      Store.dispatch("logoutAction").then(() => {
+        next();
+      });
+    }
   }
 }
 

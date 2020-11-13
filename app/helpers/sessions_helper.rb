@@ -24,6 +24,10 @@ module SessionsHelper
     redirect_to root_path if user_is_guest?
   end
 
+  def logged_in?
+    !current_user.nil?
+  end
+
   def user_is_guest?
     current_user.email == 'guest@example.com'
   end

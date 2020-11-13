@@ -8,12 +8,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     selectedDate: undefined,
-    currentUser: {
-      id: undefined,
-      username: undefined,
-      email: undefined,
-      user_image: undefined
-    },
+    currentUser: undefined,
     toggleStatus: false
   },
 
@@ -69,18 +64,7 @@ const store = new Vuex.Store({
     },
     async currentUserAction({ commit }) {
       await axios.get("/api/current_user").then((res) => {
-        let user;
-        if (res.data != null) {
-          user = {
-            id: res.data.id,
-            username: res.data.username,
-            email: res.data.email,
-            user_image: res.data.user_image
-          };
-        } else {
-          user = null;
-        }
-        commit("setCurrentUser", user);
+        commit("setCurrentUser", res.data);
       });
     },
     setToggleStatusAction({ commit }) {
@@ -88,6 +72,10 @@ const store = new Vuex.Store({
     },
     setToggleCloseAction({ commit }) {
       commit("setToggleClose");
+    },
+    logoutAction({ commit }) {
+      commit("setCurrentUser", undefined);
+      commit("clearDate", undefined);
     }
   },
   plugins: [createPersistedState({ storage: window.sessionStorage })]

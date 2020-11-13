@@ -143,9 +143,7 @@ class User < ApplicationRecord
   end
 
   def update_new_email
-    self.email = unconfirmed_email
-    self.unconfirmed_email = nil
-    save
+    update_columns(email: unconfirmed_email, unconfirmed_email: nil)
   end
 
   def cancel_oauth(uid)
