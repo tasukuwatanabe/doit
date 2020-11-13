@@ -111,18 +111,6 @@ export default new VueRouter({
     //   component: PasswordEdit,
     //   name: "password_resets_edit",
     //   beforeEnter: logout
-    // },
-    // {
-    //   path: "/account_activations/:userId/edit",
-    //   component: AccountActivation,
-    //   name: "account_activations",
-    //   beforeEnter: logout
-    // },
-    // {
-    //   path: "/email_confirmations/:userId/edit",
-    //   component: EmailConfirmations,
-    //   name: "email_confirmations",
-    //   beforeEnter: logout
     // }
     // { path: "*", component: NotFoundComponent }
   ]

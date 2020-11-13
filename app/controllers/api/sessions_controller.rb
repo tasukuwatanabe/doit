@@ -11,7 +11,7 @@ class Api::SessionsController < ApplicationController
         log_in user
         render json: { state: 'success', msg: 'Login Success', user: { id: user.id, username: user.username, email: user.email } }, status: 200
       else
-        render json: { state: 'failure', msg: 'Error' }, status: 403
+        render status: 403
       end
     end
   end
@@ -28,6 +28,6 @@ class Api::SessionsController < ApplicationController
   end
 
   private def session_params
-    params.require(:session).permit(:email, :password)
+    params.fetch(:session, {}).permit(:id, :email, :password)
   end
 end

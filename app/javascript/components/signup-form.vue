@@ -13,18 +13,23 @@
         </div>
         <div class="form__group">
           <label class="form__label">パスワード</label>
-          <input class="form__input" type="email" v-model="user.password" />
+          <input class="form__input" type="password" v-model="user.password" />
         </div>
         <div class="form__group">
           <label class="form__label">パスワード(確認用)</label>
           <input
             class="form__input"
-            type="email"
+            type="password"
             v-model="user.password_confirmation"
           />
         </div>
         <div class="form-group text-center">
-          <div class="btn-main btn-main--login btn--md">新規登録</div>
+          <div
+            @click="submitRegister()"
+            class="btn-main btn-main--login btn--md"
+          >
+            新規登録
+          </div>
         </div>
         <ul class="form__linkList form__linkList--login">
           <li class="form__linkItem">
@@ -84,6 +89,15 @@ export default {
       axios.post("/api/guest_login").then((response) => {
         this.$router.push({ name: "todos" });
       });
+    },
+    submitRegister() {
+      const user_params = {
+        username: this.user.username,
+        email: this.user.email,
+        password: this.user.password,
+        password_confirmation: this.user.password_confirmation
+      };
+      axios.post("/api/users", { user: user_params });
     }
   }
 };
