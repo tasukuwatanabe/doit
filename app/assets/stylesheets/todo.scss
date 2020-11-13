@@ -13,12 +13,12 @@
 
   &__date-box {
     text-align: center;
+    user-select: none;
   }
 
   &__date-title {
     font-size: 1.6em;
     margin-bottom: 0.1em;
-    user-select: none;
   }
 
   &__date-day {
