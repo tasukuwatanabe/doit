@@ -1,8 +1,6 @@
 class Api::TodosController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-  include CalculationDateHelper
-
   def index
     todos = current_user.todos.where(todo_date: params[:date]).order(created_at: :desc).select(:id, :title, :status, :todo_date, :body, :label_id)
     labels = current_user.labels.select(:id, :title, :color)

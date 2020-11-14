@@ -79,15 +79,18 @@ class User < ApplicationRecord
           password: new_token,
           auto_generated_password: true,
           activated: true,
-          activated_at: Time.zone.now
+          activated_at: Time.zone.now,
+          twitter_uid: nil,
+          facebook_uid: nil,
+          google_uid: nil
         )
 
         if provider == 'twitter'
-          user.update(twitter_uid: uid, facebook_uid: nil, google_uid: nil)
+          user.update(twitter_uid: uid)
         elsif provider == 'facebook'
-          user.update(twitter_uid: nil, facebook_uid: uid, google_uid: nil)
+          user.update(facebook_uid: uid)
         elsif provider == 'google_oauth2'
-          user.update(twitter_uid: nil, facebook_uid: nil, google_uid: uid)
+          user.update(google_uid: uid)
         end
       end
       user

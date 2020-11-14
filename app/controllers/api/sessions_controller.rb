@@ -1,8 +1,6 @@
 class Api::SessionsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-  include SessionsHelper
-
   def create
     user = User.find_by('LOWER(email) = ?', session_params[:email].downcase) if session_params[:email].present?
 

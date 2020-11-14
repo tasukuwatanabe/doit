@@ -2,8 +2,6 @@ class Api::EmailConfirmationsController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :check_expiration, only: [:edit]
 
-  include SessionsHelper
-
   def edit
     user = User.find_by(email: params[:email])
     if user && user.authenticated?(:confirmation, params[:id])

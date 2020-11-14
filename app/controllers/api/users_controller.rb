@@ -1,8 +1,6 @@
 class Api::UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-  include SessionsHelper
-
   def current_user
     if user_id = cookies.signed[:user_id]
       current_user = User.find(user_id)
