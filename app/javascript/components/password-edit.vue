@@ -15,11 +15,28 @@
           </p>
         </div>
         <form action="" class="form user-form">
-          <div class="form__group"></div>
-          <div class="form__group"></div>
-
+          <div class="form__group">
+            <label class="form__label">新しいパスワード</label>
+            <input
+              class="form__input"
+              type="password"
+              v-model="new_password"
+              autocomplete="on"
+            />
+          </div>
+          <div class="form__group">
+            <label class="form__label">新しいパスワード(確認用)</label>
+            <input
+              class="form__input"
+              type="password"
+              v-model="new_password_confirmation"
+              autocomplete="on"
+            />
+          </div>
           <div class="form__action">
-            <div class="btn-main btn--md">パスワードを更新する</div>
+            <div @click="submitPassword()" class="btn-main btn--sm">
+              パスワードを更新する
+            </div>
           </div>
         </form>
       </div>
@@ -29,20 +46,36 @@
 </template>
 
 <script>
+import axios from "axios";
+import { mapGetters } from "vuex";
+
 export default {
-  props: ["userId"],
   data() {
-    return {};
+    return {
+      new_password: "",
+      new_password_confirmation: ""
+    };
+  },
+  computed: {
+    ...mapGetters(["getCurrentUser"])
+  },
+  methods: {
+    submitPassword() {
+      const password_params = {
+        new_password: this.new_password,
+        new_password_confirmation: this.new_password_confirmation
+      };
+      axios
+        .put(`/api/users/${this.getCurrentUser.id}/password`, {
+          change_password_form: password_params
+        })
+        .then(() => {
+          this.$router.go({
+            path: this.$router.currentRoute.path,
+            force: true
+          });
+        });
+    }
   }
 };
 </script>
-
-<style scoped>
-.error-list {
-  list-style-type: none;
-  font-size: 12px;
-  padding-left: 0;
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-</style>

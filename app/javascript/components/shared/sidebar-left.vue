@@ -1,5 +1,5 @@
 <template>
-  <aside class="sidebar">
+  <aside v-if="this.getCurrentUser" class="sidebar">
     <div class="sidebar__stickey-part sidebar-left">
       <div class="sidebar-left__userinfo userinfo">
         <router-link
@@ -9,11 +9,13 @@
           }"
           class="userinfo__link"
         >
-          <img
-            alt="ゲストユーザーアイコン"
-            class="profile-img"
-            :src="this.getCurrentUser.user_image"
-          />
+          <div>
+            <img
+              alt="ゲストユーザーアイコン"
+              class="profile-img"
+              :src="this.getCurrentUser.user_image"
+            />
+          </div>
           <div class="userinfo__username">
             {{ this.getCurrentUser.username }}
           </div>
@@ -104,8 +106,10 @@ export default {
     ...mapGetters(["getCurrentUser"])
   },
   methods: {
+    ...mapActions(["logoutAction"]),
     logout() {
-      axios.delete("/api/logout").then((response) => {
+      axios.delete("/api/logout").then(() => {
+        this.logoutAction();
         this.$router.push({ name: "login" });
       });
     }

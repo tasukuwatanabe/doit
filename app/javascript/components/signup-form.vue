@@ -97,7 +97,9 @@ export default {
         password: this.user.password,
         password_confirmation: this.user.password_confirmation
       };
-      axios.post("/api/users", { user: user_params });
+      axios.post("/api/users", { user: user_params }).then(() => {
+        this.$router.push({ name: "login" });
+      });
     }
   }
 };

@@ -13,8 +13,8 @@ class OauthController < ApplicationController
   end
 
   def cancel_oauth
-    uid_type = params[:uid_type]
-    current_user.cancel_oauth(uid_type)
-    render status: 200
+    provider = params[:provider]
+    current_user.cancel_oauth(provider)
+    puts "#{provider}とのSNS連携を解除しました"
   end
 end

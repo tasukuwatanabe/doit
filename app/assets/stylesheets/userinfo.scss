@@ -10,6 +10,8 @@
   }
 
   &__link {
+    display: flex;
+
     &:hover {
       text-decoration: none;
       color: inherit;
@@ -18,5 +20,6 @@
 
   &__username {
     @extend %link;
+    word-break: break-all;
   }
 }

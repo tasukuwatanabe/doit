@@ -10,7 +10,13 @@ class Api::UsersController < ApplicationController
         id: current_user.id,
         username: current_user.username,
         email: current_user.email,
-        user_image: current_user.user_image.url
+        user_image: current_user.user_image.url,
+        facebook_uid: current_user.facebook_uid,
+        twitter_uid: current_user.twitter_uid,
+        google_uid: current_user.google_uid,
+        auto_generated_password: current_user.auto_generated_password,
+        unconfirmed_email: current_user.unconfirmed_email,
+        remove_user_image: current_user.remove_user_image
       }
     else
       current_user = nil
@@ -31,17 +37,31 @@ class Api::UsersController < ApplicationController
   end
 
   def update
-    current_user.update(sns_profile_image: nil) if params[:user][:remove_user_image] == '1'
-    current_user.set_unconfirmed_email(@new_email) if @new_email
+    current_user = User.find(params[:id])
+    current_user.update(sns_profile_image: nil) if user_params[:remove_user_image] == '1'
+
+    new_email = user_params[:email]
+    if new_email == current_user.email
+      puts 'メールアドレスに変更はありません'
+    elsif User.email_used?(new_email)
+      puts 'このメールアドレスはすでに使われています'
+    else
+      current_user.set_unconfirmed_email(new_email)
+    end
+
+    current_user.update(user_params.except(:email, :unconfirmed_email))
   end
 
   def destroy
-    current_user.destroy
+    user = User.find(params[:id])
+    user.destroy
+    destroy_cookie
+    puts 'ユーザーを削除しました'
   end
 
   private
 
   def user_params
-    params.fetch(:user, {}).permit(:id, :username, :password, :email, :password_confirmation, :user_image, :remove_user_image)
+    params.fetch(:user, {}).permit(:id, :username, :password, :email, :password_confirmation, :user_image, :remove_user_image, :facebook_uid, :twitter_uid, :google_uid, :auto_generated_password, :unconfirmed_email)
   end
 end

@@ -9,9 +9,9 @@ class Api::SessionsController < ApplicationController
     if Authenticator.new(user).authenticate(session_params[:password])
       if user.activated?
         log_in user
-        render json: { state: 'success', msg: 'Login Success', user: { id: user.id, username: user.username, email: user.email } }, status: 200
+        puts 'ログインしました'
       else
-        render status: 403
+        puts 'メールアドレスまたはパスワードが間違えています'
       end
     end
   end
@@ -19,12 +19,12 @@ class Api::SessionsController < ApplicationController
   def guest_login
     user = User.find_by(email: 'guest@example.com')
     log_in user
-    render json: { state: 'success', msg: 'Login Success', user: { id: user.id, username: user.username, email: user.email } }, status: 200
+    puts 'ログインしました'
   end
 
   def destroy
     log_out
-    render json: { state: 'success', msg: 'Log out' }, status: 200
+    puts 'ログアウトしました'
   end
 
   private def session_params
