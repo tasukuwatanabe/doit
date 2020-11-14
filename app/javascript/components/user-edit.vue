@@ -213,9 +213,6 @@ export default {
       let formData = new FormData();
       formData.append("user[username]", this.user.username);
       formData.append("user[email]", this.user.email);
-      formData.append("user[twitter_uid]", this.user.twitter_uid);
-      formData.append("user[facebook_uid]", this.user.facebook_uid);
-      formData.append("user[google_uid]", this.user.google_uid);
       if (this.user.remove_user_image === "1") {
         formData.append("user[remove_user_image]", this.user.remove_user_image);
       }
