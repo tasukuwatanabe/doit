@@ -15,7 +15,6 @@
           </p>
         </div>
         <form class="form user-form">
-          <div class="form__group"></div>
           <div class="form__group">
             <label class="form__label">ユーザー名</label>
             <input type="text" v-model="user.username" class="form__input" />
@@ -40,13 +39,13 @@
             <label class="form__label">プロフィール画像</label>
             <div class="form__profile-box">
               <img
-                :src="user.user_image"
-                :alt="user.username + 'のプロフィール画像'"
+                :src="this.getCurrentUser.user_image"
+                :alt="this.getCurrentUser.username + 'のプロフィール画像'"
                 class="profile-img"
               />
-              <input type="file" @change="onImageUploaded()" />
+              <input type="file" ref="file" @change="onImageUpload" />
             </div>
-            <div v-if="user.user_image" class="form__profile-default">
+            <div v-if="has_user_image" class="form__profile-default">
               <input
                 type="checkbox"
                 v-model="user.remove_user_image"
@@ -150,7 +149,8 @@ export default {
   data() {
     return {
       isGuest: false,
-      user: undefined
+      user: undefined,
+      file: undefined
     };
   },
   created() {
@@ -161,6 +161,9 @@ export default {
     unconfirmed_email() {
       this.setUserData();
       return this.user.unconfirmed_email;
+    },
+    has_user_image() {
+      return this.user.user_image !== "/user_images/default.jpg";
     }
   },
   methods: {
@@ -170,21 +173,44 @@ export default {
     },
     async cancelEmailConfirmation() {
       await axios.delete(`/api/email_confirmations/${this.user.id}`);
-      await axios
-        .put(`/api/users/${this.user.id}`, { user: this.user })
+      await axios.get("/api/current_user").then((res) => {
+        this.currentUserAction(res.data);
+      });
+    },
+    submit() {
+      // const config = {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data"
+      //   }
+      // };
+      let user_params = this.user;
+      // user_params.user_image = this.file;
+
+      // console.log(user_params);
+
+      axios
+        .put(`/api/users/${this.user.id}`, { user: user_params })
         .then((res) => {
           this.currentUserAction(res.data);
+          this.user = {};
+          this.uploadedImage = {};
         });
+
+      // let user_params = this.user;
+      // user_params.user_image = this.file;
+      // console.log(user_params.user_image);
+      // axios
+      //   .put(`/api/users/${this.user.id}`, { user: user_params })
+      //   .then((res) => {
+      //     this.currentUserAction(res.data);
+      //     this.user = {};
+      //     this.uploadedImage = {};
+      //   });
     },
-    uploadImage() {},
+    onImageUpload: function (e) {
+      this.file = this.$refs.file.files[0];
+    },
     cancelOauth() {},
-    async submit() {
-      await axios
-        .put(`/api/users/${this.user.id}`, { user: this.user })
-        .then((res) => {
-          this.currentUserAction(res.data);
-        });
-    },
     accountCancel() {}
   }
 };
