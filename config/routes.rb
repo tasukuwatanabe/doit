@@ -25,9 +25,9 @@ Rails.application.routes.draw do
     post '/login', to: 'sessions#create'
     post '/guest_login', to: 'sessions#guest_login'
     delete '/logout', to: 'sessions#destroy'
-    resources :account_activations, only: [:edit]
     resources :password_resets, only: %i[create update]
-    resources :email_confirmations, only: %i[destroy]
+    resources :account_activations, only: [:edit]
+    resources :email_confirmations, only: %i[edit destroy]
   end
 
   # get '/search', to: 'todos#search', as: 'search'

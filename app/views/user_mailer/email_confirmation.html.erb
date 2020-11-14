@@ -2,8 +2,7 @@
 
 <p>以下のリンクをクリックして、メールアドレスの利用を承認してください。</p>
 
-<%= link_to "メールアドレスの利用を承認", edit_api_email_confirmation_url(@user.confirmation_token,
-                                                    email: @user.email) %>
+<%= link_to "メールアドレスの利用を承認", edit_api_email_confirmation_url(@user.confirmation_token, email: @user.email) %>
 
 <p>リンクの有効期間は2時間です。</p>
 
