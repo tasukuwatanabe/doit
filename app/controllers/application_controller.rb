@@ -1,18 +1,14 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
-  # before_action :require_login
-  # before_action :logged_in?
-
-  # エラーページ表示用のコード(コントローラー側でraise StandardErrorを書く)
-  # rescue_from StandardError, with: :rescue325
-
   class Forbidden < ActionController::ActionControllerError; end
   class IpAddressRejected < ActionController::ActionControllerError; end
 
   include ErrorHandlers if Rails.env.production?
   include SessionsHelper
-  include UserImageHelper
+
+  # エラーページ表示用のコード(コントローラー側でraise StandardErrorを書く)
+  # rescue_from StandardError, with: :rescue325
 
   # private
 
