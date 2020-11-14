@@ -7,10 +7,9 @@ class Api::EmailConfirmationsController < ApplicationController
   def edit
     user = User.find_by(email: params[:email])
     if user && user.authenticated?(:confirmation, params[:id])
-      puts user.email
       user.update_new_email
       puts 'メールアドレスが更新されました'
-      puts user.email
+      log_out
     else
       puts 'リンクが有効ではありません'
     end

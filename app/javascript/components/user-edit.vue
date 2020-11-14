@@ -50,6 +50,7 @@
                 type="checkbox"
                 v-model="user.remove_user_image"
                 id="remove_user_image"
+                true-value="1"
               />
               <label for="remove_user_image">デフォルトの画像を使用</label>
             </div>
@@ -177,38 +178,48 @@ export default {
         this.currentUserAction(res.data);
       });
     },
-    submit() {
-      // const config = {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data"
-      //   }
-      // };
-      let user_params = this.user;
-      // user_params.user_image = this.file;
-
-      // console.log(user_params);
-
-      axios
-        .put(`/api/users/${this.user.id}`, { user: user_params })
-        .then((res) => {
-          this.currentUserAction(res.data);
-          this.user = {};
-          this.uploadedImage = {};
-        });
-
-      // let user_params = this.user;
-      // user_params.user_image = this.file;
-      // console.log(user_params.user_image);
-      // axios
-      //   .put(`/api/users/${this.user.id}`, { user: user_params })
-      //   .then((res) => {
-      //     this.currentUserAction(res.data);
-      //     this.user = {};
-      //     this.uploadedImage = {};
-      //   });
-    },
     onImageUpload: function (e) {
       this.file = this.$refs.file.files[0];
+      const image = new Image();
+      const reader = new FileReader();
+      let vm = this;
+
+      reader.onload = (e) => {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(this.file);
+    },
+    submit() {
+      let formData = new FormData();
+      formData.append("user[username]", this.user.username);
+      formData.append("user[email]", this.user.email);
+      formData.append("user[twitter_uid]", this.user.twitter_uid);
+      formData.append("user[facebook_uid]", this.user.facebook_uid);
+      formData.append("user[google_uid]", this.user.google_uid);
+      if (this.user.remove_user_image === "1") {
+        formData.append("user[remove_user_image]", this.user.remove_user_image);
+      }
+      if (this.file != undefined) {
+        formData.append("user[user_image]", this.file);
+      }
+
+      axios
+        .put(`/api/users/${this.user.id}`, formData, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(() => {
+          axios.get("/api/current_user").then((res) => {
+            this.currentUserAction(res.data);
+            this.setUserData();
+            this.image = "";
+            this.$router.go({
+              path: this.$router.currentRoute.path,
+              force: true
+            });
+          });
+        });
     },
     cancelOauth() {},
     accountCancel() {}

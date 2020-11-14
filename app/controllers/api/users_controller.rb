@@ -15,7 +15,8 @@ class Api::UsersController < ApplicationController
         twitter_uid: current_user.twitter_uid,
         google_uid: current_user.google_uid,
         auto_generated_password: current_user.auto_generated_password,
-        unconfirmed_email: current_user.unconfirmed_email
+        unconfirmed_email: current_user.unconfirmed_email,
+        remove_user_image: current_user.remove_user_image
       }
     else
       current_user = nil
@@ -41,10 +42,8 @@ class Api::UsersController < ApplicationController
 
     new_email = user_params[:email]
     if new_email == current_user.email
-      new_email = nil
       puts 'メールアドレスに変更はありません'
     elsif User.email_used?(new_email)
-      new_email = nil
       puts 'このメールアドレスはすでに使われています'
     else
       current_user.set_unconfirmed_email(new_email)
