@@ -9,6 +9,7 @@ import PasswordEdit from "../components/password-edit.vue";
 import Login from "../components/login-form.vue";
 import Signup from "../components/signup-form.vue";
 import Store from "../packs/store";
+import axios from "axios";
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -25,11 +26,16 @@ function cookieStatus() {
   return cookie_user_id != "" && cookie_remember_token != "";
 }
 
+function deleteCookie() {
+  document.cookie = "user_id=;";
+  document.cookie = "remember_token=;";
+}
+
 function getCurrentUser() {
   return Store.getters.getCurrentUser;
 }
 
-function login(to, from, next) {
+function isLoggedIn(to, from, next) {
   Store.dispatch("setToggleCloseAction");
   if (cookieStatus()) {
     if (getCurrentUser() == null || getCurrentUser().id == undefined) {
@@ -40,11 +46,12 @@ function login(to, from, next) {
       next();
     }
   } else {
+    deleteCookie();
     next({ path: "/login" });
   }
 }
 
-function logout(to, from, next) {
+function isLoggedOut(to, from, next) {
   Store.dispatch("setToggleCloseAction");
   if (cookieStatus()) {
     next({ path: "/" });
@@ -52,9 +59,8 @@ function logout(to, from, next) {
     if (getCurrentUser() == null || getCurrentUser().id == undefined) {
       next();
     } else {
-      Store.dispatch("logoutAction").then(() => {
-        next();
-      });
+      Store.dispatch("logoutAction");
+      next();
     }
   }
 }
@@ -66,43 +72,43 @@ export default new VueRouter({
       path: "/",
       component: Todo,
       name: "todos",
-      beforeEnter: login
+      beforeEnter: isLoggedIn
     },
     {
       path: "/shortcuts",
       component: Shortcut,
       name: "shortcuts",
-      beforeEnter: login
+      beforeEnter: isLoggedIn
     },
     {
       path: "/labels",
       component: Label,
       name: "labels",
-      beforeEnter: login
+      beforeEnter: isLoggedIn
     },
     {
       path: "/user/:userId/edit",
       component: UserEdit,
       name: "user_edit",
-      beforeEnter: login
+      beforeEnter: isLoggedIn
     },
     {
       path: "/password/:userId/edit",
       component: PasswordEdit,
       name: "password_edit",
-      beforeEnter: login
+      beforeEnter: isLoggedIn
     },
     {
       path: "/login",
       component: Login,
       name: "login",
-      beforeEnter: logout
+      beforeEnter: isLoggedOut
     },
     {
       path: "/signup",
       component: Signup,
       name: "signup",
-      beforeEnter: logout
+      beforeEnter: isLoggedOut
     }
     // {
     //   path: "/password_resets/new",
@@ -111,11 +117,5 @@ export default new VueRouter({
     //   beforeEnter: logout
     // },
     // {
-    //   path: "/password_resets/:userId/edit",
-    //   component: PasswordEdit,
-    //   name: "password_resets_edit",
-    //   beforeEnter: logout
-    // }
-    // { path: "*", component: NotFoundComponent }
   ]
 });
