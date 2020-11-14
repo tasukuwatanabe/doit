@@ -53,7 +53,10 @@ class Api::UsersController < ApplicationController
   end
 
   def destroy
-    current_user.destroy
+    user = User.find(params[:id])
+    user.destroy
+    destroy_cookie
+    puts 'ユーザーを削除しました'
   end
 
   private

@@ -83,11 +83,11 @@ class User < ApplicationRecord
         )
 
         if provider == 'twitter'
-          user.update(twitter_uid: uid)
+          user.update(twitter_uid: uid, facebook_uid: nil, google_uid: nil)
         elsif provider == 'facebook'
-          user.update(facebook_uid: uid)
+          user.update(twitter_uid: nil, facebook_uid: uid, google_uid: nil)
         elsif provider == 'google_oauth2'
-          user.update(google_uid: uid)
+          user.update(twitter_uid: nil, facebook_uid: nil, google_uid: uid)
         end
       end
       user
@@ -148,13 +148,12 @@ class User < ApplicationRecord
 
   def cancel_oauth(uid)
     if uid == 'twitter' && twitter_uid
-      self.twitter_uid = nil
+      update(twitter_uid: nil)
     elsif uid == 'facebook' && facebook_uid
-      self.facebook_uid = nil
+      update(facebook_uid: nil)
     elsif uid == 'google' && google_uid
-      self.google_uid = nil
+      update(google_uid: nil)
     end
-    save
   end
 
   def create_activation_digest

@@ -66,9 +66,16 @@
                   </div>
                 </td>
                 <td>
+                  <span
+                    v-if="
+                      user.facebook_uid != null &&
+                      user.auto_generated_password === true
+                    "
+                    >連携中</span
+                  >
                   <a
-                    v-if="user.facebook_uid && !user.auto_generated_password"
-                    @click="cancelOauth(facebook)"
+                    v-else-if="user.facebook_uid != null"
+                    @click="cancelOauth('facebook')"
                     class="link--default"
                     >連携を解除</a
                   >
@@ -83,9 +90,16 @@
                   </div>
                 </td>
                 <td>
+                  <span
+                    v-if="
+                      user.twitter_uid != null &&
+                      user.auto_generated_password === true
+                    "
+                    >連携中</span
+                  >
                   <a
-                    v-if="user.twitter_uid && !user.auto_generated_password"
-                    @click="cancelOauth(twitter)"
+                    v-else-if="user.twitter_uid != null"
+                    @click="cancelOauth('twitter')"
                     class="link--default"
                     >連携を解除</a
                   >
@@ -100,9 +114,16 @@
                   </div>
                 </td>
                 <td>
+                  <span
+                    v-if="
+                      user.google_uid != null &&
+                      user.auto_generated_password === true
+                    "
+                    >連携中</span
+                  >
                   <a
-                    v-if="user.google_uid && !user.auto_generated_password"
-                    @click="cancelOauth(google)"
+                    v-else-if="user.google_uid != null"
+                    @click="cancelOauth('google')"
                     class="link--default"
                     >連携を解除</a
                   >
@@ -126,13 +147,13 @@
           </div>
           <div class="form__action">
             <div @click="submit()" class="btn-main btn--md">変更する</div>
-            <div
+            <a
               @click="accountCancel()"
               class="form__cancel"
               :class="{ disable_for_guest: isGuest }"
             >
               退会する
-            </div>
+            </a>
           </div>
         </form>
         <sidebar-right></sidebar-right>
@@ -145,7 +166,6 @@
 import Vue from "vue";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-
 export default {
   data() {
     return {
@@ -221,8 +241,18 @@ export default {
           });
         });
     },
-    cancelOauth() {},
-    accountCancel() {}
+    async cancelOauth(provider) {
+      await axios.delete("/cancel_oauth/" + provider);
+      await axios.get("/api/current_user").then((res) => {
+        this.currentUserAction(res.data);
+        this.setUserData();
+      });
+    },
+    accountCancel() {
+      axios.delete(`/api/users/${this.getCurrentUser.id}`).then((res) => {
+        this.$router.push({ name: "login" });
+      });
+    }
   }
 };
 </script>

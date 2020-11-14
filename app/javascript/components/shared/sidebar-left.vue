@@ -9,11 +9,13 @@
           }"
           class="userinfo__link"
         >
-          <img
-            alt="ゲストユーザーアイコン"
-            class="profile-img"
-            :src="this.getCurrentUser.user_image"
-          />
+          <div>
+            <img
+              alt="ゲストユーザーアイコン"
+              class="profile-img"
+              :src="this.getCurrentUser.user_image"
+            />
+          </div>
           <div class="userinfo__username">
             {{ this.getCurrentUser.username }}
           </div>
