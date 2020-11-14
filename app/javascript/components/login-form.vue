@@ -15,7 +15,12 @@
             v-model="session.password"
             autocomplete="on"
           />
-          <a class="form__reset-link">パスワード再設定</a>
+          <router-link
+            :to="{ name: 'password_resets_new' }"
+            class="form__reset-link"
+          >
+            パスワード再設定
+          </router-link>
         </div>
         <div class="form-group text-center">
           <div @click="submitLogin()" class="btn-main btn-main--login btn--md">

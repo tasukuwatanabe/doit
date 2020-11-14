@@ -61,6 +61,14 @@ export default {
   },
   methods: {
     submitPassword() {
+      if (this.password == "") {
+        alert("パスワードは必須です");
+        return;
+      } else if (this.password_confirmation == "") {
+        alert("パスワード(確認用)は必須です");
+        return;
+      }
+
       const password_params = {
         new_password: this.new_password,
         new_password_confirmation: this.new_password_confirmation

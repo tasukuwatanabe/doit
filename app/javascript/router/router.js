@@ -8,8 +8,9 @@ import UserEdit from "../components/user-edit.vue";
 import PasswordEdit from "../components/password-edit.vue";
 import Login from "../components/login-form.vue";
 import Signup from "../components/signup-form.vue";
+import PasswordResetNew from "../components/password-reset-new.vue";
+import PasswordResetEdit from "../components/password-reset-edit.vue";
 import Store from "../packs/store";
-import axios from "axios";
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -109,13 +110,18 @@ export default new VueRouter({
       component: Signup,
       name: "signup",
       beforeEnter: isLoggedOut
+    },
+    {
+      path: "/password_resets/new",
+      component: PasswordResetNew,
+      name: "password_resets_new",
+      beforeEnter: isLoggedOut
+    },
+    {
+      path: "/password_resets/:id/edit",
+      component: PasswordResetEdit,
+      name: "password_resets_edit",
+      beforeEnter: isLoggedOut
     }
-    // {
-    //   path: "/password_resets/new",
-    //   component: PasswordNew,
-    //   name: "password_resets_new",
-    //   beforeEnter: logout
-    // },
-    // {
   ]
 });

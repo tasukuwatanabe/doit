@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get '/auth/failure', to: 'home#index'
   get '/auth/:provider/callback', to: 'oauth#create'
   delete '/cancel_oauth/:provider', to: 'oauth#cancel_oauth'
+  get '/password_resets/new', to: 'home#index'
+  get '/password_resets/:id/edit', to: 'home#index', as: 'password_resets_edit'
 
   namespace :api do
     resources :todos, except: %i[new edit show] do
@@ -23,8 +25,8 @@ Rails.application.routes.draw do
     post '/login', to: 'sessions#create'
     post '/guest_login', to: 'sessions#guest_login'
     delete '/logout', to: 'sessions#destroy'
+    resources :password_resets, only: %i[create update]
     resources :account_activations, only: [:edit]
-    resources :password_resets, only: %i[new create edit update]
     resources :email_confirmations, only: %i[edit destroy]
   end
 
