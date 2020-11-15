@@ -9,7 +9,12 @@
             </div>
             <div class="form__group row">
               <div class="col-3">
-                <div class="form__label">タイトル</div>
+                <div
+                  class="form__label"
+                  :class="{ 'form__label--with-error': !!errors.title }"
+                >
+                  タイトル<span class="form__label--required">*</span>
+                </div>
               </div>
               <div class="col-9">
                 <input
@@ -18,6 +23,29 @@
                   v-model="todo.title"
                   required
                 />
+                <span class="form__error" v-if="!!errors.title">
+                  {{ errors.title[0] }}
+                </span>
+              </div>
+            </div>
+            <div class="form__group row">
+              <div class="col-3">
+                <div
+                  class="form__label"
+                  :class="{ 'form__label--with-error': !!errors.todo_date }"
+                >
+                  日付<span class="form__label--required">*</span>
+                </div>
+              </div>
+              <div class="col-9">
+                <input
+                  type="date"
+                  v-model="todo.todo_date"
+                  class="form__input"
+                />
+                <span class="form__error" v-if="!!errors.todo_date">
+                  {{ errors.todo_date[0] }}
+                </span>
               </div>
             </div>
             <div class="form__group row">
@@ -35,18 +63,6 @@
                     {{ label.title }}
                   </option>
                 </select>
-              </div>
-            </div>
-            <div class="form__group row">
-              <div class="col-3">
-                <div class="form__label">適用日</div>
-              </div>
-              <div class="col-9">
-                <input
-                  type="date"
-                  v-model="todo.todo_date"
-                  class="form__input"
-                />
               </div>
             </div>
             <div class="form__group row">
@@ -118,7 +134,7 @@ export default {
       this.todo.todo_date = hasValue() ? val.todo_date : this.formatDate;
       this.btnText = hasValue() ? "更新する" : "新規作成";
     },
-    async todoSubmit() {
+    todoSubmit() {
       const todo_id = this.todo.id;
       const todo_params = {
         title: this.todo.title,
@@ -127,14 +143,30 @@ export default {
         body: this.todo.body
       };
       if (todo_id) {
-        await axios.put(`/api/todos/${todo_id}`, { todo: todo_params });
+        axios
+          .put(`/api/todos/${todo_id}`, { todo: todo_params })
+          .then(() => {
+            this.toggleModal();
+            this.setDateAction(this.todo.todo_date);
+            this.$emit("fetch-todos", this.todo.todo_date);
+            this.todo = {};
+          })
+          .catch((error) => {
+            this.errors = error.response.data.errors;
+          });
       } else {
-        await axios.post("/api/todos", { todo: todo_params });
+        axios
+          .post("/api/todos", { todo: todo_params })
+          .then(() => {
+            this.toggleModal();
+            this.setDateAction(this.todo.todo_date);
+            this.$emit("fetch-todos", this.todo.todo_date);
+            this.todo = {};
+          })
+          .catch((error) => {
+            this.errors = error.response.data.errors;
+          });
       }
-      this.toggleModal();
-      this.setDateAction(this.todo.todo_date);
-      this.$emit("fetch-todos", this.todo.todo_date);
-      this.todo = {};
     }
   }
 };

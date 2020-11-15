@@ -20,7 +20,14 @@
             </div>
             <div v-else>
               <div class="form__group row">
-                <div class="col-3 form__label">タイトル</div>
+                <div class="col-3">
+                  <div
+                    class="form__label"
+                    :class="{ 'form__label--with-error': !!errors.title }"
+                  >
+                    タイトル<span class="form__label--required">*</span>
+                  </div>
+                </div>
                 <div class="col-9">
                   <input
                     type="text"
