@@ -9,8 +9,10 @@ class Api::SessionsController < ApplicationController
         log_in user
         puts 'ログインしました'
       else
-        puts 'メールアドレスまたはパスワードが間違えています'
+        puts 'ユーザー認証が未完了です'
       end
+    else
+      render json: { errors: user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)] }.to_h, render: 'show.json.jbuilder' }, status: :unprocessable_entity
     end
   end
 

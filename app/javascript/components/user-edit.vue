@@ -18,16 +18,22 @@
           <div class="form__group">
             <label class="form__label">ユーザー名</label>
             <input type="text" v-model="user.username" class="form__input" />
+            <span class="form__error" v-if="!!errors.username">
+              {{ errors.username[0] }}
+            </span>
           </div>
           <div class="form__group">
             <label class="form__label">メールアドレス</label>
             <input type="email" v-model="user.email" class="form__input" />
+            <span class="form__error" v-if="!!errors.unconfirmed_email">
+              {{ errors.unconfirmed_email[0] }}
+            </span>
             <p class="form__desc">
               アドレスを変更すると、確認のため新しいアドレスにメールを送信します。<strong
                 >新しいアドレスは確認が完了するまで有効化されません。</strong
               >
             </p>
-            <div v-if="unconfirmed_email" class="form__notice">
+            <div v-if="user.unconfirmed_email" class="form__notice">
               <code>{{ user.unconfirmed_email }}</code
               >へのメールアドレス変更が承認待ちです。
               <a @click="cancelEmailConfirmation()" class="link--default"
@@ -146,7 +152,7 @@
             </div>
           </div>
           <div class="form__action">
-            <div @click="submit()" class="btn-main btn--md">変更する</div>
+            <div @click="submitUser()" class="btn-main btn--md">変更する</div>
             <a
               @click="accountCancel()"
               class="form__cancel"
@@ -171,7 +177,8 @@ export default {
     return {
       isGuest: false,
       user: undefined,
-      file: undefined
+      file: undefined,
+      errors: ""
     };
   },
   created() {
@@ -196,6 +203,11 @@ export default {
       await axios.delete(`/api/email_confirmations/${this.user.id}`);
       await axios.get("/api/current_user").then((res) => {
         this.currentUserAction(res.data);
+        this.setUserData();
+        this.$router.go({
+          path: this.$router.currentRoute.path,
+          force: true
+        });
       });
     },
     onImageUpload: function (e) {
@@ -209,7 +221,7 @@ export default {
       };
       reader.readAsDataURL(this.file);
     },
-    submit() {
+    submitUser() {
       let formData = new FormData();
       formData.append("user[username]", this.user.username);
       formData.append("user[email]", this.user.email);
@@ -226,7 +238,7 @@ export default {
             "Content-Type": "application/json"
           }
         })
-        .then(() => {
+        .then((res) => {
           axios.get("/api/current_user").then((res) => {
             this.currentUserAction(res.data);
             this.setUserData();
@@ -236,6 +248,9 @@ export default {
               force: true
             });
           });
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
         });
     },
     async cancelOauth(provider) {
@@ -243,6 +258,10 @@ export default {
       await axios.get("/api/current_user").then((res) => {
         this.currentUserAction(res.data);
         this.setUserData();
+        this.$router.go({
+          path: this.$router.currentRoute.path,
+          force: true
+        });
       });
     },
     accountCancel() {

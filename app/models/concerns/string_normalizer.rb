@@ -11,7 +11,7 @@ module StringNormalizer
     NKF.nkf('-W -w -Z1', text).strip if text
   end
 
-  private def normalize_as_color(color)
+  def normalize_as_color(color)
     color_array = color.split('')
     color_array.shift
     color_array.each do |str|

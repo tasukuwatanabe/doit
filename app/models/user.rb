@@ -16,6 +16,7 @@ class User < ApplicationRecord
   before_validation do
     self.username = normalize_as_text(username)
     self.email = normalize_as_email(email)
+    self.unconfirmed_email = normalize_as_email(unconfirmed_email)
   end
 
   validates :username,
@@ -24,8 +25,13 @@ class User < ApplicationRecord
   validates :email,
             presence: true,
             length: { maximum: 255 },
-            format: { with: VALID_EMAIL_REGEX },
+            format: { with: VALID_EMAIL_REGEX, message: 'の形式を正しく入力してください。' },
             uniqueness: { case_sensitive: false }
+  validates :unconfirmed_email,
+            format: { with: VALID_EMAIL_REGEX, message: 'の形式を正しく入力してください。' },
+            length: { maximum: 255 },
+            uniqueness: { case_sensitive: false },
+            allow_nil: true
 
   has_secure_password
 
@@ -39,9 +45,9 @@ class User < ApplicationRecord
       SecureRandom.urlsafe_base64
     end
 
-    def email_used?(email)
+    def email_used?(user, email)
       existing_user = find_by('email = ?', email)
-      existing_user.present?
+      existing_user.present? && existing_user != user
     end
 
     def find_or_create_from_oauth(auth)
@@ -136,14 +142,16 @@ class User < ApplicationRecord
     published_time < 1.minute.ago
   end
 
-  def set_unconfirmed_email(email)
-    self.unconfirmed_email = email
-    self.confirmation_token = User.new_token
-    update_attribute(:confirmation_digest, User.digest(confirmation_token))
-    update_attribute(:confirmation_sent_at, Time.zone.now)
-    save
-    UserMailer.email_confirmation(self).deliver_now
-  end
+  # users_controller.rbの55行目に移動しました
+
+  # def set_unconfirmed_email(email)
+  # self.unconfirmed_email = email
+  # self.confirmation_token = User.new_token
+  # update_attribute(:confirmation_digest, User.digest(confirmation_token))
+  # update_attribute(:confirmation_sent_at, Time.zone.now)
+  # save
+  # UserMailer.email_confirmation(self).deliver_now
+  # end
 
   def update_new_email
     update_columns(email: unconfirmed_email, unconfirmed_email: nil)
@@ -167,6 +175,7 @@ class User < ApplicationRecord
   private
 
   def email_downcase
-    email.downcase!
+    email.downcase! if email
+    unconfirmed_email.downcase! if unconfirmed_email
   end
 end
