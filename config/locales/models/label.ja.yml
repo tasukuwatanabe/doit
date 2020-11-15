@@ -1,7 +1,7 @@
 ja:
   activerecord:
     models:
-      shortcut: ショートカット
+      label: ラベル
     attributes:
-      shortcut:
+      label:
         title: タイトル

@@ -81,7 +81,6 @@ export default {
       shortcuts: [],
       labels: [],
       btnText: "",
-      errors: "",
       custom_error: ""
     };
   },
@@ -110,14 +109,14 @@ export default {
       this.custom_error = error;
       this.toggleModal();
     },
-    async shortcutSubmit() {
+    shortcutSubmit() {
       const shortcut_id = this.shortcut.id;
       const shortcut_params = {
         title: this.shortcut.title,
         label_id: this.shortcut.label_id
       };
       if (shortcut_id) {
-        await axios
+        axios
           .put(`/api/shortcuts/${shortcut_id}`, {
             shortcut: shortcut_params
           })
@@ -130,7 +129,7 @@ export default {
             this.errors = error.response.data.errors;
           });
       } else {
-        await axios
+        axios
           .post("/api/shortcuts", {
             shortcut: shortcut_params
           })
@@ -147,23 +146,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.error {
-  text-align: center;
-}
-.error__icon {
-  font-size: 30px;
-  color: #ccc;
-  position: relative;
-  top: -20px;
-}
-.error__text {
-  font-size: 1.2em;
-  margin-bottom: 1.5em;
-}
-
-.error__btn {
-  margin: 0;
-}
-</style>

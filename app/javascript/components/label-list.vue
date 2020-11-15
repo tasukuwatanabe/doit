@@ -104,7 +104,12 @@ export default {
       });
     },
     setLabel(label) {
-      this.$refs.labelModal.setLabelValue(label);
+      if (this.labels.length >= 10 && !label) {
+        const maxLabelError = "ラベルが登録できるのは10個までです";
+        this.$refs.labelModal.setError(maxLabelError);
+      } else {
+        this.$refs.labelModal.setLabelValue(label);
+      }
     },
     deleteLabel(label) {
       axios.delete(`/api/labels/${label.id}`).then((res) => {

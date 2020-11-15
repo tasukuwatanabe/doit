@@ -123,7 +123,7 @@ export default {
       });
     },
     setShortcut(shortcut) {
-      if (this.shortcuts.length === 10 && !shortcut) {
+      if (this.shortcuts.length >= 10 && !shortcut) {
         const maxShortcutError = "ショートカットが登録できるのは10個までです";
         this.$refs.shortcutModal.setError(maxShortcutError);
       } else {

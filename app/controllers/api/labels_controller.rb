@@ -16,7 +16,8 @@ class Api::LabelsController < ApplicationController
     if label.save
       head :no_content
     else
-      render json: label.errors, status: :unprocessable_entity
+      errors = label.errors.keys.map { |key| [key, label.errors.full_messages_for(key)] }.to_h
+      render json: { errors: errors }, status: :unprocessable_entity
     end
   end
 
@@ -25,7 +26,8 @@ class Api::LabelsController < ApplicationController
     if label.update(label_params)
       head :no_content
     else
-      render json: label.errors, status: :unprocessable_entity
+      errors = label.errors.keys.map { |key| [key, label.errors.full_messages_for(key)] }.to_h
+      render json: { errors: errors }, status: :unprocessable_entity
     end
   end
 
@@ -33,12 +35,7 @@ class Api::LabelsController < ApplicationController
     label = Label.find(params[:id])
     todos = Todo.where(label_id: label.id).update_all(label_id: nil)
     shortcuts = Shortcut.where(label_id: label.id).update_all(label_id: nil)
-
-    if label.destroy
-      head :no_content
-    else
-      render json: label.errors, status: :unprocessable_entity
-    end
+    label.destroy
   end
 
   private
