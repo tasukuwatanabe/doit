@@ -123,7 +123,12 @@ export default {
       });
     },
     setShortcut(shortcut) {
-      this.$refs.shortcutModal.setShortcutValue(shortcut);
+      if (this.shortcuts.length === 10 && !shortcut) {
+        const maxShortcutError = "ショートカットが登録できるのは10個までです";
+        this.$refs.shortcutModal.setError(maxShortcutError);
+      } else {
+        this.$refs.shortcutModal.setShortcutValue(shortcut);
+      }
     },
     deleteShortcut(shortcut) {
       axios.delete(`/api/shortcuts/${shortcut.id}`).then((res) => {

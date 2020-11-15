@@ -6,6 +6,9 @@
         <div class="form__group">
           <label class="form__label">メールアドレス</label>
           <input class="form__input" type="email" v-model="session.email" />
+          <span v-if="!!errors['email']">
+            {{ errors["name"][0] }}
+          </span>
         </div>
         <div class="form__group">
           <label class="form__label">パスワード</label>
@@ -15,6 +18,9 @@
             v-model="session.password"
             autocomplete="on"
           />
+          <span v-if="!!errors['password']">
+            {{ errors["password"][0] }}
+          </span>
           <router-link
             :to="{ name: 'password_resets_new' }"
             class="form__reset-link"
@@ -75,7 +81,8 @@ export default {
       session: {
         email: undefined,
         password: undefined
-      }
+      },
+      errors: ""
     };
   },
   methods: {
@@ -89,9 +96,16 @@ export default {
         email: this.session.email,
         password: this.session.password
       };
-      axios.post("/api/login", { session: session_params }).then(() => {
-        this.$router.push({ name: "todos" });
-      });
+      axios
+        .post("/api/login", { session: session_params })
+        .then(() => {
+          this.$router.push({ name: "todos" });
+        })
+        .catch((error) => {
+          if (error.response.data && error.response.data.errors) {
+            this.errors = error.response.data.errors;
+          }
+        });
     }
   }
 };

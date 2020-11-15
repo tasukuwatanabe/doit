@@ -7,38 +7,54 @@
             <div class="fa-case" @click="toggleModal()">
               <i class="fas fa-times"></i>
             </div>
-            <div class="form__group row">
-              <div class="col-3 form__label">タイトル</div>
-              <div class="col-9">
-                <input
-                  type="text"
-                  v-model="shortcut.title"
-                  class="form__input"
-                  required
-                />
+            <div v-if="!!custom_error" class="error">
+              <span class="error__icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </span>
+              <p class="error__text">{{ custom_error }}</p>
+              <div class="btn-case">
+                <div @click="toggleModal()" class="btn-gray btn--sm error__btn">
+                  閉じる
+                </div>
               </div>
             </div>
-            <div class="form__group row">
-              <div class="col-3 form__label">ラベル</div>
-              <div class="col-9">
-                <select class="form__select" v-model="shortcut.label_id">
-                  <option>ラベルを選択</option>
-                  <option
-                    v-for="label in labels"
-                    :key="label.id"
-                    :value="label.id"
-                  >
-                    {{ label.title }}
-                  </option>
-                </select>
+            <div v-else>
+              <div class="form__group row">
+                <div class="col-3 form__label">タイトル</div>
+                <div class="col-9">
+                  <input
+                    type="text"
+                    v-model="shortcut.title"
+                    class="form__input"
+                    required
+                  />
+                  <span class="form__error" v-if="!!errors.title">
+                    {{ errors.title[0] }}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="btn-case">
-              <div @click="toggleModal()" class="btn-gray btn--sm">
-                キャンセル
+              <div class="form__group row">
+                <div class="col-3 form__label">ラベル</div>
+                <div class="col-9">
+                  <select class="form__select" v-model="shortcut.label_id">
+                    <option>ラベルを選択</option>
+                    <option
+                      v-for="label in labels"
+                      :key="label.id"
+                      :value="label.id"
+                    >
+                      {{ label.title }}
+                    </option>
+                  </select>
+                </div>
               </div>
-              <div @click="shortcutSubmit()" class="btn-main btn--sm">
-                {{ btnText }}
+              <div class="btn-case">
+                <div @click="toggleModal()" class="btn-gray btn--sm">
+                  キャンセル
+                </div>
+                <div @click="shortcutSubmit()" class="btn-main btn--sm">
+                  {{ btnText }}
+                </div>
               </div>
             </div>
           </div>
@@ -64,7 +80,9 @@ export default {
       },
       shortcuts: [],
       labels: [],
-      btnText: ""
+      btnText: "",
+      errors: "",
+      custom_error: ""
     };
   },
   created() {
@@ -78,6 +96,7 @@ export default {
       });
     },
     setShortcutValue(val) {
+      this.custom_error = "";
       this.toggleModal();
       const hasValue = function () {
         return val != undefined;
@@ -86,6 +105,10 @@ export default {
       this.shortcut.title = hasValue() ? val.title : undefined;
       this.shortcut.label_id = hasValue() ? val.label_id : undefined;
       this.btnText = hasValue() ? "更新する" : "新規作成";
+    },
+    setError(error) {
+      this.custom_error = error;
+      this.toggleModal();
     },
     async shortcutSubmit() {
       const shortcut_id = this.shortcut.id;
@@ -98,18 +121,49 @@ export default {
           .put(`/api/shortcuts/${shortcut_id}`, {
             shortcut: shortcut_params
           })
+          .then(() => {
+            this.shortcut = {};
+            this.toggleModal();
+            this.$emit("fetch-shortcuts");
+          })
           .catch((error) => {
-            console.log(error);
+            this.errors = error.response.data.errors;
           });
       } else {
-        await axios.post("/api/shortcuts", {
-          shortcut: shortcut_params
-        });
+        await axios
+          .post("/api/shortcuts", {
+            shortcut: shortcut_params
+          })
+          .then(() => {
+            this.shortcut = {};
+            this.toggleModal();
+            this.$emit("fetch-shortcuts");
+          })
+          .catch((error) => {
+            this.errors = error.response.data.errors;
+          });
       }
-      this.shortcut = {};
-      this.toggleModal();
-      this.$emit("fetch-shortcuts");
     }
   }
 };
 </script>
+
+<style>
+.error {
+  text-align: center;
+}
+.error__icon {
+  font-size: 30px;
+  color: #ccc;
+  position: relative;
+  top: -20px;
+}
+.error__text {
+  font-size: 1.2em;
+  margin-bottom: 1.5em;
+}
+
+.error__btn {
+  margin: 0;
+}
+</style>
