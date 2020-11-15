@@ -5,3 +5,4 @@ ja:
     attributes:
       shortcut:
         title: タイトル
+        label_id: ラベル
