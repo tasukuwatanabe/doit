@@ -8,7 +8,7 @@ class Api::PasswordsController < ApplicationController
     if change_password_form.save
       head :no_content
     else
-      errors = change_password_form.errors.keys.map { |key| [key, change_password_form.errors.full_messages_for(key)] }.to_h
+      errors = change_password_form.errors.keys.map { |key| [key, change_password_form.errors.full_messages_for(key)[0]] }.to_h
       render json: { errors: errors }, status: :unprocessable_entity
     end
   end

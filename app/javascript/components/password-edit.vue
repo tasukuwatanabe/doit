@@ -24,7 +24,7 @@
               autocomplete="on"
             />
             <span class="form__error" v-if="!!errors.new_password">
-              {{ errors.new_password[0] }}
+              {{ errors.new_password }}
             </span>
           </div>
           <div class="form__group">
@@ -36,7 +36,7 @@
               autocomplete="on"
             />
             <span class="form__error" v-if="!!errors.new_password_confirmation">
-              {{ errors.new_password_confirmation[0] }}
+              {{ errors.new_password_confirmation }}
             </span>
           </div>
           <div class="form__action">
@@ -75,6 +75,11 @@ export default {
       axios
         .put(`/api/users/${this.getCurrentUser.id}/password`, {
           change_password_form: password_params
+        })
+        .then(() => {
+          this.new_password = "";
+          this.new_password_confirmation = "";
+          this.errors = "";
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

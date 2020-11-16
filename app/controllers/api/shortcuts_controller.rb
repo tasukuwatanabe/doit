@@ -16,7 +16,7 @@ class Api::ShortcutsController < ApplicationController
     if shortcut.save
       head :no_content
     else
-      errors = shortcut.errors.keys.map { |key| [key, shortcut.errors.full_messages_for(key)] }.to_h
+      errors = shortcut.errors.keys.map { |key| [key, shortcut.errors.full_messages_for(key)[0]] }.to_h
       render json: { errors: errors }, status: :unprocessable_entity
     end
   end

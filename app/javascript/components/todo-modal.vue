@@ -24,7 +24,7 @@
                   required
                 />
                 <span class="form__error" v-if="!!errors.title">
-                  {{ errors.title[0] }}
+                  {{ errors.title }}
                 </span>
               </div>
             </div>
@@ -44,7 +44,7 @@
                   class="form__input"
                 />
                 <span class="form__error" v-if="!!errors.todo_date">
-                  {{ errors.todo_date[0] }}
+                  {{ errors.todo_date }}
                 </span>
               </div>
             </div>

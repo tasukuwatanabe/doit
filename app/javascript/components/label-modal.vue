@@ -37,7 +37,7 @@
                     required
                   />
                   <span class="form__error" v-if="!!errors.title">
-                    {{ errors.title[0] }}
+                    {{ errors.title }}
                   </span>
                 </div>
               </div>

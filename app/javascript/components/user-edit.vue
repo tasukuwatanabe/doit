@@ -19,14 +19,14 @@
             <label class="form__label">ユーザー名</label>
             <input type="text" v-model="user.username" class="form__input" />
             <span class="form__error" v-if="!!errors.username">
-              {{ errors.username[0] }}
+              {{ errors.username }}
             </span>
           </div>
           <div class="form__group">
             <label class="form__label">メールアドレス</label>
             <input type="email" v-model="user.email" class="form__input" />
             <span class="form__error" v-if="!!errors.unconfirmed_email">
-              {{ errors.unconfirmed_email[0] }}
+              {{ errors.unconfirmed_email }}
             </span>
             <p class="form__desc">
               アドレスを変更すると、確認のため新しいアドレスにメールを送信します。<strong
