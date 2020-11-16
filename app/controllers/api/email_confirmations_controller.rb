@@ -6,10 +6,12 @@ class Api::EmailConfirmationsController < ApplicationController
     user = User.find_by(email: params[:email])
     if user && user.authenticated?(:confirmation, params[:id])
       user.update_new_email
-      puts 'メールアドレスが更新されました'
       log_out
+      # flash 'メールアドレスが更新されました'
+      head :no_content
     else
-      puts 'リンクが有効ではありません'
+      # flash 'リンクが有効ではありません'
+      redirect_to root_path
     end
   end
 
@@ -18,7 +20,7 @@ class Api::EmailConfirmationsController < ApplicationController
     if user && user.update(confirmation_digest: nil, unconfirmed_email: nil)
       head :no_content
     else
-      errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)] }.to_h
+      errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
       render json: { errors: errors }, status: :unprocessable_entity
     end
   end

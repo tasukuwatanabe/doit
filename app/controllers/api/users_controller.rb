@@ -27,8 +27,9 @@ class Api::UsersController < ApplicationController
     user = User.new(user_params)
     if user.save
       user.send_activation_email
+      head :no_content
     else
-      errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)] }.to_h
+      errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
       render json: { errors: errors }, status: :unprocessable_entity
     end
   end
@@ -41,13 +42,12 @@ class Api::UsersController < ApplicationController
 
     # パラメータ[:email]を取得
     new_email = user_params[:email]
-    # .gsub(/　/, '')
 
     # メールアドレス使用状況をチェック
     if new_email && user && User.email_used?(user, new_email)
-      email_error = { unconfirmed_email: ['このメールアドレスはすでに使われています。'] }
+      email_error = { unconfirmed_email: 'このメールアドレスはすでに使われています。' }
     elsif new_email == '' # メールアドレスが空の場合
-      email_error = { unconfirmed_email: ['メールアドレスが入力されていません。'] }
+      email_error = { unconfirmed_email: 'メールアドレスが入力されていません。' }
     end
 
     # メールアドレスに変更がある場合
@@ -60,7 +60,9 @@ class Api::UsersController < ApplicationController
         # メールアドレス確認用のメールを送信
         UserMailer.email_confirmation(user).deliver_now
       else # バリデーションを取得
-        errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)] }.to_h unless email_error
+        unless email_error
+          errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
+        end
       end
     end
 
@@ -72,7 +74,7 @@ class Api::UsersController < ApplicationController
         head :no_content
       end
     else # バリデーションエラーを取得
-      errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)] }.to_h
+      errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
       errors.merge!(email_error) if email_error
       render json: { errors: errors }, status: :unprocessable_entity
     end
