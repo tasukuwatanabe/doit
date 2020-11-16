@@ -3,6 +3,9 @@
     <div class="login__title">パスワードリセット</div>
     <div class="login__inner">
       <form class="form">
+        <span class="form__error form__error--base" v-if="!!errors.base">
+          {{ errors.base }}
+        </span>
         <div class="form__group">
           <label class="form__label">新しいパスワード</label>
           <input
@@ -11,6 +14,9 @@
             v-model="password"
             autocomplete="on"
           />
+          <span class="form__error" v-if="!!errors.password">
+            {{ errors.password }}
+          </span>
         </div>
         <div class="form__group">
           <label class="form__label">新しいパスワード(確認用)</label>
@@ -20,6 +26,9 @@
             v-model="password_confirmation"
             autocomplete="on"
           />
+          <span class="form__error" v-if="!!errors.password_confirmation">
+            {{ errors.password_confirmation }}
+          </span>
         </div>
         <div class="form__group text-center">
           <div
@@ -55,7 +64,8 @@ export default {
   data() {
     return {
       password: "",
-      password_confirmation: ""
+      password_confirmation: "",
+      errors: ""
     };
   },
   methods: {
@@ -65,14 +75,6 @@ export default {
       });
     },
     submitPasswordReset() {
-      if (this.password == "") {
-        alert("パスワードは必須です");
-        return;
-      } else if (this.password_confirmation == "") {
-        alert("パスワード(確認用)は必須です");
-        return;
-      }
-
       const password_reset_params = {
         password: this.password,
         password_confirmation: this.password_confirmation
@@ -86,6 +88,9 @@ export default {
         })
         .then(() => {
           this.$router.push({ name: "todos" });
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
         });
     }
   }
