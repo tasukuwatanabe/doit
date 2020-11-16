@@ -3,11 +3,14 @@
     <div class="login__title">ログイン</div>
     <div class="login__inner">
       <form class="form">
+        <span class="form__error form__error--base" v-if="!!errors.base">
+          {{ errors.base }}
+        </span>
         <div class="form__group">
           <label class="form__label">メールアドレス</label>
-          <input class="form__input" type="email" v-model="session.email" />
-          <span v-if="!!errors['email']">
-            {{ errors["name"][0] }}
+          <input class="form__input" type="email" v-model="email" />
+          <span class="form__error" v-if="!!errors.email">
+            {{ errors.email }}
           </span>
         </div>
         <div class="form__group">
@@ -15,11 +18,11 @@
           <input
             class="form__input"
             type="password"
-            v-model="session.password"
+            v-model="password"
             autocomplete="on"
           />
-          <span v-if="!!errors['password']">
-            {{ errors["password"][0] }}
+          <span class="form__error" v-if="!!errors.password">
+            {{ errors.password }}
           </span>
           <router-link
             :to="{ name: 'password_resets_new' }"
@@ -78,10 +81,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      session: {
-        email: undefined,
-        password: undefined
-      },
+      email: undefined,
+      password: undefined,
       errors: ""
     };
   },
@@ -93,8 +94,8 @@ export default {
     },
     submitLogin() {
       const session_params = {
-        email: this.session.email,
-        password: this.session.password
+        email: this.email,
+        password: this.password
       };
       axios
         .post("/api/login", { session: session_params })
@@ -102,9 +103,7 @@ export default {
           this.$router.push({ name: "todos" });
         })
         .catch((error) => {
-          if (error.response.data && error.response.data.errors) {
-            this.errors = error.response.data.errors;
-          }
+          this.errors = error.response.data.errors;
         });
     }
   }
