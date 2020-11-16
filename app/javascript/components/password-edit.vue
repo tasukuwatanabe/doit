@@ -64,7 +64,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getCurrentUser"])
+    ...mapGetters({
+      getCurrentUser: "user/getCurrentUser"
+    })
   },
   methods: {
     submitPassword() {

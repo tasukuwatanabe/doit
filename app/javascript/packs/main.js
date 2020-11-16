@@ -13,7 +13,7 @@ import "../stylesheets/application";
 import "bootstrap/dist/css/bootstrap.css";
 
 import Vue from "vue/dist/vue.esm.js";
-import store from "./store.js";
+import store from "../store/index";
 import Router from "../router/router";
 import Header from "../components/shared/v-header.vue";
 import Footer from "../components/shared/v-footer.vue";

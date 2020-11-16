@@ -45,8 +45,9 @@
             <label class="form__label">プロフィール画像</label>
             <div class="form__profile-box">
               <img
-                :src="this.getCurrentUser.user_image"
+                v-if="this.getCurrentUser"
                 :alt="this.getCurrentUser.username + 'のプロフィール画像'"
+                :src="this.getCurrentUser.user_image"
                 class="profile-img"
               />
               <input type="file" ref="file" @change="onImageUpload" />
@@ -172,6 +173,7 @@
 import Vue from "vue";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -185,7 +187,9 @@ export default {
     this.setUserData();
   },
   computed: {
-    ...mapGetters(["getCurrentUser"]),
+    ...mapGetters({
+      getCurrentUser: "user/getCurrentUser"
+    }),
     unconfirmed_email() {
       this.setUserData();
       return this.user.unconfirmed_email;
@@ -195,14 +199,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["currentUserAction"]),
+    ...mapActions({
+      setCurrentUserAction: "user/setCurrentUserAction"
+    }),
     setUserData() {
       this.user = Vue.util.extend({}, this.getCurrentUser);
     },
     async cancelEmailConfirmation() {
       await axios.delete(`/api/email_confirmations/${this.user.id}`);
       await axios.get("/api/current_user").then((res) => {
-        this.currentUserAction(res.data);
+        this.setCurrentUserAction(res.data);
         this.setUserData();
         this.$router.go({
           path: this.$router.currentRoute.path,
@@ -240,7 +246,7 @@ export default {
         })
         .then((res) => {
           axios.get("/api/current_user").then((res) => {
-            this.currentUserAction(res.data);
+            this.setCurrentUserAction(res.data);
             this.setUserData();
             this.image = "";
             this.$router.go({
@@ -256,7 +262,7 @@ export default {
     async cancelOauth(provider) {
       await axios.delete("/cancel_oauth/" + provider);
       await axios.get("/api/current_user").then((res) => {
-        this.currentUserAction(res.data);
+        this.setCurrentUserAction(res.data);
         this.setUserData();
         this.$router.go({
           path: this.$router.currentRoute.path,

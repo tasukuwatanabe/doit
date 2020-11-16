@@ -13,7 +13,7 @@
             </div>
             <div class="todo__date-box">
               <div class="todo__date-title">
-                {{ setDate }}
+                {{ setSelectedDate }}
               </div>
               <p class="todo__date-day">{{ setDay }}</p>
             </div>
@@ -113,8 +113,10 @@ export default {
     this.fetchDate();
   },
   computed: {
-    ...mapGetters(["selectedDate"]),
-    setDate() {
+    ...mapGetters({
+      selectedDate: "date/selectedDate"
+    }),
+    setSelectedDate() {
       const selected_date = new Date(this.selectedDate);
       const year = selected_date.getFullYear();
       const month = selected_date.getMonth() + 1;
@@ -131,12 +133,12 @@ export default {
     },
     setYesterday() {
       let selected_date = new Date(this.selectedDate);
-      const yesterday = selected_date.setDate(selected_date.getDate() - 1);
+      const yesterday = selected_date.setSelectedDate(selected_date.getDate() - 1);
       return new Date(yesterday);
     },
     setTomorrow() {
       const selected_date = new Date(this.selectedDate);
-      const tomorrow = selected_date.setDate(selected_date.getDate() + 1);
+      const tomorrow = selected_date.setSelectedDate(selected_date.getDate() + 1);
       return new Date(tomorrow);
     },
     todoLabel() {
@@ -146,9 +148,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["setDateAction"]),
+    ...mapActions({
+      setSelectedDateAction: "date/setSelectedDateAction"
+    }),
     fetchDate(select) {
-      this.setDateAction(select);
+      this.setSelectedDateAction(select);
       this.fetchTodos(this.selectedDate);
     },
     fetchTodos(date) {

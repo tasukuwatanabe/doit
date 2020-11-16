@@ -10,7 +10,7 @@ import Login from "../components/login-form.vue";
 import Signup from "../components/signup-form.vue";
 import PasswordResetNew from "../components/password-reset-new.vue";
 import PasswordResetEdit from "../components/password-reset-edit.vue";
-import Store from "../packs/store";
+import Store from "../store/index";
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -37,12 +37,11 @@ function getCurrentUser() {
 }
 
 function isLoggedIn(to, from, next) {
-  Store.dispatch("setToggleCloseAction");
+  Store.dispatch("slideMenu/setToggleCloseAction");
   if (cookieStatus()) {
     if (getCurrentUser() == null || getCurrentUser().id == undefined) {
-      Store.dispatch("currentUserAction").then(() => {
-        next();
-      });
+      Store.dispatch("user/setCurrentUserAction");
+      next();
     } else {
       next();
     }
@@ -53,14 +52,14 @@ function isLoggedIn(to, from, next) {
 }
 
 function isLoggedOut(to, from, next) {
-  Store.dispatch("setToggleCloseAction");
+  Store.dispatch("slideMenu/setToggleCloseAction");
   if (cookieStatus()) {
     next({ path: "/" });
   } else {
     if (getCurrentUser() == null || getCurrentUser().id == undefined) {
       next();
     } else {
-      Store.dispatch("logoutAction");
+      Store.dispatch("user/logoutAction");
       next();
     }
   }

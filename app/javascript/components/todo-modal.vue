@@ -112,11 +112,16 @@ export default {
     this.fetchLabels();
   },
   computed: {
-    ...mapGetters(["selectedDate", "formatDate"])
+    ...mapGetters({
+      selectedDate: "date/selectedDate",
+      formatDate: "date/formatDate"
+    })
   },
   mixins: [Modal, ColorOnRgb],
   methods: {
-    ...mapActions(["setDateAction"]),
+    ...mapActions({
+      setSelectedDateAction: "date/setSelectedDateAction"
+    }),
     fetchLabels() {
       axios.get("/api/labels").then((res) => {
         this.labels = res.data.labels;
@@ -147,7 +152,7 @@ export default {
           .put(`/api/todos/${todo_id}`, { todo: todo_params })
           .then(() => {
             this.toggleModal();
-            this.setDateAction(this.todo.todo_date);
+            this.setSelectedDateAction(this.todo.todo_date);
             this.$emit("fetch-todos", this.todo.todo_date);
             this.todo = {};
           })
@@ -159,7 +164,7 @@ export default {
           .post("/api/todos", { todo: todo_params })
           .then(() => {
             this.toggleModal();
-            this.setDateAction(this.todo.todo_date);
+            this.setSelectedDateAction(this.todo.todo_date);
             this.$emit("fetch-todos", this.todo.todo_date);
             this.todo = {};
           })

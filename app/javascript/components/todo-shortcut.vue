@@ -51,7 +51,9 @@ export default {
     this.fetchShortcut();
   },
   computed: {
-    ...mapGetters(["selectedDate"])
+    ...mapGetters({
+      selectedDate: "date/selectedDate"
+    })
   },
   methods: {
     fetchShortcut() {
