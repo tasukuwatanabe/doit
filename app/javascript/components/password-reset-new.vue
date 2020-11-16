@@ -6,6 +6,9 @@
         <div class="form__group">
           <label class="form__label">メールアドレス</label>
           <input class="form__input" type="email" v-model="email" />
+          <span class="form__error" v-if="!!errors.email">
+            {{ errors.email }}
+          </span>
         </div>
         <div class="form__group text-center">
           <div
@@ -40,7 +43,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      email: ""
+      email: "",
+      errors: ""
     };
   },
   methods: {
@@ -56,6 +60,9 @@ export default {
         })
         .then(() => {
           this.$router.push({ name: "login" });
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
         });
     }
   }

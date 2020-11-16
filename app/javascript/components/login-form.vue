@@ -3,18 +3,27 @@
     <div class="login__title">ログイン</div>
     <div class="login__inner">
       <form class="form">
+        <span class="form__error form__error--base" v-if="!!errors.base">
+          {{ errors.base }}
+        </span>
         <div class="form__group">
           <label class="form__label">メールアドレス</label>
-          <input class="form__input" type="email" v-model="session.email" />
+          <input class="form__input" type="email" v-model="email" />
+          <span class="form__error" v-if="!!errors.email">
+            {{ errors.email }}
+          </span>
         </div>
         <div class="form__group">
           <label class="form__label">パスワード</label>
           <input
             class="form__input"
             type="password"
-            v-model="session.password"
+            v-model="password"
             autocomplete="on"
           />
+          <span class="form__error" v-if="!!errors.password">
+            {{ errors.password }}
+          </span>
           <router-link
             :to="{ name: 'password_resets_new' }"
             class="form__reset-link"
@@ -72,10 +81,9 @@ import axios from "axios";
 export default {
   data() {
     return {
-      session: {
-        email: undefined,
-        password: undefined
-      }
+      email: undefined,
+      password: undefined,
+      errors: ""
     };
   },
   methods: {
@@ -86,12 +94,17 @@ export default {
     },
     submitLogin() {
       const session_params = {
-        email: this.session.email,
-        password: this.session.password
+        email: this.email,
+        password: this.password
       };
-      axios.post("/api/login", { session: session_params }).then(() => {
-        this.$router.push({ name: "todos" });
-      });
+      axios
+        .post("/api/login", { session: session_params })
+        .then(() => {
+          this.$router.push({ name: "todos" });
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+        });
     }
   }
 };

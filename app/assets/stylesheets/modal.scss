@@ -20,7 +20,19 @@
 
   .form__label {
     white-space: nowrap;
-    font-size: 0.8em;
+    margin: 0;
+
+    &--with-error {
+      position: relative;
+      top: -12px;
+    }
+
+    &--required {
+      color: rgb(223, 63, 63);
+      margin-left: 4px;
+      position: relative;
+      top: -4px;
+    }
   }
 
   &__layer {
@@ -34,7 +46,7 @@
   &__box {
     background-color: #fff;
     border-radius: 5px;
-    padding: 50px 30px 40px;
+    padding: 50px 40px 40px;
     position: relative;
     top: -5%;
     width: 85%;

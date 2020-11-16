@@ -7,6 +7,7 @@ ja:
         title: タイトル
         status: ステータス
         todo_date: 日付
+        body: メモ
     errors:
       models:
         todo:

@@ -18,7 +18,8 @@ class Api::TodosController < ApplicationController
     if todo.save
       head :no_content
     else
-      render json: todo.errors, status: :unprocessable_entity
+      errors = todo.errors.keys.map { |key| [key, todo.errors.full_messages_for(key)[0]] }.to_h
+      render json: { errors: errors }, status: :unprocessable_entity
     end
   end
 
@@ -27,17 +28,15 @@ class Api::TodosController < ApplicationController
     if todo.update(todo_params)
       head :no_content
     else
-      render json: todo.errors, status: :unprocessable_entity
+      errors = todo.errors.keys.map { |key| [key, todo.errors.full_messages_for(key)[0]] }.to_h
+      render json: { errors: errors }, status: :unprocessable_entity
     end
   end
 
   def destroy
     todo = Todo.find(params[:id])
-    if todo.destroy
-      render json: 'deleted'
-    else
-      render json: todo.errors, status: :unprocessable_entity
-    end
+    todo.destroy
+    head :no_content
   end
 
   def toggle_status

@@ -5,23 +5,35 @@
       <form class="form">
         <div class="form__group">
           <label class="form__label">ユーザー名</label>
-          <input class="form__input" type="text" v-model="user.username" />
+          <input class="form__input" type="text" v-model="username" />
+          <span class="form__error" v-if="!!errors.username">
+            {{ errors.username }}
+          </span>
         </div>
         <div class="form__group">
           <label class="form__label">メールアドレス</label>
-          <input class="form__input" type="email" v-model="user.email" />
+          <input class="form__input" type="email" v-model="email" />
+          <span class="form__error" v-if="!!errors.email">
+            {{ errors.email }}
+          </span>
         </div>
         <div class="form__group">
           <label class="form__label">パスワード</label>
-          <input class="form__input" type="password" v-model="user.password" />
+          <input class="form__input" type="password" v-model="password" />
+          <span class="form__error" v-if="!!errors.password">
+            {{ errors.password }}
+          </span>
         </div>
         <div class="form__group">
           <label class="form__label">パスワード(確認用)</label>
           <input
             class="form__input"
             type="password"
-            v-model="user.password_confirmation"
+            v-model="password_confirmation"
           />
+          <span class="form__error" v-if="!!errors.password_confirmation">
+            {{ errors.password_confirmation }}
+          </span>
         </div>
         <div class="form-group text-center">
           <div
@@ -76,12 +88,11 @@ import axios from "axios";
 export default {
   data() {
     return {
-      user: {
-        username: undefined,
-        email: undefined,
-        password: undefined,
-        password_confirmation: undefined
-      }
+      username: undefined,
+      email: undefined,
+      password: undefined,
+      password_confirmation: undefined,
+      errors: ""
     };
   },
   methods: {
@@ -92,14 +103,19 @@ export default {
     },
     submitRegister() {
       const user_params = {
-        username: this.user.username,
-        email: this.user.email,
-        password: this.user.password,
-        password_confirmation: this.user.password_confirmation
+        username: this.username,
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.password_confirmation
       };
-      axios.post("/api/users", { user: user_params }).then(() => {
-        this.$router.push({ name: "login" });
-      });
+      axios
+        .post("/api/users", { user: user_params })
+        .then(() => {
+          this.$router.push({ name: "login" });
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+        });
     }
   }
 };

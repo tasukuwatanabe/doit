@@ -24,4 +24,16 @@
       margin-bottom: 0.5em;
     }
   }
+
+  &__error {
+    color: red;
+    font-size: 0.8em;
+    display: block;
+    margin-top: 0.3em;
+    margin-bottom: -0.6em;
+
+    &--base {
+      margin-bottom: 1em;
+    }
+  }
 }

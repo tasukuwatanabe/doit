@@ -23,6 +23,9 @@
               v-model="new_password"
               autocomplete="on"
             />
+            <span class="form__error" v-if="!!errors.new_password">
+              {{ errors.new_password }}
+            </span>
           </div>
           <div class="form__group">
             <label class="form__label">新しいパスワード(確認用)</label>
@@ -32,6 +35,9 @@
               v-model="new_password_confirmation"
               autocomplete="on"
             />
+            <span class="form__error" v-if="!!errors.new_password_confirmation">
+              {{ errors.new_password_confirmation }}
+            </span>
           </div>
           <div class="form__action">
             <div @click="submitPassword()" class="btn-main btn--sm">
@@ -53,7 +59,8 @@ export default {
   data() {
     return {
       new_password: "",
-      new_password_confirmation: ""
+      new_password_confirmation: "",
+      errors: ""
     };
   },
   computed: {
@@ -61,14 +68,6 @@ export default {
   },
   methods: {
     submitPassword() {
-      if (this.password == "") {
-        alert("パスワードは必須です");
-        return;
-      } else if (this.password_confirmation == "") {
-        alert("パスワード(確認用)は必須です");
-        return;
-      }
-
       const password_params = {
         new_password: this.new_password,
         new_password_confirmation: this.new_password_confirmation
@@ -78,10 +77,12 @@ export default {
           change_password_form: password_params
         })
         .then(() => {
-          this.$router.go({
-            path: this.$router.currentRoute.path,
-            force: true
-          });
+          this.new_password = "";
+          this.new_password_confirmation = "";
+          this.errors = "";
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
         });
     }
   }

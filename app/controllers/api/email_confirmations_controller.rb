@@ -6,22 +6,23 @@ class Api::EmailConfirmationsController < ApplicationController
     user = User.find_by(email: params[:email])
     if user && user.authenticated?(:confirmation, params[:id])
       user.update_new_email
-      puts 'メールアドレスが更新されました'
       log_out
+      # flash 'メールアドレスが更新されました'
+      head :no_content
     else
-      puts 'リンクが有効ではありません'
-    end
-
-    if user && logged_in?
-      redirect_to "/user/#{user.id}/edit"
-    else
+      # flash 'リンクが有効ではありません'
       redirect_to root_path
     end
   end
 
   def destroy
     user = User.find(params[:id])
-    puts 'メールアドレス変更をキャンセルしました' if user && user.update(confirmation_digest: nil, unconfirmed_email: nil)
+    if user && user.update(confirmation_digest: nil, unconfirmed_email: nil)
+      head :no_content
+    else
+      errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
+      render json: { errors: errors }, status: :unprocessable_entity
+    end
   end
 
   private
@@ -31,12 +32,6 @@ class Api::EmailConfirmationsController < ApplicationController
     if user && user.expired?(:confirmation)
       user.update(confirmation_digest: nil, unconfirmed_email: nil)
       puts 'メールアドレス認証リンクの期限が切れています'
-
-      if user && logged_in?
-        redirect_to "/user/#{user.id}/edit"
-      else
-        redirect_to root_path
-      end
     end
   end
 end
