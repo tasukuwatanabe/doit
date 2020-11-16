@@ -103,10 +103,14 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["getCurrentUser"])
+    ...mapGetters({
+      getCurrentUser: "user/getCurrentUser"
+    })
   },
   methods: {
-    ...mapActions(["logoutAction"]),
+    ...mapActions({
+      logoutAction: "user/logoutAction"
+    }),
     logout() {
       axios.delete("/api/logout").then(() => {
         this.logoutAction();

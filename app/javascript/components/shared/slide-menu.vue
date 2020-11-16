@@ -12,6 +12,7 @@
             name: 'user_edit',
             params: { userId: this.getCurrentUser.id }
           }"
+          class="userinfo__link"
         >
           <img
             alt="ゲストユーザーアイコン"
@@ -110,10 +111,16 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["getCurrentUser", "getToggleStatus"])
+    ...mapGetters({
+      getCurrentUser: "user/getCurrentUser",
+      getToggleStatus: "slideMenu/getToggleStatus"
+    })
   },
   methods: {
-    ...mapActions(["setToggleStatusAction", "logoutAction"]),
+    ...mapActions({
+      setToggleStatusAction: "slideMenu/setToggleStatusAction",
+      logoutAction: "user/logoutAction"
+    },),
     toggleSlide() {
       this.setToggleStatusAction();
     },
