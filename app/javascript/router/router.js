@@ -10,6 +10,7 @@ import Login from "../components/login-form.vue";
 import Signup from "../components/signup-form.vue";
 import PasswordResetNew from "../components/password-reset-new.vue";
 import PasswordResetEdit from "../components/password-reset-edit.vue";
+import NotFound from "../components/not-found.vue";
 import Store from "../store/index";
 
 Vue.use(VueRouter);
@@ -121,6 +122,11 @@ export default new VueRouter({
       component: PasswordResetEdit,
       name: "password_resets_edit",
       beforeEnter: isLoggedOut
+    },
+    {
+      path: "*",
+      component: NotFound,
+      beforeEnter: isLoggedIn
     }
   ]
 });
