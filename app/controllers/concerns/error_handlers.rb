@@ -5,7 +5,6 @@ module ErrorHandlers
     rescue_from StandardError, with: :rescue500
     rescue_from ApplicationController::Forbidden, with: :rescue403
     rescue_from ApplicationController::IpAddressRejected, with: :rescue403
-    rescue_from ActiveRecord::RecordNotFound, with: :rescue404
     rescue_from ActionController::ParameterMissing, with: :rescue400
   end
 
@@ -16,10 +15,6 @@ module ErrorHandlers
   private def rescue403(e)
     @exception = e
     render 'errors/forbidden', status: 403
-  end
-
-  private def rescue404(_e)
-    render 'errors/not_found', status: 404
   end
 
   private def rescue500(_e)
