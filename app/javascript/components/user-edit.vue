@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="container inner">
-      <sidebar-left></sidebar-left>
+    <div class="container inner" v-if="user">
+      <v-sidebar-left></v-sidebar-left>
       <div class="content">
         <div class="headline">
           <div class="headline__title">
@@ -33,7 +33,7 @@
                 >新しいアドレスは確認が完了するまで有効化されません。</strong
               >
             </p>
-            <div v-if="user.unconfirmed_email" class="form__notice">
+            <div v-if="user && user.unconfirmed_email" class="form__notice">
               <code>{{ user.unconfirmed_email }}</code
               >へのメールアドレス変更が承認待ちです。
               <a @click="cancelEmailConfirmation()" class="link--default"
@@ -45,9 +45,8 @@
             <label class="form__label">プロフィール画像</label>
             <div class="form__profile-box">
               <img
-                v-if="this.getCurrentUser"
-                :alt="this.getCurrentUser.username + 'のプロフィール画像'"
-                :src="this.getCurrentUser.user_image"
+                :alt="user.username + 'のプロフィール画像'"
+                :src="user_image_with_number"
                 class="profile-img"
               />
               <input type="file" ref="file" @change="onImageUpload" />
@@ -82,7 +81,7 @@
                   >
                   <a
                     v-else-if="user.facebook_uid != null"
-                    @click="cancelOauth('facebook')"
+                    @click="cancelOauth('Facebook')"
                     class="link--default"
                     >連携を解除</a
                   >
@@ -106,7 +105,7 @@
                   >
                   <a
                     v-else-if="user.twitter_uid != null"
-                    @click="cancelOauth('twitter')"
+                    @click="cancelOauth('Twitter')"
                     class="link--default"
                     >連携を解除</a
                   >
@@ -130,7 +129,7 @@
                   >
                   <a
                     v-else-if="user.google_uid != null"
-                    @click="cancelOauth('google')"
+                    @click="cancelOauth('Google')"
                     class="link--default"
                     >連携を解除</a
                   >
@@ -163,7 +162,7 @@
             </a>
           </div>
         </form>
-        <sidebar-right></sidebar-right>
+        <v-sidebar-right></v-sidebar-right>
       </div>
     </div>
   </div>
@@ -180,7 +179,8 @@ export default {
       isGuest: false,
       user: undefined,
       file: undefined,
-      errors: ""
+      errors: "",
+      message: ""
     };
   },
   created() {
@@ -190,12 +190,11 @@ export default {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
     }),
-    unconfirmed_email() {
-      this.setUserData();
-      return this.user.unconfirmed_email;
-    },
     has_user_image() {
-      return this.user.user_image !== "/user_images/default.jpg";
+      return !!this.user && this.user.user_image !== "/user_images/default.jpg";
+    },
+    user_image_with_number() {
+      return this.user.user_image + '?' + Math.random();
     }
   },
   methods: {
@@ -203,17 +202,21 @@ export default {
       setCurrentUserAction: "user/setCurrentUserAction"
     }),
     setUserData() {
-      this.user = Vue.util.extend({}, this.getCurrentUser);
+      axios.get("/api/current_user").then((res) => {
+        this.user = res.data;
+      });
     },
     async cancelEmailConfirmation() {
-      await axios.delete(`/api/email_confirmations/${this.user.id}`);
+      await axios.delete(`/api/email_confirmations/${this.user.id}`).then((res) => {
+        this.flashMessage.success({
+          title: res.data.message,
+          time: 0,
+          icon: '/flash/success.svg',
+        });
+      });
       await axios.get("/api/current_user").then((res) => {
         this.setCurrentUserAction(res.data);
         this.setUserData();
-        this.$router.go({
-          path: this.$router.currentRoute.path,
-          force: true
-        });
       });
     },
     onImageUpload: function (e) {
@@ -228,6 +231,7 @@ export default {
       reader.readAsDataURL(this.file);
     },
     submitUser() {
+      this.errors = '';
       let formData = new FormData();
       formData.append("user[username]", this.user.username);
       formData.append("user[email]", this.user.email);
@@ -245,34 +249,38 @@ export default {
           }
         })
         .then((res) => {
-          axios.get("/api/current_user").then((res) => {
-            this.setCurrentUserAction(res.data);
-            this.setUserData();
-            this.image = "";
-            this.$router.go({
-              path: this.$router.currentRoute.path,
-              force: true
-            });
+          this.$refs.file.value = null;
+          this.setCurrentUserAction(res.data);
+          this.setUserData();
+          this.flashMessage.success({
+            title: res.data.message,
+            time: 0,
+            icon: '/flash/success.svg',
           });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
         });
     },
-    async cancelOauth(provider) {
-      await axios.delete("/cancel_oauth/" + provider);
-      await axios.get("/api/current_user").then((res) => {
+    cancelOauth(provider) {
+      axios.delete("/cancel_oauth/" + provider).then((res) => {
+        this.flashMessage.success({
+          title: res.data.message,
+          time: 0,
+          icon: '/flash/success.svg',
+        });
         this.setCurrentUserAction(res.data);
         this.setUserData();
-        this.$router.go({
-          path: this.$router.currentRoute.path,
-          force: true
-        });
       });
     },
     accountCancel() {
       axios.delete(`/api/users/${this.getCurrentUser.id}`).then((res) => {
         this.$router.push({ name: "login" });
+        this.flashMessage.success({
+          title: res.data.message,
+          time: 0,
+          icon: '/flash/success.svg',
+        });
       });
     }
   }

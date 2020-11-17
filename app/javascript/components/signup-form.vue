@@ -97,8 +97,13 @@ export default {
   },
   methods: {
     guestLogin() {
-      axios.post("/api/guest_login").then((response) => {
+      axios.post("/api/guest_login").then((res) => {
         this.$router.push({ name: "todos" });
+        this.flashMessage.success({
+          title: res.data.message,
+          time: 0,
+          icon: '/flash/success.svg',
+        });
       });
     },
     submitRegister() {
@@ -110,8 +115,13 @@ export default {
       };
       axios
         .post("/api/users", { user: user_params })
-        .then(() => {
+        .then((res) => {
           this.$router.push({ name: "login" });
+          this.flashMessage.success({
+            title: res.data.message,
+            time: 0,
+            icon: '/flash/success.svg',
+          });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

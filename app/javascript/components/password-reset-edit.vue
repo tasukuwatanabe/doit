@@ -70,8 +70,13 @@ export default {
   },
   methods: {
     guestLogin() {
-      axios.post("/api/guest_login").then(() => {
+      axios.post("/api/guest_login").then((res) => {
         this.$router.push({ name: "todos" });
+        this.flashMessage.success({
+          title: res.data.message,
+          time: 0,
+          icon: '/flash/success.svg',
+        });
       });
     },
     submitPasswordReset() {
@@ -81,16 +86,28 @@ export default {
       };
 
       axios
-        .put("/api/password_resets/:id", {
+        .put(`/api/password_resets/${this.$route.params.id}`, {
           user: password_reset_params,
-          id: this.$route.query.id,
           email: this.$route.query.email
         })
-        .then(() => {
+        .then((res) => {
           this.$router.push({ name: "todos" });
+          this.flashMessage.success({
+            title: res.data.message,
+            time: 0,
+            icon: '/flash/success.svg',
+          });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
+          if (!!error.response.data.message) {
+            this.flashMessage.error({
+              title: error.response.data.message,
+              time: 0,
+              icon: '/flash/error.svg',
+            });
+            this.$router.push({ name: 'password_resets_new' })
+          }
         });
     }
   }

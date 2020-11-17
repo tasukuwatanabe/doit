@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/login', to: 'home#index'
   get '/auth/failure', to: 'home#index'
   get '/auth/:provider/callback', to: 'oauth#create'
-  delete '/cancel_oauth/:provider', to: 'oauth#cancel_oauth'
+  delete '/cancel_oauth/:provider', to: 'oauth#destroy'
   get '/password_resets/new', to: 'home#index'
   get '/password_resets/:id/edit', to: 'home#index', as: 'password_resets_edit'
 

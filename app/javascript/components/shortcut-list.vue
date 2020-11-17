@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container inner">
-      <sidebar-left></sidebar-left>
+      <v-sidebar-left></v-sidebar-left>
       <div class="shortcut content">
         <div class="headline">
           <div class="headline__title">
@@ -82,7 +82,7 @@
           ref="shortcutModal"
         ></shortcut-modal>
       </div>
-      <sidebar-right></sidebar-right>
+      <v-sidebar-right></v-sidebar-right>
     </div>
   </div>
 </template>
@@ -124,8 +124,11 @@ export default {
     },
     setShortcut(shortcut) {
       if (this.shortcuts.length >= 10 && !shortcut) {
-        const maxShortcutError = "ショートカットが登録できるのは10個までです";
-        this.$refs.shortcutModal.setError(maxShortcutError);
+        this.flashMessage.error({
+          title: "ショートカットが登録できるのは10個までです",
+          time: 0,
+          icon: '/flash/error.svg',
+        });
       } else {
         this.$refs.shortcutModal.setShortcutValue(shortcut);
       }

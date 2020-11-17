@@ -8,13 +8,13 @@ class OauthController < ApplicationController
       log_in user
       redirect_to root_path
     else
-      render status: 403
+      render json: { message: "ログインできませんでした" }, status: :unprocessable_entity
     end
   end
 
-  def cancel_oauth
-    provider = params[:provider]
+  def destroy
+    provider = params[:provider].downcase!
     current_user.cancel_oauth(provider)
-    puts "#{provider}とのSNS連携を解除しました"
+    render json: { message: "#{provider}とのSNS連携を解除しました" }
   end
 end

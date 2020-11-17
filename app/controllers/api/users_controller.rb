@@ -27,7 +27,7 @@ class Api::UsersController < ApplicationController
     user = User.new(user_params)
     if user.save
       user.send_activation_email
-      head :no_content
+      render json: { message: "アカウント認証用のメールが送信されました" }
     else
       errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
       render json: { errors: errors }, status: :unprocessable_entity
@@ -71,7 +71,7 @@ class Api::UsersController < ApplicationController
       if email_error
         render json: { errors: email_error }, status: :unprocessable_entity
       else
-        head :no_content
+        render json: { message: "ユーザー情報が更新されました" }
       end
     else # バリデーションエラーを取得
       errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
@@ -84,7 +84,7 @@ class Api::UsersController < ApplicationController
     user = User.find(params[:id])
     user.destroy
     destroy_cookie
-    head :no_content
+    render json: { message: "ユーザーが削除されました" }
   end
 
   private

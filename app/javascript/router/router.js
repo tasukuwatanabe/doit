@@ -56,12 +56,10 @@ function isLoggedOut(to, from, next) {
   if (cookieStatus()) {
     next({ path: "/" });
   } else {
-    if (getCurrentUser() == null || getCurrentUser().id == undefined) {
-      next();
-    } else {
+    if (getCurrentUser() != null) {
       Store.dispatch("user/logoutAction");
-      next();
     }
+    next();
   }
 }
 

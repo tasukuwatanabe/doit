@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container inner">
-      <sidebar-left></sidebar-left>
+      <v-sidebar-left></v-sidebar-left>
       <div class="content">
         <div class="headline">
           <div class="headline__title">
@@ -60,7 +60,7 @@
         </div>
         <label-modal @fetch-labels="fetchLabels" ref="labelModal"></label-modal>
       </div>
-      <sidebar-right></sidebar-right>
+      <v-sidebar-right></v-sidebar-right>
     </div>
   </div>
 </template>
@@ -105,8 +105,11 @@ export default {
     },
     setLabel(label) {
       if (this.labels.length >= 10 && !label) {
-        const maxLabelError = "ラベルが登録できるのは10個までです";
-        this.$refs.labelModal.setError(maxLabelError);
+        this.flashMessage.error({
+          title: "ラベルが登録できるのは10個までです",
+          time: 0,
+          icon: '/flash/error.svg',
+        });
       } else {
         this.$refs.labelModal.setLabelValue(label);
       }

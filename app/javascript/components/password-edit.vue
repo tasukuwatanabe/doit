@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container inner">
-      <sidebar-left></sidebar-left>
+      <v-sidebar-left></v-sidebar-left>
       <div class="content">
         <div class="headline">
           <div class="headline__title">
@@ -46,7 +46,7 @@
           </div>
         </form>
       </div>
-      <sidebar-right></sidebar-right>
+      <v-sidebar-right></v-sidebar-right>
     </div>
   </div>
 </template>
@@ -78,7 +78,12 @@ export default {
         .put(`/api/users/${this.getCurrentUser.id}/password`, {
           change_password_form: password_params
         })
-        .then(() => {
+        .then((res) => {
+          this.flashMessage.success({
+            title: res.data.message,
+            time: 0,
+            icon: '/flash/success.svg',
+          });
           this.new_password = "";
           this.new_password_confirmation = "";
           this.errors = "";

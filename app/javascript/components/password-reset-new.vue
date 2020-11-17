@@ -51,6 +51,11 @@ export default {
     guestLogin() {
       axios.post("/api/guest_login").then(() => {
         this.$router.push({ name: "todos" });
+        this.flashMessage.success({
+          title: res.data.message,
+          time: 0,
+          icon: '/flash/success.svg',
+        });
       });
     },
     submitPasswordReset() {
@@ -58,8 +63,13 @@ export default {
         .post("/api/password_resets", {
           password_reset_form: { email: this.email }
         })
-        .then(() => {
+        .then((res) => {
           this.$router.push({ name: "login" });
+          this.flashMessage.success({
+            title: res.data.message,
+            time: 0,
+            icon: '/flash/success.svg',
+          });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

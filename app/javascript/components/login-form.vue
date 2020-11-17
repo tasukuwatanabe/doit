@@ -88,8 +88,13 @@ export default {
   },
   methods: {
     guestLogin() {
-      axios.post("/api/guest_login").then(() => {
+      axios.post("/api/guest_login").then((res) => {
         this.$router.push({ name: "todos" });
+        this.flashMessage.success({
+          title: res.data.message,
+          time: 0,
+          icon: '/flash/success.svg',
+        });
       });
     },
     submitLogin() {
@@ -99,8 +104,13 @@ export default {
       };
       axios
         .post("/api/login", { session: session_params })
-        .then(() => {
+        .then((res) => {
           this.$router.push({ name: "todos" });
+          this.flashMessage.success({
+            title: res.data.message,
+            time: 0,
+            icon: '/flash/success.svg',
+          });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

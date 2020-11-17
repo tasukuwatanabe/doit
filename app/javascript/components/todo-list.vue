@@ -132,13 +132,13 @@ export default {
       return `${weeks[week]}曜日`;
     },
     setYesterday() {
-      let selected_date = new Date(this.selectedDate);
-      const yesterday = selected_date.setSelectedDate(selected_date.getDate() - 1);
+      const selected_date = new Date(this.selectedDate);
+      const yesterday = selected_date.setDate(selected_date.getDate() - 1);
       return new Date(yesterday);
     },
     setTomorrow() {
       const selected_date = new Date(this.selectedDate);
-      const tomorrow = selected_date.setSelectedDate(selected_date.getDate() + 1);
+      const tomorrow = selected_date.setDate(selected_date.getDate() + 1);
       return new Date(tomorrow);
     },
     todoLabel() {

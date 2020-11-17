@@ -13,7 +13,7 @@
             <img
               alt="ゲストユーザーアイコン"
               class="profile-img"
-              :src="this.getCurrentUser.user_image"
+              :src="user_image_with_number"
             />
           </div>
           <div class="userinfo__username">
@@ -105,16 +105,24 @@ export default {
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
-    })
+    }),
+    user_image_with_number() {
+      return this.getCurrentUser.user_image + '?' + Math.random();
+    }
   },
   methods: {
     ...mapActions({
       logoutAction: "user/logoutAction"
     }),
     logout() {
-      axios.delete("/api/logout").then(() => {
+      axios.delete("/api/logout").then((res) => {
         this.logoutAction();
         this.$router.push({ name: "login" });
+        this.flashMessage.success({
+          title: res.data.message,
+          time: 0,
+          icon: '/flash/success.svg',
+        });
       });
     }
   }
