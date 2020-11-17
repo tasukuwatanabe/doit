@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container inner">
-      <sidebar-left></sidebar-left>
+      <v-sidebar-left></v-sidebar-left>
       <div class="content">
         <div class="todo">
           <section class="horizontal-arrows">
@@ -84,7 +84,7 @@
         <todo-modal @fetch-todos="fetchTodos" ref="todoModal"></todo-modal>
         <todo-shortcut @fetch-todos="fetchTodos"></todo-shortcut>
       </div>
-      <sidebar-right></sidebar-right>
+      <v-sidebar-right></v-sidebar-right>
     </div>
   </div>
 </template>
