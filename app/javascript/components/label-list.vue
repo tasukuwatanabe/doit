@@ -60,7 +60,6 @@
         </div>
         <label-modal @fetch-labels="fetchLabels" ref="labelModal"></label-modal>
       </div>
-      <v-sidebar-right></v-sidebar-right>
     </div>
   </div>
 </template>

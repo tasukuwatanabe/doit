@@ -82,7 +82,6 @@
           ref="shortcutModal"
         ></shortcut-modal>
       </div>
-      <v-sidebar-right></v-sidebar-right>
     </div>
   </div>
 </template>

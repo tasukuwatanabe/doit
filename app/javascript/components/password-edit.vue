@@ -46,7 +46,6 @@
           </div>
         </form>
       </div>
-      <v-sidebar-right></v-sidebar-right>
     </div>
   </div>
 </template>

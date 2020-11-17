@@ -24,7 +24,7 @@
               <i class="fas fa-caret-right"></i>
             </div>
           </section>
-          <ul class="list" v-if="todos.length">
+          <ul class="list" v-if="!!todos">
             <li v-for="todo in todos" class="list__item" :key="todo.id">
               <div
                 class="todo-status"

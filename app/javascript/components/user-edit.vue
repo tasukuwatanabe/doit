@@ -162,7 +162,6 @@
             </a>
           </div>
         </form>
-        <v-sidebar-right></v-sidebar-right>
       </div>
     </div>
   </div>

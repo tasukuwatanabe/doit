@@ -1,5 +1,5 @@
 <template>
-  <aside v-if="root" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar__stickey-part sidebar-right">
       <section class="sidebar-right__search search">
         <form action="" class="search__form">
@@ -90,19 +90,3 @@
     </div>
   </aside>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      todos: [],
-      todo: {}
-    };
-  },
-  computed: {
-    root() {
-      return this.$route.path === "/";
-    }
-  }
-};
-</script>
