@@ -81,10 +81,12 @@ class User < ApplicationRecord
       end
 
       unless user
+        password = new_token
         user = User.create!(
           username: name,
           email: email,
-          password: new_token,
+          password: password,
+          password_confirmation: password,
           auto_generated_password: true,
           activated: true,
           activated_at: Time.zone.now,
