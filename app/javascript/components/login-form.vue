@@ -77,6 +77,7 @@
 
 <script>
 import axios from "axios";
+import GuestLogin from "./mixins/guest-login";
 
 export default {
   data() {
@@ -86,17 +87,8 @@ export default {
       errors: ""
     };
   },
+  mixins: [GuestLogin],
   methods: {
-    guestLogin() {
-      axios.post("/api/guest_login").then((res) => {
-        this.$router.push({ name: "todos" });
-        this.flashMessage.success({
-          title: res.data.message,
-          time: 0,
-          icon: '/flash/success.svg',
-        });
-      });
-    },
     submitLogin() {
       const session_params = {
         email: this.email,
@@ -108,7 +100,6 @@ export default {
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
             title: res.data.message,
-            time: 0,
             icon: '/flash/success.svg',
           });
         })
