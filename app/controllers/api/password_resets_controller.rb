@@ -6,8 +6,6 @@ class Api::PasswordResetsController < ApplicationController
   before_action :valid_user, only: :update
 
   def create
-    # password_reset_form = PasswordResetForm.new(password_reset_params)
-
     user = User.find_by(email: password_reset_params[:email])
     user.create_reset_digest if user
 
@@ -20,24 +18,6 @@ class Api::PasswordResetsController < ApplicationController
   end
 
   def update
-
-    errors = {}
-
-    # パスワードが未入力の場合
-    if user_params[:password].empty?
-      errors[:password] = '新しいパスワードが未入力です'
-    end
-    # パスワード(確認用)が未入力の場合
-    if user_params[:password_confirmation].empty?
-      errors[:password_confirmation] = '新しいパスワード(確認用)が未入力です'
-    end
-    # エラーがある場合には表示
-    unless errors.empty?
-      render json: { errors: errors }, status: :unprocessable_entity
-      return
-    end
-
-    # ユーザーのパスワードを更新
     if @user.update_attributes(user_params)
       log_in @user
       render json: { message: "パスワードがリセットされました。" }

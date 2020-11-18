@@ -8,7 +8,7 @@ class Api::UsersController < ApplicationController
         id: current_user.id,
         username: current_user.username,
         email: current_user.email,
-        user_image: current_user.user_image.url,
+        user_image: current_user.user_image,
         facebook_uid: current_user.facebook_uid,
         twitter_uid: current_user.twitter_uid,
         google_uid: current_user.google_uid,
@@ -46,8 +46,6 @@ class Api::UsersController < ApplicationController
     # メールアドレス使用状況をチェック
     if new_email && user && User.email_used?(user, new_email)
       email_error = { unconfirmed_email: 'このメールアドレスはすでに使われています。' }
-    elsif new_email == '' # メールアドレスが空の場合
-      email_error = { unconfirmed_email: 'メールアドレスが入力されていません。' }
     end
 
     # メールアドレスに変更がある場合
@@ -60,7 +58,7 @@ class Api::UsersController < ApplicationController
         # メールアドレス確認用のメールを送信
         UserMailer.email_confirmation(user).deliver_now
       else # バリデーションを取得
-        unless email_error
+        if email_error.present?
           errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
         end
       end
@@ -71,7 +69,7 @@ class Api::UsersController < ApplicationController
       if email_error
         render json: { errors: email_error }, status: :unprocessable_entity
       else
-        render json: { message: "ユーザー情報が更新されました" }
+        render json: { user: user, message: "ユーザー情報が更新されました" }
       end
     else # バリデーションエラーを取得
       errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
