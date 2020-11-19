@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :todos, except: %i[new edit show] do
       put '/toggle_status', to: 'todos#toggle_status'
     end
+    get '/search', to: 'todos#search'
     resources :shortcuts, except: %i[new edit show]
     resources :labels, except: %i[new edit show]
     get '/current_user', to: 'users#current_user'
@@ -31,6 +32,5 @@ Rails.application.routes.draw do
     resources :email_confirmations, only: %i[edit destroy]
   end
 
-  # get '/search', to: 'todos#search', as: 'search'
   get '*path', to: 'home#index'
 end

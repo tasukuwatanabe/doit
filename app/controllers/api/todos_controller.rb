@@ -44,6 +44,18 @@ class Api::TodosController < ApplicationController
     todo.save
   end
 
+  def search
+    todos = current_user.todos.search(params[:query])
+    labels = current_user.labels.select(:id, :title, :color)
+
+    api_data = {
+      todos: todos,
+      labels: labels
+    }
+
+    render json: api_data
+  end
+
   private
 
   def todo_params

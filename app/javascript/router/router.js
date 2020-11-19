@@ -19,7 +19,6 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 
 function isLoggedIn(to, from, next) {
-  // Store.dispatch("slideMenu/setToggleCloseAction");
   if (cookieStatus()) {
     next();
   } else {
@@ -29,7 +28,6 @@ function isLoggedIn(to, from, next) {
 }
 
 function isLoggedOut(to, from, next) {
-  // Store.dispatch("slideMenu/setToggleCloseAction");
   if (cookieStatus()) {
     next({ path: "/" });
   } else {
@@ -99,7 +97,7 @@ export default new VueRouter({
       component: Redirect,
       name: "redirect"
     },
-    }
+    {
       path: "*",
       component: NotFound,
       beforeEnter: isLoggedIn

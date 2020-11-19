@@ -140,13 +140,17 @@ export default {
       };
     }
   },
+  watch: {
+    selectedDate() {
+      this.fetchTodos(this.selectedDate);
+    }
+  },
   methods: {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchDate(select) {
       this.setSelectedDateAction(select);
-      this.fetchTodos(this.selectedDate);
     },
     fetchTodos(date) {
       axios.get("/api/todos", { params: { date: date } }).then((res) => {

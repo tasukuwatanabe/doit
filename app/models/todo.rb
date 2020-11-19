@@ -13,9 +13,10 @@ class Todo < ApplicationRecord
     allow_blank: true
   }
 
-  def self.search(search)
-    return nil unless search
+  def self.search(query)
+    return nil unless query.present?
 
-    Todo.where(['title LIKE ?', search.to_s])
+
+    Todo.where(['title LIKE ?', "%#{query.strip}%"]).order(todo_date: :asc)
   end
 end
