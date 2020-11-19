@@ -32,4 +32,5 @@ Rails.application.routes.draw do
   end
 
   # get '/search', to: 'todos#search', as: 'search'
+  get '*path', to: 'home#index'
 end

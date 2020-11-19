@@ -11,6 +11,7 @@ import Signup from "../components/signup-form.vue";
 import Redirect from "../components/redirect.vue";
 import PasswordResetNew from "../components/password-reset-new.vue";
 import PasswordResetEdit from "../components/password-reset-edit.vue";
+import NotFound from "../components/not-found.vue";
 import Store from "../store/index";
 import { cookieStatus, deleteCookie } from "../components/mixins/cookie";
 
@@ -97,6 +98,11 @@ export default new VueRouter({
       path: "/redirect",
       component: Redirect,
       name: "redirect"
+    },
+    }
+      path: "*",
+      component: NotFound,
+      beforeEnter: isLoggedIn
     }
   ]
 });
