@@ -3,7 +3,11 @@
   <v-slide-menu></v-slide-menu>
   <main>
     <v-flash></v-flash>
-    <router-view></router-view>
+    <div class="container inner">
+      <v-sidebar-left></v-sidebar-left>
+      <router-view></router-view>
+      <v-sidebar-right></v-sidebar-right>
+    </div>
   </main>
   <v-footer></v-footer>
 </div>

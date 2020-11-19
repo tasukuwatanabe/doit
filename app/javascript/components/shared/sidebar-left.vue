@@ -100,19 +100,28 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import { cookieStatus } from "../mixins/cookie";
 
 export default {
+  created() {
+    axios.get("/api/current_user").then((res) => {
+      this.setCurrentUserAction(res.data);
+    });
+  },
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
     }),
     user_image_with_number() {
-      return this.getCurrentUser.user_image + '?' + Math.random();
+      if (this.getCurrentUser.user_image.url) {
+        return this.getCurrentUser.user_image.url + '?' + Math.random();
+      }
     }
   },
   methods: {
     ...mapActions({
-      logoutAction: "user/logoutAction"
+      logoutAction: "user/logoutAction",
+      setCurrentUserAction: "user/setCurrentUserAction"
     }),
     logout() {
       axios.delete("/api/logout").then((res) => {

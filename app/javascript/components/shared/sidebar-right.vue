@@ -1,5 +1,5 @@
 <template>
-  <aside class="sidebar">
+  <aside v-if="this.getCurrentUser && is_todo" class="sidebar">
     <div class="sidebar__stickey-part sidebar-right">
       <section class="sidebar-right__search search">
         <form action="" class="search__form">
@@ -90,3 +90,21 @@
     </div>
   </aside>
 </template>
+
+<script>
+import { cookieStatus } from "../mixins/cookie";
+import { mapGetters } from "vuex";
+
+export default {
+  computed: {
+    is_todo() {
+      return this.$route.name === 'todos';
+    },
+  },
+  methods: {
+    ...mapGetters({
+      getCurrentUser: "user/getCurrentUser"
+    }),
+  }
+}
+</script>

@@ -59,6 +59,7 @@
 
 <script>
 import axios from "axios";
+import GuestLogin from "./mixins/guest-login";
 
 export default {
   data() {
@@ -68,17 +69,8 @@ export default {
       errors: ""
     };
   },
+  mixins: [GuestLogin],
   methods: {
-    guestLogin() {
-      axios.post("/api/guest_login").then((res) => {
-        this.$router.push({ name: "todos" });
-        this.flashMessage.success({
-          title: res.data.message,
-          time: 0,
-          icon: '/flash/success.svg',
-        });
-      });
-    },
     submitPasswordReset() {
       const password_reset_params = {
         password: this.password,
@@ -94,7 +86,6 @@ export default {
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
             title: res.data.message,
-            time: 0,
             icon: '/flash/success.svg',
           });
         })

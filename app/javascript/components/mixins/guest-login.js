@@ -1,15 +1,19 @@
 import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   methods: {
-    guestLogin() {
-      axios.post("/api/guest_login")
+    ...mapActions({
+      setCurrentUserAction: 'user/setCurrentUserAction'
+    }),
+    async guestLogin() {
+      await axios.post("/api/guest_login")
         .then((res) => {
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
             title: res.data.message,
             icon: '/flash/success.svg',
-          })
+          });
         })
         .catch((error) => {
           this.flashMessage.error({
@@ -17,6 +21,9 @@ export default {
             icon: '/flash/error.svg',
           })
         });
+      await axios.get("/api/current_user").then((res) => {
+        this.setCurrentUserAction(res.data);
+      });
     }
   }
 }
