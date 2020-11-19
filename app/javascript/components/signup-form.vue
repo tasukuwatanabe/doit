@@ -19,7 +19,11 @@
         </div>
         <div class="form__group">
           <label class="form__label">パスワード</label>
-          <input class="form__input" type="password" v-model="password" />
+          <input
+            class="form__input"
+            type="password"
+            v-model="password"
+            autocomplete="on" />
           <span class="form__error" v-if="!!errors.password">
             {{ errors.password }}
           </span>
@@ -30,6 +34,7 @@
             class="form__input"
             type="password"
             v-model="password_confirmation"
+            autocomplete="on"
           />
           <span class="form__error" v-if="!!errors.password_confirmation">
             {{ errors.password_confirmation }}

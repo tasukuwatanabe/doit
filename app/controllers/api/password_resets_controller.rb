@@ -18,11 +18,13 @@ class Api::PasswordResetsController < ApplicationController
   end
 
   def update
-    if @user.update_attributes(user_params)
+    change_password_form = ChangePasswordForm.new(user_params)
+    change_password_form.object = @user
+    if change_password_form.save
       log_in @user
       render json: { message: "パスワードがリセットされました。" }
     else
-      errors = @user.errors.keys.map { |key| [key, @user.errors.full_messages_for(key)[0]] }.to_h
+      errors = change_password_form.errors.keys.map { |key| [key, change_password_form.errors.full_messages_for(key)[0]] }.to_h
       render json: { errors: errors }, status: :unprocessable_entity
     end
   end

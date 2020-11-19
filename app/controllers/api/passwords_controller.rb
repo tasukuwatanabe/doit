@@ -14,6 +14,6 @@ class Api::PasswordsController < ApplicationController
   end
 
   private def password_params
-    params.fetch(:change_password_form, {}).permit(:id, :new_password, :new_password_confirmation)
+    params.fetch(:change_password_form, {}).permit(:id, :password, :password_confirmation)
   end
 end

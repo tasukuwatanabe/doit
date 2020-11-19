@@ -1,52 +1,47 @@
 <template>
-  <div>
-    <div class="container inner">
-      <v-sidebar-left></v-sidebar-left>
-      <div class="content">
-        <div class="headline">
-          <div class="headline__title">
-            パスワードの変更
-            <span class="icon headline__icon">
-              <i class="fas fa-cog"></i>
-            </span>
-          </div>
-          <p class="headline__text">
-            ログインに必要なパスワードを変更することができます。
-          </p>
-        </div>
-        <form action="" class="form user-form">
-          <div class="form__group">
-            <label class="form__label">新しいパスワード</label>
-            <input
-              class="form__input"
-              type="password"
-              v-model="new_password"
-              autocomplete="on"
-            />
-            <span class="form__error" v-if="!!errors.new_password">
-              {{ errors.new_password }}
-            </span>
-          </div>
-          <div class="form__group">
-            <label class="form__label">新しいパスワード(確認用)</label>
-            <input
-              class="form__input"
-              type="password"
-              v-model="new_password_confirmation"
-              autocomplete="on"
-            />
-            <span class="form__error" v-if="!!errors.new_password_confirmation">
-              {{ errors.new_password_confirmation }}
-            </span>
-          </div>
-          <div class="form__action">
-            <div @click="submitPassword()" class="btn-main btn--sm">
-              パスワードを更新する
-            </div>
-          </div>
-        </form>
+  <div class="content">
+    <div class="headline">
+      <div class="headline__title">
+        パスワードの変更
+        <span class="icon headline__icon">
+          <i class="fas fa-cog"></i>
+        </span>
       </div>
+      <p class="headline__text">
+        ログインに必要なパスワードを変更することができます。
+      </p>
     </div>
+    <form action="" class="form user-form">
+      <div class="form__group">
+        <label class="form__label">新しいパスワード</label>
+        <input
+          class="form__input"
+          type="password"
+          v-model="password"
+          autocomplete="on"
+        />
+        <span class="form__error" v-if="!!errors.password">
+          {{ errors.password }}
+        </span>
+      </div>
+      <div class="form__group">
+        <label class="form__label">新しいパスワード(確認用)</label>
+        <input
+          class="form__input"
+          type="password"
+          v-model="password_confirmation"
+          autocomplete="on"
+        />
+        <span class="form__error" v-if="!!errors.password_confirmation">
+          {{ errors.password_confirmation }}
+        </span>
+      </div>
+      <div class="form__action">
+        <div @click="submitPassword()" class="btn-main btn--sm">
+          パスワードを更新する
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -57,8 +52,8 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      new_password: "",
-      new_password_confirmation: "",
+      password: "",
+      password_confirmation: "",
       errors: ""
     };
   },
@@ -70,8 +65,8 @@ export default {
   methods: {
     submitPassword() {
       const password_params = {
-        new_password: this.new_password,
-        new_password_confirmation: this.new_password_confirmation
+        password: this.password,
+        password_confirmation: this.password_confirmation
       };
       axios
         .put(`/api/users/${this.getCurrentUser.id}/password`, {
@@ -80,11 +75,10 @@ export default {
         .then((res) => {
           this.flashMessage.success({
             title: res.data.message,
-            time: 0,
             icon: '/flash/success.svg',
           });
-          this.new_password = "";
-          this.new_password_confirmation = "";
+          this.password = "";
+          this.password_confirmation = "";
           this.errors = "";
         })
         .catch((error) => {
