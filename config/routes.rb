@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/password/:id/edit', to: 'home#index'
   get '/signup', to: 'home#index'
   get '/login', to: 'home#index'
+  get '/redirect', to: 'home#index'
   get '/auth/failure', to: 'home#index'
   get '/auth/:provider/callback', to: 'oauth#create'
   delete '/cancel_oauth/:provider', to: 'oauth#destroy'

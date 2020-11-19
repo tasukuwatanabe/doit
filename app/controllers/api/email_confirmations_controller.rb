@@ -7,13 +7,12 @@ class Api::EmailConfirmationsController < ApplicationController
     if user && user.authenticated?(:confirmation, params[:id])
       user.update_new_email
       log_out
-      # render json: { message: "メールアドレスが更新されました"}
-      puts "メールアドレスが更新されました"
-      redirect_to root_path
+      query = '?email_confirmed=true'
+      redirect_to '/redirect' + query
     else
-      # render json: { message: "リンクが有効ではありません"}
-      puts "リンクが有効ではありません"
-      redirect_to root_path
+      path = logged_in? ? '/' : '/login'
+      query = '?email_confirmed=false'
+      redirect_to '/redirect' + query
     end
   end
 

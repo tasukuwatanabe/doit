@@ -4,19 +4,14 @@ class Api::AccountActivationsController < ApplicationController
   def edit
     user = User.find_by(email: params[:email])
     if user && user.activated?
-      puts "アカウントはすでに有効です"
-      # render json: { message: "アカウントはすでに有効です"}
-      redirect_to '/'
+      query = '?account_activation=already'
     elsif user && user.authenticated?(:activation, params[:id])
       user.activate
       log_in user
-      puts "アカウントが有効化されました"
-      # render json: { message: "アカウントが有効化されました"}
-      redirect_to '/'
+      query = '?account_activation=done'
     else
-      puts "有効化リンクが無効です"
-      # render json: { message: "有効化リンクが無効です"}
-      redirect_to '/signup'
+      query = '?account_activation=invalid'
     end
+    redirect_to '/redirect' + query
   end
 end

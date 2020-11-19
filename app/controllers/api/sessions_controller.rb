@@ -42,8 +42,12 @@ class Api::SessionsController < ApplicationController
 
   def guest_login
     user = User.find_by(email: 'guest@example.com')
-    log_in user
-    render json: { message: "ゲストユーザーでログインしました"}
+    if user
+      log_in user
+      render json: { message: "ゲストユーザーでログインしました"}
+    else
+      render json: { message: "ゲストユーザーが見つかりません"}, status: :unprocessable_entity
+    end
   end
 
   def destroy
