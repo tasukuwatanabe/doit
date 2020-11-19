@@ -36,14 +36,12 @@ class Api::TodosController < ApplicationController
   def destroy
     todo = Todo.find(params[:id])
     todo.destroy
-    head :no_content
   end
 
   def toggle_status
     todo = Todo.find_by(id: params[:todo_id])
     todo.status = !todo.status
     todo.save
-    head :no_content
   end
 
   private

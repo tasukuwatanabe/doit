@@ -11,7 +11,7 @@
       </router-link>
     </div>
     <div class="index-shortcut__field">
-      <ul v-if="!!shortcuts" class="index-shortcut__list">
+      <ul v-if="shortcuts.length" class="index-shortcut__list">
         <li
           v-for="shortcut in shortcuts"
           :key="shortcut.id"
