@@ -1,5 +1,5 @@
 <template>
-  <aside v-if="root" class="sidebar">
+  <aside v-if="this.getCurrentUser && is_todo" class="sidebar">
     <div class="sidebar__stickey-part sidebar-right">
       <section class="sidebar-right__search search">
         <form action="" class="search__form">
@@ -92,19 +92,19 @@
 </template>
 
 <script>
-import axios from "axios";
+import { cookieStatus } from "../mixins/cookie";
+import { mapGetters } from "vuex";
 
 export default {
-  data() {
-    return {
-      todos: [],
-      todo: {}
-    };
-  },
   computed: {
-    root() {
-      return this.$route.path === "/";
-    }
+    is_todo() {
+      return this.$route.name === 'todos';
+    },
+  },
+  methods: {
+    ...mapGetters({
+      getCurrentUser: "user/getCurrentUser"
+    }),
   }
-};
+}
 </script>

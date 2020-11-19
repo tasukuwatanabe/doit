@@ -28,12 +28,18 @@ class User < ApplicationRecord
             format: { with: VALID_EMAIL_REGEX, message: 'の形式を正しく入力してください。' },
             uniqueness: { case_sensitive: false }
   validates :unconfirmed_email,
+            presence: true,
             format: { with: VALID_EMAIL_REGEX, message: 'の形式を正しく入力してください。' },
             length: { maximum: 255 },
             uniqueness: { case_sensitive: false },
             allow_nil: true
-  validates :password, presence: true, confirmation: true, on: :create
-  validates :password_confirmation, presence: true, on: :create
+  validates :password,
+            presence: true,
+            confirmation: true,
+            on: :create
+  validates :password_confirmation,
+            presence: true,
+            on: :create
 
   has_secure_password
 
@@ -81,10 +87,12 @@ class User < ApplicationRecord
       end
 
       unless user
+        password = new_token
         user = User.create!(
           username: name,
           email: email,
-          password: new_token,
+          password: password,
+          password_confirmation: password,
           auto_generated_password: true,
           activated: true,
           activated_at: Time.zone.now,
@@ -159,12 +167,12 @@ class User < ApplicationRecord
     update_columns(email: unconfirmed_email, unconfirmed_email: nil)
   end
 
-  def cancel_oauth(uid)
-    if uid == 'twitter' && twitter_uid
+  def cancel_oauth(provider)
+    if provider == 'twitter' && twitter_uid
       update(twitter_uid: nil)
-    elsif uid == 'facebook' && facebook_uid
+    elsif provider == 'facebook' && facebook_uid
       update(facebook_uid: nil)
-    elsif uid == 'google' && google_uid
+    elsif provider == 'google' && google_uid
       update(google_uid: nil)
     end
   end

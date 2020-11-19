@@ -13,7 +13,7 @@
             <img
               alt="ゲストユーザーアイコン"
               class="profile-img"
-              :src="this.getCurrentUser.user_image"
+              :src="user_image_with_number"
             />
           </div>
           <div class="userinfo__username">
@@ -100,21 +100,38 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import { cookieStatus } from "../mixins/cookie";
 
 export default {
+  created() {
+    axios.get("/api/current_user").then((res) => {
+      this.setCurrentUserAction(res.data);
+    });
+  },
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
-    })
+    }),
+    user_image_with_number() {
+      if (this.getCurrentUser.user_image.url) {
+        return this.getCurrentUser.user_image.url + '?' + Math.random();
+      }
+    }
   },
   methods: {
     ...mapActions({
-      logoutAction: "user/logoutAction"
+      logoutAction: "user/logoutAction",
+      setCurrentUserAction: "user/setCurrentUserAction"
     }),
     logout() {
-      axios.delete("/api/logout").then(() => {
+      axios.delete("/api/logout").then((res) => {
         this.logoutAction();
         this.$router.push({ name: "login" });
+        this.flashMessage.success({
+          title: res.data.message,
+          time: 0,
+          icon: '/flash/success.svg',
+        });
       });
     }
   }

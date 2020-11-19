@@ -128,6 +128,11 @@ export default {
       axios.delete("/api/logout").then(() => {
         this.logoutAction();
         this.$router.push({ name: "login" });
+        this.flashMessage.success({
+          title: res.data.message,
+          time: 0,
+          icon: '/flash/success.svg',
+        });
       });
     }
   }

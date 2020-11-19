@@ -1,9 +1,13 @@
 <div id="app" class="wrapper">
   <v-header></v-header>
-  <slide-menu></slide-menu>
-  <v-flash></v-flash>
+  <v-slide-menu></v-slide-menu>
   <main>
-    <router-view></router-view>
+    <v-flash></v-flash>
+    <div class="container inner">
+      <v-sidebar-left></v-sidebar-left>
+      <router-view></router-view>
+      <v-sidebar-right></v-sidebar-right>
+    </div>
   </main>
   <v-footer></v-footer>
 </div>

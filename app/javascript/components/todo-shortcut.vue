@@ -4,7 +4,7 @@
       <div class="index-shortcut__title">ショートカットからToDoを作成</div>
       <router-link
         to="/shortcuts"
-        v-if="shortcuts.length"
+        v-if="!!shortcuts"
         class="index-shortcut__edit"
       >
         編集

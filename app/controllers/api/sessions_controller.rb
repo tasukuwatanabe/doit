@@ -29,7 +29,7 @@ class Api::SessionsController < ApplicationController
     if user && Authenticator.new(user).authenticate(password_param)
       if user.activated? # アカウントの認証状況を確認
         log_in user
-        head :no_content
+        render json: { message: "ログインしました" }
       else # アカウントが未認証ならエラーを表示
         errors = { base: 'アカウントが未認証です。送信されたメールをご確認ください。' }
         render json: { errors: errors }, status: :unprocessable_entity
@@ -42,13 +42,17 @@ class Api::SessionsController < ApplicationController
 
   def guest_login
     user = User.find_by(email: 'guest@example.com')
-    log_in user
-    head :no_content
+    if user
+      log_in user
+      render json: { message: "ゲストユーザーでログインしました"}
+    else
+      render json: { message: "ゲストユーザーが見つかりません"}, status: :unprocessable_entity
+    end
   end
 
   def destroy
     log_out
-    head :no_content
+    render json: { message: "ログアウトしました"}
   end
 
   private def session_params

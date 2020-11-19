@@ -1,91 +1,85 @@
 <template>
-  <div>
-    <div class="container inner">
-      <sidebar-left></sidebar-left>
-      <div class="content">
-        <div class="todo">
-          <section class="horizontal-arrows">
-            <div
-              @click="fetchDate(setYesterday)"
-              class="horizontal-arrows__btn horizontal-arrows__btn--left"
-            >
-              <i class="fas fa-caret-left"></i>
-            </div>
-            <div class="todo__date-box">
-              <div class="todo__date-title">
-                {{ setSelectedDate }}
-              </div>
-              <p class="todo__date-day">{{ setDay }}</p>
-            </div>
-            <div
-              @click="fetchDate(setTomorrow)"
-              class="horizontal-arrows__btn horizontal-arrows__btn--right"
-            >
-              <i class="fas fa-caret-right"></i>
-            </div>
-          </section>
-          <ul class="list" v-if="todos.length">
-            <li v-for="todo in todos" class="list__item" :key="todo.id">
-              <div
-                class="todo-status"
-                :class="{ 'todo__status--checked': todo.status }"
-              >
-                <input
-                  :id="'todo_status_' + todo.id"
-                  type="checkbox"
-                  v-model="todo.status"
-                  @click="toggleStatus(todo)"
-                />
-                <label :for="'todo_status_' + todo.id"></label>
-              </div>
-              <div class="list__block list__block--left">
-                <div class="list__title">{{ todo.title }}</div>
-              </div>
-              <div class="list__block list__block--right list__block--grow">
-                <div
-                  class="label label--margin"
-                  v-if="todoLabel(todo)"
-                  :style="{
-                    color: colorOnRgb(todoLabel(todo).color),
-                    backgroundColor: todoLabel(todo).color
-                  }"
-                >
-                  {{ todoLabel(todo).title }}
-                </div>
-                <div v-else></div>
-                <div class="item-action">
-                  <a @click="setTodo(todo)" class="item-action__btn">
-                    <i class="fas fa-pencil-alt"></i>
-                  </a>
-                  <a @click="deleteTodo(todo)" class="item-action__btn">
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </div>
-              </div>
-            </li>
-          </ul>
-          <div v-else class="no-result todo__no-result">
-            <div class="no-result__illustration">
-              <img
-                src="/illustrations/il-checklist.png"
-                alt="チェックリストのイラスト"
-              />
-            </div>
-          </div>
-          <div class="todo__page-action page-action">
-            <a @click="setTodo()" class="btn-outlined btn--sm">
-              <span class="page-action__icon">
-                <i class="fas fa-plus"></i>
-              </span>
-              <span class="page-action__text modal-trigger">ToDoを追加</span>
-            </a>
-          </div>
+  <div class="content">
+    <div class="todo">
+      <section class="horizontal-arrows">
+        <div
+          @click="fetchDate(setYesterday)"
+          class="horizontal-arrows__btn horizontal-arrows__btn--left"
+        >
+          <i class="fas fa-caret-left"></i>
         </div>
-        <todo-modal @fetch-todos="fetchTodos" ref="todoModal"></todo-modal>
-        <todo-shortcut @fetch-todos="fetchTodos"></todo-shortcut>
+        <div class="todo__date-box">
+          <div class="todo__date-title">
+            {{ setSelectedDate }}
+          </div>
+          <p class="todo__date-day">{{ setDay }}</p>
+        </div>
+        <div
+          @click="fetchDate(setTomorrow)"
+          class="horizontal-arrows__btn horizontal-arrows__btn--right"
+        >
+          <i class="fas fa-caret-right"></i>
+        </div>
+      </section>
+      <ul class="list" v-if="todos.length">
+        <li v-for="todo in todos" class="list__item" :key="todo.id">
+          <div
+            class="todo-status"
+            :class="{ 'todo__status--checked': todo.status }"
+          >
+            <input
+              :id="'todo_status_' + todo.id"
+              type="checkbox"
+              v-model="todo.status"
+              @click="toggleStatus(todo)"
+            />
+            <label :for="'todo_status_' + todo.id"></label>
+          </div>
+          <div class="list__block list__block--left">
+            <div class="list__title">{{ todo.title }}</div>
+          </div>
+          <div class="list__block list__block--right list__block--grow">
+            <div
+              class="label label--margin"
+              v-if="todoLabel(todo)"
+              :style="{
+                color: colorOnRgb(todoLabel(todo).color),
+                backgroundColor: todoLabel(todo).color
+              }"
+            >
+              {{ todoLabel(todo).title }}
+            </div>
+            <div v-else></div>
+            <div class="item-action">
+              <a @click="setTodo(todo)" class="item-action__btn">
+                <i class="fas fa-pencil-alt"></i>
+              </a>
+              <a @click="deleteTodo(todo)" class="item-action__btn">
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div v-else class="no-result todo__no-result">
+        <div class="no-result__illustration">
+          <img
+            src="/illustrations/il-checklist.png"
+            alt="チェックリストのイラスト"
+          />
+        </div>
       </div>
-      <sidebar-right></sidebar-right>
+      <div class="todo__page-action page-action">
+        <a @click="setTodo()" class="btn-outlined btn--sm">
+          <span class="page-action__icon">
+            <i class="fas fa-plus"></i>
+          </span>
+          <span class="page-action__text modal-trigger">ToDoを追加</span>
+        </a>
+      </div>
     </div>
+    <todo-modal @fetch-todos="fetchTodos" ref="todoModal"></todo-modal>
+    <todo-shortcut @fetch-todos="fetchTodos"></todo-shortcut>
   </div>
 </template>
 
@@ -104,7 +98,6 @@ export default {
   data() {
     return {
       todos: [],
-      shortcuts: [],
       labels: []
     };
   },
@@ -132,13 +125,13 @@ export default {
       return `${weeks[week]}曜日`;
     },
     setYesterday() {
-      let selected_date = new Date(this.selectedDate);
-      const yesterday = selected_date.setSelectedDate(selected_date.getDate() - 1);
+      const selected_date = new Date(this.selectedDate);
+      const yesterday = selected_date.setDate(selected_date.getDate() - 1);
       return new Date(yesterday);
     },
     setTomorrow() {
       const selected_date = new Date(this.selectedDate);
-      const tomorrow = selected_date.setSelectedDate(selected_date.getDate() + 1);
+      const tomorrow = selected_date.setDate(selected_date.getDate() + 1);
       return new Date(tomorrow);
     },
     todoLabel() {

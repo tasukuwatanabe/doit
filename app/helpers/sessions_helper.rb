@@ -4,8 +4,6 @@ module SessionsHelper
       user.remember
       cookies.permanent.signed[:user_id] = user.id
       cookies.permanent[:remember_token] = user.remember_token
-    else
-      redirect_to root_path
     end
   end
 

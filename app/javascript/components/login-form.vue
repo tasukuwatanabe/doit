@@ -77,6 +77,8 @@
 
 <script>
 import axios from "axios";
+import GuestLogin from "./mixins/guest-login";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -86,12 +88,11 @@ export default {
       errors: ""
     };
   },
+  mixins: [GuestLogin],
   methods: {
-    guestLogin() {
-      axios.post("/api/guest_login").then(() => {
-        this.$router.push({ name: "todos" });
-      });
-    },
+    ...mapActions({
+      setCurrentUserAction: 'user/setCurrentUserAction'
+    }),
     submitLogin() {
       const session_params = {
         email: this.email,
@@ -99,8 +100,16 @@ export default {
       };
       axios
         .post("/api/login", { session: session_params })
-        .then(() => {
+        .then((res) => {
           this.$router.push({ name: "todos" });
+          this.flashMessage.success({
+            title: res.data.message,
+            icon: '/flash/success.svg',
+          });
+
+          axios.get("/api/current_user").then((res) => {
+            this.setCurrentUserAction(res.data);
+          });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

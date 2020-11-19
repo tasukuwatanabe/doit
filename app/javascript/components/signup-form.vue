@@ -19,7 +19,11 @@
         </div>
         <div class="form__group">
           <label class="form__label">パスワード</label>
-          <input class="form__input" type="password" v-model="password" />
+          <input
+            class="form__input"
+            type="password"
+            v-model="password"
+            autocomplete="on" />
           <span class="form__error" v-if="!!errors.password">
             {{ errors.password }}
           </span>
@@ -30,6 +34,7 @@
             class="form__input"
             type="password"
             v-model="password_confirmation"
+            autocomplete="on"
           />
           <span class="form__error" v-if="!!errors.password_confirmation">
             {{ errors.password_confirmation }}
@@ -84,6 +89,7 @@
 
 <script>
 import axios from "axios";
+import GuestLogin from "./mixins/guest-login";
 
 export default {
   data() {
@@ -95,12 +101,8 @@ export default {
       errors: ""
     };
   },
+  mixins: [GuestLogin],
   methods: {
-    guestLogin() {
-      axios.post("/api/guest_login").then((response) => {
-        this.$router.push({ name: "todos" });
-      });
-    },
     submitRegister() {
       const user_params = {
         username: this.username,
@@ -110,8 +112,12 @@ export default {
       };
       axios
         .post("/api/users", { user: user_params })
-        .then(() => {
+        .then((res) => {
           this.$router.push({ name: "login" });
+          this.flashMessage.success({
+            title: res.data.message,
+            icon: '/flash/success.svg',
+          });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

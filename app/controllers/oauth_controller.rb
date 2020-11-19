@@ -6,15 +6,26 @@ class OauthController < ApplicationController
     user = User.find_or_create_from_oauth(auth)
     if user&.activated?
       log_in user
-      redirect_to root_path
+
+      if auth[:provider] == 'twitter'
+        provider = 'Twitter'
+      elsif auth[:provider] == 'facebook'
+        provider = 'Facebook'
+      elsif auth[:provider] == 'google_oauth2'
+        provider = 'Google'
+      end
+
+      query_result = '?oauth=success'
+      query_provider = "&provider=#{provider}"
+      redirect_to '/redirect' + query_result + query_provider
     else
-      render status: 403
+      render json: { message: "ログインできませんでした" }, status: :unprocessable_entity
     end
   end
 
-  def cancel_oauth
+  def destroy
     provider = params[:provider]
     current_user.cancel_oauth(provider)
-    puts "#{provider}とのSNS連携を解除しました"
+    render json: { message: "#{provider}とのSNS連携を解除しました" }
   end
 end

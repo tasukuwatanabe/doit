@@ -1,5 +1,3 @@
-import axios from "axios";
-
 const namespaced = true;
 
 const state = {
@@ -19,10 +17,8 @@ const mutations = {
 }
 
 const actions = {
-  setCurrentUserAction({ commit }) {
-    axios.get("/api/current_user").then((res) => {
-      commit("setCurrentUser", res.data);
-    });
+  setCurrentUserAction({ commit }, userObj) {
+    commit("setCurrentUser", userObj);
   },
   logoutAction({ commit }) {
     commit("setCurrentUser", undefined);

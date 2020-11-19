@@ -1,10 +1,10 @@
 class ChangePasswordForm
   include ActiveModel::Model
 
-  attr_accessor :object, :new_password, :new_password_confirmation
+  attr_accessor :object, :password, :password_confirmation
 
-  validates :new_password, presence: true, confirmation: true
-  validates :new_password_confirmation, presence: true
+  validates :password, presence: true, confirmation: true
+  validates :password_confirmation, presence: true
 
   def save
     if valid?

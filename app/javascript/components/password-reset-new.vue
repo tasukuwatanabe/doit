@@ -39,6 +39,7 @@
 
 <script>
 import axios from "axios";
+import GuestLogin from "./mixins/guest-login";
 
 export default {
   data() {
@@ -47,19 +48,19 @@ export default {
       errors: ""
     };
   },
+  mixins: [GuestLogin],
   methods: {
-    guestLogin() {
-      axios.post("/api/guest_login").then(() => {
-        this.$router.push({ name: "todos" });
-      });
-    },
     submitPasswordReset() {
       axios
         .post("/api/password_resets", {
           password_reset_form: { email: this.email }
         })
-        .then(() => {
+        .then((res) => {
           this.$router.push({ name: "login" });
+          this.flashMessage.success({
+            title: res.data.message,
+            icon: '/flash/success.svg',
+          });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
