@@ -1,14 +1,16 @@
 @import "color";
 @import "extend";
 
-.index-shortcut {
-  margin-top: 40px;
-
+.sidebar-shortcut {
   &__field {
-    padding: 20px;
+    padding: 10px;
     background-color: #fff;
     text-align: center;
     box-shadow: $box-shadow-common;
+    min-height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     @media (max-width: 767px) {
       padding: 10px;
@@ -22,13 +24,14 @@
   }
 
   &__title {
-    font-size: 0.9em;
+    font-size: .9em;
     font-weight: bold;
   }
 
   &__edit {
     text-decoration: underline;
     color: $color-main-theme;
+    font-size: 0.9em;
   }
 
   &__list {
@@ -43,22 +46,28 @@
     background-color: #fff;
     border-radius: 100px;
     margin: 5px;
+    font-size: 0.9em;
   }
 
   &__link {
     @extend %link;
     color: $color-base-font;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 3px 8px;
+    border-radius: 3px;
     display: block;
     background-color: #eee;
-  }
 
-  &__no-result {
-    padding: 20px 0 30px;
+    svg {
+      color: #999;
+    }
   }
 
   &__text {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    font-size: 0.8em;
+  }
+
+  .page-action {
+    font-size: 0.9em;
   }
 }

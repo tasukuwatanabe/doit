@@ -80,20 +80,17 @@
       </div>
     </div>
     <todo-modal @fetch-todos="fetchTodos" ref="todoModal"></todo-modal>
-    <todo-shortcut @fetch-todos="fetchTodos"></todo-shortcut>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-import TodoShortcut from "./todo-shortcut.vue";
 import TodoModal from "./todo-modal.vue";
 import ColorOnRgb from "./mixins/color-on-rgb";
 
 export default {
   components: {
-    "todo-shortcut": TodoShortcut,
     "todo-modal": TodoModal
   },
   data() {
