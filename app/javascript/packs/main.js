@@ -13,7 +13,6 @@ import "../stylesheets/application";
 import "bootstrap/dist/css/bootstrap.css";
 
 import Vue from "vue/dist/vue.esm.js";
-import store from "../store/index";
 import Router from "../router/router";
 import Header from "../components/shared/v-header.vue";
 import Footer from "../components/shared/v-footer.vue";
@@ -22,6 +21,8 @@ import SidebarRight from "../components/shared/sidebar-right.vue";
 import SlideMenu from "../components/shared/slide-menu.vue";
 import Flash from "../components/shared/flash.vue";
 import FlashMessage from '@smartweb/vue-flash-message';
+import axios from "axios";
+import store from "../store/index";
 
 Vue.use(FlashMessage);
 
@@ -31,6 +32,18 @@ Vue.component("v-slide-menu", SlideMenu);
 Vue.component("v-sidebar-left", SidebarLeft);
 Vue.component("v-sidebar-right", SidebarRight);
 Vue.component("v-flash", Flash);
+
+axios.interceptors.request.use(function (config) {
+  let source = axios.CancelToken.source();
+
+  config.cancelToken = source.token;
+
+  store.commit('addCancelToken', source);
+
+  return config;
+}, function (error) {
+  return Promise.reject(error);
+});
 
 const app = new Vue({
   el: "#app",
