@@ -5,10 +5,10 @@ const state = {
 }
 
 const getters = {
-  selectedDate(state) {
+  getSelectedDate(state) {
     return state.selectedDate;
   },
-  formatDate(state) {
+  getFormatDate(state) {
     const year = state.selectedDate.getFullYear();
     const month = state.selectedDate.getMonth() + 1;
     const date = state.selectedDate.getDate();

@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      selectedDate: "date/selectedDate"
+      getSelectedDate: "date/getSelectedDate"
     })
   },
   methods: {
@@ -64,11 +64,11 @@ export default {
     createTodo(shortcut) {
       const todo_params = {
         title: shortcut.title,
-        todo_date: this.selectedDate,
+        todo_date: this.getSelectedDate,
         label_id: shortcut.label_id
       };
       axios.post("/api/todos", { todo: todo_params }).then(() => {
-        this.$emit("fetch-todos", this.selectedDate);
+        this.$emit("fetch-todos", this.getSelectedDate);
       });
     }
   }

@@ -113,8 +113,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      selectedDate: "date/selectedDate",
-      formatDate: "date/formatDate"
+      getSelectedDate: "date/getSelectedDate",
+      formatDate: "date/getFormatDate"
     })
   },
   mixins: [Modal, ColorOnRgb],
