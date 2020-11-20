@@ -61,9 +61,13 @@ export default {
       setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchShortcut() {
-      axios.get("/api/shortcuts").then((res) => {
-        this.shortcuts = res.data.shortcuts;
-      });
+      axios
+        .get("/api/shortcuts")
+        .then((res) => {
+          this.shortcuts = res.data.shortcuts;
+        }).catch(error => {
+          console.log("通信がキャンセルされました");
+        });
     },
     createTodo(shortcut) {
       const todo_params = {

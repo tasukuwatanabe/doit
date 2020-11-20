@@ -104,9 +104,7 @@ import { cookieStatus } from "../mixins/cookie";
 
 export default {
   created() {
-    axios.get("/api/current_user").then((res) => {
-      this.setCurrentUserAction(res.data);
-    });
+    this.fetchUser();
   },
   computed: {
     ...mapGetters({
@@ -123,6 +121,16 @@ export default {
       logoutAction: "user/logoutAction",
       setCurrentUserAction: "user/setCurrentUserAction"
     }),
+    fetchUser() {
+      axios
+      .get("/api/current_user")
+      .then((res) => {
+        this.setCurrentUserAction(res.data);
+      })
+      .catch(error => {
+        console.log("通信がキャンセルされました");
+      });
+    },
     logout() {
       axios.delete("/api/logout").then((res) => {
         this.logoutAction();

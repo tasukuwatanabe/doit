@@ -1,3 +1,5 @@
+import store from "../index";
+
 const namespaced = true;
 
 const state = {
@@ -22,6 +24,7 @@ const actions = {
   },
   logoutAction({ commit }) {
     commit("setCurrentUser", undefined);
+    store.dispatch("date/resetSelectedDateAction");
   }
 }
 

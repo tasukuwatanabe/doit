@@ -12,13 +12,14 @@ import Redirect from "../components/redirect.vue";
 import PasswordResetNew from "../components/password-reset-new.vue";
 import PasswordResetEdit from "../components/password-reset-edit.vue";
 import NotFound from "../components/not-found.vue";
-import Store from "../store/index";
+import store from "../store/index";
 import { cookieStatus, deleteCookie } from "../components/mixins/cookie";
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
 function isLoggedIn(to, from, next) {
+  store.dispatch('cancelPendingRequests');
   if (cookieStatus()) {
     next();
   } else {
@@ -28,6 +29,7 @@ function isLoggedIn(to, from, next) {
 }
 
 function isLoggedOut(to, from, next) {
+  store.dispatch('cancelPendingRequests');
   if (cookieStatus()) {
     next({ path: "/" });
   } else {

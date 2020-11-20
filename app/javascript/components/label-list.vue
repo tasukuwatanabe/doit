@@ -92,10 +92,15 @@ export default {
   },
   methods: {
     fetchLabels() {
-      axios.get("/api/labels").then((res) => {
-        this.labels = res.data.labels;
-        this.todos = res.data.todos;
-      });
+      axios
+        .get("/api/labels")
+        .then((res) => {
+          this.labels = res.data.labels;
+          this.todos = res.data.todos;
+        })
+        .catch(error => {
+          console.log("通信がキャンセルされました");
+        });
     },
     setLabel(label) {
       if (this.labels.length >= 10 && !label) {

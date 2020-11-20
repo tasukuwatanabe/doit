@@ -111,10 +111,15 @@ export default {
   },
   methods: {
     fetchShortcuts() {
-      axios.get("/api/shortcuts").then((res) => {
-        this.shortcuts = res.data.shortcuts;
-        this.labels = res.data.labels;
-      });
+      axios
+        .get("/api/shortcuts")
+        .then((res) => {
+          this.shortcuts = res.data.shortcuts;
+          this.labels = res.data.labels;
+        })
+        .catch(error => {
+          console.log("通信がキャンセルされました");
+        });
     },
     setShortcut(shortcut) {
       if (this.shortcuts.length >= 10 && !shortcut) {
