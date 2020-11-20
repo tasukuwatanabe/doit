@@ -42,9 +42,7 @@ main {
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex: 1;
 
   @media (min-width: 992px) {
     margin-left: 30px;

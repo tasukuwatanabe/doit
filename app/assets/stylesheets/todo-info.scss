@@ -1,6 +1,10 @@
 @import "color";
 
-.detail {
+.todo-info {
+  box-shadow: $box-shadow-common;
+  background-color: #fff;
+  padding: 15px;
+
   &__title {
     font-weight: bold;
   }
@@ -8,11 +12,15 @@
   &__list {
     padding: 0;
     list-style-type: none;
+    margin: 0;
   }
 
   &__item {
-    border-bottom: 1px solid $border-color;
     padding: 15px 0;
+    
+    &:not(:last-child) {
+      border-bottom: 1px dotted $border-color;
+    }
   }
 
   &__label {

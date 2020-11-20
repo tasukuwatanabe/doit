@@ -1,0 +1,96 @@
+@import "color";
+
+.calendar {
+  &__box {
+    background-color: #fff;
+    padding: 15px 15px 12px;
+    box-shadow: $box-shadow-common;
+  }
+
+  &__control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    user-select: none;
+    font-size: 1.1em;
+    color: #777;
+  }
+
+  &__controlBtn {
+    font-size: 26px;
+    line-height: 1;
+    color: $color-main-theme;
+    cursor: pointer;
+  }
+
+  &__table {
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 8px;
+    user-select: none;
+
+    th, td {
+      padding: 6px 0;
+      width: calc(100% / 7);
+    }
+
+    th {
+      font-weight: bold;
+      color: #777777;
+    }
+  }
+
+  &__date {
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 1px;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+    &--out {
+      color: #bbb;
+    }
+
+    &--selected {
+      color: #fff;
+
+      &:after {
+        background-color: orange;
+      }
+    }
+
+    &--today {
+      color: #fff;
+
+      &:after {
+        background-color: $color-main-theme;
+      }
+    }
+  }
+
+  &__back {
+    text-align: center;
+    user-select: none;
+  }
+
+  &__backBtn {
+    font-size: 12px;
+    text-decoration: underline;
+    color: $color-main-theme;
+    cursor: pointer;
+  }
+}

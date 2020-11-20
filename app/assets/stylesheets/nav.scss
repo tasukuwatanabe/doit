@@ -9,7 +9,10 @@
   }
   &__item {
     list-style-type: none;
-    border-bottom: 1px solid $border-color;
+
+    &:not(:last-child) {
+      border-bottom: 1px dotted $border-color;
+    }
   }
   &__link {
     @extend %link;

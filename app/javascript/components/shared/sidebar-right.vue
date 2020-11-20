@@ -4,104 +4,40 @@
       <section class="sidebar-right__search search">
         <div class="search__form">
           <span class="fa fa-search"></span>
-          <input type="text" class="search__input" v-model="query" @keyup="todoSearch(query)" />
+          <input type="text" class="search__input" v-model="query" @keyup="todoSearch" />
         </div>
       </section>
-      <div v-if="query">
-        <div v-if="result && result.length" class="search__list">
-          <div v-for="(todo, index) in result" :key="todo.id">
-            <div class="search__date" v-if="checkDate(todo, index)">
-              {{ setSelectedDate(todo.todo_date) }}
+      <div v-if="query && query.length" class="search__box">
+        <template v-if="results && results.length">
+          <div v-for="resultDate in resultDateArray" :key="resultDate">
+            <div class="search__date">
+                {{ resultFormatDate(resultDate) }}
             </div>
-            <div @click="fetchDate(todo.todo_date)" class="search__item">{{ todo.title }}
-              <div
-                class="label"
-                v-if="todoLabel(todo)"
-                :style="{
-                  color: colorOnRgb(todoLabel(todo).color),
-                  backgroundColor: todoLabel(todo).color
-                }">
-                {{ todoLabel(todo).title }}
+            <div class="search__list">
+              <div v-for="result in todoByDate(resultDate)" @click="fetchDate(result.todo_date)" :key="result.id" class="search__item">{{ result.title }}
+                <div class="label"
+                      v-if="todoLabel(result)"
+                      :style="{color: colorOnRgb(todoLabel(result).color), backgroundColor: todoLabel(result).color }">
+                  {{ todoLabel(result).title }}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </template>
         <div v-else class="search__no-result">結果なし</div>
       </div>
       <div v-else>
-        <section class="sidebar-right__calendar">
-          <div class="text-center">
-            <router-link to="/" class="btn-outlined btn--xs">今日</router-link>
-          </div>
-          <table class="sidebar-right__calendar-table calendar-table">
-            <tr>
-              <th>日</th>
-              <th>月</th>
-              <th>火</th>
-              <th>水</th>
-              <th>木</th>
-              <th>金</th>
-              <th>土</th>
-            </tr>
-            <tr>
-              <td class="calendar-table--out">30</td>
-              <td class="calendar-table--out">31</td>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>6</td>
-              <td>7</td>
-              <td>8</td>
-              <td>9</td>
-              <td>10</td>
-              <td>11</td>
-              <td>12</td>
-            </tr>
-            <tr>
-              <td>13</td>
-              <td>14</td>
-              <td>15</td>
-              <td>16</td>
-              <td>17</td>
-              <td>18</td>
-              <td>19</td>
-            </tr>
-            <tr>
-              <td>20</td>
-              <td>21</td>
-              <td>22</td>
-              <td>23</td>
-              <td>24</td>
-              <td>25</td>
-              <td>26</td>
-            </tr>
-            <tr>
-              <td>27</td>
-              <td>28</td>
-              <td class="calendar-table--active">
-                <div>29</div>
-              </td>
-              <td>30</td>
-              <td>31</td>
-              <td class="calendar-table--out">1</td>
-              <td class="calendar-table--out">2</td>
-            </tr>
-          </table>
-        </section>
-        <section class="sidebar-right__detail">
-          <div class="detail__title">読書をする</div>
-          <ul class="detail__list">
-            <li class="detail__item">
-              <span class="label detail__label">自己投資</span>
+        <sidebar-calendar></sidebar-calendar>
+        <section class="todo-info sidebar-right__todo-info">
+          <div class="todo-info__title">読書をする</div>
+          <ul class="todo-info__list">
+            <li class="todo-info__item">
+              <span class="label todo-info__label">自己投資</span>
             </li>
-            <li class="detail__item">
+            <li class="todo-info__item">
               <span>2020年10月28日</span>
             </li>
-            <li class="detail__item">
+            <li class="todo-info__item">
               <span>「嫌われる勇気」を10ページ読む</span>
             </li>
           </ul>
@@ -113,30 +49,43 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 import ColorOnRgb from "../mixins/color-on-rgb";
+import SidebarCalendar from "../shared/sidebar-calendar";
 
 export default {
   data() {
     return {
       query: '',
-      result: [],
-      labels: [],
-      todo_date: '',
-      not_found: ''
+      results: [],
+      labels: []
     }
+  },
+  components: {
+    'sidebar-calendar': SidebarCalendar
   },
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser",
     }),
-    checkDate() {
-      return function(todo, index) {
-        if (index > 0) {
-          return todo.todo_date !== this.result[index - 1].todo_date;
-        } else {
-          return true;
+    resultDateArray() {
+      let resultDates = [];
+      for (let i = 0; i < this.results.length; i++) {
+        if (i === 0 || !resultDates.includes(this.results[i].todo_date)) {
+          resultDates.push(this.results[i].todo_date);
         }
+      }
+      return resultDates;
+    },
+    resultFormatDate() {
+      return function(date) {
+        return moment(date).format('YYYY年M月D日');
+      }
+    },
+    todoByDate() {
+      return function (date) {
+        return this.results.filter(result => result.todo_date === date);
       }
     },
     setSelectedDate() {
@@ -167,6 +116,9 @@ export default {
       this.setSelectedDateAction(todo_date);
     },
     todoSearch() {
+      if (this.query == '') {
+        return;
+      }
       axios
         .get('/api/search', {
           params: {
@@ -174,7 +126,7 @@ export default {
           }
         })
         .then((res) => {
-          this.result = res.data.todos;
+          this.results = res.data.todos;
           this.labels = res.data.labels;
         });
     }

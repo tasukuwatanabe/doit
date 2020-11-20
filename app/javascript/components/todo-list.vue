@@ -68,6 +68,7 @@
             alt="チェックリストのイラスト"
           />
         </div>
+        <div class="no-result__text">まだToDoが作成されていません</div>
       </div>
       <div class="todo__page-action page-action">
         <a @click="setTodo()" class="btn-outlined btn--sm">
@@ -107,10 +108,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      selectedDate: "date/selectedDate"
+      getSelectedDate: "date/getSelectedDate"
     }),
     setSelectedDate() {
-      const selected_date = new Date(this.selectedDate);
+      const selected_date = new Date(this.getSelectedDate);
       const year = selected_date.getFullYear();
       const month = selected_date.getMonth() + 1;
       const date = selected_date.getDate();
@@ -119,18 +120,18 @@ export default {
     },
     setDay() {
       const weeks = ["日", "月", "火", "水", "木", "金", "土"];
-      const selected_date = new Date(this.selectedDate);
+      const selected_date = new Date(this.getSelectedDate);
       const week = selected_date.getDay();
 
       return `${weeks[week]}曜日`;
     },
     setYesterday() {
-      const selected_date = new Date(this.selectedDate);
+      const selected_date = new Date(this.getSelectedDate);
       const yesterday = selected_date.setDate(selected_date.getDate() - 1);
       return new Date(yesterday);
     },
     setTomorrow() {
-      const selected_date = new Date(this.selectedDate);
+      const selected_date = new Date(this.getSelectedDate);
       const tomorrow = selected_date.setDate(selected_date.getDate() + 1);
       return new Date(tomorrow);
     },
@@ -141,16 +142,16 @@ export default {
     }
   },
   watch: {
-    selectedDate() {
-      this.fetchTodos(this.selectedDate);
+    getSelectedDate: function() {
+      this.fetchTodos(this.getSelectedDate);
     }
   },
   methods: {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction"
     }),
-    fetchDate(select) {
-      this.setSelectedDateAction(select);
+    fetchDate(date) {
+      this.setSelectedDateAction(date);
     },
     fetchTodos(date) {
       axios.get("/api/todos", { params: { date: date } }).then((res) => {
@@ -163,7 +164,7 @@ export default {
     },
     deleteTodo(todo) {
       axios.delete(`/api/todos/${todo.id}`).then((res) => {
-        this.fetchTodos(this.selectedDate);
+        this.fetchTodos(this.getSelectedDate);
       });
     },
     toggleStatus(todo) {
