@@ -1,13 +1,16 @@
 <template>
-  <aside v-if="this.getCurrentUser && is_todo" class="sidebar">
+  <aside v-if="this.getCurrentUser && isTodo" class="sidebar">
     <div class="sidebar__stickey-part sidebar-right">
       <section class="sidebar-right__search search">
         <div class="search__form">
-          <span class="fa fa-search"></span>
+          <i class="fa fa-search search__lense"></i>
           <input type="text" class="search__input" v-model="query" @keyup="todoSearch" />
+          <div v-if="query" class="search__reset" @click="resetQuery">
+            <i class="fas fa-times-circle"></i>
+          </div>
         </div>
       </section>
-      <div v-if="query && query.length" class="search__box">
+      <div v-if="query" class="search__box">
         <template v-if="results && results.length">
           <div v-for="resultDate in resultDateArray" :key="resultDate">
             <div class="search__date">
@@ -98,7 +101,7 @@ export default {
         return `${year}年${month}月${date}日`;
       }
     },
-    is_todo() {
+    isTodo() {
       return this.$route.name === 'todos';
     },
     todoLabel() {
@@ -129,6 +132,10 @@ export default {
           this.results = res.data.todos;
           this.labels = res.data.labels;
         });
+    },
+    resetQuery() {
+      console.log("run");
+      this.query = '';
     }
   }
 }
