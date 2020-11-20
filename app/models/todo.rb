@@ -8,14 +8,13 @@ class Todo < ApplicationRecord
 
   validates :title, presence: true
   validates :todo_date, presence: true, date: {
-    after_or_equal_to: Date.new(2020, 1, 1),
+    after_or_equal_to: Date.new(2000, 1, 1),
     before: ->(_obj) { 1.year.from_now.to_date },
     allow_blank: true
   }
 
   def self.search(query)
     return nil unless query.present?
-
 
     Todo.where(['title LIKE ?', "%#{query.strip}%"]).order(todo_date: :asc)
   end
