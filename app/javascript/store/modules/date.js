@@ -20,6 +20,9 @@ const getters = {
 const mutations = {
   setSelectedDate(state, date) {
     state.selectedDate = date;
+  },
+  resetSelectedDate(state) {
+    state.selectedDate = '';
   }
 }
 
@@ -35,6 +38,9 @@ const actions = {
     }
     commit("setSelectedDate", selected_date);
   },
+  resetSelectedDateAction({ commit }) {
+    commit("resetSelectedDate");
+  }
 }
 
 export default {
