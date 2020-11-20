@@ -1,29 +1,30 @@
 <template>
-  <div class="index-shortcut">
-    <div class="index-shortcut__box">
-      <div class="index-shortcut__title">ショートカットからToDoを作成</div>
+  <div class="sidebar-shortcut">
+    <div class="sidebar-shortcut__box">
+      <div class="sidebar-shortcut__title">ショートカットからToDo作成</div>
       <router-link
         to="/shortcuts"
         v-if="!!shortcuts"
-        class="index-shortcut__edit"
+        class="sidebar-shortcut__edit"
       >
         編集
       </router-link>
     </div>
-    <div class="index-shortcut__field">
-      <ul v-if="shortcuts.length" class="index-shortcut__list">
+    <div class="sidebar-shortcut__field">
+      <ul v-if="shortcuts.length" class="sidebar-shortcut__list">
         <li
           v-for="shortcut in shortcuts"
           :key="shortcut.id"
-          class="index-shortcut__item"
+          class="sidebar-shortcut__item"
         >
-          <a @click="createTodo(shortcut)" class="index-shortcut__link">{{
-            shortcut.title
-          }}</a>
+          <a @click="createTodo(shortcut)" class="sidebar-shortcut__link">
+            <i class="fas fa-plus-circle"></i>
+            {{ shortcut.title }}
+          </a>
         </li>
       </ul>
-      <div v-else class="index-shortcut__no-result">
-        <p class="index-shortcut__text">ショートカットが作成されていません。</p>
+      <div v-else class="sidebar-shortcut__no-result">
+        <p class="sidebar-shortcut__text">ショートカットが未作成です</p>
         <div class="page-action">
           <router-link to="/shortcuts" class="btn-outlined btn--sm">
             <span class="page-action__icon">
@@ -56,6 +57,9 @@ export default {
     })
   },
   methods: {
+    ...mapActions({
+      setSelectedDateAction: "date/setSelectedDateAction"
+    }),
     fetchShortcut() {
       axios.get("/api/shortcuts").then((res) => {
         this.shortcuts = res.data.shortcuts;
@@ -68,7 +72,7 @@ export default {
         label_id: shortcut.label_id
       };
       axios.post("/api/todos", { todo: todo_params }).then(() => {
-        this.$emit("fetch-todos", this.getSelectedDate);
+        this.setSelectedDateAction(this.getSelectedDate);
       });
     }
   }

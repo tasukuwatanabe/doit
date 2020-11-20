@@ -31,20 +31,7 @@
       </div>
       <div v-else>
         <sidebar-calendar></sidebar-calendar>
-        <section class="todo-info sidebar-right__todo-info">
-          <div class="todo-info__title">読書をする</div>
-          <ul class="todo-info__list">
-            <li class="todo-info__item">
-              <span class="label todo-info__label">自己投資</span>
-            </li>
-            <li class="todo-info__item">
-              <span>2020年10月28日</span>
-            </li>
-            <li class="todo-info__item">
-              <span>「嫌われる勇気」を10ページ読む</span>
-            </li>
-          </ul>
-        </section>
+        <sidebar-shortcut></sidebar-shortcut>
       </div>
     </div>
   </aside>
@@ -56,6 +43,7 @@ import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 import ColorOnRgb from "../mixins/color-on-rgb";
 import SidebarCalendar from "../shared/sidebar-calendar";
+import SidebarShortcut from "../shared/sidebar-shortcut.vue";
 
 export default {
   data() {
@@ -66,7 +54,8 @@ export default {
     }
   },
   components: {
-    'sidebar-calendar': SidebarCalendar
+    'sidebar-calendar': SidebarCalendar,
+    "sidebar-shortcut": SidebarShortcut,
   },
   computed: {
     ...mapGetters({
