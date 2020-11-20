@@ -2,7 +2,10 @@
 
 .sidebar-left {
   @extend %sidebar-display;
-  width: 200px;
+  width: 230px;
+  background-color: #fff;
+  padding: 25px 20px 10px;
+  box-shadow: $box-shadow-common;
 
   &__userinfo {
     margin-bottom: 15px;

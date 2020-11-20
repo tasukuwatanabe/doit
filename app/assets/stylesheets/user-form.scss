@@ -1,6 +1,10 @@
 @import "color";
 
 .user-form {
+  background-color: #fff;
+  padding: 30px 40px;
+  box-shadow: $box-shadow-common;
+
   .form {
     &__group {
       &:not(:last-of-type) {

@@ -3,6 +3,7 @@
 .list {
   padding: 0;
   margin-bottom: 30px;
+  box-shadow: $box-shadow-common;
 
   &__item {
     padding: 24px 30px 24px 30px;

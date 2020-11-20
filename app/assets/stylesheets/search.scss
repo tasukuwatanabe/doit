@@ -1,7 +1,11 @@
+@import 'color';
+
 .search {
   position: relative;
 
   &__form {
+    box-shadow: $box-shadow-common;
+
     & > svg {
       position: absolute;
       top: 9px;
@@ -23,6 +27,16 @@
     appearance: textfield;
   }
 
+  &__box {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    overflow-y: scroll;
+    height: calc(100vh - 195px);
+    padding: 0 15px;
+    margin: 0 -15px;
+  }
+
   &__date {
     font-size: 0.7em;
     margin-top: 0.8em;
@@ -31,11 +45,7 @@
   }
 
   &__list {
-    list-style-type: none;
-    padding-left: 0;
-    margin: 0;
-    overflow-y: scroll;
-    height: calc(100vh - 260px);
+    box-shadow: $box-shadow-common;
   }
 
   &__item {
