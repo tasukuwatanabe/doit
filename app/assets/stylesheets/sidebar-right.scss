@@ -2,14 +2,11 @@
 
 .sidebar-right {
   @extend %sidebar-display;
-  width: 230px;
+  width: 250px;
   margin-left: 30px;
 
-  &__search {
-    margin-bottom: 20px;
-  }
-  
+  &__search,
   &__calendar {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 }
