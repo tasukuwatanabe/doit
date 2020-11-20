@@ -123,9 +123,14 @@ export default {
       setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchLabels() {
-      axios.get("/api/labels").then((res) => {
-        this.labels = res.data.labels;
-      });
+      axios
+        .get("/api/labels")
+        .then((res) => {
+          this.labels = res.data.labels;
+        })
+        .catch(error => {
+          console.log("通信がキャンセルされました");
+        });
     },
     setTodoValue(val) {
       this.toggleModal();

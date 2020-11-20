@@ -151,10 +151,15 @@ export default {
       this.setSelectedDateAction(date);
     },
     fetchTodos(date) {
-      axios.get("/api/todos", { params: { date: date } }).then((res) => {
-        this.todos = res.data.todos;
-        this.labels = res.data.labels;
-      });
+      axios
+        .get("/api/todos", { params: { date: date } })
+        .then((res) => {
+          this.todos = res.data.todos;
+          this.labels = res.data.labels;
+        })
+        .catch(error => {
+          console.log("通信がキャンセルされました");
+        });
     },
     setTodo(todo) {
       this.$refs.todoModal.setTodoValue(todo);

@@ -102,7 +102,8 @@ export default {
   mixins: [ColorOnRgb],
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction"
+      setSelectedDateAction: "date/setSelectedDateAction",
+      cancelPendingRequests: "cancelPendingRequests"
     }),
     fetchDate(todo_date) {
       this.setSelectedDateAction(todo_date);
@@ -111,6 +112,7 @@ export default {
       if (this.query == '') {
         return;
       }
+      this.cancelPendingRequests();
       axios
         .get('/api/search', {
           params: {
@@ -120,10 +122,11 @@ export default {
         .then((res) => {
           this.results = res.data.todos;
           this.labels = res.data.labels;
+        }).catch(error => {
+          console.log("通信がキャンセルされました");
         });
     },
     resetQuery() {
-      console.log("run");
       this.query = '';
     }
   }
