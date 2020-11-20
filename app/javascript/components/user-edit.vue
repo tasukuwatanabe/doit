@@ -153,7 +153,12 @@ export default {
   },
   created() {
     this.random_number =  Math.random();
-    this.setUserData(this.getCurrentUser);
+    this.setUserData();
+  },
+  watch: {
+    getCurrentUser: function() {
+      this.setUserData();
+    }
   },
   computed: {
     ...mapGetters({
@@ -172,17 +177,19 @@ export default {
     ...mapActions({
       setCurrentUserAction: "user/setCurrentUserAction"
     }),
-    setUserData(obj) {
-      this.id = obj.id;
-      this.username = obj.username;
-      this.email = obj.email;
-      this.user_image = obj.user_image.url;
-      this.facebook_uid = obj.facebook_uid;
-      this.twitter_uid = obj.twitter_uid;
-      this.google_uid = obj.google_uid;
-      this.unconfirmed_email = obj.unconfirmed_email;
-      this.auto_generated_password = obj.auto_generated_password;
-      this.remove_user_image = obj.remove_user_image;
+    setUserData() {
+      if (this.getCurrentUser != null) {
+        this.id = this.getCurrentUser.id;
+        this.username = this.getCurrentUser.username;
+        this.email = this.getCurrentUser.email;
+        this.user_image = this.getCurrentUser.user_image.url;
+        this.facebook_uid = this.getCurrentUser.facebook_uid;
+        this.twitter_uid = this.getCurrentUser.twitter_uid;
+        this.google_uid = this.getCurrentUser.google_uid;
+        this.unconfirmed_email = this.getCurrentUser.unconfirmed_email;
+        this.auto_generated_password = this.getCurrentUser.auto_generated_password;
+        this.remove_user_image = this.getCurrentUser.remove_user_image;
+      }
     },
     async cancelEmailConfirmation() {
       await axios.delete(`/api/email_confirmations/${this.id}`).then((res) => {
@@ -194,7 +201,6 @@ export default {
       });
       await axios.get("/api/current_user").then((res) => {
         this.setCurrentUserAction(res.data);
-        this.setUserData(res.data);
       });
     },
     onImageUpload: function (e) {
@@ -230,7 +236,6 @@ export default {
           this.$refs.file.value = null;
           this.random_number =  Math.random();
           this.setCurrentUserAction(res.data.user);
-          this.setUserData(res.data.user);
           this.flashMessage.success({
             title: res.data.message,
             icon: '/flash/success.svg',
@@ -250,7 +255,6 @@ export default {
         });
       await axios.get("/api/current_user").then((res) => {
         this.setCurrentUserAction(res.data);
-        this.setUserData(res.data);
       });
     },
     accountCancel() {
