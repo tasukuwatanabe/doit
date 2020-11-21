@@ -16,7 +16,7 @@ export default {
         target: this.$refs.content,
         type,
         opacity: '0',
-        color: '#3d91be',
+        color: '#2abcdc',
         text: "Loading...",
         scale: '1.2',
       });
