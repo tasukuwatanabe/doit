@@ -33,6 +33,7 @@ import SidebarLeft from "../components/shared/sidebar-left.vue";
 import SidebarRight from "../components/shared/sidebar-right.vue";
 import SlideMenu from "../components/shared/slide-menu.vue";
 import Flash from "../components/shared/flash.vue";
+import LoadingIcon from "../components/shared/loading-icon.vue";
 
 // グローバルコンポーネントの登録
 Vue.component("v-header", Header);
@@ -41,6 +42,7 @@ Vue.component("v-slide-menu", SlideMenu);
 Vue.component("v-sidebar-left", SidebarLeft);
 Vue.component("v-sidebar-right", SidebarRight);
 Vue.component("v-flash", Flash);
+Vue.component("v-loading-icon", LoadingIcon);
 
 // axios
 import axios from "axios";
@@ -54,7 +56,7 @@ axios.interceptors.request.use(function (config) {
 
   config.cancelToken = source.token;
 
-  store.commit('addCancelToken', source);
+  store.commit('request/addCancelToken', source);
 
   return config;
 }, function (error) {
