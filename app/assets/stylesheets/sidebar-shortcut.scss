@@ -7,10 +7,13 @@
     background-color: #fff;
     text-align: center;
     box-shadow: $box-shadow-common;
-    min-height: 180px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    min-height: 250px;
+
+    &--center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
     @media (max-width: 767px) {
       padding: 10px;

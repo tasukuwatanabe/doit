@@ -1,9 +1,12 @@
 @import "extend";
 
 .sidebar-right {
-  @extend %sidebar-display;
   width: 250px;
   margin-left: 30px;
+
+  &__inner {
+    @extend %sidebar-display;
+  }
 
   &__search,
   &__calendar {
