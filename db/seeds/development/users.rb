@@ -1,8 +1,9 @@
-3.times do |n|
+for i in 1..5 do
   User.create!(
-    username: "testuser#{n}",
-    email: "testuser#{n}@example.com",
+    username: "ユーザー#{i}",
+    email: "user#{i}@example.com",
     password: 'password',
+    password_confirmation: 'password',
     activated: true,
     activated_at: Time.zone.now
   )

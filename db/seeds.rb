@@ -1,4 +1,4 @@
-table_names = %w[users todos shortcuts labels guest]
+table_names = %w[users guest labels shortcuts todos]
 
 table_names.each do |table_name|
   path = Rails.root.join('db', 'seeds', Rails.env, "#{table_name}.rb")
