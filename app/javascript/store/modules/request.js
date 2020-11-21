@@ -1,4 +1,4 @@
-const strict = true;
+const namespaced = true;
 
 const state = {
   cancelTokens: []
@@ -31,7 +31,7 @@ const actions = {
 }
 
 export default {
-  strict,
+  namespaced,
   state,
   mutations,
   actions,
