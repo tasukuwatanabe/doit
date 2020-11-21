@@ -22,37 +22,40 @@
         </a>
       </div>
     </div>
-    <ul class="list" v-if="labels.length">
-      <li class="list__item" v-for="label in labels" :key="label.id">
-        <div class="list__block list__block--left">
-          <div
-            class="label label--margin"
-            :style="{
-              color: colorOnRgb(label.color),
-              backgroundColor: label.color
-            }"
-          >
-            {{ label.title }}
+    <v-loading-icon v-show="loading"></v-loading-icon>
+    <div v-show="!loading">
+      <ul class="list" v-if="labels.length">
+        <li class="list__item" v-for="label in labels" :key="label.id">
+          <div class="list__block list__block--left">
+            <div
+              class="label label--margin"
+              :style="{
+                color: colorOnRgb(label.color),
+                backgroundColor: label.color
+              }"
+            >
+              {{ label.title }}
+            </div>
           </div>
+          <div class="list__block list__block--right">
+            <div class="label-in-use">
+              {{ labelTodosCount(label) }}個のToDoで使用中
+            </div>
+            <div class="item-action">
+              <a @click="setLabel(label)" class="item-action__btn">
+                <i class="fas fa-pencil-alt"></i>
+              </a>
+              <a @click="deleteLabel(label)" class="item-action__btn">
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="no-result no-result" v-else>
+        <div class="no-result__illustration">
+          <img src="/illustrations/il-mindmap.png" alt="目標達成のイラスト" />
         </div>
-        <div class="list__block list__block--right">
-          <div class="label-in-use">
-            {{ labelTodosCount(label) }}個のToDoで使用中
-          </div>
-          <div class="item-action">
-            <a @click="setLabel(label)" class="item-action__btn">
-              <i class="fas fa-pencil-alt"></i>
-            </a>
-            <a @click="deleteLabel(label)" class="item-action__btn">
-              <i class="fas fa-trash"></i>
-            </a>
-          </div>
-        </div>
-      </li>
-    </ul>
-    <div class="no-result no-result" v-else>
-      <div class="no-result__illustration">
-        <img src="/illustrations/il-mindmap.png" alt="目標達成のイラスト" />
       </div>
     </div>
     <label-modal @fetch-labels="fetchLabels" ref="labelModal"></label-modal>
@@ -72,7 +75,8 @@ export default {
   data() {
     return {
       labels: [],
-      todos: []
+      todos: [],
+      loading: ''
     };
   },
   created() {
@@ -92,14 +96,17 @@ export default {
   },
   methods: {
     fetchLabels() {
+      this.loading = true;
       axios
         .get("/api/labels")
         .then((res) => {
           this.labels = res.data.labels;
           this.todos = res.data.todos;
+          this.loading = false;
         })
         .catch(error => {
           console.log("通信がキャンセルされました");
+          this.loading = false;
         });
     },
     setLabel(label) {
@@ -114,6 +121,7 @@ export default {
       }
     },
     deleteLabel(label) {
+      this.loading = true;
       axios.delete(`/api/labels/${label.id}`).then((res) => {
         this.fetchLabels();
       });
@@ -121,3 +129,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.loading-case {
+  width: 600px;
+  height: 350px;
+}
+</style>

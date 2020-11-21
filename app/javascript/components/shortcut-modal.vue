@@ -88,7 +88,7 @@ export default {
       shortcuts: [],
       labels: [],
       btnText: "",
-      custom_error: ""
+      custom_error: "",
     };
   },
   created() {

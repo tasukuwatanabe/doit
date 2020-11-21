@@ -21,54 +21,57 @@
           <i class="fas fa-caret-right"></i>
         </div>
       </section>
-      <ul class="list" v-if="todos.length">
-        <li v-for="todo in todos" class="list__item" :key="todo.id">
-          <div
-            class="todo-status"
-            :class="{ 'todo__status--checked': todo.status }"
-          >
-            <input
-              :id="'todo_status_' + todo.id"
-              type="checkbox"
-              v-model="todo.status"
-              @click="toggleStatus(todo)"
-            />
-            <label :for="'todo_status_' + todo.id"></label>
-          </div>
-          <div class="list__block list__block--left">
-            <div class="list__title">{{ todo.title }}</div>
-          </div>
-          <div class="list__block list__block--right list__block--grow">
+      <v-loading-icon v-show="loading"></v-loading-icon>
+      <div v-show="!loading">
+        <ul class="list" v-if="todos.length">
+          <li v-for="todo in todos" class="list__item" :key="todo.id">
             <div
-              class="label label--margin"
-              v-if="todoLabel(todo)"
-              :style="{
-                color: colorOnRgb(todoLabel(todo).color),
-                backgroundColor: todoLabel(todo).color
-              }"
+              class="todo-status"
+              :class="{ 'todo__status--checked': todo.status }"
             >
-              {{ todoLabel(todo).title }}
+              <input
+                :id="'todo_status_' + todo.id"
+                type="checkbox"
+                v-model="todo.status"
+                @click="toggleStatus(todo)"
+              />
+              <label :for="'todo_status_' + todo.id"></label>
             </div>
-            <div v-else></div>
-            <div class="item-action">
-              <a @click="setTodo(todo)" class="item-action__btn">
-                <i class="fas fa-pencil-alt"></i>
-              </a>
-              <a @click="deleteTodo(todo)" class="item-action__btn">
-                <i class="fas fa-trash"></i>
-              </a>
+            <div class="list__block list__block--left">
+              <div class="list__title">{{ todo.title }}</div>
             </div>
+            <div class="list__block list__block--right list__block--grow">
+              <div
+                class="label label--margin"
+                v-if="todoLabel(todo)"
+                :style="{
+                  color: colorOnRgb(todoLabel(todo).color),
+                  backgroundColor: todoLabel(todo).color
+                }"
+              >
+                {{ todoLabel(todo).title }}
+              </div>
+              <div v-else></div>
+              <div class="item-action">
+                <a @click="setTodo(todo)" class="item-action__btn">
+                  <i class="fas fa-pencil-alt"></i>
+                </a>
+                <a @click="deleteTodo(todo)" class="item-action__btn">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div v-else class="no-result todo__no-result">
+          <div class="no-result__illustration">
+            <img
+              src="/illustrations/il-checklist.png"
+              alt="チェックリストのイラスト"
+            />
           </div>
-        </li>
-      </ul>
-      <div v-else class="no-result todo__no-result">
-        <div class="no-result__illustration">
-          <img
-            src="/illustrations/il-checklist.png"
-            alt="チェックリストのイラスト"
-          />
+          <div class="no-result__text">まだToDoが作成されていません</div>
         </div>
-        <div class="no-result__text">まだToDoが作成されていません</div>
       </div>
       <div class="todo__page-action page-action">
         <a @click="setTodo()" class="btn-outlined btn--sm">
@@ -84,6 +87,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import TodoModal from "./todo-modal.vue";
@@ -96,7 +100,8 @@ export default {
   data() {
     return {
       todos: [],
-      labels: []
+      labels: [],
+      loading: ''
     };
   },
   mixins: [ColorOnRgb],
@@ -105,7 +110,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getSelectedDate: "date/getSelectedDate"
+      getSelectedDate: "date/getSelectedDate",
     }),
     setSelectedDate() {
       const selected_date = new Date(this.getSelectedDate);
@@ -145,17 +150,21 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction"
+      setSelectedDateAction: "date/setSelectedDateAction",
+      cancelPendingRequests: "request/cancelPendingRequests"
     }),
     fetchDate(date) {
       this.setSelectedDateAction(date);
     },
     fetchTodos(date) {
+      this.cancelPendingRequests();
+      this.loading = true;
       axios
         .get("/api/todos", { params: { date: date } })
         .then((res) => {
           this.todos = res.data.todos;
           this.labels = res.data.labels;
+          this.loading = false;
         })
         .catch(error => {
           console.log("通信がキャンセルされました");
@@ -175,3 +184,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.loading-case {
+  width: 100%;
+  height: 300px;
+}
+</style>

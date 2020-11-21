@@ -1,10 +1,14 @@
 @import "color";
 
 .login {
-  width: 600px;
-  margin: 30px auto;
-  background-color: #fff;
-  padding: 50px 35px 70px;
+  width: 100%;
+  
+  &__case {
+    width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px 35px 60px;
+  }
 
   @media (max-width: 767px) {
     width: 100%;

@@ -11,7 +11,8 @@
         ログインに必要なパスワードを変更することができます。
       </p>
     </div>
-    <form action="" class="form user-form">
+    <v-loading-icon v-show="loading"></v-loading-icon>
+    <form v-show="!loading" class="form user-form">
       <div class="form__group">
         <label class="form__label">新しいパスワード</label>
         <input
@@ -54,12 +55,13 @@ export default {
     return {
       password: "",
       password_confirmation: "",
-      errors: ""
+      errors: "",
+      loading: ''
     };
   },
   computed: {
     ...mapGetters({
-      getCurrentUser: "user/getCurrentUser"
+      getCurrentUser: "user/getCurrentUser",
     })
   },
   methods: {
@@ -68,6 +70,7 @@ export default {
         password: this.password,
         password_confirmation: this.password_confirmation
       };
+      this.loading = true;
       axios
         .put(`/api/users/${this.getCurrentUser.id}/password`, {
           change_password_form: password_params
@@ -80,11 +83,20 @@ export default {
           this.password = "";
           this.password_confirmation = "";
           this.errors = "";
+          this.loading = false;
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
+          this.loading = false;
         });
     }
   }
 };
 </script>
+
+<style scoped>
+.loading-case {
+  width: 600px;
+  height: 350px;
+}
+</style>

@@ -2,13 +2,13 @@
 
 .user-form {
   background-color: #fff;
-  padding: 30px 40px;
+  padding: 30px 40px 40px;
   box-shadow: $box-shadow-common;
 
   .form {
     &__group {
       &:not(:last-of-type) {
-        margin-bottom: 2em;
+        margin-bottom: 1.4em;
       }
     }
 
@@ -65,7 +65,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 50px;
+      margin-top: 2em;
 
       @media (max-width: 767px) {
         margin-top: 30px;

@@ -1,6 +1,6 @@
 <template>
-  <aside v-if="this.getCurrentUser && isTodo" class="sidebar">
-    <div class="sidebar__stickey-part sidebar-right">
+  <aside v-if="isTodo" class="sidebar sidebar-right">
+    <div v-if="this.getCurrentUser" class="sidebar__stickey-part sidebar-right__inner">
       <section class="sidebar-right__search search">
         <div class="search__form">
           <i class="fa fa-search search__lense"></i>
@@ -11,23 +11,26 @@
         </div>
       </section>
       <div v-if="query" class="search__box">
-        <template v-if="results && results.length">
-          <div v-for="resultDate in resultDateArray" :key="resultDate">
-            <div class="search__date">
-                {{ resultFormatDate(resultDate) }}
-            </div>
-            <div class="search__list">
-              <div v-for="result in todoByDate(resultDate)" @click="fetchDate(result.todo_date)" :key="result.id" class="search__item">{{ result.title }}
-                <div class="label"
-                      v-if="todoLabel(result)"
-                      :style="{color: colorOnRgb(todoLabel(result).color), backgroundColor: todoLabel(result).color }">
-                  {{ todoLabel(result).title }}
+        <v-loading-icon v-show="loading"></v-loading-icon>
+        <div v-show="!loading">
+          <template v-if="results && results.length">
+            <div v-for="resultDate in resultDateArray" :key="resultDate">
+              <div class="search__date">
+                  {{ resultFormatDate(resultDate) }}
+              </div>
+              <div class="search__list">
+                <div v-for="result in todoByDate(resultDate)" @click="fetchDate(result.todo_date)" :key="result.id" class="search__item">{{ result.title }}
+                  <div class="label"
+                        v-if="todoLabel(result)"
+                        :style="{color: colorOnRgb(todoLabel(result).color), backgroundColor: todoLabel(result).color }">
+                    {{ todoLabel(result).title }}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </template>
-        <div v-else class="search__no-result">結果なし</div>
+          </template>
+          <div v-else class="search__no-result">結果なし</div>
+        </div>
       </div>
       <div v-else>
         <sidebar-calendar></sidebar-calendar>
@@ -50,7 +53,8 @@ export default {
     return {
       query: '',
       results: [],
-      labels: []
+      labels: [],
+      loading: ''
     }
   },
   components: {
@@ -59,7 +63,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getCurrentUser: "user/getCurrentUser",
+      getCurrentUser: "user/getCurrentUser"
     }),
     resultDateArray() {
       let resultDates = [];
@@ -103,16 +107,18 @@ export default {
   methods: {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction",
-      cancelPendingRequests: "cancelPendingRequests"
+      cancelPendingRequests: "request/cancelPendingRequests"
     }),
     fetchDate(todo_date) {
       this.setSelectedDateAction(todo_date);
     },
     todoSearch() {
       if (this.query == '') {
+        this.loading = false;
         return;
       }
       this.cancelPendingRequests();
+      this.loading = true;
       axios
         .get('/api/search', {
           params: {
@@ -122,6 +128,7 @@ export default {
         .then((res) => {
           this.results = res.data.todos;
           this.labels = res.data.labels;
+          this.loading = false;
         }).catch(error => {
           console.log("通信がキャンセルされました");
         });
@@ -132,3 +139,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.loading-case {
+  width: 100%;
+  height: 200px;
+}
+</style>

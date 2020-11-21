@@ -19,7 +19,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 
 function isLoggedIn(to, from, next) {
-  store.dispatch('cancelPendingRequests');
+  store.dispatch('request/cancelPendingRequests');
   if (cookieStatus()) {
     next();
   } else {
@@ -29,7 +29,7 @@ function isLoggedIn(to, from, next) {
 }
 
 function isLoggedOut(to, from, next) {
-  store.dispatch('cancelPendingRequests');
+  store.dispatch('request/cancelPendingRequests');
   if (cookieStatus()) {
     next({ path: "/" });
   } else {
