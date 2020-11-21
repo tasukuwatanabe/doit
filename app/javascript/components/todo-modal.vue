@@ -113,9 +113,18 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getSelectedDate: "date/getSelectedDate",
-      formatDate: "date/getFormatDate"
-    })
+      getSelectedDate: "date/getSelectedDate"
+    }),
+    formattedDate() {
+      let year = this.getSelectedDate.getFullYear();
+      let month = this.getSelectedDate.getMonth() + 1;
+      let date = this.getSelectedDate.getDate();
+
+      month = ('0' + month).slice(-2)
+      date = ('0' + date).slice(-2)
+
+      return `${year}-${month}-${date}`;
+    },
   },
   mixins: [Modal, ColorOnRgb],
   methods: {
@@ -141,7 +150,7 @@ export default {
       this.todo.title = hasValue() ? val.title : undefined;
       this.todo.label_id = hasValue() ? val.label_id : undefined;
       this.todo.body = hasValue() ? val.body : undefined;
-      this.todo.todo_date = hasValue() ? val.todo_date : this.formatDate;
+      this.todo.todo_date = hasValue() ? val.todo_date : this.formattedDate;
       this.btnText = hasValue() ? "更新する" : "新規作成";
     },
     todoSubmit() {

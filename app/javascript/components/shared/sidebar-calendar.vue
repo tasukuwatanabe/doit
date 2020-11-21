@@ -44,6 +44,9 @@ export default {
       judgeMonth: ''
     }
   },
+  created() {
+    this.todoMatchCalendar();
+  },
   computed: {
     ...mapGetters({
       getSelectedDate: "date/getSelectedDate"
@@ -126,6 +129,11 @@ export default {
       return data;
     }
   },
+  watch: {
+    getSelectedDate: function() {
+      this.todoMatchCalendar();
+    }
+  },
   methods: {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction"
@@ -146,6 +154,15 @@ export default {
       const month = this.currentMoment.month() + 1; // 表示するmonthを取得
       const selectedDate = `${year}-${month}-${date}`;
       this.setSelectedDateAction(selectedDate);
+    },
+    todoMatchCalendar() {
+      const year = this.getSelectedDate.getFullYear();
+      const month = this.getSelectedDate.getMonth();
+
+      const year_difference = year - this.currentMoment.year();
+      const month_difference = month - this.currentMoment.month();
+
+      this.current += year_difference * 12 + month_difference * 1;
     },
     fetchToday() {
       this.current = 0;
