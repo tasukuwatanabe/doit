@@ -7,14 +7,7 @@ const state = {
 const getters = {
   getSelectedDate(state) {
     return state.selectedDate;
-  },
-  getFormatDate(state) {
-    const year = state.selectedDate.getFullYear();
-    const month = state.selectedDate.getMonth() + 1;
-    const date = state.selectedDate.getDate();
-
-    return `${year}-${month}-${date}`;
-  },
+  }
 }
 
 const mutations = {
