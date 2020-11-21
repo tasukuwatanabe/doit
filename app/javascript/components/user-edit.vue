@@ -11,7 +11,8 @@
         ユーザー名、メールアドレスなどのユーザー情報を変更することができます。
       </p>
     </div>
-    <form class="form user-form">
+    <v-loading-icon v-show="loading"></v-loading-icon>
+    <form v-show="!loading" class="form user-form">
       <div class="form__group">
         <label class="form__label">ユーザー名</label>
         <input type="text" v-model="username" class="form__input" />
@@ -148,10 +149,12 @@ export default {
       remove_user_image: undefined,
       errors: "",
       message: "",
-      random_number: undefined
+      random_number: undefined,
+      loading: ''
     };
   },
   created() {
+    this.loading = true;
     this.random_number =  Math.random();
     this.setUserData();
   },
@@ -190,8 +193,10 @@ export default {
         this.auto_generated_password = this.getCurrentUser.auto_generated_password;
         this.remove_user_image = this.getCurrentUser.remove_user_image;
       }
+      this.loading = false;
     },
     async cancelEmailConfirmation() {
+      this.loading = true;
       await axios.delete(`/api/email_confirmations/${this.id}`).then((res) => {
         this.flashMessage.success({
           title: res.data.message,
@@ -201,6 +206,7 @@ export default {
       });
       await axios.get("/api/current_user").then((res) => {
         this.setCurrentUserAction(res.data);
+        this.loading = false;
       });
     },
     onImageUpload: function (e) {
@@ -215,6 +221,7 @@ export default {
       reader.readAsDataURL(this.file);
     },
     submitUser() {
+      this.loading = true;
       this.errors = '';
       let formData = new FormData();
       formData.append("user[username]", this.username);
@@ -240,12 +247,15 @@ export default {
             title: res.data.message,
             icon: '/flash/success.svg',
           });
+          this.loading = false;
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
+          this.loading = false;
         });
     },
     async cancelOauth(provider) {
+      this.loading = true;
       await axios.delete("/cancel_oauth/" + provider).then((res) => {
           this.flashMessage.success({
             title: res.data.message,
@@ -255,9 +265,11 @@ export default {
         });
       await axios.get("/api/current_user").then((res) => {
         this.setCurrentUserAction(res.data);
+        this.loading = false;
       });
     },
     accountCancel() {
+      this.loading = true;
       axios
         .delete(`/api/users/${this.id}`)
         .then((res) => {
@@ -267,8 +279,16 @@ export default {
             time: 0,
             icon: '/flash/success.svg',
           });
+          this.loading = false;
       });
     }
   }
 };
 </script>
+
+<style scoped>
+.loading-case {
+  width: 600px;
+  height: 350px;
+}
+</style>

@@ -102,7 +102,7 @@ export default {
       },
       displayColorPicker: false,
       btnText: undefined,
-      custom_error: ""
+      custom_error: "",
     };
   },
   components: {

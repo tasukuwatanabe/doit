@@ -150,6 +150,7 @@ export default {
     fetchToday() {
       this.current = 0;
       const selectedDate = moment().format('YYYY-MM-DD');
+      this.setSelectedDateAction(moment());
     }
   }
 }

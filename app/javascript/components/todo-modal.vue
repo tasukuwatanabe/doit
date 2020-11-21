@@ -105,7 +105,7 @@ export default {
         todo_date: undefined,
         body: undefined
       },
-      btnText: ""
+      btnText: "",
     };
   },
   created() {

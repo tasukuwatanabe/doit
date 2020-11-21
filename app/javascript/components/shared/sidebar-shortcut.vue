@@ -10,28 +10,33 @@
         編集
       </router-link>
     </div>
-    <div class="sidebar-shortcut__field">
-      <ul v-if="shortcuts.length" class="sidebar-shortcut__list">
-        <li
-          v-for="shortcut in shortcuts"
-          :key="shortcut.id"
-          class="sidebar-shortcut__item"
-        >
-          <a @click="createTodo(shortcut)" class="sidebar-shortcut__link">
-            <i class="fas fa-plus-circle"></i>
-            {{ shortcut.title }}
-          </a>
-        </li>
-      </ul>
-      <div v-else class="sidebar-shortcut__no-result">
-        <p class="sidebar-shortcut__text">ショートカットが未作成です</p>
-        <div class="page-action">
-          <router-link to="/shortcuts" class="btn-outlined btn--sm">
-            <span class="page-action__icon">
-              <i class="fas fa-plus"></i>
-            </span>
-            <span class="page-action__text">ショートカットを追加</span>
-          </router-link>
+    <div 
+      class="sidebar-shortcut__field" 
+      :class="{ 'sidebar-shortcut__field--center' : (loading || !shortcuts.length) }">
+      <v-loading-icon v-show="loading"></v-loading-icon>
+      <div v-show="!loading">
+        <ul v-if="shortcuts.length" class="sidebar-shortcut__list">
+          <li
+            v-for="shortcut in shortcuts"
+            :key="shortcut.id"
+            class="sidebar-shortcut__item"
+          >
+            <a @click="createTodo(shortcut)" class="sidebar-shortcut__link">
+              <i class="fas fa-plus-circle"></i>
+              {{ shortcut.title }}
+            </a>
+          </li>
+        </ul>
+        <div v-else class="sidebar-shortcut__no-result">
+          <p class="sidebar-shortcut__text">ショートカットが未作成です</p>
+          <div class="page-action">
+            <router-link to="/shortcuts" class="btn-outlined btn--sm">
+              <span class="page-action__icon">
+                <i class="fas fa-plus"></i>
+              </span>
+              <span class="page-action__text">ショートカットを追加</span>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -45,7 +50,8 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      shortcuts: []
+      shortcuts: [],
+      loading: ''
     };
   },
   created() {
@@ -53,7 +59,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getSelectedDate: "date/getSelectedDate"
+      getSelectedDate: "date/getSelectedDate",
     })
   },
   methods: {
@@ -61,12 +67,15 @@ export default {
       setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchShortcut() {
+      this.loading = true;
       axios
         .get("/api/shortcuts")
         .then((res) => {
           this.shortcuts = res.data.shortcuts;
+          this.loading = false;
         }).catch(error => {
           console.log("通信がキャンセルされました");
+          this.loading = false;
         });
     },
     createTodo(shortcut) {

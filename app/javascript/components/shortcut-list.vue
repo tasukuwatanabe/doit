@@ -30,48 +30,51 @@
         </a>
       </div>
     </div>
-    <ul class="list" v-if="shortcuts.length">
-      <li
-        class="list__item"
-        v-for="shortcut in shortcuts"
-        :key="shortcut.id"
-      >
-        <div class="list__block list__block--left">
-          <div class="list__title-group" style="position: relative">
-            <div class="list__title">
-              {{ shortcut.title }}
+    <v-loading-icon v-show="loading"></v-loading-icon>
+    <div v-show="!loading">
+      <ul class="list" v-if="shortcuts.length">
+        <li
+          class="list__item"
+          v-for="shortcut in shortcuts"
+          :key="shortcut.id"
+        >
+          <div class="list__block list__block--left">
+            <div class="list__title-group" style="position: relative">
+              <div class="list__title">
+                {{ shortcut.title }}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="list__block list__block--right list__block--grow">
-          <div
-            class="label label--margin"
-            v-if="shortcut.label_id"
-            :style="{
-              color: colorOnRgb(getLabel(shortcut).color),
-              backgroundColor: getLabel(shortcut).color
-            }"
-          >
-            {{ getLabel(shortcut).title }}
+          <div class="list__block list__block--right list__block--grow">
+            <div
+              class="label label--margin"
+              v-if="shortcut.label_id"
+              :style="{
+                color: colorOnRgb(getLabel(shortcut).color),
+                backgroundColor: getLabel(shortcut).color
+              }"
+            >
+              {{ getLabel(shortcut).title }}
+            </div>
+            <div v-else></div>
+            <div class="item-action">
+              <a @click="setShortcut(shortcut)" class="item-action__btn">
+                <i class="fas fa-pencil-alt"></i>
+              </a>
+              <a @click="deleteShortcut(shortcut)" class="item-action__btn">
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
           </div>
-          <div v-else></div>
-          <div class="item-action">
-            <a @click="setShortcut(shortcut)" class="item-action__btn">
-              <i class="fas fa-pencil-alt"></i>
-            </a>
-            <a @click="deleteShortcut(shortcut)" class="item-action__btn">
-              <i class="fas fa-trash"></i>
-            </a>
-          </div>
+        </li>
+      </ul>
+      <div class="no-result no-result" v-else>
+        <div class="no-result__illustration">
+          <img
+            src="/illustrations/il-navigation.png"
+            alt="チェックリストのイラスト"
+          />
         </div>
-      </li>
-    </ul>
-    <div class="no-result no-result" v-else>
-      <div class="no-result__illustration">
-        <img
-          src="/illustrations/il-navigation.png"
-          alt="チェックリストのイラスト"
-        />
       </div>
     </div>
     <shortcut-modal
@@ -95,7 +98,8 @@ export default {
     return {
       shortcuts: [],
       shortcut: {},
-      labels: []
+      labels: [],
+      loading: ''
     };
   },
   created() {
@@ -111,14 +115,17 @@ export default {
   },
   methods: {
     fetchShortcuts() {
+      this.loading = true;
       axios
         .get("/api/shortcuts")
         .then((res) => {
           this.shortcuts = res.data.shortcuts;
           this.labels = res.data.labels;
+          this.loading = false;
         })
         .catch(error => {
           console.log("通信がキャンセルされました");
+          this.loading = false;
         });
     },
     setShortcut(shortcut) {
@@ -133,6 +140,7 @@ export default {
       }
     },
     deleteShortcut(shortcut) {
+      this.loading = true;
       axios.delete(`/api/shortcuts/${shortcut.id}`).then((res) => {
         this.fetchShortcuts();
       });
@@ -140,3 +148,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.loading-case {
+  width: 600px;
+  height: 350px;
+}
+</style>
