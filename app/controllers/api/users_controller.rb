@@ -1,5 +1,6 @@
 class Api::UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :check_email, only: [:create, :update]
 
   def current_user
     if user_id = cookies.signed[:user_id]
@@ -89,5 +90,11 @@ class Api::UsersController < ApplicationController
 
   def user_params
     params.fetch(:user, {}).permit(:id, :username, :password, :email, :password_confirmation, :user_image, :remove_user_image, :facebook_uid, :twitter_uid, :google_uid, :auto_generated_password, :unconfirmed_email)
+  end
+
+  def check_email
+    if user_params[:email] == 'guest@example.com'
+      render json: { errors: { email: "このメールアドレスは使用できません。"} }, status: :unprocessable_entity
+    end
   end
 end

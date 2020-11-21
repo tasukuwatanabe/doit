@@ -4,6 +4,7 @@ class Api::PasswordResetsController < ApplicationController
   before_action :get_user, only: :update
   before_action :check_expiration, only: :update
   before_action :valid_user, only: :update
+  before_action :check_email, only: :create
 
   def create
     user = User.find_by(email: password_reset_params[:email])
@@ -44,6 +45,12 @@ class Api::PasswordResetsController < ApplicationController
       errors = { email:  'メールアドレスが未入力です' }
       render json: { errors: errors }, status: :unprocessable_entity
       return
+    end
+  end
+
+  def check_email
+    if password_reset_params[:email] == 'guest@example.com'
+      render json: { errors: { email: "このアカウントはパスワードリセットできません。"} }, status: :unprocessable_entity
     end
   end
 

@@ -75,6 +75,10 @@
     &__cancel {
       color: rgb(205, 51, 51);
       text-decoration: underline;
+
+      &--disabled {
+        cursor: default;
+      }
     }
   }
 
