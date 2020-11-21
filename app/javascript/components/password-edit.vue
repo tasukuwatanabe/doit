@@ -13,6 +13,12 @@
     </div>
     <v-loading-icon v-show="loading"></v-loading-icon>
     <form v-show="!loading" class="form user-form">
+      <div v-if="isGuest" class="form__group">
+        <div class="guest-message">
+          <i class="fas fa-exclamation-triangle"></i>
+          ゲストユーザーはパスワードを変更することはできません
+        </div>
+      </div>
       <div class="form__group">
         <label class="form__label">新しいパスワード</label>
         <input
@@ -20,6 +26,7 @@
           type="password"
           v-model="password"
           autocomplete="on"
+          :readonly="isGuest"
         />
         <span class="form__error" v-if="!!errors.password">
           {{ errors.password }}
@@ -32,6 +39,7 @@
           type="password"
           v-model="password_confirmation"
           autocomplete="on"
+          :readonly="isGuest"
         />
         <span class="form__error" v-if="!!errors.password_confirmation">
           {{ errors.password_confirmation }}
@@ -62,7 +70,12 @@ export default {
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser",
-    })
+    }),
+    isGuest() {
+      if (this.getCurrentUser) {
+        return this.getCurrentUser.email === 'guest@example.com';
+      }
+    },
   },
   methods: {
     submitPassword() {

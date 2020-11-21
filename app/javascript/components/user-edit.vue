@@ -13,16 +13,28 @@
     </div>
     <v-loading-icon v-show="loading"></v-loading-icon>
     <form v-show="!loading" class="form user-form">
+      <div v-if="isGuest" class="form__group">
+        <div class="guest-message">
+          <i class="fas fa-exclamation-triangle"></i>
+          ゲストユーザーはユーザー情報を変更することはできません
+        </div>
+      </div>
       <div class="form__group">
         <label class="form__label">ユーザー名</label>
-        <input type="text" v-model="username" class="form__input" />
+        <input type="text"
+                v-model="username"
+                class="form__input"
+                :readonly="isGuest" />
         <span class="form__error" v-if="!!errors.username">
           {{ errors.username }}
         </span>
       </div>
       <div class="form__group">
         <label class="form__label">メールアドレス</label>
-        <input type="email" v-model="email" class="form__input" />
+        <input type="email"
+                v-model="email"
+                class="form__input"
+                :readonly="isGuest" />
         <span class="form__error" v-if="!!errors.unconfirmed_email">
           {{ errors.unconfirmed_email }}
         </span>
@@ -44,16 +56,20 @@
             :src="user_image_with_number"
             class="profile-img"
           />
-          <input type="file" ref="file" @change="onImageUpload" />
+          <input type="file"
+                  ref="file"
+                  :disabled="isGuest"
+                  @change="onImageUpload" />
         </div>
         <div v-if="has_user_image" class="form__profile-default">
           <input
             type="checkbox"
             v-model="remove_user_image"
-            id="remove_user_image"
-            true-value="1"
-          />
-          <label for="remove_user_image">デフォルトの画像を使用</label>
+            id="remove_user_image" 
+            :disabled="isGuest"
+            true-value="1" />
+          <label for="remove_user_image" 
+                  :disabled="isGuest">デフォルトの画像を使用</label>
         </div>
       </div>
       <div class="form__group">
@@ -121,7 +137,10 @@
       </div>
       <div class="form__action">
         <div @click="submitUser()" class="btn-main btn--md">変更する</div>
-        <a @click="accountCancel()" class="form__cancel" :class="{ disable_for_guest: isGuest }">退会する</a>
+        <a @click="accountCancel()" 
+            class="form__cancel" 
+            :class="{ 'form__cancel--disabled' : isGuest }"
+            :disabled="isGuest">退会する</a>
       </div>
     </form>
   </div>
@@ -135,21 +154,20 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      isGuest: false,
-      id: undefined,
-      username: undefined,
-      email: undefined,
-      user_image: undefined,
-      facebook_uid: undefined,
-      twitter_uid: undefined,
-      google_uid: undefined,
-      file: undefined,
-      unconfirmed_email: undefined,
-      auto_generated_password: undefined,
-      remove_user_image: undefined,
+      id: '',
+      username: '',
+      email: '',
+      user_image: '',
+      facebook_uid: '',
+      twitter_uid: '',
+      google_uid: '',
+      file: '',
+      unconfirmed_email: '',
+      auto_generated_password: '',
+      remove_user_image: '',
       errors: "",
       message: "",
-      random_number: undefined,
+      random_number: '',
       loading: ''
     };
   },
@@ -167,6 +185,11 @@ export default {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
     }),
+    isGuest() {
+      if (this.getCurrentUser) {
+        return this.getCurrentUser.email === 'guest@example.com';
+      }
+    },
     has_user_image() {
       return this.user_image !== "/user_images/default.jpg";
     },
@@ -269,6 +292,9 @@ export default {
       });
     },
     accountCancel() {
+      if (this.isGuest) {
+        return;
+      }
       this.loading = true;
       axios
         .delete(`/api/users/${this.id}`)
