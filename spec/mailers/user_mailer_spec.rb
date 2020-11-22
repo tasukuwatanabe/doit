@@ -10,7 +10,7 @@ RSpec.describe UserMailer, type: :mailer do
     it 'renders the headers' do
       expect(mail.subject).to eq('DoIT | アカウントの有効化')
       expect(mail.from).to eq(['noreply@example.com'])
-      expect(mail.to).to eq(['testemail@example.com'])
+      expect(mail.to).to eq(['user@example.com'])
     end
 
     it 'renders the body' do
