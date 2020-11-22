@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :shortcut do
-    title { 'shortcutタイトル' }
-    user_id { User.find_by(email: 'testemail@example.com').id }
+    association :user
+    title { 'ショートカットタイトル' }
+    label_id { Label.first.id }
   end
 end
