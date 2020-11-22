@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :todo do
-    title { 'todoタイトル' }
+    association :user
+    title { 'Todoタイトル' }
     todo_date { Date.today }
-    user_id { User.first.id }
+    label_id { Label.first.id }
   end
 end
