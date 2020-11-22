@@ -13,19 +13,25 @@ class Label < ApplicationRecord
   validate :label_color_must_be_hex_style
   validate :label_counts_must_be_within_limit
 
-  private def label_color_must_be_hex_style
+  private
+  
+  def label_color_must_be_hex_style
     hex_string_array = (0..9).to_a.map(&:to_s) + ('a'..'f').to_a
 
-    color_array = color.split('')
-    color_array.shift
-    color_condition = color_array.all? do |i|
-      hex_string_array.include?(i)
-    end
+    if color
+      color_array = color.split('')
+      color_array.shift
+      color_condition = color_array.all? do |i|
+        hex_string_array.include?(i)
+      end
 
-    errors.add(:color, 'エラー') unless color_array.length == 6 && color_condition
+      unless (color_array.length == 6 || color_array.length == 3) && color_condition
+        errors.add(:color, 'エラー')
+      end
+    end
   end
 
-  private def label_counts_must_be_within_limit
+  def label_counts_must_be_within_limit
     errors.add(:base, 'ラベルが登録できるのは10個までです') if user.labels.size > 10
   end
 end
