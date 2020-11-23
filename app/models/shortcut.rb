@@ -1,7 +1,11 @@
 class Shortcut < ApplicationRecord
   include StringNormalizer
 
+  attribute :label_title
+  attribute :label_color
+
   belongs_to :user
+  belongs_to :label
 
   before_validation do
     self.title = normalize_as_text(title)

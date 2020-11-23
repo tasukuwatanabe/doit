@@ -2,13 +2,19 @@ class Api::ShortcutsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    shortcuts = current_user.shortcuts.order(created_at: :desc).select(:id, :title, :label_id)
-    labels = current_user.labels.select(:id, :title, :color)
-    api_array = {
-      shortcuts: shortcuts,
-      labels: labels
-    }
-    render json: api_array
+    shortcuts = current_user.shortcuts
+                            .includes(:label)
+                            .order(created_at: :desc)
+                            .select(:id, :title, :label_id)
+
+    shortcuts.each do |shortcut|
+      if shortcut.label_id
+        shortcut.label_title = shortcut.label.title
+        shortcut.label_color = shortcut.label.color
+      end
+    end
+
+    render json: shortcuts, status: 200
   end
 
   def create

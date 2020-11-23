@@ -2,16 +2,14 @@ class Api::LabelsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    labels = current_user.labels.order(created_at: :desc).select(:id, :title, :color)
-    todos = current_user.todos.where.not(label_id: nil).select(:label_id)
-    api_array = {
-      labels: labels,
-      todos: todos
-    }
-    render json: api_array
+    labels = current_user.labels
+                          .order(created_at: :desc)
+                          .select(:id, :title, :color, :todos_count)
+
+    render json: labels, status: 200
   end
 
-  def create
+  def createZZZZZZZZ
     label = current_user.labels.build(label_params)
     if label.save
       head :no_content

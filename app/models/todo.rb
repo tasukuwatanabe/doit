@@ -1,7 +1,10 @@
 class Todo < ApplicationRecord
   include StringNormalizer
 
+  attr_accessor :label_title, :label_color
+
   belongs_to :user
+  belongs_to :label, counter_cache: :todos_count
 
   before_validation { self.title = normalize_as_text(title) }
 
