@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_23_070455) do
+ActiveRecord::Schema.define(version: 2020_11_23_120033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,13 +25,30 @@ ActiveRecord::Schema.define(version: 2020_11_23_070455) do
     t.index ["user_id"], name: "index_labels_on_user_id"
   end
 
+  create_table "shortcut_labels", force: :cascade do |t|
+    t.bigint "shortcut_id", null: false
+    t.bigint "label_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["label_id"], name: "index_shortcut_labels_on_label_id"
+    t.index ["shortcut_id"], name: "index_shortcut_labels_on_shortcut_id"
+  end
+
   create_table "shortcuts", force: :cascade do |t|
     t.string "title", null: false
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "label_id"
     t.index ["user_id"], name: "index_shortcuts_on_user_id"
+  end
+
+  create_table "todo_labels", force: :cascade do |t|
+    t.bigint "todo_id", null: false
+    t.bigint "label_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["label_id"], name: "index_todo_labels_on_label_id"
+    t.index ["todo_id"], name: "index_todo_labels_on_todo_id"
   end
 
   create_table "todos", force: :cascade do |t|
@@ -42,7 +59,6 @@ ActiveRecord::Schema.define(version: 2020_11_23_070455) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
     t.text "body"
-    t.integer "label_id"
     t.index ["user_id"], name: "index_todos_on_user_id"
   end
 
@@ -71,6 +87,10 @@ ActiveRecord::Schema.define(version: 2020_11_23_070455) do
   end
 
   add_foreign_key "labels", "users"
+  add_foreign_key "shortcut_labels", "labels"
+  add_foreign_key "shortcut_labels", "shortcuts"
   add_foreign_key "shortcuts", "users"
+  add_foreign_key "todo_labels", "labels"
+  add_foreign_key "todo_labels", "todos"
   add_foreign_key "todos", "users"
 end

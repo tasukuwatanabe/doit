@@ -2,8 +2,10 @@ class Label < ApplicationRecord
   include StringNormalizer
 
   belongs_to :user
-  has_many :todos
-  has_many :shortcus
+  has_many :todo_labels, dependent: :destroy
+  has_many :todos, through: :todo_labels
+  has_many :shortcut_labels, dependent: :destroy
+  has_many :shortcuts, through: :shortcut_labels
 
   before_validation do
     self.title = normalize_as_text(title)

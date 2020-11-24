@@ -1,11 +1,9 @@
 class Shortcut < ApplicationRecord
   include StringNormalizer
 
-  attribute :label_title
-  attribute :label_color
-
   belongs_to :user
-  belongs_to :label
+  has_many :shortcut_labels, dependent: :destroy
+  has_many :labels, through: :shortcut_labels
 
   before_validation do
     self.title = normalize_as_text(title)
