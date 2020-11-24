@@ -14,8 +14,7 @@ class Api::UsersController < ApplicationController
         twitter_uid: current_user.twitter_uid,
         google_uid: current_user.google_uid,
         auto_generated_password: current_user.auto_generated_password,
-        unconfirmed_email: current_user.unconfirmed_email,
-        remove_user_image: current_user.remove_user_image
+        unconfirmed_email: current_user.unconfirmed_email
       }
     else
       current_user = nil

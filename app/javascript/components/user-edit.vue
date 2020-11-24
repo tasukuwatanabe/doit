@@ -154,21 +154,21 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      id: '',
-      username: '',
-      email: '',
-      user_image: '',
-      facebook_uid: '',
-      twitter_uid: '',
-      google_uid: '',
-      file: '',
-      unconfirmed_email: '',
-      auto_generated_password: '',
-      remove_user_image: '',
+      id: "",
+      username: "",
+      email: "",
+      user_image: "",
+      facebook_uid: "",
+      twitter_uid: "",
+      google_uid: "",
+      file: "",
+      unconfirmed_email: "",
+      auto_generated_password: "",
+      remove_user_image: "",
       errors: "",
       message: "",
-      random_number: '',
-      loading: ''
+      random_number: "",
+      loading: ""
     };
   },
   created() {
@@ -223,7 +223,7 @@ export default {
       await axios.delete(`/api/email_confirmations/${this.id}`).then((res) => {
         this.flashMessage.success({
           title: res.data.message,
-          time: 0,
+          time: 5000,
           icon: '/flash/success.svg',
         });
       });
@@ -245,7 +245,7 @@ export default {
     },
     submitUser() {
       this.loading = true;
-      this.errors = '';
+      this.errors = "";
       let formData = new FormData();
       formData.append("user[username]", this.username);
       formData.append("user[email]", this.email);
@@ -268,6 +268,7 @@ export default {
           this.setCurrentUserAction(res.data.user);
           this.flashMessage.success({
             title: res.data.message,
+          time: 5000,
             icon: '/flash/success.svg',
           });
           this.loading = false;
@@ -282,7 +283,7 @@ export default {
       await axios.delete("/cancel_oauth/" + provider).then((res) => {
           this.flashMessage.success({
             title: res.data.message,
-            time: 0,
+          time: 5000,
             icon: '/flash/success.svg',
           });
         });
@@ -302,7 +303,7 @@ export default {
           this.$router.push({ name: "login" });
           this.flashMessage.success({
             title: res.data.message,
-            time: 0,
+          time: 5000,
             icon: '/flash/success.svg',
           });
           this.loading = false;

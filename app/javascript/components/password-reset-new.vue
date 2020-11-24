@@ -61,6 +61,7 @@ export default {
           this.$router.push({ name: "login" });
           this.flashMessage.success({
             title: res.data.message,
+          time: 5000,
             icon: '/flash/success.svg',
           });
         })

@@ -96,10 +96,10 @@ import GuestLogin from "./mixins/guest-login";
 export default {
   data() {
     return {
-      username: undefined,
-      email: undefined,
-      password: undefined,
-      password_confirmation: undefined,
+      username: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
       errors: ""
     };
   },
@@ -118,6 +118,7 @@ export default {
           this.$router.push({ name: "login" });
           this.flashMessage.success({
             title: res.data.message,
+          time: 5000,
             icon: '/flash/success.svg',
           });
         })

@@ -85,15 +85,12 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      email: undefined,
-      password: undefined,
+      email: "",
+      password: "",
       errors: ""
     };
   },
   mixins: [GuestLogin],
-  created() {
-    this.loading = false;
-  },
   methods: {
     ...mapActions({
       setCurrentUserAction: 'user/setCurrentUserAction',
@@ -109,6 +106,7 @@ export default {
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
             title: res.data.message,
+          time: 5000,
             icon: '/flash/success.svg',
           });
 

@@ -88,6 +88,7 @@ export default {
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
             title: res.data.message,
+          time: 5000,
             icon: '/flash/success.svg',
           });
         })
@@ -96,7 +97,6 @@ export default {
           if (!!error.response.data.message) {
             this.flashMessage.error({
               title: error.response.data.message,
-              time: 0,
               icon: '/flash/error.svg',
             });
             this.$router.push({ name: 'password_resets_new' })
