@@ -31,7 +31,7 @@
                 <div class="col-9">
                   <input
                     type="text"
-                    v-model="shortcut.title"
+                    v-model="shortcut_title"
                     class="form__input"
                     required
                   />
@@ -43,14 +43,14 @@
               <div class="form__group row">
                 <div class="col-3 form__label">ラベル</div>
                 <div class="col-9">
-                  <select class="form__select" v-model="shortcut.label_id">
+                  <select class="form__select" v-model="label_id">
                     <option>ラベルを選択</option>
                     <option
                       v-for="label in labels"
-                      :key="label.id"
-                      :value="label.id"
+                      :key="label.label_id"
+                      :value="label.label_id"
                     >
-                      {{ label.title }}
+                      {{ label.label_title }}
                     </option>
                   </select>
                 </div>
@@ -80,12 +80,9 @@ export default {
   name: "ShortcutModal",
   data() {
     return {
-      shortcut: {
-        id: undefined,
-        title: undefined,
-        label_id: undefined
-      },
-      shortcuts: [],
+      shortcut_id: "",
+      shortcut_title: "",
+      label_id: [],
       labels: [],
       btnText: "",
       custom_error: "",
@@ -100,7 +97,7 @@ export default {
       axios
         .get("/api/labels")
         .then((res) => {
-          this.labels = res.data.labels;
+          this.labels = res.data;
         })
         .catch(error => {
           console.log("通信がキャンセルされました");
@@ -112,9 +109,9 @@ export default {
       const hasValue = function () {
         return val != undefined;
       };
-      this.shortcut.id = hasValue() ? val.id : undefined;
-      this.shortcut.title = hasValue() ? val.title : undefined;
-      this.shortcut.label_id = hasValue() ? val.label_id : undefined;
+      this.shortcut_id = hasValue() ? val.shortcut_id : undefined;
+      this.shortcut_title = hasValue() ? val.shortcut_title : undefined;
+      this.label_id = hasValue() ? val.label_id : undefined;
       this.btnText = hasValue() ? "更新する" : "新規作成";
     },
     setError(error) {
@@ -122,15 +119,13 @@ export default {
       this.toggleModal();
     },
     shortcutSubmit() {
-      const shortcut_id = this.shortcut.id;
-      const shortcut_params = {
-        title: this.shortcut.title,
-        label_id: this.shortcut.label_id
-      };
-      if (shortcut_id) {
+      if (this.shortcut_id) {
         axios
-          .put(`/api/shortcuts/${shortcut_id}`, {
-            shortcut: shortcut_params
+          .put(`/api/shortcuts/${this.shortcut_id}`, {
+            shortcut: {
+              title: this.shortcut_title,
+              label_ids: [this.label_id]
+            }
           })
           .then(() => {
             this.shortcut = {};
@@ -143,7 +138,10 @@ export default {
       } else {
         axios
           .post("/api/shortcuts", {
-            shortcut: shortcut_params
+            shortcut: {
+              title: this.shortcut_title,
+              label_ids: [this.label_id]
+            }
           })
           .then(() => {
             this.shortcut = {};

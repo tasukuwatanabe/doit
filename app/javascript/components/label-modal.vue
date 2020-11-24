@@ -33,7 +33,7 @@
                     ref="inputLabelTitle"
                     type="text"
                     class="form__input"
-                    v-model="label.title"
+                    v-model="label_title"
                     required
                   />
                   <span class="form__error" v-if="!!errors.title">
@@ -93,15 +93,13 @@ export default {
   name: "LabelModal",
   data() {
     return {
-      label: {
-        id: undefined,
-        title: undefined
-      },
+      label_id: "",
+      label_title: "",
       colorPicker: {
         hex: defaultColor
       },
-      displayColorPicker: false,
-      btnText: undefined,
+      displayColorPicker: "",
+      btnText: "",
       custom_error: "",
     };
   },
@@ -110,9 +108,9 @@ export default {
   },
   mixins: [Modal, ColorOnRgb],
   computed: {
-    labelColor: function () {
+    labelColor() {
       return function (label) {
-        return this.label.color;
+        return this.label_color;
       };
     }
   },
@@ -120,12 +118,12 @@ export default {
     setLabelValue(val) {
       this.custom_error = "";
       this.toggleModal();
-      const hasValue = function () {
+      const hasValue = () => {
         return val != undefined;
       };
-      this.label.id = hasValue() ? val.id : undefined;
-      this.label.title = hasValue() ? val.title : undefined;
-      this.colorPicker.hex = hasValue() ? val.color : defaultColor;
+      this.label_id = hasValue() ? val.label_id : undefined;
+      this.label_title = hasValue() ? val.label_title : undefined;
+      this.colorPicker.hex = hasValue() ? val.label_color : defaultColor;
       this.btnText = hasValue() ? "更新する" : "新規作成";
     },
     setError(error) {
@@ -133,14 +131,13 @@ export default {
       this.toggleModal();
     },
     labelSubmit() {
-      const label_id = this.label.id;
       const label_params = {
-        title: this.label.title,
+        title: this.label_title,
         color: this.colorPicker.hex
       };
-      if (label_id) {
+      if (this.label_id) {
         axios
-          .put(`/api/labels/${label_id}`, { label: label_params })
+          .put(`/api/labels/${this.label_id}`, { label: label_params })
           .then(() => {
             this.label = {};
             this.toggleModal();

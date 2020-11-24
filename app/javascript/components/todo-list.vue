@@ -24,32 +24,32 @@
       <v-loading-icon v-show="loading"></v-loading-icon>
       <div v-show="!loading">
         <ul class="list" v-if="todos.length">
-          <li v-for="todo in todos" class="list__item" :key="todo.id">
+          <li v-for="todo in todos" class="list__item" :key="todo.todo_id">
             <div
               class="todo-status"
-              :class="{ 'todo__status--checked': todo.status }"
+              :class="{ 'todo__status--checked': todo.todo_status }"
             >
               <input
-                :id="'todo_status_' + todo.id"
+                :id="'todo_status_' + todo.todo_id"
                 type="checkbox"
-                v-model="todo.status"
+                v-model="todo.todo_status"
                 @click="toggleStatus(todo)"
               />
-              <label :for="'todo_status_' + todo.id"></label>
+              <label :for="'todo_status_' + todo.todo_id"></label>
             </div>
             <div class="list__block list__block--left">
-              <div class="list__title">{{ todo.title }}</div>
+              <div class="list__title">{{ todo.todo_title }}</div>
             </div>
             <div class="list__block list__block--right list__block--grow">
               <div
                 class="label label--margin"
-                v-if="todoLabel(todo)"
+                v-if="todo.label_color"
                 :style="{
-                  color: colorOnRgb(todoLabel(todo).color),
-                  backgroundColor: todoLabel(todo).color
+                  color: colorOnRgb(todo.label_color),
+                  backgroundColor: todo.label_color
                 }"
               >
-                {{ todoLabel(todo).title }}
+                {{ todo.label_title }}
               </div>
               <div v-else></div>
               <div class="item-action">
@@ -100,13 +100,18 @@ export default {
   data() {
     return {
       todos: [],
-      labels: [],
       loading: ''
     };
   },
   mixins: [ColorOnRgb],
   created() {
+    this.loading = true;
     this.fetchDate();
+  },
+  watch: {
+    getSelectedDate: function() {
+      this.fetchTodos(this.getSelectedDate);
+    }
   },
   computed: {
     ...mapGetters({
@@ -136,16 +141,6 @@ export default {
       const selected_date = new Date(this.getSelectedDate);
       const tomorrow = selected_date.setDate(selected_date.getDate() + 1);
       return new Date(tomorrow);
-    },
-    todoLabel() {
-      return function (todo) {
-        return this.labels.filter((label) => todo.label_id == label.id)[0];
-      };
-    }
-  },
-  watch: {
-    getSelectedDate: function() {
-      this.fetchTodos(this.getSelectedDate);
     }
   },
   methods: {
@@ -158,12 +153,10 @@ export default {
     },
     fetchTodos(date) {
       this.cancelPendingRequests();
-      this.loading = true;
       axios
         .get("/api/todos", { params: { date: date } })
         .then((res) => {
-          this.todos = res.data.todos;
-          this.labels = res.data.labels;
+          this.todos = res.data;
           this.loading = false;
         })
         .catch(error => {
@@ -174,9 +167,11 @@ export default {
       this.$refs.todoModal.setTodoValue(todo);
     },
     deleteTodo(todo) {
-      axios.delete(`/api/todos/${todo.id}`).then((res) => {
-        this.fetchTodos(this.getSelectedDate);
-      });
+      axios
+        .delete(`/api/todos/${todo.todo_id}`)
+        .then(() => {
+          this.fetchTodos(this.getSelectedDate, false);
+        });
     },
     toggleStatus(todo) {
       axios.put(`/api/todos/${todo.id}/toggle_status`, { todo: todo });

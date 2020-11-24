@@ -3,13 +3,17 @@ class Api::LabelsController < ApplicationController
 
   def index
     labels = current_user.labels
+                          .left_joins(:todos)
+                          .group(:id)
                           .order(created_at: :desc)
-                          .select(:id, :title, :color, :todos_count)
-
+                          .select('labels.id AS label_id,
+                                    labels.title AS label_title,
+                                    labels.color AS label_color,
+                                    COUNT(todos.id) AS todo_count')
     render json: labels, status: 200
   end
 
-  def createZZZZZZZZ
+  def create
     label = current_user.labels.build(label_params)
     if label.save
       head :no_content
@@ -31,14 +35,12 @@ class Api::LabelsController < ApplicationController
 
   def destroy
     label = Label.find(params[:id])
-    todos = Todo.where(label_id: label.id).update_all(label_id: nil)
-    shortcuts = Shortcut.where(label_id: label.id).update_all(label_id: nil)
     label.destroy
   end
 
   private
 
   def label_params
-    params.fetch(:label, {}).permit(:id, :title, :color)
+    params.require(:label).permit(:id, :title, :color)
   end
 end

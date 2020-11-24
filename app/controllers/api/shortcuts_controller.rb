@@ -3,17 +3,13 @@ class Api::ShortcutsController < ApplicationController
 
   def index
     shortcuts = current_user.shortcuts
-                            .includes(:label)
+                            .left_joins(:labels)
                             .order(created_at: :desc)
-                            .select(:id, :title, :label_id)
-
-    shortcuts.each do |shortcut|
-      if shortcut.label_id
-        shortcut.label_title = shortcut.label.title
-        shortcut.label_color = shortcut.label.color
-      end
-    end
-
+                            .select('shortcuts.id AS shortcut_id,
+                                    shortcuts.title AS shortcut_title,
+                                    labels.id AS label_id,
+                                    labels.title AS label_title,
+                                    labels.color AS label_color')
     render json: shortcuts, status: 200
   end
 
@@ -46,6 +42,6 @@ class Api::ShortcutsController < ApplicationController
   private
 
   def shortcut_params
-    params.fetch(:shortcut, {}).permit(:id, :title, :label_id)
+    params.require(:shortcut).permit(:id, :title, { label_ids: []})
   end
 end

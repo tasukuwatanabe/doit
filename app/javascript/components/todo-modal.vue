@@ -20,7 +20,7 @@
                 <input
                   type="text"
                   class="form__input"
-                  v-model="todo.title"
+                  v-model="todo_title"
                   required
                 />
                 <span class="form__error" v-if="!!errors.title">
@@ -40,7 +40,7 @@
               <div class="col-9">
                 <input
                   type="date"
-                  v-model="todo.todo_date"
+                  v-model="todo_date"
                   class="form__input"
                 />
                 <span class="form__error" v-if="!!errors.todo_date">
@@ -53,14 +53,14 @@
                 <div class="form__label">ラベル</div>
               </div>
               <div class="col-9">
-                <select v-model="todo.label_id" class="form__select">
+                <select v-model="label_id" class="form__select">
                   <option>ラベルを選択</option>
                   <option
                     v-for="label in labels"
-                    :key="label.id"
-                    :value="label.id"
+                    :key="label.label_id"
+                    :value="label.label_id"
                   >
-                    {{ label.title }}
+                    {{ label.label_title }}
                   </option>
                 </select>
               </div>
@@ -70,7 +70,7 @@
                 <div class="form__label">メモ</div>
               </div>
               <div class="col-9">
-                <input type="text" class="form__input" v-model="todo.body" />
+                <input type="text" class="form__input" v-model="todo_body" />
               </div>
             </div>
             <div class="btn-case">
@@ -98,13 +98,11 @@ export default {
   data() {
     return {
       labels: [],
-      todo: {
-        id: undefined,
-        title: undefined,
-        label_id: undefined,
-        todo_date: undefined,
-        body: undefined
-      },
+      todo_id: "",
+      todo_title: "",
+      todo_date: "",
+      todo_body: "",
+      label_id: [],
       btnText: "",
     };
   },
@@ -135,7 +133,7 @@ export default {
       axios
         .get("/api/labels")
         .then((res) => {
-          this.labels = res.data.labels;
+          this.labels = res.data;
         })
         .catch(error => {
           console.log("通信がキャンセルされました");
@@ -146,28 +144,33 @@ export default {
       const hasValue = function () {
         return val != undefined;
       };
-      this.todo.id = hasValue() ? val.id : undefined;
-      this.todo.title = hasValue() ? val.title : undefined;
-      this.todo.label_id = hasValue() ? val.label_id : undefined;
-      this.todo.body = hasValue() ? val.body : undefined;
-      this.todo.todo_date = hasValue() ? val.todo_date : this.formattedDate;
+      this.todo_id = hasValue() ? val.todo_id : undefined;
+      this.todo_title = hasValue() ? val.todo_title : undefined;
+      this.label_id = hasValue() ? val.label_id : undefined;
+      this.todo_body = hasValue() ? val.todo_body : undefined;
+      this.todo_date = hasValue() ? val.todo_date : this.formattedDate;
       this.btnText = hasValue() ? "更新する" : "新規作成";
     },
     todoSubmit() {
-      const todo_id = this.todo.id;
-      const todo_params = {
-        title: this.todo.title,
-        label_id: this.todo.label_id,
-        todo_date: this.todo.todo_date,
-        body: this.todo.body
-      };
-      if (todo_id) {
+      const label_arr = [];
+      if (this.label_id) {
+        label_arr.push(this.label_id);
+      }
+
+      if (this.todo_id) {
         axios
-          .put(`/api/todos/${todo_id}`, { todo: todo_params })
+          .put(`/api/todos/${this.todo_id}`, { 
+            todo: {
+              title: this.todo_title,
+              status: this.todo_status,
+              body: this.todo_body,
+              todo_date: this.todo_date,
+              label_ids: label_arr
+            }
+          })
           .then(() => {
             this.toggleModal();
-            this.setSelectedDateAction(this.todo.todo_date);
-            this.$emit("fetch-todos", this.todo.todo_date);
+            this.setSelectedDateAction(this.todo_date);
             this.todo = {};
           })
           .catch((error) => {
@@ -175,11 +178,18 @@ export default {
           });
       } else {
         axios
-          .post("/api/todos", { todo: todo_params })
+          .post("/api/todos", {
+            todo: {
+              title: this.todo_title,
+              status: this.todo_status,
+              body: this.todo_body,
+              todo_date: this.todo_date,
+              label_ids: label_arr
+            }
+          })
           .then(() => {
             this.toggleModal();
-            this.setSelectedDateAction(this.todo.todo_date);
-            this.$emit("fetch-todos", this.todo.todo_date);
+            this.setSelectedDateAction(this.todo_date);
             this.todo = {};
           })
           .catch((error) => {

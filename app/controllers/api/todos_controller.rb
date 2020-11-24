@@ -3,17 +3,17 @@ class Api::TodosController < ApplicationController
 
   def index
     todos = current_user.todos
-                        .includes(:label)
-                        .where(todo_date: params[:date])
+                        .left_joins(:labels)
                         .order(created_at: :desc)
-                        .select(:id, :title, :status, :todo_date, :body, :label_id)
-
-    todos.each do |todo|
-      if todo.label_id
-        todo.label_title = todo.label.title
-        todo.label_color = todo.label.color
-      end
-    end
+                        .select('todos.id AS todo_id,
+                                  todos.title AS todo_title,
+                                  todos.status AS todo_status,
+                                  todos.todo_date,
+                                  todos.body AS todo_status,
+                                  labels.id AS label_id,
+                                  labels.title AS label_title,
+                                  labels.color AS label_color')
+                        .where(todo_date: params[:date])
 
     render json: todos, status: 200
   end
@@ -64,6 +64,6 @@ class Api::TodosController < ApplicationController
   private
 
   def todo_params
-    params.fetch(:todo, {}).permit(:id, :title, :status, :todo_date, :body, :label_id)
+    params.require(:todo).permit(:id, :title, :status, :todo_date, :body, { label_ids: [] })
   end
 end
