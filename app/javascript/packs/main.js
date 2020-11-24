@@ -51,17 +51,19 @@ import axios from "axios";
 import store from "../store/index";
 
 // axiosのキャンセルトークンの発行
-axios.interceptors.request.use(function (config) {
-  let source = axios.CancelToken.source();
+const axiosCancelation = () => {
+  axios.interceptors.request.use(function (config) {
+    let source = axios.CancelToken.source();
 
-  config.cancelToken = source.token;
+    config.cancelToken = source.token;
 
-  store.commit('request/addCancelToken', source);
+    store.commit('request/addCancelToken', source);
 
-  return config;
-}, function (error) {
-  return Promise.reject(error);
-});
+    return config;
+  }, function (error) {
+    return Promise.reject(error);
+  });
+}
 
 const app = new Vue({
   el: "#app",
