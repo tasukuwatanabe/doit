@@ -44,12 +44,12 @@ RSpec.describe User, type: :model do
 
     it 'emailに含まれる全角英数字を半角に変換' do
       user = create(:user, email: 'ｔｅｓｔ＠ｅｘａｍｐｌｅ．ｃｏｍ')
-      expect(user.email).to eq('test@it.com')
+      expect(user.email).to eq('test@example.com')
     end
 
     it 'email前後の全角スペースを除去' do
-      user = create(:user, email: "\u{3000}test@it.com\u{3000}")
-      expect(user.email).to eq('test@it.com')
+      user = create(:user, email: "\u{3000}test@example.com\u{3000}")
+      expect(user.email).to eq('test@example.com')
     end
   end
 

@@ -37,7 +37,7 @@ RSpec.describe Todo, type: :model do
     end
     
     it 'ラベルの指定がなくても有効' do
-      todo = build(:todo, label_id: nil)
+      todo = build(:todo, label_ids: [])
       expect(todo).to be_valid
     end
   end
