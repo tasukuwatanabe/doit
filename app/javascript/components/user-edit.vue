@@ -45,7 +45,7 @@
         </p>
         <div v-if="unconfirmed_email" class="form__notice">
           <code>{{ unconfirmed_email }}</code>へのメールアドレス変更が承認待ちです。
-          <a @click="cancelEmailConfirmation()" class="link--default">キャンセル</a>
+          <a @click="cancelEmailConfirmation" class="link--default">キャンセル</a>
         </div>
       </div>
       <div class="form__group">
@@ -136,8 +136,8 @@
         </div>
       </div>
       <div class="form__action">
-        <div @click="submitUser()" class="btn-main btn--md">変更する</div>
-        <a @click="accountCancel()" 
+        <div @click="submitUser" class="btn-main btn--md">変更する</div>
+        <a @click="accountCancel" 
             class="form__cancel" 
             :class="{ 'form__cancel--disabled' : isGuest }"
             :disabled="isGuest">退会する</a>

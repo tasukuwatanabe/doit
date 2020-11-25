@@ -1,16 +1,11 @@
 <template></template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
   created() {
     this.showFlash();
   },
   methods: {
-    ...mapGetters({
-      getCurrentUser: "user/getCurrentUser"
-    }),
     showFlash() {
       if (this.$route.query.email_confirmed === 'true') {
         this.flashMessage.success({

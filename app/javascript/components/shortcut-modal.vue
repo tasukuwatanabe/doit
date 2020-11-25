@@ -4,7 +4,7 @@
       <div class="modal__box">
         <form @submit.prevent novalidate="true" class="form">
           <div class="modal-form">
-            <div class="fa-case" @click="toggleModal()">
+            <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
             </div>
             <div v-if="!!custom_error" class="error">
@@ -13,7 +13,7 @@
               </span>
               <p class="error__text">{{ custom_error }}</p>
               <div class="btn-case">
-                <div @click="toggleModal()" class="btn-gray btn--sm error__btn">
+                <div @click="toggleModal" class="btn-gray btn--sm error__btn">
                   閉じる
                 </div>
               </div>
@@ -56,10 +56,10 @@
                 </div>
               </div>
               <div class="btn-case">
-                <div @click="toggleModal()" class="btn-gray btn--sm">
+                <div @click="toggleModal" class="btn-gray btn--sm">
                   キャンセル
                 </div>
-                <div @click="shortcutSubmit()" class="btn-main btn--sm">
+                <div @click="shortcutSubmit" class="btn-main btn--sm">
                   {{ btnText }}
                 </div>
               </div>

@@ -87,7 +87,7 @@
             </router-link>
           </li>
           <li class="nav__item">
-            <div @click="logout()" class="nav__link" id="logout">
+            <div @click="logout" class="nav__link" id="logout">
               <span class="icon nav__icon">
                 <i class="fas fa-sign-out-alt"></i>
               </span>
@@ -98,7 +98,7 @@
       </nav>
     </aside>
     <div
-      @click="toggleSlide()"
+      @click="toggleSlide"
       id="screen-layer"
       v-if="this.getToggleStatus"
     ></div>

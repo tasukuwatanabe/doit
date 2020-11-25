@@ -46,7 +46,7 @@
         </span>
       </div>
       <div class="form__action">
-        <div @click="submitPassword()" class="btn-main btn--sm">
+        <div @click="submitPassword" class="btn-main btn--sm">
           パスワードを更新する
         </div>
       </div>

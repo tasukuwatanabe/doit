@@ -33,14 +33,14 @@
             </router-link>
           </div>
           <div class="form-group text-center">
-            <div @click="submitLogin()" class="btn-main btn-main--login btn--md">
+            <div @click="submitLogin" class="btn-main btn-main--login btn--md">
               ログイン
             </div>
           </div>
           <ul class="form__linkList form__linkList--login">
             <li class="form__linkItem">
               お試しの方は
-              <a @click="guestLogin()" class="form__link--default">
+              <a @click="guestLogin" class="form__link--default">
                 ゲストログイン
               </a>
             </li>

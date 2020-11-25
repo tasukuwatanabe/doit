@@ -13,7 +13,7 @@
           </div>
           <div class="form__group text-center">
             <div
-              @click="submitPasswordReset()"
+              @click="submitPasswordReset"
               class="btn-main btn-main--password-reset btn--sm"
             >
               再設定用のメールを発行
@@ -22,7 +22,7 @@
           <ul class="form__linkList form__linkList--password-reset">
             <li class="form__linkItem">
               お試しの方は
-              <a @click="guestLogin()" class="form__link--default">
+              <a @click="guestLogin" class="form__link--default">
                 ゲストログイン
               </a>
             </li>

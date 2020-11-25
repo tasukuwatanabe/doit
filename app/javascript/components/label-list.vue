@@ -12,7 +12,7 @@
       </p>
       <div class="page-action headline__page-action">
         <a
-          @click="setLabel()"
+          @click="setLabel"
           class="page-action__btn btn-outlined btn--sm"
         >
           <span class="page-action__icon">

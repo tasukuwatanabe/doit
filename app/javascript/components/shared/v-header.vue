@@ -5,7 +5,7 @@
         <router-link :to="{ name: 'todos' }" class="header__logo">
           <img src="/doit-logo-white.png" alt="DoITロゴ" />
         </router-link>
-        <div @click="toggleSlide()" id="hamburger" class="hamburger">
+        <div @click="toggleSlide" id="hamburger" class="hamburger">
           <span class="hamburger__line"></span>
           <span class="hamburger__line"></span>
           <span class="hamburger__line"></span>

@@ -43,7 +43,7 @@
           </div>
           <div class="form-group text-center">
             <div
-              @click="submitRegister()"
+              @click="submitRegister"
               class="btn-main btn-main--login btn--md"
             >
               新規登録
@@ -52,7 +52,7 @@
           <ul class="form__linkList form__linkList--login">
             <li class="form__linkItem">
               お試しの方は
-              <a @click="guestLogin()" class="form__link--default">
+              <a @click="guestLogin" class="form__link--default">
                 ゲストログイン
               </a>
             </li>
