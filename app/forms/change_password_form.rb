@@ -8,7 +8,7 @@ class ChangePasswordForm
 
   def save
     if valid?
-      object.password = new_password
+      object.password = password
       object.save!
     end
   end
