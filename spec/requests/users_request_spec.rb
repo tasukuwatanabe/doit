@@ -42,7 +42,7 @@ RSpec.describe "Users", type: :request do
     it '情報を更新できる' do
       sign_in_as(user)
 
-      put "/api/users/#{user.id}", params: { user: { username: "ユーザー更新" }}
+      put "/api/users/#{user.id}", params: { user: { username: "更新後のユーザー名", email: user.email }}
 
       expect(response.body).to include "ユーザー情報が更新されました"
     end
