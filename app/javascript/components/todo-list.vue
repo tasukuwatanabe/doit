@@ -24,21 +24,21 @@
       <v-loading-icon v-show="loading"></v-loading-icon>
       <div v-show="!loading">
         <ul class="list" v-if="todos.length">
-          <li v-for="todo in todos" class="list__item" :key="todo.todo_id">
+          <li v-for="todo in todos" class="list__item" :key="todo.id">
             <div
               class="todo-status"
               :class="{ 'todo__status--checked': todo.todo_status }"
             >
               <input
-                :id="'todo_status_' + todo.todo_id"
+                :id="'todo_status_' + todo.id"
                 type="checkbox"
-                v-model="todo.todo_status"
+                v-model="todo.status"
                 @click="toggleStatus(todo)"
               />
-              <label :for="'todo_status_' + todo.todo_id"></label>
+              <label :for="'todo_status_' + todo.id"></label>
             </div>
             <div class="list__block list__block--left">
-              <div class="list__title">{{ todo.todo_title }}</div>
+              <div class="list__title">{{ todo.title }}</div>
             </div>
             <div class="list__block list__block--right list__block--grow">
               <div
@@ -168,9 +168,9 @@ export default {
     },
     deleteTodo(todo) {
       axios
-        .delete(`/api/todos/${todo.todo_id}`)
+        .delete(`/api/todos/${todo.id}`)
         .then(() => {
-          this.fetchTodos(this.getSelectedDate, false);
+          this.fetchTodos(this.getSelectedDate);
         });
     },
     toggleStatus(todo) {

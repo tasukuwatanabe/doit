@@ -6,10 +6,7 @@ class Api::LabelsController < ApplicationController
                           .left_joins(:todos)
                           .group(:id)
                           .order(created_at: :desc)
-                          .select('labels.id AS label_id,
-                                    labels.title AS label_title,
-                                    labels.color AS label_color,
-                                    COUNT(todos.id) AS todo_count')
+                          .select('labels.id, labels.title, color, COUNT(todos.id) AS todo_count')
     render json: labels, status: 200
   end
 

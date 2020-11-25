@@ -30,11 +30,11 @@
             <div
               class="label label--margin"
               :style="{
-                color: colorOnRgb(label.label_color),
-                backgroundColor: label.label_color
+                color: colorOnRgb(label.color),
+                backgroundColor: label.color
               }"
             >
-              {{ label.label_title }}
+              {{ label.title }}
             </div>
           </div>
           <div class="list__block list__block--right">
@@ -107,7 +107,7 @@ export default {
       }
     },
     deleteLabel(label) {
-      axios.delete(`/api/labels/${label.label_id}`)
+      axios.delete(`/api/labels/${label.id}`)
             .then(() => {
               this.fetchLabels();
             });

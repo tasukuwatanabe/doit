@@ -41,7 +41,7 @@
           <div class="list__block list__block--left">
             <div class="list__title-group" style="position: relative">
               <div class="list__title">
-                {{ shortcut.shortcut_title }}
+                {{ shortcut.title }}
               </div>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default {
       }
     },
     deleteShortcut(shortcut) {
-      axios.delete(`/api/shortcuts/${shortcut.shortcut_id}`)
+      axios.delete(`/api/shortcuts/${shortcut.id}`)
             .then(() => {
               this.fetchShortcuts();
             });

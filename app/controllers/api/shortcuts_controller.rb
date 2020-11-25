@@ -5,8 +5,8 @@ class Api::ShortcutsController < ApplicationController
     shortcuts = current_user.shortcuts
                             .left_joins(:labels)
                             .order(created_at: :desc)
-                            .select('shortcuts.id AS shortcut_id,
-                                    shortcuts.title AS shortcut_title,
+                            .select('shortcuts.id,
+                                    shortcuts.title,
                                     labels.id AS label_id,
                                     labels.title AS label_title,
                                     labels.color AS label_color')

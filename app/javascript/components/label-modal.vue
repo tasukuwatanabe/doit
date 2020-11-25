@@ -33,7 +33,7 @@
                     ref="inputLabelTitle"
                     type="text"
                     class="form__input"
-                    v-model="label_title"
+                    v-model="label.title"
                     required
                   />
                   <span class="form__error" v-if="!!errors.title">
@@ -93,8 +93,10 @@ export default {
   name: "LabelModal",
   data() {
     return {
-      label_id: "",
-      label_title: "",
+      label: {
+        id: "",
+        title: ""
+      },
       colorPicker: {
         hex: defaultColor
       },
@@ -121,9 +123,9 @@ export default {
       const hasValue = () => {
         return val != undefined;
       };
-      this.label_id = hasValue() ? val.label_id : undefined;
-      this.label_title = hasValue() ? val.label_title : undefined;
-      this.colorPicker.hex = hasValue() ? val.label_color : defaultColor;
+      this.label.id = hasValue() ? val.id : undefined;
+      this.label.title = hasValue() ? val.title : undefined;
+      this.colorPicker.hex = hasValue() ? val.color : defaultColor;
       this.btnText = hasValue() ? "更新する" : "新規作成";
     },
     setError(error) {
@@ -132,12 +134,12 @@ export default {
     },
     labelSubmit() {
       const label_params = {
-        title: this.label_title,
+        title: this.label.title,
         color: this.colorPicker.hex
       };
-      if (this.label_id) {
+      if (this.label.id) {
         axios
-          .put(`/api/labels/${this.label_id}`, { label: label_params })
+          .put(`/api/labels/${this.label.id}`, { label: label_params })
           .then(() => {
             this.label = {};
             this.toggleModal();

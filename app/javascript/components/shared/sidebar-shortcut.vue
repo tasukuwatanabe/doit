@@ -23,7 +23,7 @@
           >
             <a @click="createTodo(shortcut)" class="sidebar-shortcut__link">
               <i class="fas fa-plus-circle"></i>
-              {{ shortcut.shortcut_title }}
+              {{ shortcut.title }}
             </a>
           </li>
         </ul>
@@ -83,7 +83,7 @@ export default {
       label_arr.push(shortcut.label_id);
       axios.post("/api/todos", {
         todo: {
-          title: shortcut.shortcut_title,
+          title: shortcut.title,
           todo_date: this.getSelectedDate,
           label_ids: label_arr
         }

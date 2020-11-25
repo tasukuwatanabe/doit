@@ -3,18 +3,18 @@ class Api::TodosController < ApplicationController
 
   def index
     todos = current_user.todos
+                        .where(todo_date: params[:date])
                         .left_joins(:labels)
                         .order(created_at: :desc)
-                        .select('todos.id AS todo_id,
-                                  todos.title AS todo_title,
-                                  todos.status AS todo_status,
+                        .select('todos.id,
+                                  todos.title,
+                                  todos.status,
                                   todos.todo_date,
-                                  todos.body AS todo_status,
+                                  todos.body,
                                   labels.id AS label_id,
                                   labels.title AS label_title,
                                   labels.color AS label_color')
-                        .where(todo_date: params[:date])
-
+                        
     render json: todos, status: 200
   end
 
