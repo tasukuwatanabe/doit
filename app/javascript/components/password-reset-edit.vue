@@ -33,7 +33,7 @@
           </div>
           <div class="form__group text-center">
             <div
-              @click="submitPasswordReset()"
+              @click="submitPasswordReset"
               class="btn-main btn-main--password-reset btn--sm"
             >
               パスワードをリセットする
@@ -42,7 +42,7 @@
           <ul class="form__linkList form__linkList--password-reset">
             <li class="form__linkItem">
               お試しの方は
-              <a @click="guestLogin()" class="form__link--default">
+              <a @click="guestLogin" class="form__link--default">
                 ゲストログイン
               </a>
             </li>
@@ -88,6 +88,7 @@ export default {
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
             title: res.data.message,
+            time: 5000,
             icon: '/flash/success.svg',
           });
         })
@@ -96,7 +97,6 @@ export default {
           if (!!error.response.data.message) {
             this.flashMessage.error({
               title: error.response.data.message,
-              time: 0,
               icon: '/flash/error.svg',
             });
             this.$router.push({ name: 'password_resets_new' })

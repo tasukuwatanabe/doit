@@ -43,7 +43,7 @@
           </div>
           <div class="form-group text-center">
             <div
-              @click="submitRegister()"
+              @click="submitRegister"
               class="btn-main btn-main--login btn--md"
             >
               新規登録
@@ -52,7 +52,7 @@
           <ul class="form__linkList form__linkList--login">
             <li class="form__linkItem">
               お試しの方は
-              <a @click="guestLogin()" class="form__link--default">
+              <a @click="guestLogin" class="form__link--default">
                 ゲストログイン
               </a>
             </li>
@@ -96,10 +96,10 @@ import GuestLogin from "./mixins/guest-login";
 export default {
   data() {
     return {
-      username: undefined,
-      email: undefined,
-      password: undefined,
-      password_confirmation: undefined,
+      username: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
       errors: ""
     };
   },
@@ -118,6 +118,7 @@ export default {
           this.$router.push({ name: "login" });
           this.flashMessage.success({
             title: res.data.message,
+            time: 5000,
             icon: '/flash/success.svg',
           });
         })

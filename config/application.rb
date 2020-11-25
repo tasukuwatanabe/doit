@@ -24,5 +24,6 @@ module Doit
     end
 
     config.autoload_paths += Dir["#{config.root}/lib"]
+    config.hosts << '.example.com'
   end
 end

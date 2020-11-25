@@ -2,7 +2,8 @@ class Todo < ApplicationRecord
   include StringNormalizer
 
   belongs_to :user
-  belongs_to :routine, optional: true
+  has_many :todo_labels, dependent: :destroy
+  has_many :labels, through: :todo_labels
 
   before_validation { self.title = normalize_as_text(title) }
 

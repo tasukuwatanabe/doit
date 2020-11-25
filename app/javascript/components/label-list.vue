@@ -12,7 +12,7 @@
       </p>
       <div class="page-action headline__page-action">
         <a
-          @click="setLabel()"
+          @click="setLabel"
           class="page-action__btn btn-outlined btn--sm"
         >
           <span class="page-action__icon">
@@ -39,7 +39,7 @@
           </div>
           <div class="list__block list__block--right">
             <div class="label-in-use">
-              {{ labelTodosCount(label) }}個のToDoで使用中
+              {{ label.todo_count }}個のToDoで使用中
             </div>
             <div class="item-action">
               <a @click="setLabel(label)" class="item-action__btn">
@@ -75,33 +75,20 @@ export default {
   data() {
     return {
       labels: [],
-      todos: [],
       loading: ''
     };
   },
   created() {
+    this.loading = true;
     this.fetchLabels();
   },
   mixins: [ColorOnRgb],
-  computed: {
-    labelTodosCount: function () {
-      return function (label) {
-        if (this.todos.length) {
-          return this.todos.filter((todo) => todo.label_id === label.id).length;
-        } else {
-          return 0;
-        }
-      };
-    }
-  },
   methods: {
     fetchLabels() {
-      this.loading = true;
       axios
         .get("/api/labels")
         .then((res) => {
-          this.labels = res.data.labels;
-          this.todos = res.data.todos;
+          this.labels = res.data;
           this.loading = false;
         })
         .catch(error => {
@@ -113,7 +100,7 @@ export default {
       if (this.labels.length >= 10 && !label) {
         this.flashMessage.error({
           title: "ラベルが登録できるのは10個までです",
-          time: 0,
+          time: 5000,
           icon: '/flash/error.svg',
         });
       } else {
@@ -121,10 +108,10 @@ export default {
       }
     },
     deleteLabel(label) {
-      this.loading = true;
-      axios.delete(`/api/labels/${label.id}`).then((res) => {
-        this.fetchLabels();
-      });
+      axios.delete(`/api/labels/${label.id}`)
+            .then(() => {
+              this.fetchLabels();
+            });
     }
   }
 };

@@ -2,13 +2,15 @@ class Api::ShortcutsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    shortcuts = current_user.shortcuts.order(created_at: :desc).select(:id, :title, :label_id)
-    labels = current_user.labels.select(:id, :title, :color)
-    api_array = {
-      shortcuts: shortcuts,
-      labels: labels
-    }
-    render json: api_array
+    shortcuts = current_user.shortcuts
+                            .left_joins(:labels)
+                            .order(created_at: :desc)
+                            .select('shortcuts.id,
+                                    shortcuts.title,
+                                    labels.id AS label_id,
+                                    labels.title AS label_title,
+                                    labels.color AS label_color')
+    render json: shortcuts, status: 200
   end
 
   def create
@@ -40,6 +42,6 @@ class Api::ShortcutsController < ApplicationController
   private
 
   def shortcut_params
-    params.fetch(:shortcut, {}).permit(:id, :title, :label_id)
+    params.require(:shortcut).permit(:id, :title, { label_ids: []})
   end
 end

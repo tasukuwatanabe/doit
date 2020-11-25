@@ -86,7 +86,7 @@
               </router-link>
             </li>
             <li class="nav__item">
-              <div @click="logout()" class="nav__link">
+              <div @click="logout" class="nav__link">
                 <span class="icon nav__icon">
                   <i class="fas fa-sign-out-alt"></i>
                 </span>
@@ -151,7 +151,7 @@ export default {
         this.$router.push({ name: "login" });
         this.flashMessage.success({
           title: res.data.message,
-          time: 0,
+          time: 5000,
           icon: '/flash/success.svg',
         });
       });

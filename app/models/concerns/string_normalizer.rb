@@ -12,12 +12,14 @@ module StringNormalizer
   end
 
   def normalize_as_color(color)
-    color_array = color.split('')
-    color_array.shift
-    color_array.each do |str|
-      str.downcase!
+    if color
+      color_array = color.split('')
+      color_array.shift
+      color_array.each do |str|
+        str.downcase!
+      end
+      color_array.unshift('#')
+      color_array.join
     end
-    color_array.unshift('#')
-    color_array.join
   end
 end

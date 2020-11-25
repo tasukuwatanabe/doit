@@ -2,13 +2,12 @@ class Api::LabelsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    labels = current_user.labels.order(created_at: :desc).select(:id, :title, :color)
-    todos = current_user.todos.where.not(label_id: nil).select(:label_id)
-    api_array = {
-      labels: labels,
-      todos: todos
-    }
-    render json: api_array
+    labels = current_user.labels
+                          .left_joins(:todos)
+                          .group(:id)
+                          .order(created_at: :desc)
+                          .select('labels.id, labels.title, color, COUNT(todos.id) AS todo_count')
+    render json: labels, status: 200
   end
 
   def create
@@ -33,14 +32,12 @@ class Api::LabelsController < ApplicationController
 
   def destroy
     label = Label.find(params[:id])
-    todos = Todo.where(label_id: label.id).update_all(label_id: nil)
-    shortcuts = Shortcut.where(label_id: label.id).update_all(label_id: nil)
     label.destroy
   end
 
   private
 
   def label_params
-    params.fetch(:label, {}).permit(:id, :title, :color)
+    params.require(:label).permit(:id, :title, :color)
   end
 end

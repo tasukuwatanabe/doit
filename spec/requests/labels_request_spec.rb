@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe 'Shortcuts', type: :request do
-  describe 'Shortcutの' do
+RSpec.describe 'Labels', type: :request do
+  describe 'Labelの' do
     let(:user) { create(:user) }
 
     before do
@@ -9,7 +9,7 @@ RSpec.describe 'Shortcuts', type: :request do
     end
 
     it '一覧を取得する' do
-      get '/api/shortcuts'
+      get '/api/labels'
       expect(response.status).to eq(200)
     end
   end

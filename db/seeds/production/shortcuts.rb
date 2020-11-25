@@ -2,8 +2,7 @@ users = User.all
 
 def createShortcut(user, title, label)
   shortcut = user.shortcuts.build(
-    title: title,
-    label_id: user.labels.find_by(title: label).id
+    title: title
   )
   shortcut.save
 end

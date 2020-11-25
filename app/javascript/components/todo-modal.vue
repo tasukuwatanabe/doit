@@ -4,7 +4,7 @@
       <div class="modal__box">
         <form @submit.prevent novalidate="true" class="form">
           <div class="modal-form">
-            <div class="fa-case" @click="toggleModal()">
+            <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
             </div>
             <div class="form__group row">
@@ -74,10 +74,10 @@
               </div>
             </div>
             <div class="btn-case">
-              <div @click="toggleModal()" class="btn-gray btn--sm">
+              <div @click="toggleModal" class="btn-gray btn--sm">
                 キャンセル
               </div>
-              <div @click="todoSubmit()" class="btn-main btn--sm">
+              <div @click="todoSubmit" class="btn-main btn--sm">
                 {{ btnText }}
               </div>
             </div>
@@ -99,11 +99,11 @@ export default {
     return {
       labels: [],
       todo: {
-        id: undefined,
-        title: undefined,
-        label_id: undefined,
-        todo_date: undefined,
-        body: undefined
+        id: "",
+        title: "",
+        todo_date: "",
+        body: "",
+        label_id: ""
       },
       btnText: "",
     };
@@ -135,7 +135,7 @@ export default {
       axios
         .get("/api/labels")
         .then((res) => {
-          this.labels = res.data.labels;
+          this.labels = res.data;
         })
         .catch(error => {
           console.log("通信がキャンセルされました");
@@ -148,26 +148,31 @@ export default {
       };
       this.todo.id = hasValue() ? val.id : undefined;
       this.todo.title = hasValue() ? val.title : undefined;
-      this.todo.label_id = hasValue() ? val.label_id : undefined;
       this.todo.body = hasValue() ? val.body : undefined;
       this.todo.todo_date = hasValue() ? val.todo_date : this.formattedDate;
+      this.todo.label_id = hasValue() ? val.label_id : undefined;
       this.btnText = hasValue() ? "更新する" : "新規作成";
     },
     todoSubmit() {
-      const todo_id = this.todo.id;
-      const todo_params = {
-        title: this.todo.title,
-        label_id: this.todo.label_id,
-        todo_date: this.todo.todo_date,
-        body: this.todo.body
-      };
-      if (todo_id) {
+      const label_arr = [];
+      if (this.todo.label_id) {
+        label_arr.push(this.todo.label_id);
+      }
+
+      if (this.todo.id) {
         axios
-          .put(`/api/todos/${todo_id}`, { todo: todo_params })
+          .put(`/api/todos/${this.todo.id}`, { 
+            todo: {
+              title: this.todo.title,
+              status: this.todo.status,
+              body: this.todo.body,
+              todo_date: this.todo.todo_date,
+              label_ids: label_arr
+            }
+          })
           .then(() => {
             this.toggleModal();
             this.setSelectedDateAction(this.todo.todo_date);
-            this.$emit("fetch-todos", this.todo.todo_date);
             this.todo = {};
           })
           .catch((error) => {
@@ -175,11 +180,18 @@ export default {
           });
       } else {
         axios
-          .post("/api/todos", { todo: todo_params })
+          .post("/api/todos", {
+            todo: {
+              title: this.todo.title,
+              status: this.todo.status,
+              body: this.todo.body,
+              todo_date: this.todo.todo_date,
+              label_ids: label_arr
+            }
+          })
           .then(() => {
             this.toggleModal();
             this.setSelectedDateAction(this.todo.todo_date);
-            this.$emit("fetch-todos", this.todo.todo_date);
             this.todo = {};
           })
           .catch((error) => {

@@ -20,7 +20,7 @@
       </p>
       <div class="page-action headline__page-action">
         <a
-          @click="setShortcut()"
+          @click="setShortcut"
           class="page-action__btn btn-outlined btn--sm"
         >
           <span class="page-action__icon">
@@ -48,13 +48,13 @@
           <div class="list__block list__block--right list__block--grow">
             <div
               class="label label--margin"
-              v-if="shortcut.label_id"
+              v-if="shortcut.label_color"
               :style="{
-                color: colorOnRgb(getLabel(shortcut).color),
-                backgroundColor: getLabel(shortcut).color
+                color: colorOnRgb(shortcut.label_color),
+                backgroundColor: shortcut.label_color
               }"
             >
-              {{ getLabel(shortcut).title }}
+              {{ shortcut.label_title }}
             </div>
             <div v-else></div>
             <div class="item-action">
@@ -97,30 +97,20 @@ export default {
   data() {
     return {
       shortcuts: [],
-      shortcut: {},
-      labels: [],
       loading: ''
     };
   },
   created() {
+    this.loading = true;
     this.fetchShortcuts();
   },
   mixins: [ColorOnRgb],
-  computed: {
-    getLabel: function () {
-      return function (shortcut) {
-        return this.labels.filter((label) => shortcut.label_id == label.id)[0];
-      };
-    }
-  },
   methods: {
     fetchShortcuts() {
-      this.loading = true;
       axios
         .get("/api/shortcuts")
         .then((res) => {
-          this.shortcuts = res.data.shortcuts;
-          this.labels = res.data.labels;
+          this.shortcuts = res.data;
           this.loading = false;
         })
         .catch(error => {
@@ -132,7 +122,7 @@ export default {
       if (this.shortcuts.length >= 10 && !shortcut) {
         this.flashMessage.error({
           title: "ショートカットが登録できるのは10個までです",
-          time: 0,
+          time: 5000,
           icon: '/flash/error.svg',
         });
       } else {
@@ -140,10 +130,10 @@ export default {
       }
     },
     deleteShortcut(shortcut) {
-      this.loading = true;
-      axios.delete(`/api/shortcuts/${shortcut.id}`).then((res) => {
-        this.fetchShortcuts();
-      });
+      axios.delete(`/api/shortcuts/${shortcut.id}`)
+            .then(() => {
+              this.fetchShortcuts();
+            });
     }
   }
 };

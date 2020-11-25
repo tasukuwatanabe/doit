@@ -1,6 +1,7 @@
 FactoryBot.define do
-  factory :shortcut do
+  factory :label do
     association :user
     title { 'ショートカットタイトル' }
+    color { '#FF00BB' }
   end
 end

@@ -46,7 +46,7 @@
         </span>
       </div>
       <div class="form__action">
-        <div @click="submitPassword()" class="btn-main btn--sm">
+        <div @click="submitPassword" class="btn-main btn--sm">
           パスワードを更新する
         </div>
       </div>
@@ -91,6 +91,7 @@ export default {
         .then((res) => {
           this.flashMessage.success({
             title: res.data.message,
+            time: 5000,
             icon: '/flash/success.svg',
           });
           this.password = "";

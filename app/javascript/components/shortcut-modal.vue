@@ -4,7 +4,7 @@
       <div class="modal__box">
         <form @submit.prevent novalidate="true" class="form">
           <div class="modal-form">
-            <div class="fa-case" @click="toggleModal()">
+            <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
             </div>
             <div v-if="!!custom_error" class="error">
@@ -13,7 +13,7 @@
               </span>
               <p class="error__text">{{ custom_error }}</p>
               <div class="btn-case">
-                <div @click="toggleModal()" class="btn-gray btn--sm error__btn">
+                <div @click="toggleModal" class="btn-gray btn--sm error__btn">
                   閉じる
                 </div>
               </div>
@@ -56,10 +56,10 @@
                 </div>
               </div>
               <div class="btn-case">
-                <div @click="toggleModal()" class="btn-gray btn--sm">
+                <div @click="toggleModal" class="btn-gray btn--sm">
                   キャンセル
                 </div>
-                <div @click="shortcutSubmit()" class="btn-main btn--sm">
+                <div @click="shortcutSubmit" class="btn-main btn--sm">
                   {{ btnText }}
                 </div>
               </div>
@@ -81,11 +81,10 @@ export default {
   data() {
     return {
       shortcut: {
-        id: undefined,
-        title: undefined,
-        label_id: undefined
+        id: "",
+        title: "",
+        label_id: ""
       },
-      shortcuts: [],
       labels: [],
       btnText: "",
       custom_error: "",
@@ -100,7 +99,7 @@ export default {
       axios
         .get("/api/labels")
         .then((res) => {
-          this.labels = res.data.labels;
+          this.labels = res.data;
         })
         .catch(error => {
           console.log("通信がキャンセルされました");
@@ -122,15 +121,13 @@ export default {
       this.toggleModal();
     },
     shortcutSubmit() {
-      const shortcut_id = this.shortcut.id;
-      const shortcut_params = {
-        title: this.shortcut.title,
-        label_id: this.shortcut.label_id
-      };
-      if (shortcut_id) {
+      if (this.shortcut.id) {
         axios
-          .put(`/api/shortcuts/${shortcut_id}`, {
-            shortcut: shortcut_params
+          .put(`/api/shortcuts/${this.shortcut.id}`, {
+            shortcut: {
+              title: this.shortcut.title,
+              label_ids: [this.shortcut.label_id]
+            }
           })
           .then(() => {
             this.shortcut = {};
@@ -143,7 +140,10 @@ export default {
       } else {
         axios
           .post("/api/shortcuts", {
-            shortcut: shortcut_params
+            shortcut: {
+              title: this.shortcut.title,
+              label_ids: [this.shortcut.label_id]
+            }
           })
           .then(() => {
             this.shortcut = {};

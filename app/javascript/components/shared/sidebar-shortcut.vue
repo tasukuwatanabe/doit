@@ -55,6 +55,7 @@ export default {
     };
   },
   created() {
+    this.loading = true;
     this.fetchShortcut();
   },
   computed: {
@@ -67,11 +68,10 @@ export default {
       setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchShortcut() {
-      this.loading = true;
       axios
         .get("/api/shortcuts")
         .then((res) => {
-          this.shortcuts = res.data.shortcuts;
+          this.shortcuts = res.data;
           this.loading = false;
         }).catch(error => {
           console.log("通信がキャンセルされました");
@@ -79,12 +79,15 @@ export default {
         });
     },
     createTodo(shortcut) {
-      const todo_params = {
-        title: shortcut.title,
-        todo_date: this.getSelectedDate,
-        label_id: shortcut.label_id
-      };
-      axios.post("/api/todos", { todo: todo_params }).then(() => {
+      const label_arr = [];
+      label_arr.push(shortcut.label_id);
+      axios.post("/api/todos", {
+        todo: {
+          title: shortcut.title,
+          todo_date: this.getSelectedDate,
+          label_ids: label_arr
+        }
+      }).then(() => {
         this.setSelectedDateAction(this.getSelectedDate);
       });
     }

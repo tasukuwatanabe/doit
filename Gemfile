@@ -33,12 +33,12 @@ gem 'rename'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'awesome_print'
-
   gem 'capistrano'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
   gem 'capistrano3-nginx', '~> 2.0'
+  gem 'pry-rails'
 end
 
 group :development do
@@ -47,6 +47,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0'
   gem 'spring-commands-rspec'
+  gem 'bullet'
 end
 
 group :test do

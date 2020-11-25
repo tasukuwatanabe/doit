@@ -3,7 +3,6 @@ users = User.all
 def createTodo(user, title, label, date, status=false)
   todo = user.todos.build(
     title: title,
-    label_id: user.labels.find_by(title: label).id,
     todo_date: Date.today + date.days,
     status: status
   )
