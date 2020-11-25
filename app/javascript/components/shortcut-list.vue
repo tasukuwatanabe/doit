@@ -122,6 +122,7 @@ export default {
       if (this.shortcuts.length >= 10 && !shortcut) {
         this.flashMessage.error({
           title: "ショートカットが登録できるのは10個までです",
+          time: 5000,
           icon: '/flash/error.svg',
         });
       } else {

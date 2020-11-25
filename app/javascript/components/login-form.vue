@@ -106,7 +106,7 @@ export default {
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
             title: res.data.message,
-          time: 5000,
+            time: 5000,
             icon: '/flash/success.svg',
           });
 

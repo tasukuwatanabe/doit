@@ -100,6 +100,7 @@ export default {
       if (this.labels.length >= 10 && !label) {
         this.flashMessage.error({
           title: "ラベルが登録できるのは10個までです",
+          time: 5000,
           icon: '/flash/error.svg',
         });
       } else {
