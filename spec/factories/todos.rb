@@ -3,6 +3,6 @@ FactoryBot.define do
     association :user
     title { 'Todoタイトル' }
     todo_date { Date.today }
-    label_id { Label.first.id }
+    label_ids { [Label.first.id] }
   end
 end
