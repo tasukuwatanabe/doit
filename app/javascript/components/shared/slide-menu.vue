@@ -125,7 +125,7 @@ export default {
       this.setToggleStatusAction();
     },
     logout() {
-      axios.delete("/api/logout").then(() => {
+      axios.delete("/api/logout").then((res) => {
         this.logoutAction();
         this.$router.push({ name: "login" });
         this.flashMessage.success({

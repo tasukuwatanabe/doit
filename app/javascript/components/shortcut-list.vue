@@ -86,7 +86,7 @@
 
 <script>
 import axios from "axios";
-import ShortcutModal from "./shortcut-modal.vue";
+import ShortcutModal from "./shortcut-modal";
 import ColorOnRgb from "./mixins/color-on-rgb";
 
 export default {

@@ -11,9 +11,7 @@ gem 'sass-rails', '>= 6'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 5.x'
 gem 'parallel'
-
 gem 'bootsnap', '>= 1.4.2', require: false
-
 gem 'bcrypt'
 gem 'date_validator'
 gem 'nokogiri'
@@ -29,6 +27,10 @@ gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'rename'
+gem 'rack-cors'
+
+# Sprockets4.0だと、app/assetsディレクトリを削除するとSprockets::Railtie::ManifestNeededErrorが発生する
+gem 'sprockets', '~> 3.7.2'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

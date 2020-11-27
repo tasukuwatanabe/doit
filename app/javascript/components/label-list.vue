@@ -64,7 +64,7 @@
 
 <script>
 import axios from "axios";
-import LabelModal from "./label-modal.vue";
+import LabelModal from "./label-modal";
 import ColorOnRgb from "./mixins/color-on-rgb";
 
 export default {

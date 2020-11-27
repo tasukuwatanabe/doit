@@ -45,8 +45,8 @@ import axios from "axios";
 import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 import ColorOnRgb from "../mixins/color-on-rgb";
-import SidebarCalendar from "../shared/sidebar-calendar";
-import SidebarShortcut from "../shared/sidebar-shortcut.vue";
+import SidebarCalendar from "./sidebar-calendar";
+import SidebarShortcut from "./sidebar-shortcut";
 
 export default {
   data() {
