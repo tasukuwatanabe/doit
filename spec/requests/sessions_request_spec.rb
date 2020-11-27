@@ -4,12 +4,6 @@ RSpec.describe "Sessions", type: :request do
   describe 'ユーザーの' do
     let(:user) { create(:user) }
 
-    it 'ログイン画面が表示される' do
-      get '/login'
-
-      expect(response.status).to eq(200)
-    end
-
     it 'ログインに成功すること' do
       post '/api/login', params: { session: { email: user.email, password: user.password } }
 
