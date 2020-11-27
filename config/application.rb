@@ -25,5 +25,8 @@ module Doit
 
     config.autoload_paths += Dir["#{config.root}/lib"]
     config.hosts << '.example.com'
+
+    # assets precompileを無効化する
+    config.assets.enabled = false
   end
 end
