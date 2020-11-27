@@ -1,0 +1,15 @@
+.no-result {
+  &__illustration {
+    max-width: 500px;
+    width: 100%;
+    padding: 0 10px;
+  }
+  &__illustration {
+    margin-top: 80px;
+    margin-left: 100px;
+
+    @media (max-width: 991px) {
+      margin: 50px auto 0;
+    }
+  }
+}

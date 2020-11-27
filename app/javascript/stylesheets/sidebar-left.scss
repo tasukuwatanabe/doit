@@ -1,0 +1,19 @@
+@import "extend";
+
+.sidebar-left {
+  width: 250px;
+
+  &__inner {
+    @extend %sidebar-display;
+    background-color: #fff;
+    padding: 25px 22px 10px;
+    box-shadow: $box-shadow-common;
+    min-height: 448px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__userinfo {
+    margin-bottom: 15px;
+  }
+}

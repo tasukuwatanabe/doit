@@ -1,21 +1,31 @@
 require("@rails/ujs").start();
 require("turbolinks").start();
 require("@rails/activestorage").start();
-require("channels");
+// require("channels");
 require("jquery");
 
 // Vueの読み込み
-import Vue from "vue/dist/vue.esm.js";
+import Vue from 'vue/dist/vue.esm.js'
+import App from "../App.vue";
+
+// Vue.js起動時に、コンソールにヒントが表示されなくなる
+Vue.config.productionTip = false
 
 // vue-router
+import VueRouter from 'vue-router'
+Vue.use(VueRouter);
 import router from "../router/router";
 
 // Font Awesome
 import "@fortawesome/fontawesome-free/js/all";
 global.FontAwesome.config.mutateApproach = "sync";
 
+// Bootstrapのスタイルシート側の機能を読み込む
+import "bootstrap/dist/css/bootstrap.min.css";
+// BootstrapのJavaScript側の機能を読み込む
+import "bootstrap";
 // application.scss
-import "../stylesheets/application";
+import "../stylesheets/style.scss";
 
 // loading icon
 import Vuesax from 'vuesax';
@@ -26,22 +36,8 @@ Vue.use(Vuesax);
 import FlashMessage from '@smartweb/vue-flash-message';
 Vue.use(FlashMessage);
 
-// コンポーネントの読み込み
-import Header from "../components/shared/v-header.vue";
-import Footer from "../components/shared/v-footer.vue";
-import SidebarLeft from "../components/shared/sidebar-left.vue";
-import SidebarRight from "../components/shared/sidebar-right.vue";
-import SlideMenu from "../components/shared/slide-menu.vue";
-import Flash from "../components/shared/flash.vue";
+// コンポーネントの読み込み・登録
 import LoadingIcon from "../components/shared/loading-icon.vue";
-
-// グローバルコンポーネントの登録
-Vue.component("v-header", Header);
-Vue.component("v-footer", Footer);
-Vue.component("v-slide-menu", SlideMenu);
-Vue.component("v-sidebar-left", SidebarLeft);
-Vue.component("v-sidebar-right", SidebarRight);
-Vue.component("v-flash", Flash);
 Vue.component("v-loading-icon", LoadingIcon);
 
 // axios
@@ -49,6 +45,10 @@ import axios from "axios";
 
 // storeの読み込み
 import store from "../store/index";
+
+// Rails-APIを叩く際のaxiosのcors対策
+axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.withCredentials = true;
 
 // axiosのキャンセルトークンの発行
 const axiosCancelation = () => {
@@ -65,8 +65,8 @@ const axiosCancelation = () => {
   });
 }
 
-const app = new Vue({
-  el: "#app",
+new Vue({
   store,
-  router
-});
+  router,
+  render: h => h(App),
+}).$mount('#app')

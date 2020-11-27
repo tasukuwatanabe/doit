@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import Vue from "vue";
+import Vue from 'vue/dist/vue.esm.js'
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import TodoModal from "./todo-modal.vue";

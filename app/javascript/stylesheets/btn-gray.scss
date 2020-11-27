@@ -1,0 +1,14 @@
+@import "color";
+@import "extend";
+
+.btn-gray {
+  @extend %link;
+  color: #555;
+  background-color: #dfdfdf;
+  border: 1px solid #dfdfdf;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+}
