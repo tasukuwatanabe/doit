@@ -6,7 +6,7 @@ require("jquery");
 
 // Vueの読み込み
 import Vue from 'vue/dist/vue.esm.js'
-import App from "../App.vue";
+import App from "../App";
 
 // Vue.js起動時に、コンソールにヒントが表示されなくなる
 Vue.config.productionTip = false
@@ -37,7 +37,7 @@ import FlashMessage from '@smartweb/vue-flash-message';
 Vue.use(FlashMessage);
 
 // コンポーネントの読み込み・登録
-import LoadingIcon from "../components/shared/loading-icon.vue";
+import LoadingIcon from "../components/shared/loading-icon";
 Vue.component("v-loading-icon", LoadingIcon);
 
 // axios

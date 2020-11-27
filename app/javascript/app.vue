@@ -15,12 +15,12 @@
 </template>
 
 <script>
-import Header from "./components/shared/v-header.vue";
-import Footer from "./components/shared/v-footer.vue";
-import SidebarLeft from "./components/shared/sidebar-left.vue";
-import SidebarRight from "./components/shared/sidebar-right.vue";
-import SlideMenu from "./components/shared/slide-menu.vue";
-import Flash from "./components/shared/flash.vue";
+import Header from "./components/shared/v-header";
+import Footer from "./components/shared/v-footer";
+import SidebarLeft from "./components/shared/sidebar-left";
+import SidebarRight from "./components/shared/sidebar-right";
+import SlideMenu from "./components/shared/slide-menu";
+import Flash from "./components/shared/flash";
 
 export default {
   components: {
