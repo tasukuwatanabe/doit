@@ -27,21 +27,6 @@ services:
     image: schickling/mailcatcher
     ports:
       - "1080:1080" #http://localhost:1080/でmailcatcherが開けます
-      - "1025:1025"
-  webpacker:
-    build: .
-    command: bash -c "bin/webpack-dev-server"
-    volumes:
-      - .:/doit
-    ports:
-      - '3035:3035'
-    tty: false
-    stdin_open: false
-    environment:
-      NODE_ENV: development
-      RAILS_ENV: development
-    depends_on:
-      - web
 volumes:
   bundle:
   node_modules:

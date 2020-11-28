@@ -17,6 +17,6 @@ class Todo < ApplicationRecord
   def self.search(query)
     return nil unless query.present?
 
-    Todo.where(['title LIKE ?', "%#{query.strip}%"]).order(todo_date: :asc)
+    Todo.where(['todos.title LIKE ?', "%#{query.strip}%"]).order(todo_date: :asc)
   end
 end

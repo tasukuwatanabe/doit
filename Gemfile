@@ -7,13 +7,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
 gem 'rails', '~> 6.0.3'
-gem 'sass-rails', '>= 6'
-gem 'turbolinks', '~> 5'
-gem 'webpacker', '~> 5.x'
-gem 'parallel'
-
 gem 'bootsnap', '>= 1.4.2', require: false
-
 gem 'bcrypt'
 gem 'date_validator'
 gem 'nokogiri'
@@ -21,14 +15,16 @@ gem 'rails-i18n'
 gem 'valid_email2'
 gem 'carrierwave'
 gem 'mini_magick'
-gem 'meta-tags'
 gem 'dotenv-rails'
 gem 'whenever', require: false
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
-gem 'rename'
+gem 'rack-cors'
+
+# Sprockets4.0だと、app/assetsディレクトリを削除するとSprockets::Railtie::ManifestNeededErrorが発生する
+gem 'sprockets', '~> 3.7.2'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -51,7 +47,6 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '>= 2.15'
   gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem 'selenium-webdriver'

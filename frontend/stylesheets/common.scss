@@ -1,0 +1,74 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: #555 !important;
+  position: relative;
+  font-family: -apple-system, "Segoe UI", "Helvetica Neue",
+    "Hiragino Kaku Gothic ProN", メイリオ, meiryo, sans-serif;
+  @media (max-width: 767px) {
+    font-size: 0.9rem !important;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .container,
+  .container-sm,
+  .container-md {
+    max-width: 100% !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+  }
+}
+@media (min-width: 576px) and (max-width: 991px) {
+  .container,
+  .container-sm,
+  .container-md {
+    max-width: 700px !important;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  position: relative;
+  background-color: #f4f6f6;
+  display: flex !important;
+  flex: 1;
+  padding: 40px 0;
+
+  @media (max-width: 991px) {
+    flex-direction: column;
+  }
+  @media (max-width: 767px) {
+    padding: 30px 0 50px;
+  }
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content {
+  flex: 1;
+
+  @media (min-width: 992px) {
+    margin-left: 30px;
+  }
+}
+
+img {
+  width: 100%;
+  user-select: none;
+}
+
+a {
+  cursor: pointer;
+}

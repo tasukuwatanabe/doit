@@ -1,0 +1,68 @@
+@import "variables";
+@import "extend";
+
+.btn {
+  &--xs {
+    padding: 2px 5px;
+    font-size: 0.8em;
+  }
+
+  &--sm {
+    padding: 5px 15px;
+  }
+
+  &--md {
+    padding: 10px 30px;
+    font-size: 1.1em;
+
+    @media (max-width: 767px) {
+      font-size: 1em;
+    }
+  }
+}
+
+.btn-main {
+  @extend %link;
+  color: #fff !important;
+  background-color: $color-main-theme;
+  border: 1px solid $color-main-theme;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #fff;
+    color: $color-main-theme !important;
+  }
+
+  &__icon {
+    svg {
+      font-size: 16px;
+      margin-right: 5px;
+      color: $color-main-theme;
+    }
+  }
+}
+
+.btn-outlined {
+  @extend %link;
+  border: 1px solid $color-main-theme;
+  color: $color-main-theme !important;
+  background-color: #fff;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: $color-main-theme;
+    color: #fff;
+
+    * {
+      color: #fff;
+    }
+  }
+
+  &__icon {
+    svg {
+      font-size: 16px;
+      margin-right: 5px;
+      color: $color-main-theme;
+    }
+  }
+}
