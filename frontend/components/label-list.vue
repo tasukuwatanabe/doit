@@ -101,7 +101,7 @@ export default {
         this.flashMessage.error({
           title: "ラベルが登録できるのは10個までです",
           time: 5000,
-          icon: 'icons/error.svg',
+          icon: 'assets/images/icons/error.svg',
         });
       } else {
         this.$refs.labelModal.setLabelValue(label);

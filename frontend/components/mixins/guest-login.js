@@ -15,13 +15,13 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
             time: 5000,
-            icon: 'icons/success.svg',
+            icon: 'assets/images/icons/success.svg',
           });
         })
         .catch((error) => {
           this.flashMessage.error({
             title: error.response.data.message,
-            icon: 'icons/error.svg',
+            icon: 'assets/images/icons/error.svg',
           });
         });
       await axios.get('/api/current_user').then((res) => {

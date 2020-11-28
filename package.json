@@ -13,6 +13,7 @@
     "@smartweb/vue-flash-message": "^0.6.10",
     "axios": "^0.20.0",
     "bootstrap": "^4.5.3",
+    "bootstrap-sass": "^3.4.1",
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
     "moment": "^2.29.1",

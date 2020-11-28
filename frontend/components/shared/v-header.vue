@@ -3,7 +3,7 @@
     <div class="container">
       <div v-if="this.getCurrentUser" class="header__inner">
         <router-link :to="{ name: 'todos' }" class="header__logo">
-          <img src="../../images/common/doit-logo-white.png" alt="DoITロゴ" />
+          <img src="../../images/logo/logo-white.png" alt="DoITロゴ" />
         </router-link>
         <div @click="toggleSlide" id="hamburger" class="hamburger">
           <span class="hamburger__line"></span>
@@ -13,7 +13,7 @@
       </div>
       <div v-else class="header__inner">
         <router-link :to="{ name: 'login' }" class="header__logo">
-          <img src="../../images/common/doit-logo-white.png" alt="DoITロゴ" />
+          <img src="../../images/logo/logo-white.png" alt="DoITロゴ" />
         </router-link>
       </div>
     </div>
@@ -39,3 +39,39 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../../stylesheets/color.scss";
+
+.header {
+  background-color: $color-main-theme;
+  position: relative;
+
+  &__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    min-height: 65px;
+
+    @media (max-width: 991px) {
+      padding: 15px 0;
+    }
+  }
+
+  &__logo {
+    display: inline-block;
+
+    img {
+      height: 30px;
+      width: auto;
+    }
+  }
+
+  &__userinfo {
+    @media (max-width: 991px) {
+      display: none !important;
+    }
+  }
+}
+</style>

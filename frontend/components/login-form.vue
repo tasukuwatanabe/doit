@@ -107,7 +107,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
             time: 5000,
-            icon: 'icons/success.svg',
+            icon: 'assets/images/icons/success.svg',
           });
 
           axios.get("/api/current_user").then((res) => {
