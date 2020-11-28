@@ -1,9 +1,9 @@
 {
   "name": "doit",
   "scripts": {
-    "start": "webpack-cli serve --config webpack.dev.config.js",
-    "build": "webpack --config webpack.dev.config.js",
-    "release": "webpack --config webpack.prod.config.js"
+    "start": "webpack-dev-server --history-api-fallback --config webpack.dev.js",
+    "dev": "webpack --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
@@ -13,26 +13,52 @@
     "@smartweb/vue-flash-message": "^0.6.10",
     "axios": "^0.20.0",
     "bootstrap": "^4.5.3",
+    "core-js": "^3.6.5",
     "jquery": "^3.5.1",
     "moment": "^2.29.1",
     "popper.js": "^1.16.1",
     "vue": "^2.6.12",
     "vue-color": "^2.7.1",
     "vue-router": "^3.4.5",
-    "vuesax": "^4.0.1-alpha.25",
+    "vuesax": "^3.12.2",
     "vuex": "^3.5.1",
-    "vuex-persistedstate": "^4.0.0-beta.1"
+    "vuex-persistedstate": "^3.1.0"
   },
   "devDependencies": {
-    "babel-jest": "^26.6.3",
-    "css-loader": "^5.0.1",
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.10.4",
+    "autoprefixer": "^9.8.5",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-macros": "^3.0.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.5.3",
+    "eslint": "^7.5.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-prettier": "^3.1.4",
+    "file-loader": "^6.0.0",
+    "html-loader": "^1.1.0",
+    "html-webpack-plugin": "^4.3.0",
+    "image-webpack-loader": "^6.0.0",
     "jest": "^26.6.3",
-    "mini-css-extract-plugin": "^1.3.1",
-    "sass-loader": "^10.1.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.14.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "postcss": "^8.0.1",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-import": "^13.0.0",
+    "postcss-loader": "^4.0.3",
+    "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.0.5",
+    "sass-loader": "^8.0.2",
+    "terser-webpack-plugin": "^3.0.8",
     "vue-jest": "^3.0.7",
     "vue-loader": "^15.9.5",
     "vue-template-compiler": "^2.6.12",
-    "webpack": "^5.7.0",
-    "webpack-cli": "^4.2.0"
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.0.9"
   }
 }
