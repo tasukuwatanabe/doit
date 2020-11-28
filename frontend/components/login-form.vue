@@ -106,8 +106,8 @@ export default {
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
             title: res.data.message,
-            time: 5000,
-            icon: 'icons/success.svg',
+            time: 0,
+            icon: 'assets/images/icons/success.svg',
           });
 
           axios.get("/api/current_user").then((res) => {

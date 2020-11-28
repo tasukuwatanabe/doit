@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="wrapper">
     <v-header></v-header>
     <v-slide-menu></v-slide-menu>
     <main>

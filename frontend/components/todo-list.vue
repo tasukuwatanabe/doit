@@ -21,7 +21,11 @@
           <i class="fas fa-caret-right"></i>
         </div>
       </section>
-      <v-loading-icon v-show="loading"></v-loading-icon>
+      <div class="loading-case" v-if="loading">
+        <div class="spinner-border text-info" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
       <div v-show="!loading">
         <ul class="list" v-if="todos.length">
           <li v-for="todo in todos" class="list__item" :key="todo.id">
@@ -41,17 +45,16 @@
               <div class="list__title">{{ todo.title }}</div>
             </div>
             <div class="list__block list__block--right list__block--grow">
-              <div
-                class="label label--margin"
-                v-if="todo.label_color"
-                :style="{
-                  color: colorOnRgb(todo.label_color),
-                  backgroundColor: todo.label_color
-                }"
-              >
-                {{ todo.label_title }}
+              <div>
+                <div class="label label--margin"
+                      v-if="todo.label_color"
+                      :style="{
+                        color: colorOnRgb(todo.label_color),
+                        backgroundColor: todo.label_color
+                      }">
+                  {{ todo.label_title }}
+                </div>
               </div>
-              <div v-else></div>
               <div class="item-action">
                 <a @click="setTodo(todo)" class="item-action__btn">
                   <i class="fas fa-pencil-alt"></i>
@@ -180,9 +183,161 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../stylesheets/variables.scss";
+@import "../stylesheets/extend.scss";
+
 .loading-case {
   width: 100%;
   height: 300px;
+}
+
+.todo {
+  &__date-box {
+    text-align: center;
+    user-select: none;
+  }
+
+  &__date-title {
+    font-size: 1.6em;
+    margin-bottom: 0.1em;
+  }
+
+  &__date-day {
+    margin: 0;
+    font-size: 0.8em;
+  }
+
+  &__page-action {
+    text-align: center;
+  }
+
+  &__no-result {
+    margin-bottom: 20px;
+    text-align: center;
+    background-color: #fff;
+    padding: 60px 0;
+    box-shadow: $box-shadow-common;
+
+    @media (max-width: 767px) {
+      margin-top: 30px;
+    }
+
+    .no-result {
+      &__illustration {
+        width: 300px;
+        margin: 0 auto 20px;
+
+        @media (max-width: 767px) {
+          width: 80%;
+        }
+      }
+    }
+  }
+
+  .list {
+    box-shadow: $box-shadow-common;
+    
+    &__item {
+      padding-left: 62px;
+    }
+  }
+}
+
+.todo-status {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  margin-right: 15px;
+
+  &--checked {
+    & + .todo__title {
+      color: #bbb;
+    }
+  }
+
+  label {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 32px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 32px;
+
+    &:after {
+      border: 2px solid #fff;
+      border-top: none;
+      border-right: none;
+      content: "";
+      height: 8px;
+      left: 8px;
+      opacity: 0;
+      position: absolute;
+      top: 9px;
+      transform: rotate(-45deg);
+      width: 15px;
+    }
+  }
+
+  input[type="checkbox"] {
+    visibility: hidden;
+
+    &:checked + label {
+      background-color: $color-main-theme;
+      border-color: $color-main-theme;
+
+      &:after {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.horizontal-arrows {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__btn {
+    @extend %link;
+    width: 30px;
+    height: 30px;
+    border: 1px solid $color-main-theme;
+    background-color: #fff;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.2s;
+
+    &:hover {
+      background-color: $color-main-theme;
+
+      svg {
+        color: #fff;
+      }
+    }
+
+    & > * {
+      position: relative;
+      color: $color-main-theme;
+    }
+
+    &--left {
+      svg {
+        left: -1px;
+      }
+    }
+
+    &--right {
+      svg {
+        right: -1px;
+      }
+    }
+  }
 }
 </style>

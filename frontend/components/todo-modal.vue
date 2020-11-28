@@ -143,15 +143,12 @@ export default {
     },
     setTodoValue(val) {
       this.toggleModal();
-      const hasValue = function () {
-        return val != undefined;
-      };
-      this.todo.id = hasValue() ? val.id : undefined;
-      this.todo.title = hasValue() ? val.title : undefined;
-      this.todo.body = hasValue() ? val.body : undefined;
-      this.todo.todo_date = hasValue() ? val.todo_date : this.formattedDate;
-      this.todo.label_id = hasValue() ? val.label_id : undefined;
-      this.btnText = hasValue() ? "更新する" : "新規作成";
+      this.todo.id = val.id;
+      this.todo.title = val.title;
+      this.todo.body = val.body;
+      this.todo.todo_date = val.todo_date || this.formattedDate;
+      this.todo.label_id = val.label_id;
+      this.btnText = !!val ? "更新する" : "新規作成";
     },
     todoSubmit() {
       const label_arr = [];

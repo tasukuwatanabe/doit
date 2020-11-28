@@ -8,8 +8,8 @@ module.exports = {
   entry: './frontend/packs/main.js',
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: 'js/[name].[contenthash].js',
-    chunkFilename: 'js/[name].[contenthash].js'
+    filename: 'assets/js/[name].[contenthash].js',
+    chunkFilename: 'assets/js/[name].[contenthash].js'
   },
   optimization: {
     splitChunks: {
@@ -64,8 +64,8 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[contenthash].[ext]',
-              outputPath: 'images',
-              publicPath: '/images',
+              outputPath: 'assets/images',
+              publicPath: '/assets/images',
               esModule: false
             },
           },
@@ -81,13 +81,13 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: ["!user_images/**/*"]
+      cleanOnceBeforeBuildPatterns: ["assets/css", "assets/js", "!uploads/**/*", "!assets/images/icons/**/*", "!assets/images/common/**/*"]
     }),
     new HtmlWebpackPlugin({
       template: './frontend/html/index.html'
     }),
     new MiniCssExtractPlugin({
-      filename: './css/[name].[contenthash].css',
+      filename: 'assets/css/[name].[contenthash].css',
     })
   ],
   resolve: {

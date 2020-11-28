@@ -30,7 +30,11 @@
         </a>
       </div>
     </div>
-    <v-loading-icon v-show="loading"></v-loading-icon>
+    <div class="loading-case" v-if="loading">
+      <div class="spinner-border text-info" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
     <div v-show="!loading">
       <ul class="list" v-if="shortcuts.length">
         <li
@@ -123,7 +127,7 @@ export default {
         this.flashMessage.error({
           title: "ショートカットが登録できるのは10個までです",
           time: 5000,
-          icon: 'icons/error.svg',
+          icon: 'assets/images/icons/error.svg',
         });
       } else {
         this.$refs.shortcutModal.setShortcutValue(shortcut);
@@ -139,7 +143,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .loading-case {
   width: 600px;
   height: 350px;

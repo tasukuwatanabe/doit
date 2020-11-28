@@ -11,7 +11,7 @@
         指定されたページは見つかりませんでした。<br>URLが変わった、もしくはページが削除された可能性があります。
       </div>
     </div>
-    <div class="no-result no-result">
+    <div class="no-result">
       <div class="no-result__illustration">
         <img
           src="../images/illustrations/il-not-found.png"

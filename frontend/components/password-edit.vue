@@ -11,7 +11,9 @@
         ログインに必要なパスワードを変更することができます。
       </p>
     </div>
-    <v-loading-icon v-show="loading"></v-loading-icon>
+     <div class="spinner-border text-info" v-if="loading" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
     <form v-show="!loading" class="form user-form">
       <div v-if="isGuest" class="form__group">
         <div class="guest-message">
@@ -92,7 +94,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
             time: 5000,
-            icon: 'icons/success.svg',
+            icon: 'assets/images/icons/success.svg',
           });
           this.password = "";
           this.password_confirmation = "";

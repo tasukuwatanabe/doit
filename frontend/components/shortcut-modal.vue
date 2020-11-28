@@ -108,13 +108,10 @@ export default {
     setShortcutValue(val) {
       this.custom_error = "";
       this.toggleModal();
-      const hasValue = function () {
-        return val != undefined;
-      };
-      this.shortcut.id = hasValue() ? val.id : undefined;
-      this.shortcut.title = hasValue() ? val.title : undefined;
-      this.shortcut.label_id = hasValue() ? val.label_id : undefined;
-      this.btnText = hasValue() ? "更新する" : "新規作成";
+      this.shortcut.id = val.id;
+      this.shortcut.title = val.title;
+      this.shortcut.label_id = val.label_id;
+      this.btnText = !!val ? "更新する" : "新規作成";
     },
     setError(error) {
       this.custom_error = error;

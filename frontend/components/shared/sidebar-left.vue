@@ -1,7 +1,11 @@
 <template>
   <aside v-if="isLoggedIn" class="sidebar sidebar-left">
-    <div class="sidebar-left__inner sidebar__stickey-part">
-      <v-loading-icon v-show="loading"></v-loading-icon>
+    <div class="sidebar-left__inner sidebar--stickey">
+      <div class="loading-case" v-if="loading">
+        <div class="spinner-border text-info" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
       <div v-if="this.getCurrentUser && !loading">
         <div class="sidebar-left__userinfo userinfo">
           <router-link
@@ -151,8 +155,8 @@ export default {
         this.$router.push({ name: "login" });
         this.flashMessage.success({
           title: res.data.message,
-          time: 5000,
-          icon: 'icons/success.svg',
+          time: 0,
+          icon: 'assets/images/icons/success.svg',
         });
       });
     }
@@ -160,9 +164,30 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../../stylesheets/variables.scss";
+@import "../../stylesheets/extend.scss";
+
 .loading-case {
   width: 100%;
   box-sizing: border-box;
+}
+
+.sidebar-left {
+  width: 250px;
+
+  &__inner {
+    @extend %sidebar-display;
+    background-color: #fff;
+    padding: 25px 22px 10px;
+    box-shadow: $box-shadow-common;
+    min-height: 448px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__userinfo {
+    margin-bottom: 15px;
+  }
 }
 </style>
