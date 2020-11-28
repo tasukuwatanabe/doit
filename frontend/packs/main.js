@@ -12,27 +12,13 @@ import router from '../router/router';
 
 // Font Awesome
 import '@fortawesome/fontawesome-free/js/all';
-// global.FontAwesome.config.mutateApproach = "sync";
 
-// Bootstrapのスタイルシート側の機能を読み込む
-import 'bootstrap/dist/css/bootstrap.min.css';
-// BootstrapのJavaScript側の機能を読み込む
-import 'bootstrap';
 // application.scss
 import '../stylesheets/style.scss';
-
-// loading icon
-import Vuesax from 'vuesax';
-import 'vuesax/dist/vuesax.css';
-Vue.use(Vuesax);
 
 // Flash
 import FlashMessage from '@smartweb/vue-flash-message';
 Vue.use(FlashMessage);
-
-// コンポーネントの読み込み・登録
-import LoadingIcon from '../components/shared/loading-icon';
-Vue.component('v-loading-icon', LoadingIcon);
 
 // axios
 import axios from 'axios';

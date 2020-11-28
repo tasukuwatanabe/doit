@@ -24,3 +24,18 @@
     word-break: break-all;
   }
 }
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > * {
+    color: $color-main-theme;
+    fill: $color-main-theme;
+  }
+}
+
+.profile-img {
+  border-radius: 50%;
+}

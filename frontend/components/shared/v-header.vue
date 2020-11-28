@@ -41,7 +41,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../stylesheets/color.scss";
+@import "../../stylesheets/variables.scss";
 
 .header {
   background-color: $color-main-theme;
@@ -72,6 +72,31 @@ export default {
     @media (max-width: 991px) {
       display: none !important;
     }
+  }
+}
+
+.hamburger {
+  position: absolute;
+  right: 20px;
+  width: 25px;
+  top: 0;
+  bottom: 0;
+  z-index: 98;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+
+  @media (min-width: 992px) {
+    display: none;
+  }
+
+  &__line {
+    width: 100%;
+    height: 3px;
+    display: block;
+    margin: 2px 0;
+    background-color: #ffffff;
   }
 }
 </style>

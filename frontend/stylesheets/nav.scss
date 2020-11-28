@@ -1,4 +1,4 @@
-@import "color";
+@import "variables";
 @import "extend";
 
 .nav {
@@ -16,7 +16,7 @@
   }
   &__link {
     @extend %link;
-    display: flex;
+    display: flex !important;
     padding: 17px 0;
   }
   &__icon {

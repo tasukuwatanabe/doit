@@ -1,6 +1,6 @@
 <template>
   <aside v-if="isTodo" class="sidebar sidebar-right">
-    <div v-if="this.getCurrentUser" class="sidebar__stickey-part sidebar-right__inner">
+    <div v-if="this.getCurrentUser" class="sidebar--stickey sidebar-right__inner">
       <section class="sidebar-right__search search">
         <div class="search__form">
           <i class="fa fa-search search__lense"></i>
@@ -11,7 +11,11 @@
         </div>
       </section>
       <div v-if="query" class="search__box">
-        <v-loading-icon v-show="loading"></v-loading-icon>
+        <div class="loading-case" v-if="loading">
+          <div class="spinner-border text-info" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
         <div v-show="!loading">
           <template v-if="results && results.length">
             <div v-for="resultDate in resultDateArray" :key="resultDate">
@@ -20,10 +24,13 @@
               </div>
               <div class="search__list">
                 <div v-for="result in todoByDate(resultDate)" @click="fetchDate(result.todo_date)" :key="result.id" class="search__item">{{ result.title }}
-                  <div class="label"
-                        v-if="todoLabel(result)"
-                        :style="{color: colorOnRgb(todoLabel(result).color), backgroundColor: todoLabel(result).color }">
-                    {{ todoLabel(result).title }}
+                  <div class="label label--margin"
+                        v-if="result.label_color"
+                        :style="{
+                          color: colorOnRgb(result.label_color),
+                          backgroundColor: result.label_color
+                        }">
+                    {{ result.label_title }}
                   </div>
                 </div>
               </div>
@@ -53,7 +60,6 @@ export default {
     return {
       query: '',
       results: [],
-      labels: [],
       loading: ''
     }
   },
@@ -96,11 +102,6 @@ export default {
     },
     isTodo() {
       return this.$route.name === 'todos';
-    },
-    todoLabel() {
-      return function (todo) {
-        return this.labels.filter((label) => todo.label_id == label.id)[0];
-      };
     }
   },
   mixins: [ColorOnRgb],
@@ -126,8 +127,7 @@ export default {
           }
         })
         .then((res) => {
-          this.results = res.data.todos;
-          this.labels = res.data.labels;
+          this.results = res.data;
           this.loading = false;
         }).catch(error => {
           console.log("通信がキャンセルされました");
@@ -140,9 +140,105 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../../stylesheets/variables.scss";
+@import "../../stylesheets/extend.scss";
+
 .loading-case {
   width: 100%;
   height: 200px;
+}
+
+.sidebar-right {
+  width: 250px;
+  margin-left: 30px;
+
+  &__inner {
+    @extend %sidebar-display;
+  }
+
+  &__search,
+  &__calendar {
+    margin-bottom: 20px;
+  }
+}
+
+.search {
+  position: relative;
+
+  &__form {
+    box-shadow: $box-shadow-common;
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    width: 100%;
+    height: 34px;
+    border: none;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: inset 0 0 2px #ccc;
+    padding-left: 32px;
+    padding-right: 35px;
+    appearance: textfield;
+  }
+
+  &__lense {
+    position: absolute;
+    left: 10px;
+    color: #aaa;
+  }
+
+  &__reset {
+    position: absolute;
+    color: #aaa;
+    right: 10px;
+    margin: auto;
+    cursor: pointer;
+  }
+
+  &__box {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    overflow-y: scroll;
+    height: calc(100vh - 195px);
+    padding: 0 15px;
+    margin: 0 -15px;
+  }
+
+  &__date {
+    font-size: 0.7em;
+    margin-top: 0.8em;
+    margin-bottom: 0.15em;
+    color: #999;
+  }
+
+  &__list {
+    box-shadow: $box-shadow-common;
+  }
+
+  &__item {
+    padding: 12px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e8e8e8;
+    font-size: 0.8em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    .label {
+      margin-left: 8px;
+      font-size: 10px;
+      padding: 4px 7px;
+    }
+  }
+
+  &__no-result {
+    text-align: center;
+    margin-top:100px;
+  }
 }
 </style>

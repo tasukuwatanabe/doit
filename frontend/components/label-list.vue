@@ -22,7 +22,11 @@
         </a>
       </div>
     </div>
-    <v-loading-icon v-show="loading"></v-loading-icon>
+    <div class="loading-case" v-if="loading">
+      <div class="spinner-border text-info" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
     <div v-show="!loading">
       <ul class="list" v-if="labels.length">
         <li class="list__item" v-for="label in labels" :key="label.id">
@@ -117,9 +121,13 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .loading-case {
   width: 600px;
   height: 350px;
+}
+
+.label-in-use {
+  margin-right: 70px;
 }
 </style>

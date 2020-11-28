@@ -143,3 +143,39 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../../stylesheets/variables.scss";
+
+#screen-layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition-duration: 0.1s;
+}
+
+.slide-menu {
+  width: $width-slide-menu;
+  background-color: $slide-menu-bg-color;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  transform: translateX($width-slide-menu * -1);
+  transition-duration: 0.1s;
+  padding: 30px 15px;
+
+  &.is-open {
+    transform: translateX(0);
+  }
+
+  .userinfo {
+    margin-bottom: 20px;
+  }
+}
+</style>

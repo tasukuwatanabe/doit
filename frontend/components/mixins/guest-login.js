@@ -10,7 +10,6 @@ export default {
       await axios
         .post('/api/guest_login')
         .then((res) => {
-          console.log('todosにリダイレクトします');
           this.$router.push({ name: 'todos' });
           this.flashMessage.success({
             title: res.data.message,

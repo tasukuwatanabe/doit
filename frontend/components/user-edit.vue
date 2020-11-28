@@ -11,8 +11,7 @@
         ユーザー名、メールアドレスなどのユーザー情報を変更することができます。
       </p>
     </div>
-    <v-loading-icon v-show="loading"></v-loading-icon>
-    <form v-show="!loading" class="form user-form">
+    <form class="form user-form">
       <div v-if="isGuest" class="form__group">
         <div class="guest-message">
           <i class="fas fa-exclamation-triangle"></i>
@@ -168,7 +167,6 @@ export default {
       errors: "",
       message: "",
       random_number: "",
-      loading: ""
     };
   },
   created() {
@@ -313,9 +311,33 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../stylesheets/variables.scss";
+
+.sns-link {
+  &__table {
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+
+    td {
+      padding: 10px 30px 10px 0;
+    }
+  }
+
+  &__cancel {
+    margin-left: 1em;
+  }
+}
+
 .loading-case {
   width: 600px;
   height: 350px;
+}
+
+.link {
+  &--default {
+    color: $color-main-theme;
+    text-decoration: underline;
+  }
 }
 </style>

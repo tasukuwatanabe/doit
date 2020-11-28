@@ -1,4 +1,4 @@
-@import "color";
+@import "variables";
 
 .list {
   padding: 0;
@@ -53,5 +53,56 @@
 
   &__title {
     font-size: 1.1em;
+  }
+}
+
+.no-result {
+  &__illustration {
+    max-width: 500px;
+    width: 100%;
+    padding: 0 10px;
+  }
+  &__illustration {
+    margin-top: 80px;
+    margin-left: 100px;
+
+    @media (max-width: 991px) {
+      margin: 50px auto 0;
+    }
+  }
+}
+
+.item-action {
+  display: flex;
+
+  &__btn {
+    color: rgb(170, 170, 170);
+    font-size: 20px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-main-theme;
+    }
+
+    &:not(:last-of-type) {
+      margin-right: 30px;
+
+      @media (max-width: 767px) {
+        margin-right: 20px;
+      }
+    }
+  }
+}
+
+.page-action {
+  &__icon {
+    svg {
+      font-size: 16px;
+    }
+  }
+
+  &__text {
+    margin-left: 5px;
   }
 }

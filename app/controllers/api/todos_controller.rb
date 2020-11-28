@@ -51,14 +51,14 @@ class Api::TodosController < ApplicationController
 
   def search
     todos = current_user.todos.search(params[:query])
-    labels = current_user.labels.select(:id, :title, :color)
+                              .left_joins(:labels)
+                              .select('todos.id,
+                                        todos.title,
+                                        todos.todo_date,
+                                        labels.title AS label_title,
+                                        labels.color AS label_color')
 
-    api_data = {
-      todos: todos,
-      labels: labels
-    }
-
-    render json: api_data
+    render json: todos, status: 200
   end
 
   private

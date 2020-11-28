@@ -13,7 +13,9 @@
     <div 
       class="sidebar-shortcut__field" 
       :class="{ 'sidebar-shortcut__field--center' : (loading || !shortcuts.length) }">
-      <v-loading-icon v-show="loading"></v-loading-icon>
+      <div class="spinner-border text-info" v-if="loading" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
       <div v-show="!loading">
         <ul v-if="shortcuts.length" class="sidebar-shortcut__list">
           <li
@@ -94,3 +96,82 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../../stylesheets/variables.scss";
+@import "../../stylesheets/extend.scss";
+
+.sidebar-shortcut {
+  &__field {
+    padding: 10px;
+    background-color: #fff;
+    text-align: center;
+    box-shadow: $box-shadow-common;
+    min-height: 250px;
+
+    &--center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media (max-width: 767px) {
+      padding: 10px;
+    }
+  }
+
+  &__box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px;
+  }
+
+  &__title {
+    font-size: .9em;
+    font-weight: bold;
+  }
+
+  &__edit {
+    text-decoration: underline;
+    color: $color-main-theme;
+    font-size: 0.9em;
+  }
+
+  &__list {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    background-color: #fff;
+    border-radius: 100px;
+    margin: 5px;
+    font-size: 0.9em;
+  }
+
+  &__link {
+    @extend %link;
+    color: $color-base-font;
+    padding: 3px 8px;
+    border-radius: 3px;
+    display: block;
+    background-color: #eee;
+
+    svg {
+      color: #999;
+    }
+  }
+
+  &__text {
+    margin-bottom: 20px;
+    font-size: 0.8em;
+  }
+
+  .page-action {
+    font-size: 0.9em;
+  }
+}
+</style>
