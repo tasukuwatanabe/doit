@@ -1,0 +1,39 @@
+@import "color";
+@import "extend";
+
+.form {
+  &__label {
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+
+  &__input,
+  &__select {
+    @extend %form-input;
+    padding: 0.375em 0.75em;
+  }
+
+  &__input {
+    &:read-only {
+      background-color: #f0f0f0;
+      color: #999;
+    }
+
+    &--email {
+      margin-bottom: 0.5em;
+    }
+  }
+
+  &__error {
+    color: red;
+    font-size: 0.8em;
+    display: block;
+    margin-top: 0.3em;
+    margin-bottom: -0.6em;
+
+    &--base {
+      margin-bottom: 1em;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+.label {
+  display: inline-block;
+  padding: 6px 8px 5px;
+  font-size: 12px;
+  line-height: 1;
+  // color: #fff;
+  border-radius: 2em;
+  white-space: nowrap;
+
+  &--margin {
+    margin: 0 20px 0 10px;
+
+    @media (max-width: 767px) {
+      margin-left: 0;
+    }
+  }
+}

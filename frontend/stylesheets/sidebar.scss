@@ -1,0 +1,7 @@
+.sidebar {
+  &__stickey-part {
+    position: sticky;
+    top: 25px;
+    z-index: 1;
+  }
+}

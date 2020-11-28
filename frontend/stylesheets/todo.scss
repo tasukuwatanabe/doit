@@ -1,0 +1,63 @@
+@import "color";
+@import "extend";
+
+.todo {
+  .horizontal-arrows {
+    margin-bottom: 20px;
+
+    .horizontal-arrows__btn {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  &__date-box {
+    text-align: center;
+    user-select: none;
+  }
+
+  &__date-title {
+    font-size: 1.6em;
+    margin-bottom: 0.1em;
+  }
+
+  &__date-day {
+    margin: 0;
+    font-size: 0.8em;
+  }
+
+  &__page-action {
+    text-align: center;
+  }
+
+  &__no-result {
+    margin-bottom: 20px;
+    text-align: center;
+    background-color: #fff;
+    padding: 60px 0;
+    box-shadow: $box-shadow-common;
+
+    @media (max-width: 767px) {
+      margin-top: 30px;
+    }
+
+    .no-result {
+      &__illustration {
+        width: 300px;
+        margin: 0 auto 20px;
+
+        @media (max-width: 767px) {
+          width: 80%;
+        }
+      }
+    }
+  }
+
+  .list {
+    box-shadow: $box-shadow-common;
+    
+    &__item {
+      padding-left: 62px;
+    }
+  }
+}
