@@ -102,8 +102,8 @@ export default {
           this.labels = res.data;
         })
         .catch(error => {
-          console.log("通信がキャンセルされました");
-        });;
+          return error;
+        });
     },
     setShortcutValue(val) {
       this.custom_error = "";
