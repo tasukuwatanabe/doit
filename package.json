@@ -3,7 +3,8 @@
   "scripts": {
     "start": "webpack-dev-server --history-api-fallback --config webpack.dev.js",
     "dev": "webpack --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "test": "jest"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
