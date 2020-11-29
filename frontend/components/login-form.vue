@@ -93,7 +93,7 @@ export default {
   mixins: [GuestLogin],
   methods: {
     ...mapActions({
-      setCurrentUserAction: 'user/setCurrentUserAction',
+      logoutAction: "user/logoutAction"
     }),
     submitLogin() {
       const session_params = {
@@ -103,16 +103,13 @@ export default {
       axios
         .post("/api/login", { session: session_params })
         .then((res) => {
+          this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
             title: res.data.message,
-            time: 0,
-            icon: 'assets/images/icons/success.svg',
-          });
-
-          axios.get("/api/current_user").then((res) => {
-            this.setCurrentUserAction(res.data);
-          });
+            time: 5000,
+            icon: 'assets/images/icons/success.svg'
+          })
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

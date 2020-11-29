@@ -148,7 +148,8 @@ export default {
   methods: {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction",
-      cancelPendingRequests: "request/cancelPendingRequests"
+      cancelPendingRequests: "request/cancelPendingRequests",
+      logoutAction: "user/logoutAction"
     }),
     fetchDate(date) {
       this.setSelectedDateAction(date);
@@ -162,7 +163,18 @@ export default {
           this.loading = false;
         })
         .catch(error => {
-          console.log("通信がキャンセルされました");
+          this.loading = false;
+          if (error.response && error.response.status === 500) {
+            axios.delete("/api/logout").then(() => {
+              this.logoutAction();
+              this.$router.push({ name: "login" });
+              this.flashMessage.error({
+                title: "再度ログインしてください",
+                time: 5000,
+                icon: 'assets/images/icons/error.svg',
+              });
+            });
+          }
         });
     },
     setTodo(todo) {

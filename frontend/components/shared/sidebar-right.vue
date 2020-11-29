@@ -130,7 +130,8 @@ export default {
           this.results = res.data;
           this.loading = false;
         }).catch(error => {
-          console.log("通信がキャンセルされました");
+          this.loading = false;
+          return error;
         });
     },
     resetQuery() {

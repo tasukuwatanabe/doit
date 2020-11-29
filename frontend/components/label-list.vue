@@ -70,6 +70,7 @@
 import axios from "axios";
 import LabelModal from "./label-modal";
 import ColorOnRgb from "./mixins/color-on-rgb";
+import { mapActions } from "vuex";
 
 export default {
   name: "LabelList",
@@ -88,6 +89,9 @@ export default {
   },
   mixins: [ColorOnRgb],
   methods: {
+    ...mapActions({
+      logoutAction: "user/logoutAction"
+    }),
     fetchLabels() {
       axios
         .get("/api/labels")
@@ -96,8 +100,18 @@ export default {
           this.loading = false;
         })
         .catch(error => {
-          console.log("通信がキャンセルされました");
           this.loading = false;
+          if (error.response && error.response.status === 500) {
+            axios.delete("/api/logout").then(() => {
+              this.logoutAction();
+              this.$router.push({ name: "login" });
+              this.flashMessage.error({
+                title: "再度ログインしてください",
+                time: 5000,
+                icon: 'assets/images/icons/error.svg',
+              });
+            });
+          }
         });
     },
     setLabel(label) {

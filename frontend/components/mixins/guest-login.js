@@ -6,10 +6,11 @@ export default {
     ...mapActions({
       setCurrentUserAction: 'user/setCurrentUserAction',
     }),
-    async guestLogin() {
-      await axios
+    guestLogin() {
+      axios
         .post('/api/guest_login')
         .then((res) => {
+          this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: 'todos' });
           this.flashMessage.success({
             title: res.data.message,
@@ -19,13 +20,11 @@ export default {
         })
         .catch((error) => {
           this.flashMessage.error({
-            title: error.response.data.message,
+            title: error.message,
+            time: 5000,
             icon: 'assets/images/icons/error.svg',
           });
         });
-      await axios.get('/api/current_user').then((res) => {
-        this.setCurrentUserAction(res.data);
-      });
     },
   },
 };

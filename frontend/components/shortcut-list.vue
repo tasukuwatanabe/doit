@@ -92,6 +92,7 @@
 import axios from "axios";
 import ShortcutModal from "./shortcut-modal";
 import ColorOnRgb from "./mixins/color-on-rgb";
+import { mapActions } from "vuex";
 
 export default {
   name: "Shortcut",
@@ -110,6 +111,9 @@ export default {
   },
   mixins: [ColorOnRgb],
   methods: {
+    ...mapActions({
+      logoutAction: "user/logoutAction"
+    }),
     fetchShortcuts() {
       axios
         .get("/api/shortcuts")
@@ -118,8 +122,18 @@ export default {
           this.loading = false;
         })
         .catch(error => {
-          console.log("通信がキャンセルされました");
           this.loading = false;
+          if (error.response.status === 500) {
+            axios.delete("/api/logout").then(() => {
+              this.logoutAction();
+              this.$router.push({ name: "login" });
+              this.flashMessage.error({
+                title: "再度ログインしてください",
+                time: 5000,
+                icon: 'assets/images/icons/error.svg',
+              });
+            });
+          }
         });
     },
     setShortcut(shortcut) {
