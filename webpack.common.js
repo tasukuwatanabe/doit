@@ -92,7 +92,6 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      jquery: "jquery/src/jquery",
       vue$: "vue/dist/vue.esm.js"
     },
     extensions: ['.js', '.vue']
