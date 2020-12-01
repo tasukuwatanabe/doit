@@ -11,7 +11,7 @@
         ログインに必要なパスワードを変更することができます。
       </p>
     </div>
-     <div class="spinner-border text-info" v-if="loading" role="status">
+    <div class="spinner-border text-info" v-if="loading" role="status">
       <span class="sr-only">Loading...</span>
     </div>
     <form v-show="!loading" class="form user-form">

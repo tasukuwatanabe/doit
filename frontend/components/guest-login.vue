@@ -1,3 +1,13 @@
+<template>
+  <div>
+    お試しの方は
+    <a @click="guestLogin" class="form__link--default">
+      ゲストログイン
+    </a>
+  </div>
+</template>
+
+<script>
 import axios from 'axios';
 import { mapActions } from 'vuex';
 
@@ -31,3 +41,4 @@ export default {
     },
   },
 };
+</script>

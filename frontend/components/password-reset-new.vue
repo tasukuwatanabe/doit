@@ -21,10 +21,7 @@
           </div>
           <ul class="form__linkList form__linkList--password-reset">
             <li class="form__linkItem">
-              お試しの方は
-              <a @click="guestLogin" class="form__link--default">
-                ゲストログイン
-              </a>
+              <guest-login></guest-login>
             </li>
             <li class="form__linkItem">
               アカウントをお持ちの方は
@@ -41,7 +38,7 @@
 
 <script>
 import axios from "axios";
-import GuestLogin from "./mixins/guest-login";
+import GuestLogin from './guest-login.vue';
 
 export default {
   data() {
@@ -50,7 +47,9 @@ export default {
       errors: ""
     };
   },
-  mixins: [GuestLogin],
+  components: {
+    'guest-login': GuestLogin
+  },
   methods: {
     submitPasswordReset() {
       axios
