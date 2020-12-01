@@ -19,6 +19,12 @@ export default {
           time: 5000,
           icon: 'assets/images/icons/error.svg',
         });
+      } else if (this.$route.query.email_confirmed === 'expired') {
+        this.flashMessage.error({
+          title: "リンクの有効期限が過ぎています",
+          time: 5000,
+          icon: 'assets/images/icons/error.svg',
+        });
       } else if (this.$route.query.account_activation === 'already') {
         this.flashMessage.info({
           title: "アカウントはすでに有効です",

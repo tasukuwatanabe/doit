@@ -3,17 +3,14 @@ class Api::EmailConfirmationsController < ApplicationController
   before_action :check_expiration, only: [:edit]
 
   def edit
-    user = User.find_by(email: params[:email])
-    if user && user.authenticated?(:confirmation, params[:id])
-      user.update_new_email
+    if @user.authenticated?(:confirmation, params[:id])
+      @user.update_new_email
       log_out
       query = '?email_confirmed=true'
-      redirect_to '/redirect' + query
     else
-      path = logged_in? ? '/' : '/login'
       query = '?email_confirmed=false'
-      redirect_to '/redirect' + query
     end
+    redirect_to '/redirect' + query
   end
 
   def destroy
@@ -29,10 +26,10 @@ class Api::EmailConfirmationsController < ApplicationController
   private
 
   def check_expiration
-    user = User.find_by(email: params[:email])
-    if user && user.expired?(:confirmation)
-      user.update(confirmation_digest: nil, unconfirmed_email: nil)
-      render json: { message: "メールアドレス認証リンクの期限が切れています"}
+    @user = User.find_by(email: params[:email])
+    if @user && @user.expired?(:confirmation)
+      @user.update(confirmation_digest: nil, unconfirmed_email: nil)
+      redirect_to '/redirect?email_confirmed=expired'
     end
   end
 end
