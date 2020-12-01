@@ -89,7 +89,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
             time: 5000,
-            icon: 'assets/images/icons/success.svg',
+            icon: '/icons/success.svg',
           });
         })
         .catch((error) => {
@@ -97,7 +97,7 @@ export default {
           if (!!error.response.data.message) {
             this.flashMessage.error({
               title: error.response.data.message,
-              icon: 'assets/images/icons/error.svg',
+              icon: '/icons/error.svg',
             });
             this.$router.push({ name: 'password_resets_new' })
           }

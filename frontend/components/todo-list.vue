@@ -170,7 +170,7 @@ export default {
               this.flashMessage.error({
                 title: "再度ログインしてください",
                 time: 5000,
-                icon: 'assets/images/icons/error.svg',
+                icon: '/icons/error.svg',
               });
             });
           }

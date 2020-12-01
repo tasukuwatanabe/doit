@@ -9,12 +9,9 @@
 </template>
 
 <script>
-import ColorOnRgb from "./mixins/color-on-rgb";
-
 export default {
   name: "LabelItem",
   props: ['labelItem'],
-  mixins: [ColorOnRgb],
   computed: {
     labelFontColor() {
       return this.colorOnRgb(this.labelItem.color)

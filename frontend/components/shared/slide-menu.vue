@@ -148,7 +148,7 @@ export default {
               this.flashMessage.error({
                 title: "再度ログインしてください",
                 time: 5000,
-                icon: 'assets/images/icons/error.svg',
+                icon: '/icons/error.svg',
               });
             });
           }
@@ -164,7 +164,7 @@ export default {
         this.flashMessage.success({
           title: res.data.message,
           time: 5000,
-          icon: 'assets/images/icons/success.svg',
+          icon: '/icons/success.svg',
         });
       });
     }

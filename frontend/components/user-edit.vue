@@ -222,7 +222,7 @@ export default {
         this.flashMessage.success({
           title: res.data.message,
           time: 5000,
-          icon: 'assets/images/icons/success.svg',
+          icon: '/icons/success.svg',
         });
       });
       await axios.get("/api/current_user").then((res) => {
@@ -267,7 +267,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
           time: 5000,
-            icon: 'assets/images/icons/success.svg',
+            icon: '/icons/success.svg',
           });
           this.loading = false;
         })
@@ -282,7 +282,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
           time: 5000,
-            icon: 'assets/images/icons/success.svg',
+            icon: '/icons/success.svg',
           });
         });
       await axios.get("/api/current_user").then((res) => {
@@ -302,7 +302,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
             time: 5000,
-            icon: 'assets/images/icons/success.svg',
+            icon: '/icons/success.svg',
           });
           this.loading = false;
       });

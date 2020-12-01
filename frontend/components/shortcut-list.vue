@@ -128,7 +128,7 @@ export default {
               this.flashMessage.error({
                 title: "再度ログインしてください",
                 time: 5000,
-                icon: 'assets/images/icons/error.svg',
+                icon: '/icons/error.svg',
               });
             });
           }
@@ -139,7 +139,7 @@ export default {
         this.flashMessage.error({
           title: "ショートカットが登録できるのは10個までです",
           time: 5000,
-          icon: 'assets/images/icons/error.svg',
+          icon: '/icons/error.svg',
         });
       } else {
         this.$refs.shortcutModal.setShortcutValue(shortcut);

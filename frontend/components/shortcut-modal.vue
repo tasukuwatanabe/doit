@@ -74,7 +74,6 @@
 <script>
 import axios from "axios";
 import Modal from "./mixins/modal";
-import ColorOnRgb from "./mixins/color-on-rgb";
 
 export default {
   name: "ShortcutModal",
@@ -93,7 +92,7 @@ export default {
   created() {
     this.fetchLabels();
   },
-  mixins: [Modal, ColorOnRgb],
+  mixins: [Modal],
   methods: {
     fetchLabels() {
       axios
