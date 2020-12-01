@@ -50,17 +50,9 @@
             </div>
           </div>
           <div class="list__block list__block--right list__block--grow">
-            <div
-              class="label label--margin"
-              v-if="shortcut.label_color"
-              :style="{
-                color: colorOnRgb(shortcut.label_color),
-                backgroundColor: shortcut.label_color
-              }"
-            >
-              {{ shortcut.label_title }}
+            <div>
+              <label-item :label-item="shortcut.label" v-if="shortcut.label_color"></label-item>
             </div>
-            <div v-else></div>
             <div class="item-action">
               <a @click="setShortcut(shortcut)" class="item-action__btn">
                 <i class="fas fa-pencil-alt"></i>
@@ -91,13 +83,14 @@
 <script>
 import axios from "axios";
 import ShortcutModal from "./shortcut-modal";
-import ColorOnRgb from "./mixins/color-on-rgb";
+import LabelItem from "./label-item";
 import { mapActions } from "vuex";
 
 export default {
   name: "Shortcut",
   components: {
-    "shortcut-modal": ShortcutModal
+    "shortcut-modal": ShortcutModal,
+    "label-item": LabelItem
   },
   data() {
     return {
@@ -109,7 +102,6 @@ export default {
     this.loading = true;
     this.fetchShortcuts();
   },
-  mixins: [ColorOnRgb],
   methods: {
     ...mapActions({
       logoutAction: "user/logoutAction"
@@ -119,6 +111,12 @@ export default {
         .get("/api/shortcuts")
         .then((res) => {
           this.shortcuts = res.data;
+          for (let i = 0; i < this.shortcuts.length; i++) {
+            this.shortcuts[i].label = {
+              title: this.shortcuts[i].label_title,
+              color: this.shortcuts[i].label_color
+            }
+          }
           this.loading = false;
         })
         .catch(error => {

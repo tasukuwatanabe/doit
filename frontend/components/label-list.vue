@@ -31,15 +31,7 @@
       <ul class="list" v-if="labels.length">
         <li class="list__item" v-for="label in labels" :key="label.id">
           <div class="list__block list__block--left">
-            <div
-              class="label label--margin"
-              :style="{
-                color: colorOnRgb(label.color),
-                backgroundColor: label.color
-              }"
-            >
-              {{ label.title }}
-            </div>
+            <label-item :label-item="label"></label-item>
           </div>
           <div class="list__block list__block--right">
             <div class="label-in-use">
@@ -68,14 +60,15 @@
 
 <script>
 import axios from "axios";
+import LabelItem from "./label-item";
 import LabelModal from "./label-modal";
-import ColorOnRgb from "./mixins/color-on-rgb";
 import { mapActions } from "vuex";
 
 export default {
   name: "LabelList",
   components: {
-    "label-modal": LabelModal
+    "label-modal": LabelModal,
+    "label-item": LabelItem
   },
   data() {
     return {
@@ -87,7 +80,6 @@ export default {
     this.loading = true;
     this.fetchLabels();
   },
-  mixins: [ColorOnRgb],
   methods: {
     ...mapActions({
       logoutAction: "user/logoutAction"

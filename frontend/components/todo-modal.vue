@@ -92,7 +92,6 @@
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import Modal from "./mixins/modal";
-import ColorOnRgb from "./mixins/color-on-rgb";
 
 export default {
   data() {
@@ -108,6 +107,7 @@ export default {
       btnText: "",
     };
   },
+  mixins: [Modal],
   created() {
     this.fetchLabels();
   },
@@ -126,7 +126,6 @@ export default {
       return `${year}-${month}-${date}`;
     },
   },
-  mixins: [Modal, ColorOnRgb],
   methods: {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction",
