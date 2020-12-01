@@ -51,7 +51,6 @@
 import axios from "axios";
 import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
-import ColorOnRgb from "../mixins/color-on-rgb";
 import SidebarCalendar from "./sidebar-calendar";
 import SidebarShortcut from "./sidebar-shortcut";
 
@@ -104,7 +103,6 @@ export default {
       return this.$route.name === 'todos';
     }
   },
-  mixins: [ColorOnRgb],
   methods: {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction",
@@ -130,7 +128,8 @@ export default {
           this.results = res.data;
           this.loading = false;
         }).catch(error => {
-          console.log("通信がキャンセルされました");
+          this.loading = false;
+          return error;
         });
     },
     resetQuery() {

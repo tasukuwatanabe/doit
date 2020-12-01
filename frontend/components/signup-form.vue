@@ -44,17 +44,14 @@
           <div class="form-group text-center">
             <div
               @click="submitRegister"
-              class="btn-main btn-main--login btn--md"
+              class="btn btn--main btn--md"
             >
               新規登録
             </div>
           </div>
           <ul class="form__linkList form__linkList--login">
             <li class="form__linkItem">
-              お試しの方は
-              <a @click="guestLogin" class="form__link--default">
-                ゲストログイン
-              </a>
+              <guest-login></guest-login>
             </li>
             <li class="form__linkItem">
               アカウントをお持ちの方は
@@ -91,7 +88,7 @@
 
 <script>
 import axios from "axios";
-import GuestLogin from "./mixins/guest-login";
+import GuestLogin from './guest-login.vue';
 
 export default {
   data() {
@@ -103,7 +100,9 @@ export default {
       errors: ""
     };
   },
-  mixins: [GuestLogin],
+  components: {
+    'guest-login': GuestLogin
+  },
   methods: {
     submitRegister() {
       const user_params = {
@@ -119,7 +118,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
             time: 5000,
-            icon: 'assets/images/icons/success.svg',
+            icon: '/icons/success.svg',
           });
         })
         .catch((error) => {

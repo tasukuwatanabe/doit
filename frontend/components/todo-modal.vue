@@ -74,10 +74,10 @@
               </div>
             </div>
             <div class="btn-case">
-              <div @click="toggleModal" class="btn-gray btn--sm">
+              <div @click="toggleModal" class="btn btn--gray btn--sm">
                 キャンセル
               </div>
-              <div @click="todoSubmit" class="btn-main btn--sm">
+              <div @click="todoSubmit" class="btn btn--blue btn--sm">
                 {{ btnText }}
               </div>
             </div>
@@ -92,7 +92,6 @@
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import Modal from "./mixins/modal";
-import ColorOnRgb from "./mixins/color-on-rgb";
 
 export default {
   data() {
@@ -108,6 +107,7 @@ export default {
       btnText: "",
     };
   },
+  mixins: [Modal],
   created() {
     this.fetchLabels();
   },
@@ -126,10 +126,10 @@ export default {
       return `${year}-${month}-${date}`;
     },
   },
-  mixins: [Modal, ColorOnRgb],
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction"
+      setSelectedDateAction: "date/setSelectedDateAction",
+      logoutAction: "user/logoutAction"
     }),
     fetchLabels() {
       axios
@@ -138,7 +138,17 @@ export default {
           this.labels = res.data;
         })
         .catch(error => {
-          console.log("通信がキャンセルされました");
+          if (error.response && error.response.status === 500) {
+            axios.delete("/api/logout").then(() => {
+              this.logoutAction();
+              this.$router.push({ name: "login" });
+              this.flashMessage.error({
+                title: "再度ログインしてください",
+                time: 5000,
+                icon: '/icons/error.svg',
+              });
+            });
+          }
         });
     },
     setTodoValue(val) {
@@ -148,7 +158,7 @@ export default {
       this.todo.body = val.body;
       this.todo.todo_date = val.todo_date || this.formattedDate;
       this.todo.label_id = val.label_id;
-      this.btnText = !!val ? "更新する" : "新規作成";
+      this.btnText = !!val.id ? "更新する" : "新規作成";
     },
     todoSubmit() {
       const label_arr = [];

@@ -20,7 +20,7 @@ class Api::UsersController < ApplicationController
       current_user = nil
     end
 
-    render json: current_user
+    render json: current_user, status: 200
   end
 
   def create

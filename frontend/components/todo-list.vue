@@ -46,14 +46,7 @@
             </div>
             <div class="list__block list__block--right list__block--grow">
               <div>
-                <div class="label label--margin"
-                      v-if="todo.label_color"
-                      :style="{
-                        color: colorOnRgb(todo.label_color),
-                        backgroundColor: todo.label_color
-                      }">
-                  {{ todo.label_title }}
-                </div>
+                <label-item :label-item="todo.label" v-if="todo.label_color"></label-item>
               </div>
               <div class="item-action">
                 <a @click="setTodo(todo)" class="item-action__btn">
@@ -77,7 +70,7 @@
         </div>
       </div>
       <div class="todo__page-action page-action">
-        <a @click="setTodo" class="btn-outlined btn--sm">
+        <a @click="setTodo" class="btn btn--main btn--md">
           <span class="page-action__icon">
             <i class="fas fa-plus"></i>
           </span>
@@ -90,15 +83,15 @@
 </template>
 
 <script>
-import Vue from 'vue/dist/vue.esm.js'
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import TodoModal from "./todo-modal";
-import ColorOnRgb from "./mixins/color-on-rgb";
+import LabelItem from "./label-item";
 
 export default {
   components: {
-    "todo-modal": TodoModal
+    "todo-modal": TodoModal,
+    "label-item": LabelItem
   },
   data() {
     return {
@@ -106,7 +99,6 @@ export default {
       loading: ''
     };
   },
-  mixins: [ColorOnRgb],
   created() {
     this.loading = true;
     this.fetchDate();
@@ -149,7 +141,8 @@ export default {
   methods: {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction",
-      cancelPendingRequests: "request/cancelPendingRequests"
+      cancelPendingRequests: "request/cancelPendingRequests",
+      logoutAction: "user/logoutAction"
     }),
     fetchDate(date) {
       this.setSelectedDateAction(date);
@@ -160,10 +153,27 @@ export default {
         .get("/api/todos", { params: { date: date } })
         .then((res) => {
           this.todos = res.data;
+          for (let i = 0; i < this.todos.length; i++) {
+            this.todos[i].label = {
+              title: this.todos[i].label_title,
+              color: this.todos[i].label_color
+            }
+          }
           this.loading = false;
         })
         .catch(error => {
-          console.log("通信がキャンセルされました");
+          this.loading = false;
+          if (error.response && error.response.status === 500) {
+            axios.delete("/api/logout").then(() => {
+              this.logoutAction();
+              this.$router.push({ name: "login" });
+              this.flashMessage.error({
+                title: "再度ログインしてください",
+                time: 5000,
+                icon: '/icons/error.svg',
+              });
+            });
+          }
         });
     },
     setTodo(todo) {

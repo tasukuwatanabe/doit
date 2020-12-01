@@ -177,7 +177,6 @@
       list-style-type: none;
       text-align: center;
       padding-left: 0;
-      font-size: 0.9em;
 
       &--login {
         margin-bottom: 2em;
@@ -191,7 +190,7 @@
 
     &__linkItem {
       &:not(:last-of-type) {
-        margin-bottom: 0.6em;
+        margin-bottom: 1em;
       }
     }
 
@@ -203,19 +202,7 @@
     }
   }
 
-  .btn-main {
-    &--login {
-      margin-top: 0.5em;
-      margin-bottom: 1em;
-    }
-
-    &--signup {
-      margin-top: 1.5em;
-      margin-bottom: 1em;
-    }
-
-    &--password-reset {
-      margin-top: 1.5em;
-    }
+  .btn--main {
+    margin: 0.8em 0;
   }
 }

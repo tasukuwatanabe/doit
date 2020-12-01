@@ -21,7 +21,7 @@
       <div class="page-action headline__page-action">
         <a
           @click="setShortcut"
-          class="page-action__btn btn-outlined btn--sm"
+          class="page-action__btn btn btn--main btn--sm"
         >
           <span class="page-action__icon">
             <i class="fas fa-plus"></i>
@@ -50,17 +50,9 @@
             </div>
           </div>
           <div class="list__block list__block--right list__block--grow">
-            <div
-              class="label label--margin"
-              v-if="shortcut.label_color"
-              :style="{
-                color: colorOnRgb(shortcut.label_color),
-                backgroundColor: shortcut.label_color
-              }"
-            >
-              {{ shortcut.label_title }}
+            <div>
+              <label-item :label-item="shortcut.label" v-if="shortcut.label_color"></label-item>
             </div>
-            <div v-else></div>
             <div class="item-action">
               <a @click="setShortcut(shortcut)" class="item-action__btn">
                 <i class="fas fa-pencil-alt"></i>
@@ -91,12 +83,14 @@
 <script>
 import axios from "axios";
 import ShortcutModal from "./shortcut-modal";
-import ColorOnRgb from "./mixins/color-on-rgb";
+import LabelItem from "./label-item";
+import { mapActions } from "vuex";
 
 export default {
   name: "Shortcut",
   components: {
-    "shortcut-modal": ShortcutModal
+    "shortcut-modal": ShortcutModal,
+    "label-item": LabelItem
   },
   data() {
     return {
@@ -108,18 +102,36 @@ export default {
     this.loading = true;
     this.fetchShortcuts();
   },
-  mixins: [ColorOnRgb],
   methods: {
+    ...mapActions({
+      logoutAction: "user/logoutAction"
+    }),
     fetchShortcuts() {
       axios
         .get("/api/shortcuts")
         .then((res) => {
           this.shortcuts = res.data;
+          for (let i = 0; i < this.shortcuts.length; i++) {
+            this.shortcuts[i].label = {
+              title: this.shortcuts[i].label_title,
+              color: this.shortcuts[i].label_color
+            }
+          }
           this.loading = false;
         })
         .catch(error => {
-          console.log("通信がキャンセルされました");
           this.loading = false;
+          if (error.response.status === 500) {
+            axios.delete("/api/logout").then(() => {
+              this.logoutAction();
+              this.$router.push({ name: "login" });
+              this.flashMessage.error({
+                title: "再度ログインしてください",
+                time: 5000,
+                icon: '/icons/error.svg',
+              });
+            });
+          }
         });
     },
     setShortcut(shortcut) {
@@ -127,7 +139,7 @@ export default {
         this.flashMessage.error({
           title: "ショートカットが登録できるのは10個までです",
           time: 5000,
-          icon: 'assets/images/icons/error.svg',
+          icon: '/icons/error.svg',
         });
       } else {
         this.$refs.shortcutModal.setShortcutValue(shortcut);

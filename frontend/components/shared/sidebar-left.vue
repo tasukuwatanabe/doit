@@ -1,5 +1,5 @@
 <template>
-  <aside v-if="isLoggedIn" class="sidebar sidebar-left">
+  <aside v-if="this.getCurrentUser" class="sidebar sidebar-left">
     <div class="sidebar-left__inner sidebar--stickey">
       <div class="loading-case" v-if="loading">
         <div class="spinner-border text-info" role="status">
@@ -106,6 +106,7 @@
 
 <script>
 import axios from "axios";
+import { cookieStatus } from "../mixins/cookie";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -121,10 +122,6 @@ export default {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
     }),
-    isLoggedIn() {
-      const logged_out_pages = ['login','signup','password_resets_new','password_resets_edit']
-      return logged_out_pages.filter(page => page === this.$route.name).length === 0;
-    },
     user_image_with_number() {
       if (this.getCurrentUser.user_image.url) {
         return this.getCurrentUser.user_image.url + '?' + Math.random();
@@ -139,15 +136,25 @@ export default {
     fetchUser() {
       this.loading = true;
       axios
-      .get("/api/current_user")
-      .then((res) => {
-        this.setCurrentUserAction(res.data);
-        this.loading = false;
-      })
-      .catch(error => {
-        console.log("通信がキャンセルされました");
-        this.loading = false;
-      });
+        .get("/api/current_user")
+        .then((res) => {
+          this.setCurrentUserAction(res.data);
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          if (error.response && error.response.status === 500) {
+            axios.delete("/api/logout").then(() => {
+              this.logoutAction();
+              this.$router.push({ name: "login" });
+              this.flashMessage.error({
+                title: "再度ログインしてください",
+                time: 5000,
+                icon: '/icons/error.svg',
+              });
+            });
+          }
+        });
     },
     logout() {
       axios.delete("/api/logout").then((res) => {
@@ -155,8 +162,8 @@ export default {
         this.$router.push({ name: "login" });
         this.flashMessage.success({
           title: res.data.message,
-          time: 0,
-          icon: 'assets/images/icons/success.svg',
+          time: 5000,
+          icon: '/icons/success.svg',
         });
       });
     }

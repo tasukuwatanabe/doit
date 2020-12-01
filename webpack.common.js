@@ -8,8 +8,8 @@ module.exports = {
   entry: './frontend/packs/main.js',
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: 'assets/js/[name].[contenthash].js',
-    chunkFilename: 'assets/js/[name].[contenthash].js'
+    filename: 'js/[name].[contenthash].js',
+    chunkFilename: 'js/[name].[contenthash].js'
   },
   optimization: {
     splitChunks: {
@@ -64,8 +64,8 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[contenthash].[ext]',
-              outputPath: 'assets/images',
-              publicPath: '/assets/images',
+              outputPath: 'images',
+              publicPath: '/images',
               esModule: false
             },
           },
@@ -81,18 +81,17 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: ["assets/css", "assets/js", "!uploads/**/*", "!assets/images/icons/**/*", "!assets/images/common/**/*"]
+      cleanOnceBeforeBuildPatterns: ["css", "js", "!uploads/**/*", "!/icons/**/*", "!/common/**/*"]
     }),
     new HtmlWebpackPlugin({
       template: './frontend/html/index.html'
     }),
     new MiniCssExtractPlugin({
-      filename: 'assets/css/[name].[contenthash].css',
+      filename: 'css/[name].[contenthash].css',
     })
   ],
   resolve: {
     alias: {
-      jquery: "jquery/src/jquery",
       vue$: "vue/dist/vue.esm.js"
     },
     extensions: ['.js', '.vue']

@@ -5,7 +5,7 @@ class Api::AccountActivationsController < ApplicationController
     user = User.find_by(email: params[:email])
     if user && user.activated?
       query = '?account_activation=already'
-    elsif user && user.authenticated?(:activation, params[:id])
+    elsif user && !user.activated? && user.authenticated?(:activation, params[:id])
       user.activate
       log_in user
       query = '?account_activation=done'

@@ -149,7 +149,7 @@ class User < ApplicationRecord
 
   def expired?(attribute)
     published_time = send("#{attribute}_sent_at")
-    published_time < 1.minute.ago
+    published_time < 2.hours.ago
   end
 
   # users_controller.rbの55行目に移動しました

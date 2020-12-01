@@ -135,7 +135,7 @@
         </div>
       </div>
       <div class="form__action">
-        <div @click="submitUser" class="btn-main btn--md">変更する</div>
+        <div @click="submitUser" class="btn btn--main btn--md">更新する</div>
         <a @click="accountCancel" 
             class="form__cancel" 
             :class="{ 'form__cancel--disabled' : isGuest }"
@@ -222,7 +222,7 @@ export default {
         this.flashMessage.success({
           title: res.data.message,
           time: 5000,
-          icon: 'assets/images/icons/success.svg',
+          icon: '/icons/success.svg',
         });
       });
       await axios.get("/api/current_user").then((res) => {
@@ -267,7 +267,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
           time: 5000,
-            icon: 'assets/images/icons/success.svg',
+            icon: '/icons/success.svg',
           });
           this.loading = false;
         })
@@ -282,7 +282,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
           time: 5000,
-            icon: 'assets/images/icons/success.svg',
+            icon: '/icons/success.svg',
           });
         });
       await axios.get("/api/current_user").then((res) => {
@@ -302,7 +302,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
             time: 5000,
-            icon: 'assets/images/icons/success.svg',
+            icon: '/icons/success.svg',
           });
           this.loading = false;
       });

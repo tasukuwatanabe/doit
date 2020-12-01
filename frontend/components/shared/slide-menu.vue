@@ -107,9 +107,13 @@
 
 <script>
 import axios from "axios";
+import { cookieStatus } from "../mixins/cookie";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  created() {
+    this.fetchUser();
+  },
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser",
@@ -124,8 +128,32 @@ export default {
   methods: {
     ...mapActions({
       setToggleStatusAction: "slideMenu/setToggleStatusAction",
-      logoutAction: "user/logoutAction"
-    },),
+      logoutAction: "user/logoutAction",
+      setCurrentUserAction: "user/setCurrentUserAction"
+    }),
+    fetchUser() {
+      this.loading = true;
+      axios
+        .get("/api/current_user")
+        .then((res) => {
+          this.setCurrentUserAction(res.data);
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          if (error.response && error.response.status === 500) {
+            axios.delete("/api/logout").then(() => {
+              this.logoutAction();
+              this.$router.push({ name: "login" });
+              this.flashMessage.error({
+                title: "再度ログインしてください",
+                time: 5000,
+                icon: '/icons/error.svg',
+              });
+            });
+          }
+        });
+    },
     toggleSlide() {
       this.setToggleStatusAction();
     },
@@ -136,7 +164,7 @@ export default {
         this.flashMessage.success({
           title: res.data.message,
           time: 5000,
-          icon: 'assets/images/icons/success.svg',
+          icon: '/icons/success.svg',
         });
       });
     }

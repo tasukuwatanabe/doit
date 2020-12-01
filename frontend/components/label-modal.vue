@@ -13,7 +13,7 @@
               </span>
               <p class="error__text">{{ custom_error }}</p>
               <div class="btn-case">
-                <div @click="toggleModal" class="btn-gray btn--sm error__btn">
+                <div @click="toggleModal" class="btn btn--gray btn--sm error__btn">
                   閉じる
                 </div>
               </div>
@@ -66,10 +66,10 @@
                 </div>
               </div>
               <div class="btn-case">
-                <div @click="toggleModal" class="btn-gray btn--sm">
+                <div @click="toggleModal" class="btn btn--gray btn--sm">
                   キャンセル
                 </div>
-                <div @click="labelSubmit" class="btn-main btn--sm">
+                <div @click="labelSubmit" class="btn btn--blue btn--sm">
                   {{ btnText }}
                 </div>
               </div>

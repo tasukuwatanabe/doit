@@ -1,4 +1,22 @@
+<template>
+  <div class="label label--margin"
+        :style="{
+          color: labelFontColor,
+          backgroundColor: labelItem.color
+        }">
+    {{ labelItem.title }}
+  </div>
+</template>
+
+<script>
 export default {
+  name: "LabelItem",
+  props: ['labelItem'],
+  computed: {
+    labelFontColor() {
+      return this.colorOnRgb(this.labelItem.color)
+    }
+  },
   methods: {
     colorOnRgb(hex) {
       if (hex) {
@@ -26,6 +44,7 @@ export default {
           return 'white';
         }
       }
-    },
-  },
-};
+    }
+  }
+}
+</script>

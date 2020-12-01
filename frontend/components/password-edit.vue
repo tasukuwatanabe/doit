@@ -11,7 +11,7 @@
         ログインに必要なパスワードを変更することができます。
       </p>
     </div>
-     <div class="spinner-border text-info" v-if="loading" role="status">
+    <div class="spinner-border text-info" v-if="loading" role="status">
       <span class="sr-only">Loading...</span>
     </div>
     <form v-show="!loading" class="form user-form">
@@ -48,8 +48,8 @@
         </span>
       </div>
       <div class="form__action">
-        <div @click="submitPassword" class="btn-main btn--sm">
-          パスワードを更新する
+        <div @click="submitPassword" class="btn btn--main btn--md">
+          更新する
         </div>
       </div>
     </form>
@@ -94,7 +94,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
             time: 5000,
-            icon: 'assets/images/icons/success.svg',
+            icon: '/icons/success.svg',
           });
           this.password = "";
           this.password_confirmation = "";

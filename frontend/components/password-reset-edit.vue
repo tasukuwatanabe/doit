@@ -34,17 +34,14 @@
           <div class="form__group text-center">
             <div
               @click="submitPasswordReset"
-              class="btn-main btn-main--password-reset btn--sm"
+              class="btn btn--main btn--md"
             >
               パスワードをリセットする
             </div>
           </div>
           <ul class="form__linkList form__linkList--password-reset">
             <li class="form__linkItem">
-              お試しの方は
-              <a @click="guestLogin" class="form__link--default">
-                ゲストログイン
-              </a>
+              <guest-login></guest-login>
             </li>
             <li class="form__linkItem">
               アカウントをお持ちの方は
@@ -61,7 +58,7 @@
 
 <script>
 import axios from "axios";
-import GuestLogin from "./mixins/guest-login";
+import GuestLogin from './guest-login.vue';
 
 export default {
   data() {
@@ -71,7 +68,9 @@ export default {
       errors: ""
     };
   },
-  mixins: [GuestLogin],
+  components: {
+    'guest-login': GuestLogin
+  },
   methods: {
     submitPasswordReset() {
       const password_reset_params = {
@@ -89,7 +88,7 @@ export default {
           this.flashMessage.success({
             title: res.data.message,
             time: 5000,
-            icon: 'assets/images/icons/success.svg',
+            icon: '/icons/success.svg',
           });
         })
         .catch((error) => {
@@ -97,7 +96,7 @@ export default {
           if (!!error.response.data.message) {
             this.flashMessage.error({
               title: error.response.data.message,
-              icon: 'assets/images/icons/error.svg',
+              icon: '/icons/error.svg',
             });
             this.$router.push({ name: 'password_resets_new' })
           }

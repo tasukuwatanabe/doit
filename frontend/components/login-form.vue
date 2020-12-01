@@ -33,16 +33,13 @@
             </router-link>
           </div>
           <div class="form-group text-center">
-            <div @click="submitLogin" class="btn-main btn-main--login btn--md">
+            <div @click="submitLogin" class="btn btn--main btn--md">
               ログイン
             </div>
           </div>
           <ul class="form__linkList form__linkList--login">
             <li class="form__linkItem">
-              お試しの方は
-              <a @click="guestLogin" class="form__link--default">
-                ゲストログイン
-              </a>
+              <guest-login></guest-login>
             </li>
             <li class="form__linkItem">
               初めての方は
@@ -79,8 +76,8 @@
 
 <script>
 import axios from "axios";
-import GuestLogin from "./mixins/guest-login";
 import { mapActions } from "vuex";
+import GuestLogin from './guest-login.vue';
 
 export default {
   data() {
@@ -90,10 +87,12 @@ export default {
       errors: ""
     };
   },
-  mixins: [GuestLogin],
+  components: {
+    'guest-login': GuestLogin
+  },
   methods: {
     ...mapActions({
-      setCurrentUserAction: 'user/setCurrentUserAction',
+      logoutAction: "user/logoutAction"
     }),
     submitLogin() {
       const session_params = {
@@ -103,16 +102,13 @@ export default {
       axios
         .post("/api/login", { session: session_params })
         .then((res) => {
+          this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
             title: res.data.message,
-            time: 0,
-            icon: 'assets/images/icons/success.svg',
-          });
-
-          axios.get("/api/current_user").then((res) => {
-            this.setCurrentUserAction(res.data);
-          });
+            time: 5000,
+            icon: '/icons/success.svg'
+          })
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

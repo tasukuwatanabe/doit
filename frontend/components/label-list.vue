@@ -13,7 +13,7 @@
       <div class="page-action headline__page-action">
         <a
           @click="setLabel"
-          class="page-action__btn btn-outlined btn--sm"
+          class="page-action__btn btn btn--main btn--sm"
         >
           <span class="page-action__icon">
             <i class="fas fa-plus"></i>
@@ -31,15 +31,7 @@
       <ul class="list" v-if="labels.length">
         <li class="list__item" v-for="label in labels" :key="label.id">
           <div class="list__block list__block--left">
-            <div
-              class="label label--margin"
-              :style="{
-                color: colorOnRgb(label.color),
-                backgroundColor: label.color
-              }"
-            >
-              {{ label.title }}
-            </div>
+            <label-item :label-item="label"></label-item>
           </div>
           <div class="list__block list__block--right">
             <div class="label-in-use">
@@ -68,13 +60,15 @@
 
 <script>
 import axios from "axios";
+import LabelItem from "./label-item";
 import LabelModal from "./label-modal";
-import ColorOnRgb from "./mixins/color-on-rgb";
+import { mapActions } from "vuex";
 
 export default {
   name: "LabelList",
   components: {
-    "label-modal": LabelModal
+    "label-modal": LabelModal,
+    "label-item": LabelItem
   },
   data() {
     return {
@@ -86,8 +80,10 @@ export default {
     this.loading = true;
     this.fetchLabels();
   },
-  mixins: [ColorOnRgb],
   methods: {
+    ...mapActions({
+      logoutAction: "user/logoutAction"
+    }),
     fetchLabels() {
       axios
         .get("/api/labels")
@@ -96,8 +92,18 @@ export default {
           this.loading = false;
         })
         .catch(error => {
-          console.log("通信がキャンセルされました");
           this.loading = false;
+          if (error.response && error.response.status === 500) {
+            axios.delete("/api/logout").then(() => {
+              this.logoutAction();
+              this.$router.push({ name: "login" });
+              this.flashMessage.error({
+                title: "再度ログインしてください",
+                time: 5000,
+                icon: '/icons/error.svg',
+              });
+            });
+          }
         });
     },
     setLabel(label) {
@@ -105,7 +111,7 @@ export default {
         this.flashMessage.error({
           title: "ラベルが登録できるのは10個までです",
           time: 5000,
-          icon: 'assets/images/icons/error.svg',
+          icon: '/icons/error.svg',
         });
       } else {
         this.$refs.labelModal.setLabelValue(label);
