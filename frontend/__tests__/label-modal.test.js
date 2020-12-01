@@ -9,7 +9,7 @@ describe('Label List Component', () => {
     const input = 'input[type="text"]';
     const textInput = wrapper.find(input);
     textInput.setValue('ラベルテスト');
-
+    
     expect(wrapper.find(input).element.value).toBe('ラベルテスト');
   });
 });
