@@ -135,7 +135,7 @@
         </div>
       </div>
       <div class="form__action">
-        <div @click="submitUser" class="btn-main btn--md">変更する</div>
+        <div @click="submitUser" class="btn btn--main btn--md">更新する</div>
         <a @click="accountCancel" 
             class="form__cancel" 
             :class="{ 'form__cancel--disabled' : isGuest }"

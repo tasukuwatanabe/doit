@@ -45,7 +45,7 @@
   &__box {
     background-color: #fff;
     border-radius: 5px;
-    padding: 50px 40px 40px;
+    padding: 55px 35px 45px;
     position: relative;
     top: -5%;
     width: 85%;
@@ -69,18 +69,13 @@
   .btn-case {
     margin-top: 1.8em;
     text-align: center;
-  }
 
-  .btn-gray {
-    @extend %link;
-    margin-right: 0.7em;
-    color: #555;
-    background-color: #dfdfdf;
-    border: 1px solid #dfdfdf;
-    border-radius: 5px;
-  
-    &:hover {
-      background-color: #f0f0f0;
+    .btn {
+      padding: 0 2em;
+    }
+
+    .btn--gray {
+      margin-right: .5em;
     }
   }
 }

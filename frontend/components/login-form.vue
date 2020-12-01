@@ -33,7 +33,7 @@
             </router-link>
           </div>
           <div class="form-group text-center">
-            <div @click="submitLogin" class="btn-main btn-main--login btn--md">
+            <div @click="submitLogin" class="btn btn--main btn--md">
               ログイン
             </div>
           </div>

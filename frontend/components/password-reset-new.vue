@@ -14,7 +14,7 @@
           <div class="form__group text-center">
             <div
               @click="submitPasswordReset"
-              class="btn-main btn-main--password-reset btn--sm"
+              class="btn btn--main btn--md"
             >
               再設定用のメールを発行
             </div>

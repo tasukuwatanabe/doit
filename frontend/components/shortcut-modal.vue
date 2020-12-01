@@ -13,7 +13,7 @@
               </span>
               <p class="error__text">{{ custom_error }}</p>
               <div class="btn-case">
-                <div @click="toggleModal" class="btn-gray btn--sm error__btn">
+                <div @click="toggleModal" class="btn btn--gray btn--sm error__btn">
                   閉じる
                 </div>
               </div>
@@ -56,10 +56,10 @@
                 </div>
               </div>
               <div class="btn-case">
-                <div @click="toggleModal" class="btn-gray btn--sm">
+                <div @click="toggleModal" class="btn btn--gray btn--sm">
                   キャンセル
                 </div>
-                <div @click="shortcutSubmit" class="btn-main btn--sm">
+                <div @click="shortcutSubmit" class="btn btn--blue btn--sm">
                   {{ btnText }}
                 </div>
               </div>
@@ -110,7 +110,7 @@ export default {
       this.shortcut.id = val.id;
       this.shortcut.title = val.title;
       this.shortcut.label_id = val.label_id;
-      this.btnText = !!val ? "更新する" : "新規作成";
+      this.btnText = !!val.id ? "更新する" : "新規作成";
     },
     setError(error) {
       this.custom_error = error;

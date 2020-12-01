@@ -74,10 +74,10 @@
               </div>
             </div>
             <div class="btn-case">
-              <div @click="toggleModal" class="btn-gray btn--sm">
+              <div @click="toggleModal" class="btn btn--gray btn--sm">
                 キャンセル
               </div>
-              <div @click="todoSubmit" class="btn-main btn--sm">
+              <div @click="todoSubmit" class="btn btn--blue btn--sm">
                 {{ btnText }}
               </div>
             </div>
@@ -158,7 +158,7 @@ export default {
       this.todo.body = val.body;
       this.todo.todo_date = val.todo_date || this.formattedDate;
       this.todo.label_id = val.label_id;
-      this.btnText = !!val ? "更新する" : "新規作成";
+      this.btnText = !!val.id ? "更新する" : "新規作成";
     },
     todoSubmit() {
       const label_arr = [];

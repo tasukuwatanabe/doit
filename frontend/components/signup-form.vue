@@ -44,7 +44,7 @@
           <div class="form-group text-center">
             <div
               @click="submitRegister"
-              class="btn-main btn-main--login btn--md"
+              class="btn btn--main btn--md"
             >
               新規登録
             </div>

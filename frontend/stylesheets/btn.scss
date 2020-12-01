@@ -2,67 +2,66 @@
 @import "extend";
 
 .btn {
-  &--xs {
-    padding: 2px 5px;
-    font-size: 0.8em;
-  }
+  @extend %link;
+  border: none;
+  border-radius: 0;
+  transition-duration: .3s;
 
   &--sm {
-    padding: 5px 15px;
+    height: 45px;
+    line-height: 45px;
+    padding: 0 3em;
   }
 
   &--md {
-    padding: 10px 30px;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 4em;
     font-size: 1.1em;
 
     @media (max-width: 767px) {
       font-size: 1em;
     }
   }
-}
 
-.btn-main {
-  @extend %link;
-  color: #fff !important;
-  background-color: $color-main-theme;
-  border: 1px solid $color-main-theme;
-  border-radius: 5px;
-
-  &:hover {
-    background-color: #fff;
-    color: $color-main-theme !important;
-  }
-
-  &__icon {
-    svg {
-      font-size: 16px;
-      margin-right: 5px;
-      color: $color-main-theme;
-    }
-  }
-}
-
-.btn-outlined {
-  @extend %link;
-  border: 1px solid $color-main-theme;
-  color: $color-main-theme !important;
-  background-color: #fff;
-  border-radius: 5px;
-
-  &:hover {
+  &--blue {
+    color: #fff !important;
     background-color: $color-main-theme;
-    color: #fff;
-
-    * {
-      color: #fff;
+    outline: 2px solid $color-main-theme;
+    
+    &:hover {
+      color: $color-main-theme !important;
+      background-color: #fff;
     }
   }
 
-  &__icon {
-    svg {
-      font-size: 16px;
-      margin-right: 5px;
-      color: $color-main-theme;
+  &--gray {
+    color: #999;
+    background-color: #dfdfdf;
+    outline: 2px solid #dfdfdf;
+
+    &:hover {
+      background-color: #fff;
+      outline-color: #999;
+    }
+  }
+
+  &--main {
+    color: #fff !important;
+    background: linear-gradient(135deg, rgb(37, 227, 241) 0%,#7a4aec 100%);
+    border-radius: 100px;
+    position: relative;
+  
+    &:hover {
+      opacity: .8;
+    }
+  
+    &__icon {
+      svg {
+        font-size: 16px;
+        margin-right: 5px;
+        color: $color-main-theme;
+      }
     }
   }
 }

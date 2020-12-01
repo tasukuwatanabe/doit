@@ -48,8 +48,8 @@
         </span>
       </div>
       <div class="form__action">
-        <div @click="submitPassword" class="btn-main btn--sm">
-          パスワードを更新する
+        <div @click="submitPassword" class="btn btn--main btn--md">
+          更新する
         </div>
       </div>
     </form>

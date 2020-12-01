@@ -70,7 +70,7 @@
         </div>
       </div>
       <div class="todo__page-action page-action">
-        <a @click="setTodo" class="btn-outlined btn--sm">
+        <a @click="setTodo" class="btn btn--main btn--md">
           <span class="page-action__icon">
             <i class="fas fa-plus"></i>
           </span>
