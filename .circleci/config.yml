@@ -30,7 +30,9 @@ jobs:
 
       - run:
           name: Jest
-          command: docker-compose exec web yarn run test
+          command: |
+            yarn install
+            docker-compose exec web yarn run test
 
       - run:
           name: docker-compose down
