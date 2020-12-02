@@ -1,8 +1,0 @@
-services:
-  web:
-    environment:
-      RAILS_ENV: production
-  webpacker:
-    environment:
-      NODE_ENV: production
-      RAILS_ENV: production

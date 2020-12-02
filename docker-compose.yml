@@ -1,32 +1,42 @@
 version: "3"
+
+volumes:
+  db-data:
+
 services:
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ".:/doit"
+    environment:
+      - DATABASE_PASSWORD=postgres
+    tty: true
+    stdin_open: true
+    depends_on:
+      - db
+    links:
+      - db
+
+  webpack:
+    build: .
+    command: yarn run start
+    volumes:
+      - ".:/doit"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - web
+
   db:
     image: postgres
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: "trust"
-    ports:
-      - 5432:5432
-  web:
-    build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    volumes:
-      - .:/doit:delegated
-      - bundle:/doit/vendor/bundle
-      - node_modules:/doit/node_modules
-    ports:
-      - 3000:3000
-    environment:
-      RAILS_ENV: development
-      WEBPACKER_DEV_SERVER_HOST: webpacker
-      WEBPACKER_DEV_SERVER_PUBLIC: 0.0.0.0:3035
-    depends_on:
-      - db
+      - "db-data:/var/lib/postgresql/data"
+
   smtp:
     image: schickling/mailcatcher
     ports:
-      - "1080:1080" #http://localhost:1080/でmailcatcherが開けます
-volumes:
-  bundle:
-  node_modules:
+      - "1080:1080"
+      - "1025:1025"

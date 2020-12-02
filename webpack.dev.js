@@ -8,6 +8,7 @@ module.exports = merge(commonConfig, {
   devtool: 'eval-cheap-module-source-map',
   devServer: {
     port: 8080,
+    host: "0.0.0.0",
     contentBase: path.resolve(__dirname, 'public'),
   },
 });
