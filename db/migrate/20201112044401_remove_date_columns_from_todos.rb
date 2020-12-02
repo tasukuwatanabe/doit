@@ -5,6 +5,5 @@ class RemoveDateColumnsFromTodos < ActiveRecord::Migration[6.0]
     remove_column :todos, :continue_without_end, :boolean
     remove_column :todos, :apply_days, :integer
     remove_column :todos, :history_display, :boolean
-    remove_column :todos, :todo_parent_id, :integer
   end
 end
