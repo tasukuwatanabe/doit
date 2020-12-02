@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Jest
           command: |
-            yarn install
+            docker-compose exec web yarn install
             docker-compose exec web yarn run test
 
       - run:
