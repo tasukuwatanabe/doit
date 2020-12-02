@@ -1,5 +1,7 @@
 {
   "name": "doit",
+  "license": "UNLICENSED",
+  "private": true,
   "scripts": {
     "start": "webpack-dev-server --history-api-fallback --config webpack.dev.js",
     "dev": "webpack --config webpack.dev.js",
