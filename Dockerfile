@@ -10,5 +10,4 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     yarn
 WORKDIR /doit
 COPY Gemfile Gemfile.lock /doit/
-RUN gem install bundler && bundle install
-RUN yarn install
+RUN gem install bundler && bundle install && yarn install --force
