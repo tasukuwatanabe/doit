@@ -10,12 +10,12 @@ jobs:
           BUNDLE_RETRY: 3
           BUNDLE_PATH: vendor/bundle
           PGHOST: localhost
-          PGUSER: app_user_role
+          PGUSER: postgres
           PG_PASSWORD: password
           RAILS_ENV: test
       - image: circleci/postgres
         environment:
-          POSTGRES_USER: app_user_role
+          POSTGRES_USER: postgres
           POSTGRES_DB: doit_test
           POSTGRES_PASSWORD: password
     steps:
