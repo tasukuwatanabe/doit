@@ -2,9 +2,10 @@ default: &default
   adapter: postgresql
   encoding: unicode
   host: db
-  username: app_user_role
-  password: password
-  pool: 5
+  username: postgres
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  port: 5432
+  pool: <%= ENV.fetch('RAILS_MAX_THREADS') { 5 } %>
 
 development:
   <<: *default
