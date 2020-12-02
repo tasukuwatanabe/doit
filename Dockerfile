@@ -9,5 +9,8 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     postgresql-client \
     yarn
 WORKDIR /doit
-COPY Gemfile Gemfile.lock /doit/
-RUN gem install bundler && bundle install && yarn install --force
+COPY . /doit/
+RUN gem install bundler \
+    && bundle install \
+    && yarn install \
+    && yarn run build
