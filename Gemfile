@@ -29,11 +29,6 @@ gem 'sprockets', '~> 3.7.2'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'awesome_print'
-  gem 'capistrano'
-  gem 'capistrano-bundler'
-  gem 'capistrano-rails'
-  gem 'capistrano-rbenv'
-  gem 'capistrano3-nginx', '~> 2.0'
   gem 'pry-rails'
 end
 
