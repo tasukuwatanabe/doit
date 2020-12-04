@@ -96,7 +96,7 @@ export default {
   methods: {
     fetchLabels() {
       axios
-        .get("/api/labels")
+        .get("/api/v1/labels")
         .then((res) => {
           this.labels = res.data;
         })
@@ -119,7 +119,7 @@ export default {
     shortcutSubmit() {
       if (this.shortcut.id) {
         axios
-          .put(`/api/shortcuts/${this.shortcut.id}`, {
+          .put(`/api/v1/shortcuts/${this.shortcut.id}`, {
             shortcut: {
               title: this.shortcut.title,
               label_ids: [this.shortcut.label_id]
@@ -135,7 +135,7 @@ export default {
           });
       } else {
         axios
-          .post("/api/shortcuts", {
+          .post("/api/v1/shortcuts", {
             shortcut: {
               title: this.shortcut.title,
               label_ids: [this.shortcut.label_id]

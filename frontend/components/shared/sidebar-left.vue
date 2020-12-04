@@ -123,9 +123,7 @@ export default {
       getCurrentUser: "user/getCurrentUser"
     }),
     user_image_with_number() {
-      if (this.getCurrentUser.user_image.url) {
-        return this.getCurrentUser.user_image.url + '?' + Math.random();
-      }
+      return this.getCurrentUser.user_image.url + '?' + Math.random();
     }
   },
   methods: {
@@ -136,7 +134,7 @@ export default {
     fetchUser() {
       this.loading = true;
       axios
-        .get("/api/current_user")
+        .get("/api/v1/current_user")
         .then((res) => {
           this.setCurrentUserAction(res.data);
           this.loading = false;
@@ -144,7 +142,7 @@ export default {
         .catch(error => {
           this.loading = false;
           if (error.response && error.response.status === 500) {
-            axios.delete("/api/logout").then(() => {
+            axios.delete("/api/v1/logout").then(() => {
               this.logoutAction();
               this.$router.push({ name: "login" });
               this.flashMessage.error({
@@ -157,7 +155,7 @@ export default {
         });
     },
     logout() {
-      axios.delete("/api/logout").then((res) => {
+      axios.delete("/api/v1/logout").then((res) => {
         this.logoutAction();
         this.$router.push({ name: "login" });
         this.flashMessage.success({

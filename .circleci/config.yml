@@ -1,39 +1,48 @@
 version: 2
 jobs:
   build:
-    machine:
-      image: circleci/classic:edge
-    working_directory: ~/doit
+    machine: true
     steps:
+
+      #ローカルでCLIを使ってCircleCIをテストする時のエラー回避用
+      - run:
+          name: Local build handling
+          command: |
+            if [[ ${CIRCLE_SHELL_ENV} =~ "localbuild" ]]; then
+              if [ -d /workdir ]; then
+                ln -s /workdir /tmp/_circleci_local_build_repo
+              else
+                echo "Run this local build using: circleci build -v \$(pwd):/workdir"
+                exit 1
+              fi
+            fi
+
       - checkout
 
       - run:
-          name: Install Docker Compose
+          name: Dockerコンテナの作成
           command: |
-            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+            docker-compose build
 
       - run:
-          name: docker-compose up
-          command: docker-compose up --build -d
-
-      - run:
-          name: Create database
+          name: Dockerコンテナの立ち上げ
           command: |
-            docker-compose exec web bundle exec rails db:create
-            docker-compose exec web bundle exec rails db:migrate
+            docker-compose up -d
 
       - run:
-          name: Rspec
-          command: docker-compose exec web bundle exec rspec
-
-      - run:
-          name: Jest
+          name: データベースの作成
           command: |
-            docker-compose exec web yarn install
-            docker-compose exec web yarn run test
+            docker-compose exec backend bundle exec rails db:create
+            docker-compose exec backend bundle exec rails db:migrate
 
       - run:
-          name: docker-compose down
+          name: RSpecの実行
+          command: docker-compose exec backend bundle exec rspec
+
+      - run:
+          name: Jestの実行
+          command: docker-compose exec frontend yarn run test
+
+      - run:
+          name: Dockerコンテナの終了
           command: docker-compose down

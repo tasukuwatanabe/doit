@@ -4,9 +4,6 @@
       <div class="login__title">ログイン</div>
       <div class="login__inner">
         <form class="form">
-          <span class="form__error form__error--base" v-if="!!errors.base">
-            {{ errors.base }}
-          </span>
           <div class="form__group">
             <label class="form__label">メールアドレス</label>
             <input class="form__input" type="email" v-model="email" />
@@ -92,7 +89,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      logoutAction: "user/logoutAction"
+      logoutAction: "user/logoutAction",
+      setCurrentUserAction: "user/setCurrentUserAction"
     }),
     submitLogin() {
       const session_params = {
@@ -100,7 +98,7 @@ export default {
         password: this.password
       };
       axios
-        .post("/api/login", { session: session_params })
+        .post("/api/v1/login", { session: session_params })
         .then((res) => {
           this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
@@ -108,9 +106,17 @@ export default {
             title: res.data.message,
             time: 5000,
             icon: '/icons/success.svg'
-          })
+          });
         })
         .catch((error) => {
+          const base_error = error.response.data.errors.base;
+          if (base_error) {
+            this.flashMessage.error({
+              title: base_error,
+              time: 5000,
+              icon: '/icons/error.svg'
+            });
+          }
           this.errors = error.response.data.errors;
         });
     }

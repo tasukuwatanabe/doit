@@ -2,15 +2,22 @@ version: "3"
 
 volumes:
   db-data:
+  bundle_data:
 
 services:
-  web:
-    build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
+  backend:
+    container_name: backend
+    build: ./backend
+    command: bundle exec rails server -b 0.0.0.0
     ports:
       - "3000:3000"
     volumes:
-      - ".:/doit"
+      - ./backend:/doit:cached
+      - bundle_data:/usr/local/bundle:cached
+      - /doit/vendor
+      - /doit/tmp
+      - /doit/log
+      - /doit/.git
     environment:
       - DATABASE_PASSWORD=postgres
     tty: true
@@ -20,17 +27,18 @@ services:
     links:
       - db
 
-  webpack:
-    build: .
+  frontend:
+    container_name: frontend
+    build: ./frontend
     command: yarn run start
     volumes:
-      - ".:/doit"
+      - ./frontend:/doit
+      - /doit/node_modules
     ports:
       - "8080:8080"
-    depends_on:
-      - web
 
   db:
+    container_name: db
     image: postgres
     volumes:
       - "db-data:/var/lib/postgresql/data"
@@ -38,7 +46,7 @@ services:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
 
   smtp:
+    container_name: smtp
     image: schickling/mailcatcher
     ports:
       - "1080:1080"
-      - "1025:1025"

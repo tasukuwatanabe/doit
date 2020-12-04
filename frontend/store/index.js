@@ -1,4 +1,4 @@
-import Vue from 'vue/dist/vue.esm.js';
+import Vue from 'vue/dist/vue.esm';
 import Vuex from 'vuex';
 import { date, user, slideMenu, request } from './modules/index';
 import createPersistedState from 'vuex-persistedstate';

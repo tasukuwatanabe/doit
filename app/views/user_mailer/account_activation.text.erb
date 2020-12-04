@@ -1,9 +1,0 @@
-<%= @user.username %> 様
-
-以下のリンクをクリックして、アカウントを有効化してください。
-
-<%= edit_api_account_activation_url(@user.activation_token, email: @user.email) %>
-
-リンクの有効期間は2時間です。
-
-このメールに心当たりがない場合、何も行わずにこのメールを破棄してください。

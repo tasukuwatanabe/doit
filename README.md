@@ -1,24 +1,92 @@
-# README
+# DoIT
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 使用技術
 
-Things you may want to cover:
+### フロントエンド
+- Vue.js 2.6.12
+- webpack 4.43.0
 
-* Ruby version
+### バックエンド
+- Ruby on Rails 6.0.3
 
-* System dependencies
+### インフラ
+- Docker
+- AWS
+- CircleCI
+- Nginx
 
-* Configuration
+### テスト
+- RSpec
+- Jest
 
-* Database creation
+---
 
-* Database initialization
+## 環境構築の手順
 
-* How to run the test suite
+1. 準備
 
-* Services (job queues, cache servers, search engines, etc.)
+以下をローカルにインストールしてください。
 
-* Deployment instructions
+- Docker
+- docker-compose
 
-* ...
+2. git cloneする
+
+```
+git clone git@github.com:tasukuwatanabe/doit.git
+```
+
+3. ディレクトリに移動
+
+```
+cd doit
+```
+
+4. コンテナをビルド、バックグラウンドで起動
+
+```
+docker-compose up --build -d
+```
+
+5. DBを作ってシードデータを入れる
+
+※ コンテナがバックグラウンドで起動していない場合は、以下の`exec`を`run`に置き換えて実行してください。
+
+```
+docker-compose exec backend bundle exec rails db:create
+```
+```
+docker-compose exec backend bundle exec rails db:migrate
+```
+```
+docker-compose exec backend bundle exec rails db:seed
+```
+
+6. ブラウザで開く
+
+ブラウザでは`localhost:8080`で確認可能。
+
+メールを確認する場合は`localhost:1080`を確認。
+
+---
+
+## テストの実行
+
+Dockerコンテナがup状態になっていることを確認してください。
+up状態になっていない時は以下のコマンドで立ち上げてください。
+
+```
+docker-compose up -d
+```
+
+### Rspecの実行
+
+```
+docker-compose exec backend bundle exec rspec
+```
+
+### Jestの実行
+
+```
+docker-compose exec frontend yarn run test
+```
