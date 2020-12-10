@@ -27,8 +27,11 @@ import axios from 'axios';
 import store from '../store/index';
 
 // Rails-APIを叩く際のaxiosのcors対策
-axios.defaults.baseURL = 'https://doit-app.com';
-// axios.defaults.baseURL = 'http://localhost:3000';
+const url =
+  process.env.NODE_ENV === 'production'
+    ? 'https://doit-app.com'
+    : 'http://localhost:3000';
+axios.defaults.baseURL = url;
 axios.defaults.withCredentials = true;
 
 // axiosのキャンセルトークンの発行
