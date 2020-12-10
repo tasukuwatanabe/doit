@@ -32,7 +32,7 @@
         <div v-else class="sidebar-shortcut__no-result">
           <p class="sidebar-shortcut__text">ショートカットが未作成です</p>
           <div class="page-action">
-            <router-link to="/shortcuts" class="btn btn--outlined">
+            <router-link to="/shortcuts" class="btn">
               <span class="page-action__icon">
                 <i class="fas fa-plus"></i>
               </span>
