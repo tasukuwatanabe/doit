@@ -24,14 +24,7 @@
               </div>
               <div class="search__list">
                 <div v-for="result in todoByDate(resultDate)" @click="fetchDate(result.todo_date)" :key="result.id" class="search__item">{{ result.title }}
-                  <div class="label label--margin"
-                        v-if="result.label_color"
-                        :style="{
-                          color: colorOnRgb(result.label_color),
-                          backgroundColor: result.label_color
-                        }">
-                    {{ result.label_title }}
-                  </div>
+                  <label-item :label-item="result.label" v-if="result.label_color"></label-item>
                 </div>
               </div>
             </div>
@@ -53,6 +46,7 @@ import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 import SidebarCalendar from "./sidebar-calendar";
 import SidebarShortcut from "./sidebar-shortcut";
+import LabelItem from "../label-item";
 
 export default {
   data() {
@@ -65,6 +59,7 @@ export default {
   components: {
     'sidebar-calendar': SidebarCalendar,
     "sidebar-shortcut": SidebarShortcut,
+    "label-item": LabelItem
   },
   computed: {
     ...mapGetters({
@@ -126,6 +121,12 @@ export default {
         })
         .then((res) => {
           this.results = res.data;
+          for (let i = 0; i < this.results.length; i++) {
+            this.results[i].label = {
+              title: this.results[i].label_title,
+              color: this.results[i].label_color
+            }
+          }
           this.loading = false;
         }).catch(error => {
           this.loading = false;
@@ -225,11 +226,11 @@ export default {
     font-size: 0.8em;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     cursor: pointer;
 
     .label {
-      margin-left: 8px;
+      margin: 0 0 0 8px;
       font-size: 10px;
       padding: 4px 7px;
     }
