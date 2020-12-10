@@ -48,7 +48,13 @@ cd doit
 docker-compose up --build -d
 ```
 
-5. DBを作ってシードデータを入れる
+5. git管理されていないファイルを追加
+
+   - backendディレクトリ直下に.envファイルを作成し、`POSTGRES_PASSWORD=hogehoge`を追加(`hogehoge`の箇所は適当に置き換え)。
+   - Oauthを動作させるために必要なIDなど適宜必要に応じて。
+
+
+6. DBを作ってシードデータを入れる
 
 ※ コンテナがバックグラウンドで起動していない場合は、以下の`exec`を`run`に置き換えて実行してください。
 
@@ -61,8 +67,7 @@ docker-compose exec backend bundle exec rails db:migrate
 ```
 docker-compose exec backend bundle exec rails db:seed
 ```
-
-6. ブラウザで開く
+7. ブラウザで開く
 
 ブラウザでは`localhost:8080`で確認可能。
 
