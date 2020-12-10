@@ -77,25 +77,25 @@ workflows:
       - test_backend_and_frontend:
           filters:
             branches:
-              ignore: main
+              ignore: master
   test_and_deploy:
     jobs:
       - test_backend_and_frontend:
           filters:
             branches:
-              only: main
+              only: master
       - build_and_push_image_backend:
           requires:
             - test_backend_and_frontend
           filters:
             branches:
-              only: main
+              only: master
       - build_and_push_image_frontend:
           requires:
             - test_backend_and_frontend
           filters:
             branches:
-              only: main
+              only: master
       - aws-ecs/deploy-service-update:
           requires:
             - build_and_push_image_backend
@@ -106,7 +106,7 @@ workflows:
           container-image-name-updates: "container=doit-container-backend,tag=${CIRCLE_SHA1}"
           filters:
             branches:
-              only: main
+              only: master
       - aws-ecs/deploy-service-update:
           requires:
             - build_and_push_image_backend
@@ -117,4 +117,4 @@ workflows:
           container-image-name-updates: "container=doit-container-frontend,tag=${CIRCLE_SHA1}"
           filters:
             branches:
-              only: main
+              only: master
