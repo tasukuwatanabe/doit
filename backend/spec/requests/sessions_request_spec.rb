@@ -20,7 +20,7 @@ RSpec.describe "Sessions", type: :request do
     it 'ログアウトに成功すること' do
       sign_in_as(user)
 
-      delete '/api/logout'
+      delete '/api/v1/logout'
 
       expect(response.body).to include 'ログアウトしました'
     end
