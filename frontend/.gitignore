@@ -1,0 +1,11 @@
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+/public/packs
+/public/packs-test
+/public/css
+/public/js
+/public/images
+/public/*.html

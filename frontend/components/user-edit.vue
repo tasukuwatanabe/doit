@@ -165,13 +165,11 @@ export default {
       auto_generated_password: "",
       remove_user_image: "",
       errors: "",
-      message: "",
-      random_number: "",
+      message: ""
     };
   },
   created() {
     this.loading = true;
-    this.random_number =  Math.random();
     this.setUserData();
   },
   watch: {
@@ -184,17 +182,13 @@ export default {
       getCurrentUser: "user/getCurrentUser"
     }),
     isGuest() {
-      if (this.getCurrentUser) {
-        return this.getCurrentUser.email === 'guest@example.com';
-      }
+      return this.email === 'guest@example.com';
     },
     has_user_image() {
-      return this.user_image !== "/user_images/default.jpg";
+      return !this.user_image.includes("/user_icons/default.jpg");
     },
     user_image_with_number() {
-      if (this.user_image) {
-        return this.user_image + '?' + this.random_number;
-      }
+      return this.user_image + '?' + Math.random();
     }
   },
   methods: {
@@ -218,14 +212,14 @@ export default {
     },
     async cancelEmailConfirmation() {
       this.loading = true;
-      await axios.delete(`/api/email_confirmations/${this.id}`).then((res) => {
+      await axios.delete(`/api/v1/email_confirmations/${this.id}`).then((res) => {
         this.flashMessage.success({
           title: res.data.message,
           time: 5000,
           icon: '/icons/success.svg',
         });
       });
-      await axios.get("/api/current_user").then((res) => {
+      await axios.get("/api/v1/current_user").then((res) => {
         this.setCurrentUserAction(res.data);
         this.loading = false;
       });
@@ -255,14 +249,13 @@ export default {
       }
 
       axios
-        .put(`/api/users/${this.id}`, formData, {
+        .put(`/api/v1/users/${this.id}`, formData, {
           headers: {
             "Content-Type": "application/json"
           }
         })
         .then((res) => {
           this.$refs.file.value = null;
-          this.random_number =  Math.random();
           this.setCurrentUserAction(res.data.user);
           this.flashMessage.success({
             title: res.data.message,
@@ -285,7 +278,7 @@ export default {
             icon: '/icons/success.svg',
           });
         });
-      await axios.get("/api/current_user").then((res) => {
+      await axios.get("/api/v1/current_user").then((res) => {
         this.setCurrentUserAction(res.data);
         this.loading = false;
       });
@@ -296,7 +289,7 @@ export default {
       }
       this.loading = true;
       axios
-        .delete(`/api/users/${this.id}`)
+        .delete(`/api/v1/users/${this.id}`)
         .then((res) => {
           this.$router.push({ name: "login" });
           this.flashMessage.success({

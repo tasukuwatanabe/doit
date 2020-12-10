@@ -1,4 +1,4 @@
-import Vue from 'vue/dist/vue.esm.js';
+import Vue from 'vue/dist/vue.esm';
 import Vuex from 'vuex';
 import VueRouter from 'vue-router';
 import Todo from '../components/todo-list';

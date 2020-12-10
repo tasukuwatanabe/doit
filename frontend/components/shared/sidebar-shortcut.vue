@@ -72,14 +72,14 @@ export default {
     }),
     fetchShortcut() {
       axios
-        .get("/api/shortcuts")
+        .get("/api/v1/shortcuts")
         .then((res) => {
           this.shortcuts = res.data;
           this.loading = false;
         }).catch(error => {
           this.loading = false;
           if (error.response && error.response.status === 500) {
-            axios.delete("/api/logout").then(() => {
+            axios.delete("/api/v1/logout").then(() => {
               this.logoutAction();
               this.$router.push({ name: "login" });
               this.flashMessage.error({
@@ -94,7 +94,7 @@ export default {
     createTodo(shortcut) {
       const label_arr = [];
       label_arr.push(shortcut.label_id);
-      axios.post("/api/todos", {
+      axios.post("/api/v1/todos", {
         todo: {
           title: shortcut.title,
           todo_date: this.getSelectedDate,

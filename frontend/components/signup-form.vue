@@ -112,7 +112,7 @@ export default {
         password_confirmation: this.password_confirmation
       };
       axios
-        .post("/api/users", { user: user_params })
+        .post("/api/v1/users", { user: user_params })
         .then((res) => {
           this.$router.push({ name: "login" });
           this.flashMessage.success({

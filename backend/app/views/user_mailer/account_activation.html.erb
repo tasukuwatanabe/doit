@@ -1,0 +1,9 @@
+<div><%= @user.username %> 様</div>
+
+<p>以下のリンクをクリックして、アカウントを有効化してください。</p>
+
+<%= link_to "アカウントを有効化する", edit_api_v1_account_activation_url(@user.activation_token, email: @user.email) %>
+
+<p>リンクの有効期間は2時間です。</p>
+
+<p>このメールに心当たりがない場合、何も行わずにこのメールを破棄してください。</p>

@@ -1,0 +1,9 @@
+<%= @user.username %> 様
+
+以下のリンクをクリックして、メールアドレスの利用を承認してください。
+
+<%= edit_api_v1_email_confirmation_url(@user.confirmation_token, email: @user.email) %>
+
+リンクの有効期間は2時間です。
+
+このメールに心当たりがない場合、何も行わずにこのメールを破棄してください。

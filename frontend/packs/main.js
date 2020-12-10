@@ -1,5 +1,5 @@
 // Vueの読み込み
-import Vue from 'vue/dist/vue.esm.js';
+import Vue from 'vue/dist/vue.esm';
 import App from '../app';
 
 // Vue.js起動時に、コンソールにヒントが表示されなくなる
@@ -27,7 +27,8 @@ import axios from 'axios';
 import store from '../store/index';
 
 // Rails-APIを叩く際のaxiosのcors対策
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = 'http://doit-app.com';
+// axios.defaults.baseURL = 'http://localhost:3000';
 axios.defaults.withCredentials = true;
 
 // axiosのキャンセルトークンの発行
