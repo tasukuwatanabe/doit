@@ -44,7 +44,7 @@
                 <div class="col-3 form__label">ラベル</div>
                 <div class="col-9">
                   <select class="form__select" v-model="shortcut.label_id">
-                    <option>ラベルを選択</option>
+                    <option :value="null">ラベルを選択</option>
                     <option
                       v-for="label in labels"
                       :key="label.id"

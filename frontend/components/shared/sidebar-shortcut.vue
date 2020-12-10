@@ -32,7 +32,7 @@
         <div v-else class="sidebar-shortcut__no-result">
           <p class="sidebar-shortcut__text">ショートカットが未作成です</p>
           <div class="page-action">
-            <router-link to="/shortcuts" class="btn-outlined btn--sm">
+            <router-link to="/shortcuts" class="btn">
               <span class="page-action__icon">
                 <i class="fas fa-plus"></i>
               </span>
@@ -178,11 +178,27 @@ export default {
 
   &__text {
     margin-bottom: 20px;
-    font-size: 0.8em;
+    font-size: 0.9em;
   }
 
   .page-action {
-    font-size: 0.9em;
+    border: 1px solid $color-main-theme;
+    background-color: #fff;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.2s;
+    padding: 2px 7px;
+
+    a {
+      font-size: 0.9em !important;
+      color: $color-main-theme !important;
+
+      &:hover {
+        opacity: .8;
+      }
+    }
   }
 }
 </style>

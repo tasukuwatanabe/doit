@@ -54,7 +54,7 @@
               </div>
               <div class="col-9">
                 <select v-model="todo.label_id" class="form__select">
-                  <option>ラベルを選択</option>
+                  <option :value="null">ラベルを選択</option>
                   <option
                     v-for="label in labels"
                     :key="label.id"

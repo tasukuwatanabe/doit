@@ -15,7 +15,8 @@ module Api
         else
           query = '?account_activation=invalid'
         end
-        redirect_to '/redirect' + query
+        host = Rails.env.production? ? "https://doit-app.com" : "http://localhost:8080"
+        redirect_to host + '/redirect' + query
       end
     end
   end
