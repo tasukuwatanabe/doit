@@ -1,6 +1,6 @@
 FROM node:14 AS frontend
 WORKDIR /doit
-COPY package.json yarn.lock /doit
+COPY package.json yarn.lock /doit/
 RUN yarn install
 COPY . .
 RUN yarn run build
