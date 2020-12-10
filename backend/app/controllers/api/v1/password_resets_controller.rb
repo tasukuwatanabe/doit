@@ -68,7 +68,7 @@ module Api
       end
 
       def valid_user
-        unless (@user && @user.activated? && @user.authenticated?(:reset, params[:id]))
+        unless (@user && @user.authenticated?(:reset, params[:id]))
           render json: { message: "リンクが有効ではありません"}, status: :unprocessable_entity
           return
         end

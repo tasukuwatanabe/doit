@@ -44,7 +44,9 @@ export default {
   data() {
     return {
       email: "",
-      errors: ""
+      errors: {
+        email: ""
+      }
     };
   },
   components: {
