@@ -12,7 +12,6 @@ WORKDIR $APP_HOME
 COPY Gemfile /doit/
 RUN bundle install
 ADD . $APP_HOME
-RUN mkdir -p $APP_HOME/tmp/pids
-RUN mkdir -p $APP_HOME/tmp/sockets
+RUN mkdir -p $APP_HOME/tmp/pids && mkdir -p $APP_HOME/tmp/sockets
 
 VOLUME $APP_HOME/tmp
