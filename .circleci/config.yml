@@ -47,8 +47,7 @@ jobs:
           command: docker-compose exec frontend yarn run test
 
   build_and_push_image_backend:
-    machine:
-      image: ubuntu
+    machine: true
     steps:
       - checkout
       - aws-ecr/build-and-push-image:
@@ -59,8 +58,7 @@ jobs:
           repo: "doit-backend"
 
   build_and_push_image_frontend:
-    machine:
-      image: ubuntu
+    machine: true
     steps:
       - checkout
       - aws-ecr/build-and-push-image:
@@ -103,18 +101,6 @@ workflows:
           family: "doit-task"
           service-name: "doit-service"
           cluster-name: "doit"
-          container-image-name-updates: "container=doit-container-backend,tag=${CIRCLE_SHA1}"
-          filters:
-            branches:
-              only: master
-      - aws-ecs/deploy-service-update:
-          requires:
-            - build_and_push_image_backend
-            - build_and_push_image_frontend
-          family: "doit-task"
-          service-name: "doit-service"
-          cluster-name: "doit"
-          container-image-name-updates: "container=doit-container-frontend,tag=${CIRCLE_SHA1}"
           filters:
             branches:
               only: master
