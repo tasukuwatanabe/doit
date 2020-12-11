@@ -287,17 +287,16 @@ export default {
       if (this.isGuest) {
         return;
       }
-      this.loading = true;
       axios
         .delete(`/api/v1/users/${this.id}`)
         .then((res) => {
+          this.setCurrentUserAction("");
           this.$router.push({ name: "login" });
           this.flashMessage.success({
             title: res.data.message,
             time: 5000,
             icon: '/icons/success.svg',
           });
-          this.loading = false;
       });
     }
   }
