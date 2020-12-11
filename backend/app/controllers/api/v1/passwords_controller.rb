@@ -16,7 +16,7 @@ module Api
       end
 
       private def password_params
-        params.fetch(:change_password_form, {}).permit(:id, :password, :password_confirmation)
+        params.require(:change_password_form).permit(:password, :password_confirmation)
       end
     end
   end

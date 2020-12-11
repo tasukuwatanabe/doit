@@ -35,11 +35,11 @@ module Api
       private
 
       def password_reset_params
-        params.fetch(:password_reset_form, {}).permit(:email)
+        params.require(:password_reset_form).permit(:email)
       end
 
       def user_params
-        params.fetch(:user, {}).permit(:password, :password_confirmation)
+        params.require(:user).permit(:password, :password_confirmation)
       end
 
       def check_empty
