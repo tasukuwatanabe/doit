@@ -59,6 +59,7 @@
 <script>
 import axios from "axios";
 import GuestLogin from './guest-login.vue';
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -72,6 +73,9 @@ export default {
     'guest-login': GuestLogin
   },
   methods: {
+    ...mapActions({
+      setCurrentUserAction: "user/setCurrentUserAction"
+    }),
     submitPasswordReset() {
       const password_reset_params = {
         password: this.password,
@@ -84,6 +88,7 @@ export default {
           email: this.$route.query.email
         })
         .then((res) => {
+          this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
             title: res.data.message,
