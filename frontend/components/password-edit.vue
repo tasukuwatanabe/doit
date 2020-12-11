@@ -11,8 +11,10 @@
         ログインに必要なパスワードを変更することができます。
       </p>
     </div>
-    <div class="spinner-border text-info" v-if="loading" role="status">
-      <span class="sr-only">Loading...</span>
+    <div class="loading-case" v-if="loading">
+      <div class="spinner-border text-info" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
     <form v-show="!loading" class="form user-form">
       <div v-if="isGuest" class="form__group">
@@ -110,7 +112,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .loading-case {
   width: 600px;
   height: 350px;
