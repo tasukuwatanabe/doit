@@ -5,8 +5,6 @@ Rails.application.configure do
 
   config.consider_all_requests_local = false
 
-  config.action_controller.perform_caching = true
-
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   if ENV['RAILS_LOG_TO_STDOUT'].present?
@@ -28,19 +26,19 @@ Rails.application.configure do
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
 
-  config.action_mailer.delivery_method = :smtp
-  
   config.action_mailer.perform_caching = true
-
+  
   config.action_mailer.raise_delivery_errors = true
+  
+  config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.default_url_options = { host: 'doit-app.com' }
 
   ActionMailer::Base.smtp_settings = {
-    address: 'email-smtp.ap-northeast-1.amazonaws.com',
-    post: 587,
+    address: ENV['SES_SMTP_ADDRESS'],
+    port: 587,
     domain: 'doit-app.com',
-    authentication: :login,
+    authentication: :plain,
     user_name: ENV['SES_SMTP_USER'],
     password: ENV['SES_SMTP_PASSWORD'],
     enable_starttles_auto: true
