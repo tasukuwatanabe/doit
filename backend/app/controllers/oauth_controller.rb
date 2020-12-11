@@ -18,7 +18,6 @@ class OauthController < ApplicationController
       query_result = '?oauth=success'
       query_provider = "&provider=#{provider}"
 
-      host = Rails.env.production? ? "https://doit-app.com" : "http://localhost:8080"
       redirect_to host + '/redirect' + query_result + query_provider
     else
       render json: { message: "ログインできませんでした" }, status: :unprocessable_entity

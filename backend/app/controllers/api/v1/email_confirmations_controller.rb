@@ -13,7 +13,6 @@ module Api
           query = '?email_confirmed=false'
         end
 
-        host = Rails.env.production? ? "https://doit-app.com" : "http://localhost:8080"
         redirect_to host + '/redirect' + query
       end
 
@@ -34,7 +33,6 @@ module Api
         if @user && @user.expired?(:confirmation)
           @user.update(confirmation_digest: nil, unconfirmed_email: nil)
 
-          host = Rails.env.production? ? "https://doit-app.com" : "http://localhost:8080"
           redirect_to host + '/redirect?email_confirmed=expired'
         end
       end
