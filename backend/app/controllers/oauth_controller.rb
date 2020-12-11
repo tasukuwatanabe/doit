@@ -17,7 +17,8 @@ class OauthController < ApplicationController
 
       query_result = '?oauth=success'
       query_provider = "&provider=#{provider}"
-      redirect_to '/redirect' + query_result + query_provider
+
+      redirect_to host + '/redirect' + query_result + query_provider
     else
       render json: { message: "ログインできませんでした" }, status: :unprocessable_entity
     end

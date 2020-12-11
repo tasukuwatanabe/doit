@@ -25,7 +25,7 @@ module Api
         change_password_form.object = @user
         if change_password_form.save
           log_in @user
-          render json: { message: "パスワードがリセットされました。" }
+          render json: { user: @user, message: "パスワードがリセットされました。" }
         else
           errors = change_password_form.errors.keys.map { |key| [key, change_password_form.errors.full_messages_for(key)[0]] }.to_h
           render json: { errors: errors }, status: :unprocessable_entity
@@ -35,11 +35,11 @@ module Api
       private
 
       def password_reset_params
-        params.fetch(:password_reset_form, {}).permit(:email)
+        params.require(:password_reset_form).permit(:email)
       end
 
       def user_params
-        params.fetch(:user, {}).permit(:password, :password_confirmation)
+        params.require(:user).permit(:password, :password_confirmation)
       end
 
       def check_empty

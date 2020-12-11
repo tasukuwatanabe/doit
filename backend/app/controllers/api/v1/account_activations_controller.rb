@@ -6,6 +6,7 @@ module Api
 
       def edit
         user = User.find_by(email: params[:email])
+
         if user && user.activated?
           query = '?account_activation=already'
         elsif user && !user.activated? && user.authenticated?(:activation, params[:id])
@@ -15,7 +16,7 @@ module Api
         else
           query = '?account_activation=invalid'
         end
-        host = Rails.env.production? ? "https://doit-app.com" : "http://localhost:8080"
+
         redirect_to host + '/redirect' + query
       end
     end

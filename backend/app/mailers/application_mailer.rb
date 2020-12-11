@@ -1,5 +1,7 @@
 class ApplicationMailer < ActionMailer::Base
   after_action :set_envelope_from
+  
+  add_template_helper(SessionsHelper)
 
   default from: 'noreply@example.com'
   layout 'mailer'
