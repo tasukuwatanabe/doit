@@ -34,14 +34,14 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'doit-app.com' }
 
-  ActionMailer::Base.smtp_settings = {
+  config.action_mailer.smtp_settings = {
     address: ENV['SES_SMTP_ADDRESS'],
     port: 587,
     domain: 'doit-app.com',
     authentication: :plain,
     user_name: ENV['SES_SMTP_USER'],
     password: ENV['SES_SMTP_PASSWORD'],
-    enable_starttles_auto: true
+    enable_starttls_auto: true
   }
 
   config.i18n.fallbacks = true
