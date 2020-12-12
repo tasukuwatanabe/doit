@@ -48,6 +48,8 @@ module Api
         # メールアドレス使用状況をチェック
         if new_email && user && User.email_used?(user, new_email)
           email_error = { unconfirmed_email: 'このメールアドレスはすでに使われています。' }
+          render json: { errors: email_error }, status: :unprocessable_entity
+          return
         end
 
         # メールアドレスに変更がある場合
@@ -58,7 +60,7 @@ module Api
             user.update_attribute(:confirmation_digest, User.digest(user.confirmation_token))
             user.update_attribute(:confirmation_sent_at, Time.zone.now)
             # メールアドレス確認用のメールを送信
-            UserMailer.email_confirmation(user).deliver_later
+            UserMailer.email_confirmation(user).deliver_now
           else # バリデーションを取得
             if email_error.present?
               errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
@@ -68,11 +70,8 @@ module Api
 
         # email、unconfirmed_email以外を更新
         if user&.update(user_params.except(:email, :unconfirmed_email))
-          if email_error
-            render json: { errors: email_error }, status: :unprocessable_entity
-          else
-            render json: { user: user, message: "ユーザー情報が更新されました" }
-          end
+          render json: { user: user, message: "ユーザー情報が更新されました" }
+          return
         else # バリデーションエラーを取得
           errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
           errors.merge!(email_error) if email_error

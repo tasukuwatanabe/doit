@@ -118,7 +118,7 @@ class User < ApplicationRecord
   end
 
   def send_activation_email
-    UserMailer.account_activation(self).deliver_later
+    UserMailer.account_activation(self).deliver_now
   end
 
   def remember
@@ -144,7 +144,7 @@ class User < ApplicationRecord
   end
 
   def send_password_reset_email
-    UserMailer.password_reset(self).deliver_later
+    UserMailer.password_reset(self).deliver_now
   end
 
   def expired?(attribute)
@@ -160,7 +160,7 @@ class User < ApplicationRecord
   # update_attribute(:confirmation_digest, User.digest(confirmation_token))
   # update_attribute(:confirmation_sent_at, Time.zone.now)
   # save
-  # UserMailer.email_confirmation(self).deliver_later
+  # UserMailer.email_confirmation(self).deliver_now
   # end
 
   def update_new_email
