@@ -12,7 +12,7 @@ module Api
         elsif user && !user.activated? && user.authenticated?(:activation, params[:id])
           user.activate
           log_in user
-          query = '?account_activation=done'
+          query = '?account_activation=activated'
         else
           query = '?account_activation=invalid'
         end
