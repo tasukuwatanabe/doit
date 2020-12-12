@@ -31,7 +31,7 @@ export default {
           time: 5000,
           icon: '/icons/info.svg',
         });
-      } else if (this.$route.query.account_activation === 'done') {
+      } else if (this.$route.query.account_activation === 'activated') {
         this.flashMessage.success({
           title: "アカウントが有効化されました",
           time: 5000,

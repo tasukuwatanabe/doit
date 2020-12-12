@@ -7,18 +7,6 @@ jobs:
   test_backend_and_frontend:
     machine: true
     steps:
-      #ローカルでCLIを使ってCircleCIをテストする時のエラー回避用
-      - run:
-          name: Local build handling
-          command: |
-            if [[ ${CIRCLE_SHELL_ENV} =~ "localbuild" ]]; then
-              if [ -d /workdir ]; then
-                ln -s /workdir /tmp/_circleci_local_build_repo
-              else
-                echo "Run this local build using: circleci build -v \$(pwd):/workdir"
-                exit 1
-              fi
-            fi
 
       - checkout
 

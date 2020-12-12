@@ -13,7 +13,7 @@ module Api
         user.create_reset_digest if user
 
         if user&.send_password_reset_email
-          render json: { message: "パスワード再設定用のメールが送信されました"}
+          render json: { message: "パスワード再設定用のメールが送信されました"}, status: 200
         else
           errors = { email: 'メールアドレスが見つかりません' }
           render json: { errors: errors }, status: :unprocessable_entity
@@ -25,7 +25,7 @@ module Api
         change_password_form.object = @user
         if change_password_form.save
           log_in @user
-          render json: { user: @user, message: "パスワードがリセットされました。" }
+          render json: { user: @user, message: "パスワードがリセットされました" }, status: 200
         else
           errors = change_password_form.errors.keys.map { |key| [key, change_password_form.errors.full_messages_for(key)[0]] }.to_h
           render json: { errors: errors }, status: :unprocessable_entity
