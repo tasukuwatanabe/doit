@@ -58,7 +58,7 @@ module Api
             user.update_attribute(:confirmation_digest, User.digest(user.confirmation_token))
             user.update_attribute(:confirmation_sent_at, Time.zone.now)
             # メールアドレス確認用のメールを送信
-            UserMailer.email_confirmation(user).deliver_now
+            UserMailer.email_confirmation(user).deliver_later
           else # バリデーションを取得
             if email_error.present?
               errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
