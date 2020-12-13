@@ -108,7 +108,7 @@ export default {
     }),
     fetchShortcuts() {
       axios
-        .get("/api/v1/shortcuts")
+        .get("/shortcuts")
         .then((res) => {
           this.shortcuts = res.data;
           for (let i = 0; i < this.shortcuts.length; i++) {
@@ -122,7 +122,7 @@ export default {
         .catch(error => {
           this.loading = false;
           if (error.response && error.response.status === 500) {
-            axios.delete("/api/v1/logout").then(() => {
+            axios.delete("/logout").then(() => {
               this.logoutAction();
               this.$router.push({ name: "login" });
               this.flashMessage.error({
@@ -146,7 +146,7 @@ export default {
       }
     },
     deleteShortcut(shortcut) {
-      axios.delete(`/api/v1/shortcuts/${shortcut.id}`)
+      axios.delete(`/shortcuts/${shortcut.id}`)
             .then(() => {
               this.fetchShortcuts();
             });

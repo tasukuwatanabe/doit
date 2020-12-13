@@ -89,7 +89,7 @@ export default {
       };
       this.loading = true;
       axios
-        .put(`/api/v1/users/${this.getCurrentUser.id}/password`, {
+        .put(`/users/${this.getCurrentUser.id}/password`, {
           change_password_form: password_params
         })
         .then((res) => {

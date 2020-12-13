@@ -55,7 +55,7 @@ export default {
   methods: {
     submitPasswordReset() {
       axios
-        .post("/api/v1/password_resets", {
+        .post("/password_resets", {
           password_reset_form: { email: this.email }
         })
         .then((res) => {

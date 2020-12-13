@@ -132,7 +132,7 @@ export default {
     fetchUser() {
       this.loading = true;
       axios
-        .get("/api/v1/current_user")
+        .get("/current_user")
         .then((res) => {
           this.setCurrentUserAction(res.data);
           this.loading = false;
@@ -140,7 +140,7 @@ export default {
         .catch(error => {
           this.loading = false;
           if (error.response && error.response.status === 500) {
-            axios.delete("/api/v1/logout").then(() => {
+            axios.delete("/logout").then(() => {
               this.logoutAction();
               this.$router.push({ name: "login" });
               this.flashMessage.error({
@@ -156,7 +156,7 @@ export default {
       this.setToggleStatusAction();
     },
     logout() {
-      axios.delete("/api/v1/logout").then((res) => {
+      axios.delete("/logout").then((res) => {
         this.logoutAction();
         this.$router.push({ name: "login" });
         this.flashMessage.success({

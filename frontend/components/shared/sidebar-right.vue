@@ -114,7 +114,7 @@ export default {
       this.cancelPendingRequests();
       this.loading = true;
       axios
-        .get('/api/v1/search', {
+        .get('/search', {
           params: {
             query: this.query
           }
