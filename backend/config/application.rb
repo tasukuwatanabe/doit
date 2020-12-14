@@ -6,6 +6,7 @@ Bundler.require(*Rails.groups)
 
 module Doit
   class Application < Rails::Application
+    config.api_only = true
     config.load_defaults 6.0
 
     config.time_zone = 'Tokyo'
@@ -26,6 +27,8 @@ module Doit
     config.autoload_paths += Dir["#{config.root}/lib"]
     config.hosts << '.example.com'
     config.hosts << 'doit-app.com'
-    config.hosts << "doit-lb-521419571.ap-northeast-1.elb.amazonaws.com"
+
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_namespace_key'
   end
 end

@@ -1,8 +1,6 @@
 module Api
   module V1
     class TodosController < ApplicationController
-      skip_before_action :verify_authenticity_token
-
       def index
         todos = current_user.todos
                             .where(todo_date: params[:date])
