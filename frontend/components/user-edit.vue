@@ -83,7 +83,7 @@
             </td>
             <td>
               <div v-if="facebook_uid != null">
-                <span v-if="auto_generated_password">連携中</span>
+                <span v-if="!!auto_generated_password">連携中</span>
                 <a v-else @click="cancelOauth('facebook')" class="link--default">連携を解除</a>
               </div>
               <span v-else>未連携</span>
@@ -98,7 +98,7 @@
             </td>
             <td>
               <div v-if="twitter_uid != null">
-                <span v-if="auto_generated_password">連携中</span>
+                <span v-if="!!auto_generated_password">連携中</span>
                 <a v-else @click="cancelOauth('twitter')" class="link--default">連携を解除</a>
               </div>
               <span v-else>未連携</span>
@@ -113,14 +113,14 @@
             </td>
             <td>
               <div v-if="google_uid != null">
-                <span v-if="auto_generated_password">連携中</span>
+                <span v-if="!!auto_generated_password">連携中</span>
                 <a v-else @click="cancelOauth('google')" class="link--default">連携を解除</a>
               </div>
               <span v-else>未連携</span>
             </td>
           </tr>
         </table>
-        <div v-if="auto_generated_password">
+        <div v-if="!!auto_generated_password">
           <p>
             SNS連携を解除するには
             <router-link
