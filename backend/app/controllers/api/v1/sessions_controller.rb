@@ -1,7 +1,6 @@
 module Api
   module V1
     class SessionsController < ApplicationController
-      skip_before_action :verify_authenticity_token
       before_action :check_empty, only: :create
 
       def create
@@ -9,11 +8,10 @@ module Api
         if @email == "guest@example.com"
           if user = User.find_by(email: @email)
             log_in user
-            render json: { user: user, message: "ゲストユーザーでログインしました" }, stauts: 200
+            render json: { user: user, message: "ゲストユーザーでログインしました" }, status: 200
           else
             render json: { message: "ログインに失敗しました"}, status: :unprocessable_entity
           end
-          return
         else
           user = User.find_by('LOWER(email) = ?', @email.downcase)
           if user && Authenticator.new(user).authenticate(@password)

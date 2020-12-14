@@ -1,9 +1,6 @@
-
 module Api
   module V1
     class AccountActivationsController < ApplicationController
-      skip_before_action :verify_authenticity_token
-
       def edit
         user = User.find_by(email: params[:email])
 

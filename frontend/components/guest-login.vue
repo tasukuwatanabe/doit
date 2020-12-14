@@ -21,7 +21,7 @@ export default {
         email: 'guest@example.com',
       };
       axios
-        .post('/api/v1/login', { session: session_params })
+        .post('/login', { session: session_params })
         .then((res) => {
           this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: 'todos' });

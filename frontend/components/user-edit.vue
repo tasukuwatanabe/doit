@@ -212,14 +212,14 @@ export default {
     },
     async cancelEmailConfirmation() {
       this.loading = true;
-      await axios.delete(`/api/v1/email_confirmations/${this.id}`).then((res) => {
+      await axios.delete(`/email_confirmations/${this.id}`).then((res) => {
         this.flashMessage.success({
           title: res.data.message,
           time: 5000,
           icon: '/icons/success.svg',
         });
       });
-      await axios.get("/api/v1/current_user").then((res) => {
+      await axios.get("/current_user").then((res) => {
         this.setCurrentUserAction(res.data);
         this.loading = false;
       });
@@ -249,7 +249,7 @@ export default {
       }
 
       axios
-        .put(`/api/v1/users/${this.id}`, formData, {
+        .put(`/users/${this.id}`, formData, {
           headers: {
             "Content-Type": "application/json"
           }
@@ -271,14 +271,14 @@ export default {
     },
     async cancelOauth(provider) {
       this.loading = true;
-      await axios.delete("/cancel_oauth/" + provider).then((res) => {
+      await axios.delete("/auth/" + provider).then((res) => {
           this.flashMessage.success({
             title: res.data.message,
           time: 5000,
             icon: '/icons/success.svg',
           });
         });
-      await axios.get("/api/v1/current_user").then((res) => {
+      await axios.get("/current_user").then((res) => {
         this.setCurrentUserAction(res.data);
         this.loading = false;
       });
@@ -288,7 +288,7 @@ export default {
         return;
       }
       axios
-        .delete(`/api/v1/users/${this.id}`)
+        .delete(`/users/${this.id}`)
         .then((res) => {
           this.setCurrentUserAction("");
           this.$router.push({ name: "login" });

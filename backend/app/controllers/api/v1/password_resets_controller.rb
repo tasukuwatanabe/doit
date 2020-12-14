@@ -1,7 +1,6 @@
 module Api
   module V1
     class PasswordResetsController < ApplicationController
-      skip_before_action :verify_authenticity_token
       before_action :check_empty, only: :create
       before_action :get_user, only: :update
       before_action :check_expiration, only: :update

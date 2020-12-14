@@ -86,7 +86,7 @@ export default {
     }),
     fetchLabels() {
       axios
-        .get("/api/v1/labels")
+        .get("/labels")
         .then((res) => {
           this.labels = res.data;
           this.loading = false;
@@ -94,7 +94,7 @@ export default {
         .catch(error => {
           this.loading = false;
           if (error.response && error.response.status === 500) {
-            axios.delete("/api/v1/logout").then(() => {
+            axios.delete("/logout").then(() => {
               this.logoutAction();
               this.$router.push({ name: "login" });
               this.flashMessage.error({
@@ -118,7 +118,7 @@ export default {
       }
     },
     deleteLabel(label) {
-      axios.delete(`/api/v1/labels/${label.id}`)
+      axios.delete(`/labels/${label.id}`)
             .then(() => {
               this.fetchLabels();
             });

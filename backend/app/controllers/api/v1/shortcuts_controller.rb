@@ -1,8 +1,6 @@
 module Api
   module V1
     class ShortcutsController < ApplicationController
-      skip_before_action :verify_authenticity_token
-
       def index
         shortcuts = current_user.shortcuts
                                 .left_joins(:labels)

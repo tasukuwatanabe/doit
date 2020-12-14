@@ -150,7 +150,7 @@ export default {
     fetchTodos(date) {
       this.cancelPendingRequests();
       axios
-        .get("/api/v1/todos", { params: { date: date } })
+        .get("/todos", { params: { date: date } })
         .then((res) => {
           this.todos = res.data;
           for (let i = 0; i < this.todos.length; i++) {
@@ -164,7 +164,7 @@ export default {
         .catch(error => {
           this.loading = false;
           if (error.response && error.response.status === 500) {
-            axios.delete("/api/v1/logout").then(() => {
+            axios.delete("/logout").then(() => {
               this.logoutAction();
               this.$router.push({ name: "login" });
               this.flashMessage.error({
@@ -181,13 +181,13 @@ export default {
     },
     deleteTodo(todo) {
       axios
-        .delete(`/api/v1/todos/${todo.id}`)
+        .delete(`/todos/${todo.id}`)
         .then(() => {
           this.fetchTodos(this.getSelectedDate);
         });
     },
     toggleStatus(todo) {
-      axios.put(`/api/v1/todos/${todo.id}/toggle_status`, { todo: todo });
+      axios.put(`/todos/${todo.id}/toggle_status`, { todo: todo });
     }
   }
 };

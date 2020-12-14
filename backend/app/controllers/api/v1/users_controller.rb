@@ -1,7 +1,6 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      skip_before_action :verify_authenticity_token
       before_action :check_email, only: [:create, :update]
 
       def current_user

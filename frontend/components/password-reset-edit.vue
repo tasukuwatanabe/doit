@@ -83,7 +83,7 @@ export default {
       };
 
       axios
-        .put(`/api/v1/password_resets/${this.$route.params.id}`, {
+        .put(`/password_resets/${this.$route.params.id}`, {
           user: password_reset_params,
           email: this.$route.query.email
         })

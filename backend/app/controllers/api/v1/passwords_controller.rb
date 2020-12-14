@@ -1,8 +1,6 @@
 module Api
   module V1
     class PasswordsController < ApplicationController
-      skip_before_action :verify_authenticity_token
-
       def update
         change_password_form = ChangePasswordForm.new(password_params)
         change_password_form.object = current_user

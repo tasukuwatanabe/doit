@@ -133,13 +133,13 @@ export default {
     }),
     fetchLabels() {
       axios
-        .get("/api/v1/labels")
+        .get("/labels")
         .then((res) => {
           this.labels = res.data;
         })
         .catch(error => {
           if (error.response && error.response.status === 500) {
-            axios.delete("/api/v1/logout").then(() => {
+            axios.delete("/logout").then(() => {
               this.logoutAction();
               this.$router.push({ name: "login" });
               this.flashMessage.error({
@@ -168,7 +168,7 @@ export default {
 
       if (this.todo.id) {
         axios
-          .put(`/api/v1/todos/${this.todo.id}`, { 
+          .put(`/todos/${this.todo.id}`, { 
             todo: {
               title: this.todo.title,
               status: this.todo.status,
@@ -187,7 +187,7 @@ export default {
           });
       } else {
         axios
-          .post("/api/v1/todos", {
+          .post("/todos", {
             todo: {
               title: this.todo.title,
               status: this.todo.status,

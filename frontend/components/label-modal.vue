@@ -128,7 +128,7 @@ export default {
       };
       if (this.label.id) {
         axios
-          .put(`/api/v1/labels/${this.label.id}`, { label: label_params })
+          .put(`/labels/${this.label.id}`, { label: label_params })
           .then(() => {
             this.label = {};
             this.toggleModal();
@@ -139,7 +139,7 @@ export default {
           });
       } else {
         axios
-          .post("/api/v1/labels", { label: label_params })
+          .post("/labels", { label: label_params })
           .then(() => {
             this.label = {};
             this.toggleModal();

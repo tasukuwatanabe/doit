@@ -1,8 +1,6 @@
 module Api
   module V1
     class LabelsController < ApplicationController
-      skip_before_action :verify_authenticity_token
-
       def index
         labels = current_user.labels
                               .left_joins(:todos)
