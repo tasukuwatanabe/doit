@@ -36,7 +36,7 @@
           </div>
           <ul class="form__linkList form__linkList--login">
             <li class="form__linkItem">
-              <guest-login></guest-login>
+              <GuestLogin />
             </li>
             <li class="form__linkItem">
               初めての方は
@@ -85,7 +85,7 @@ export default {
     };
   },
   components: {
-    'guest-login': GuestLogin
+    GuestLogin
   },
   computed: {
     getHost() {

@@ -46,7 +46,7 @@
             </div>
             <div class="list__block list__block--right list__block--grow">
               <div>
-                <label-item :label-item="todo.label" v-if="todo.label_color"></label-item>
+                <LabelItem :label-item="todo.label" v-if="todo.label_color" />
               </div>
               <div class="item-action">
                 <a @click="setTodo(todo)" class="item-action__btn">
@@ -78,7 +78,7 @@
         </a>
       </div>
     </div>
-    <todo-modal @fetch-todos="fetchTodos" ref="todoModal"></todo-modal>
+    <TodoModal @fetch-todos="fetchTodos" ref="todoModal" />
   </div>
 </template>
 
@@ -90,8 +90,8 @@ import LabelItem from "./label-item";
 
 export default {
   components: {
-    "todo-modal": TodoModal,
-    "label-item": LabelItem
+    TodoModal,
+    LabelItem
   },
   data() {
     return {

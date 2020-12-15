@@ -31,7 +31,7 @@
       <ul class="list" v-if="labels.length">
         <li class="list__item" v-for="label in labels" :key="label.id">
           <div class="list__block list__block--left">
-            <label-item :label-item="label"></label-item>
+            <LabelItem :label-item="label" />
           </div>
           <div class="list__block list__block--right">
             <div class="label-in-use">
@@ -54,7 +54,7 @@
         </div>
       </div>
     </div>
-    <label-modal @fetch-labels="fetchLabels" ref="labelModal"></label-modal>
+    <LabelModal @fetch-labels="fetchLabels" ref="labelModal" />
   </div>
 </template>
 
@@ -67,8 +67,8 @@ import { mapActions } from "vuex";
 export default {
   name: "LabelList",
   components: {
-    "label-modal": LabelModal,
-    "label-item": LabelItem
+    LabelModal,
+    LabelItem
   },
   data() {
     return {

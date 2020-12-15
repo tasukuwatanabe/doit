@@ -57,10 +57,10 @@
                       {{ colorPicker.hex }}
                     </div>
                     <div class="color-select__picker">
-                      <compact-picker
+                      <Compact
                         v-if="displayColorPicker"
                         v-model="colorPicker"
-                      ></compact-picker>
+                      ></Compact>
                     </div>
                   </div>
                 </div>
@@ -105,7 +105,7 @@ export default {
     };
   },
   components: {
-    "compact-picker": Compact
+    Compact
   },
   mixins: [Modal],
   methods: {

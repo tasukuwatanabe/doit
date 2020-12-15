@@ -24,7 +24,7 @@
               </div>
               <div class="search__list">
                 <div v-for="result in todoByDate(resultDate)" @click="fetchDate(result.todo_date)" :key="result.id" class="search__item">{{ result.title }}
-                  <label-item :label-item="result.label" v-if="result.label_color"></label-item>
+                  <LabelItem :label-item="result.label" v-if="result.label_color" />
                 </div>
               </div>
             </div>
@@ -33,8 +33,8 @@
         </div>
       </div>
       <div v-else>
-        <sidebar-calendar></sidebar-calendar>
-        <sidebar-shortcut></sidebar-shortcut>
+        <SidebarCalendar />
+        <SidebarShortcut />
       </div>
     </div>
   </aside>
@@ -57,9 +57,9 @@ export default {
     }
   },
   components: {
-    'sidebar-calendar': SidebarCalendar,
-    "sidebar-shortcut": SidebarShortcut,
-    "label-item": LabelItem
+    SidebarCalendar,
+    SidebarShortcut,
+    LabelItem
   },
   computed: {
     ...mapGetters({

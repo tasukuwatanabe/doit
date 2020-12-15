@@ -51,7 +51,7 @@
           </div>
           <div class="list__block list__block--right list__block--grow">
             <div>
-              <label-item :label-item="shortcut.label" v-if="shortcut.label_color"></label-item>
+              <LabelItem :label-item="shortcut.label" v-if="shortcut.label_color" />
             </div>
             <div class="item-action">
               <a @click="setShortcut(shortcut)" class="item-action__btn">
@@ -73,10 +73,10 @@
         </div>
       </div>
     </div>
-    <shortcut-modal
+    <ShortcutModal
       @fetch-shortcuts="fetchShortcuts"
       ref="shortcutModal"
-    ></shortcut-modal>
+    />
   </div>
 </template>
 
@@ -89,8 +89,8 @@ import { mapActions } from "vuex";
 export default {
   name: "Shortcut",
   components: {
-    "shortcut-modal": ShortcutModal,
-    "label-item": LabelItem
+    ShortcutModal,
+    LabelItem
   },
   data() {
     return {
