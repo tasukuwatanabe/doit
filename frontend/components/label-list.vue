@@ -27,11 +27,11 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <div v-show="!loading">
+    <div v-if="!loading">
       <ul class="list" v-if="labels.length">
         <li class="list__item" v-for="label in labels" :key="label.id">
           <div class="list__block list__block--left">
-            <label-item :label-item="label"></label-item>
+            <LabelItem :label-item="label" />
           </div>
           <div class="list__block list__block--right">
             <div class="label-in-use">
@@ -54,7 +54,7 @@
         </div>
       </div>
     </div>
-    <label-modal @fetch-labels="fetchLabels" ref="labelModal"></label-modal>
+    <LabelModal @fetch-labels="fetchLabels" ref="labelModal" />
   </div>
 </template>
 
@@ -67,8 +67,8 @@ import { mapActions } from "vuex";
 export default {
   name: "LabelList",
   components: {
-    "label-modal": LabelModal,
-    "label-item": LabelItem
+    LabelModal,
+    LabelItem
   },
   data() {
     return {
@@ -128,12 +128,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../stylesheets/mixin.scss";
+
 .loading-case {
-  width: 600px;
-  height: 350px;
+  @include loadingCase($spWidth:100%,
+                        $spHeight:200px)
 }
 
 .label-in-use {
-  margin-right: 70px;
+  margin-left: 10px;
+  margin-right: 50px;
+  @media (max-width: 767px) {
+    margin-right: 20px;
+    font-size: 14px;
+  }
+  @media (max-width: 424px) {
+    margin-right: 15px;
+    font-size: 13px;
+  }
+  @media (max-width: 374px) {
+    font-size: 12px;
+  }
 }
 </style>

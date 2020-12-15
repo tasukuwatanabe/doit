@@ -7,14 +7,14 @@
           <div class="form__group">
             <label class="form__label">ユーザー名</label>
             <input class="form__input" type="text" v-model="username" />
-            <span class="form__error" v-if="!!errors.username">
+            <span class="form__error" v-if="errors.username">
               {{ errors.username }}
             </span>
           </div>
           <div class="form__group">
             <label class="form__label">メールアドレス</label>
             <input class="form__input" type="email" v-model="email" />
-            <span class="form__error" v-if="!!errors.email">
+            <span class="form__error" v-if="errors.email">
               {{ errors.email }}
             </span>
           </div>
@@ -25,7 +25,7 @@
               type="password"
               v-model="password"
               autocomplete="on" />
-            <span class="form__error" v-if="!!errors.password">
+            <span class="form__error" v-if="errors.password">
               {{ errors.password }}
             </span>
           </div>
@@ -37,11 +37,11 @@
               v-model="password_confirmation"
               autocomplete="on"
             />
-            <span class="form__error" v-if="!!errors.password_confirmation">
+            <span class="form__error" v-if="errors.password_confirmation">
               {{ errors.password_confirmation }}
             </span>
           </div>
-          <div class="form-group text-center">
+          <div class="text-center">
             <div
               @click="submitRegister"
               class="btn btn--main btn--md"
@@ -51,7 +51,7 @@
           </div>
           <ul class="form__linkList form__linkList--login">
             <li class="form__linkItem">
-              <guest-login></guest-login>
+              <GuestLogin />
             </li>
             <li class="form__linkItem">
               アカウントをお持ちの方は
@@ -101,7 +101,7 @@ export default {
     };
   },
   components: {
-    'guest-login': GuestLogin
+    GuestLogin
   },
   methods: {
     submitRegister() {

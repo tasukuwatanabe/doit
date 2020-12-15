@@ -16,7 +16,7 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <form v-show="!loading" class="form user-form">
+    <form v-if="!loading" class="form user-form">
       <div v-if="isGuest" class="form__group">
         <div class="guest-message">
           <i class="fas fa-exclamation-triangle"></i>
@@ -32,7 +32,7 @@
           autocomplete="on"
           :readonly="isGuest"
         />
-        <span class="form__error" v-if="!!errors.password">
+        <span class="form__error" v-if="errors.password">
           {{ errors.password }}
         </span>
       </div>
@@ -45,7 +45,7 @@
           autocomplete="on"
           :readonly="isGuest"
         />
-        <span class="form__error" v-if="!!errors.password_confirmation">
+        <span class="form__error" v-if="errors.password_confirmation">
           {{ errors.password_confirmation }}
         </span>
       </div>
@@ -113,8 +113,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../stylesheets/mixin.scss";
+
 .loading-case {
-  width: 600px;
-  height: 350px;
+  @include loadingCase($spWidth:100%,
+                        $spHeight:200px)
 }
 </style>

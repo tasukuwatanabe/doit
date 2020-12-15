@@ -26,7 +26,7 @@
           <span class="sr-only">Loading...</span>
         </div>
       </div>
-      <div v-show="!loading">
+      <div v-if="!loading">
         <ul class="list" v-if="todos.length">
           <li v-for="todo in todos" class="list__item" :key="todo.id">
             <div
@@ -41,20 +41,20 @@
               />
               <label :for="'todo_status_' + todo.id"></label>
             </div>
-            <div class="list__block list__block--left">
-              <div class="list__title">{{ todo.title }}</div>
-            </div>
-            <div class="list__block list__block--right list__block--grow">
-              <div>
-                <label-item :label-item="todo.label" v-if="todo.label_color"></label-item>
+            <div class="list__inner">
+              <div class="list__block list__block--left">
+                <div class="list__title" :class="[ todo.label_title ? 'list__title--with-label' : '' ]">{{ todo.title }}</div>
+                <LabelItem :label-item="todo.label" v-if="todo.label_color" />
               </div>
-              <div class="item-action">
-                <a @click="setTodo(todo)" class="item-action__btn">
-                  <i class="fas fa-pencil-alt"></i>
-                </a>
-                <a @click="deleteTodo(todo)" class="item-action__btn">
-                  <i class="fas fa-trash"></i>
-                </a>
+              <div class="list__block list__block--right">
+                <div class="item-action">
+                  <a @click="setTodo(todo)" class="item-action__btn">
+                    <i class="fas fa-pencil-alt"></i>
+                  </a>
+                  <a @click="deleteTodo(todo)" class="item-action__btn">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </div>
               </div>
             </div>
           </li>
@@ -78,7 +78,7 @@
         </a>
       </div>
     </div>
-    <todo-modal @fetch-todos="fetchTodos" ref="todoModal"></todo-modal>
+    <TodoModal @fetch-todos="fetchTodos" ref="todoModal" />
   </div>
 </template>
 
@@ -90,8 +90,8 @@ import LabelItem from "./label-item";
 
 export default {
   components: {
-    "todo-modal": TodoModal,
-    "label-item": LabelItem
+    TodoModal,
+    LabelItem
   },
   data() {
     return {
@@ -196,10 +196,14 @@ export default {
 <style lang="scss" scoped>
 @import "../stylesheets/variables.scss";
 @import "../stylesheets/extend.scss";
+@import "../stylesheets/mixin.scss";
 
 .loading-case {
-  width: 100%;
-  height: 300px;
+  @include loadingCase($width: 100%,
+                        $height: 300px);
+  @media (max-width: 991px) {
+    margin-bottom: 50px;
+  }
 }
 
 .todo {
@@ -210,7 +214,6 @@ export default {
 
   &__date-title {
     font-size: 1.6em;
-    margin-bottom: 0.1em;
   }
 
   &__date-day {
@@ -220,6 +223,9 @@ export default {
 
   &__page-action {
     text-align: center;
+    @media (max-width: 991px) {
+      margin-bottom: 30px;
+    }
   }
 
   &__no-result {
@@ -229,8 +235,8 @@ export default {
     padding: 60px 0;
     box-shadow: $box-shadow-common;
 
-    @media (max-width: 767px) {
-      margin-top: 30px;
+    @media (max-width: 991px) {
+      margin-top: 20px;
     }
 
     .no-result {
@@ -238,7 +244,7 @@ export default {
         width: 300px;
         margin: 0 auto 20px;
 
-        @media (max-width: 767px) {
+        @media (max-width: 991px) {
           width: 80%;
         }
       }
@@ -250,6 +256,10 @@ export default {
     
     &__item {
       padding-left: 62px;
+
+      @media (max-width: 374px) {
+        padding-left: 55px;
+      }
     }
   }
 }

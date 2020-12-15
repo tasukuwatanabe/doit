@@ -1,10 +1,12 @@
 <template>
-  <div class="label label--margin"
-        :style="{
-          color: labelFontColor,
-          backgroundColor: labelItem.color
-        }">
-    {{ labelItem.title }}
+  <div class="labelCase">
+    <span class="label"
+          :style="{
+            color: labelFontColor,
+            backgroundColor: labelItem.color
+          }">
+      {{ labelItem.title }}
+    </span>
   </div>
 </template>
 
@@ -48,3 +50,18 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.labelCase {
+  display: flex;
+  align-items: center;
+}
+.label {
+  display: inline-block;
+  padding: 6px 8px 5px;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 2em;
+}
+
+</style>

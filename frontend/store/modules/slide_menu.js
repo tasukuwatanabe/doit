@@ -14,17 +14,11 @@ const mutations = {
   setToggleStatus(state) {
     state.toggleStatus = !state.toggleStatus;
   },
-  setToggleClose(state) {
-    state.toggleStatus = false;
-  },
 };
 
 const actions = {
   setToggleStatusAction({ commit }) {
     commit('setToggleStatus');
-  },
-  setToggleCloseAction({ commit }) {
-    commit('setToggleClose');
   },
 };
 

@@ -12,12 +12,13 @@
             name: 'user_edit',
             params: { userId: this.getCurrentUser.id }
           }"
+          @click.native="toggleSlide"
           class="userinfo__link"
         >
           <img
             :alt="this.getCurrentUser.username + ' アイコン'"
             class="profile-img"
-            :src="user_image_with_number"
+            :src="userImageWithNumber"
           />
           <div class="userinfo__username">
             {{ this.getCurrentUser.username }}
@@ -27,7 +28,9 @@
       <nav class="nav">
         <ul class="nav__list">
           <li class="nav__item">
-            <router-link :to="{ name: 'todos' }" class="nav__link">
+            <router-link :to="{ name: 'todos' }"
+                          @click.native="toggleSlide"
+                          class="nav__link">
               <span class="icon nav__icon">
                 <i class="fas fa-calendar-check"></i>
               </span>
@@ -35,7 +38,9 @@
             </router-link>
           </li>
           <li class="nav__item">
-            <router-link :to="{ name: 'shortcuts' }" class="nav__link">
+            <router-link :to="{ name: 'shortcuts' }"
+                          @click.native="toggleSlide"
+                          class="nav__link">
               <span class="icon nav__icon">
                 <svg width="20px" height="20px">
                   <g
@@ -51,7 +56,9 @@
             </router-link>
           </li>
           <li class="nav__item">
-            <router-link :to="{ name: 'labels' }" class="nav__link">
+            <router-link :to="{ name: 'labels' }" 
+                          @click.native="toggleSlide"
+                          class="nav__link">
               <span class="icon nav__icon">
                 <i class="fas fa-tag"></i>
               </span>
@@ -64,6 +71,7 @@
                 name: 'user_edit',
                 params: { userId: this.getCurrentUser.id }
               }"
+              @click.native="toggleSlide"
               class="nav__link"
             >
               <span class="icon nav__icon">
@@ -78,6 +86,7 @@
                 name: 'password_edit',
                 params: { userId: this.getCurrentUser.id }
               }"
+              @click.native="toggleSlide"
               class="nav__link"
             >
               <span class="icon nav__icon">
@@ -119,7 +128,7 @@ export default {
       getCurrentUser: "user/getCurrentUser",
       getToggleStatus: "slideMenu/getToggleStatus"
     }),
-    user_image_with_number() {
+    userImageWithNumber() {
       return this.getCurrentUser.user_image.url + '?' + Math.random();
     }
   },
@@ -158,6 +167,7 @@ export default {
     logout() {
       axios.delete("/logout").then((res) => {
         this.logoutAction();
+        this.toggleSlide();
         this.$router.push({ name: "login" });
         this.flashMessage.success({
           title: res.data.message,

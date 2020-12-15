@@ -1,10 +1,10 @@
 <template>
-  <div class="sidebar-shortcut">
+  <section class="sidebar-shortcut">
     <div class="sidebar-shortcut__box">
       <div class="sidebar-shortcut__title">ショートカットからToDo作成</div>
       <router-link
         to="/shortcuts"
-        v-if="!!shortcuts"
+        v-if="shortcuts"
         class="sidebar-shortcut__edit"
       >
         編集
@@ -16,7 +16,7 @@
       <div class="spinner-border text-info" v-if="loading" role="status">
         <span class="sr-only">Loading...</span>
       </div>
-      <div v-show="!loading">
+      <div v-if="!loading">
         <ul v-if="shortcuts.length" class="sidebar-shortcut__list">
           <li
             v-for="shortcut in shortcuts"
@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -113,6 +113,10 @@ export default {
 @import "../../stylesheets/extend.scss";
 
 .sidebar-shortcut {
+  @media (max-width: 991px) {
+    margin-bottom: 30px;
+  }
+
   &__field {
     padding: 10px;
     background-color: #fff;
@@ -126,7 +130,7 @@ export default {
       align-items: center;
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       padding: 10px;
     }
   }
@@ -138,8 +142,12 @@ export default {
   }
 
   &__title {
-    font-size: .9em;
+    font-size: .85em;
     font-weight: bold;
+
+    @media (max-width: 991px) {
+      font-size: 1em;
+    }
   }
 
   &__edit {
@@ -161,6 +169,10 @@ export default {
     border-radius: 100px;
     margin: 5px;
     font-size: 0.9em;
+
+    @media (max-width: 991px) {
+      margin: 6px;
+    }
   }
 
   &__link {
@@ -189,7 +201,7 @@ export default {
     justify-content: center;
     align-items: center;
     transition-duration: 0.2s;
-    padding: 2px 7px;
+    padding: 4px 15px;
 
     a {
       font-size: 0.9em !important;

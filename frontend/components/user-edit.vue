@@ -24,7 +24,7 @@
                 v-model="username"
                 class="form__input"
                 :readonly="isGuest" />
-        <span class="form__error" v-if="!!errors.username">
+        <span class="form__error" v-if="errors.username">
           {{ errors.username }}
         </span>
       </div>
@@ -34,7 +34,7 @@
                 v-model="email"
                 class="form__input"
                 :readonly="isGuest" />
-        <span class="form__error" v-if="!!errors.unconfirmed_email">
+        <span class="form__error" v-if="errors.unconfirmed_email">
           {{ errors.unconfirmed_email }}
         </span>
         <p class="form__desc">
@@ -52,7 +52,7 @@
         <div class="form__profile-box">
           <img
             :alt="username + 'のプロフィール画像'"
-            :src="user_image_with_number"
+            :src="userImageWithNumber"
             class="profile-img"
           />
           <input type="file"
@@ -60,7 +60,7 @@
                   :disabled="isGuest"
                   @change="onImageUpload" />
         </div>
-        <div v-if="has_user_image" class="form__profile-default">
+        <div v-if="hasUserImage" class="form__profile-default">
           <input
             type="checkbox"
             v-model="remove_user_image"
@@ -184,10 +184,10 @@ export default {
     isGuest() {
       return this.email === 'guest@example.com';
     },
-    has_user_image() {
+    hasUserImage() {
       return !this.user_image.includes("/user_icons/default.jpg");
     },
-    user_image_with_number() {
+    userImageWithNumber() {
       return this.user_image + '?' + Math.random();
     }
   },
@@ -305,6 +305,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../stylesheets/variables.scss";
+@import "../stylesheets/mixin.scss";
 
 .sns-link {
   &__table {
@@ -324,6 +325,8 @@ export default {
 .loading-case {
   width: 600px;
   height: 350px;
+  @include loadingCase($spWidth:100%,
+                        $spHeight:200px)
 }
 
 .link {

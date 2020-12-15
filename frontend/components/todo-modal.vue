@@ -11,7 +11,7 @@
               <div class="col-3">
                 <div
                   class="form__label"
-                  :class="{ 'form__label--with-error': !!errors.title }"
+                  :class="{ 'form__label--with-error': errors.title }"
                 >
                   タイトル<span class="form__label--required">*</span>
                 </div>
@@ -23,7 +23,7 @@
                   v-model="todo.title"
                   required
                 />
-                <span class="form__error" v-if="!!errors.title">
+                <span class="form__error" v-if="errors.title">
                   {{ errors.title }}
                 </span>
               </div>
@@ -32,7 +32,7 @@
               <div class="col-3">
                 <div
                   class="form__label"
-                  :class="{ 'form__label--with-error': !!errors.todo_date }"
+                  :class="{ 'form__label--with-error': errors.todo_date }"
                 >
                   日付<span class="form__label--required">*</span>
                 </div>
@@ -43,7 +43,7 @@
                   v-model="todo.todo_date"
                   class="form__input"
                 />
-                <span class="form__error" v-if="!!errors.todo_date">
+                <span class="form__error" v-if="errors.todo_date">
                   {{ errors.todo_date }}
                 </span>
               </div>
@@ -158,7 +158,7 @@ export default {
       this.todo.body = val.body;
       this.todo.todo_date = val.todo_date || this.formattedDate;
       this.todo.label_id = val.label_id;
-      this.btnText = !!val.id ? "更新する" : "新規作成";
+      this.btnText = val.id ? "更新する" : "新規作成";
     },
     todoSubmit() {
       const label_arr = [];

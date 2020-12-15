@@ -7,21 +7,19 @@
           <div class="form__group">
             <label class="form__label">メールアドレス</label>
             <input class="form__input" type="email" v-model="email" />
-            <span class="form__error" v-if="!!errors.email">
+            <span class="form__error" v-if="errors.email">
               {{ errors.email }}
             </span>
           </div>
-          <div class="form__group text-center">
-            <div
-              @click="submitPasswordReset"
-              class="btn btn--main btn--md"
-            >
+          <div class="text-center">
+            <div @click="submitPasswordReset"
+                class="btn btn--main btn--md">
               再設定用のメールを発行
             </div>
           </div>
           <ul class="form__linkList form__linkList--password-reset">
             <li class="form__linkItem">
-              <guest-login></guest-login>
+              <GuestLogin />
             </li>
             <li class="form__linkItem">
               アカウントをお持ちの方は
@@ -50,7 +48,7 @@ export default {
     };
   },
   components: {
-    'guest-login': GuestLogin
+    GuestLogin
   },
   methods: {
     submitPasswordReset() {

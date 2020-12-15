@@ -26,11 +26,11 @@
 
 ._vue-flash {
   &-msg-body {
-  width: auto !important;
+    max-width: 430px;
   min-width: 300px;
   z-index: 1000;
     &__content {
-      padding: 25px 25px 25px 20px !important;
+      padding: 20px !important;
     }
     &_error {
       background-color:rgba(238, 69, 69, 0.88) !important;

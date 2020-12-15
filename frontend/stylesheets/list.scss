@@ -13,9 +13,13 @@
     background-color: #ffffff;
     position: relative;
 
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       padding: 18px 22px;
-      display: block;
+      min-height: 86px;
+    }
+
+    @media (max-width: 424px) {
+      padding: 15px 18px 15px 15px;
     }
 
     &:not(:last-child) {
@@ -28,31 +32,52 @@
       top: 0;
       bottom: 0;
       margin: auto;
+
+      @media (max-width: 374px) {
+        left: 12px;
+      }
     }
   }
 
-  &__block {
+  &__inner {
     display: flex;
-    align-items: center;
+    flex-grow: 1;
+  }
 
+  &__block {
     &--right {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
+      align-items: center;
     }
 
     &--left {
-      @media (max-width: 767px) {
-        margin-bottom: 8px;
-      }
-    }
-
-    &--grow {
+      display: flex;
+      align-self: center;
       flex-grow: 1;
+      margin-right: 15px;
+
+      @media (max-width: 767px) {
+        flex-direction: column;
+      }
+
+      @media (max-width: 374px) {
+        margin-right: 5px;
+      }
     }
   }
 
   &__title {
     font-size: 1.1em;
+
+    &--with-label {
+      margin-right: 15px;
+
+      @media (max-width: 767px) {
+        margin-bottom: 5px;
+        margin-right: 0;
+      }
+    }
   }
 }
 
@@ -61,12 +86,11 @@
     max-width: 500px;
     width: 100%;
     padding: 0 10px;
-  }
-  &__illustration {
     margin-top: 80px;
     margin-left: 100px;
 
     @media (max-width: 991px) {
+      width: 80%;
       margin: 50px auto 0;
     }
   }
@@ -81,6 +105,10 @@
     transition-duration: 0.2s;
     cursor: pointer;
 
+    @media (max-width: 424px) {
+      font-size: 18px;
+    }
+
     &:hover {
       color: $color-main-theme;
     }
@@ -89,20 +117,16 @@
       margin-right: 30px;
 
       @media (max-width: 767px) {
-        margin-right: 20px;
+        margin-right: 25px;
+      }
+
+      @media (max-width: 424px) {
+        margin-right: 22px;
+      }
+
+      @media (max-width: 374px) {
+        margin-right: 18px;
       }
     }
-  }
-}
-
-.page-action {
-  &__icon {
-    svg {
-      font-size: 16px;
-    }
-  }
-
-  &__text {
-    margin-left: 5px;
   }
 }

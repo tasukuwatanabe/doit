@@ -4,7 +4,7 @@
       <div class="login__title">パスワードリセット</div>
       <div class="login__inner">
         <form class="form">
-          <span class="form__error form__error--base" v-if="!!errors.base">
+          <span class="form__error form__error--base" v-if="errors.base">
             {{ errors.base }}
           </span>
           <div class="form__group">
@@ -15,7 +15,7 @@
               v-model="password"
               autocomplete="on"
             />
-            <span class="form__error" v-if="!!errors.password">
+            <span class="form__error" v-if="errors.password">
               {{ errors.password }}
             </span>
           </div>
@@ -27,21 +27,19 @@
               v-model="password_confirmation"
               autocomplete="on"
             />
-            <span class="form__error" v-if="!!errors.password_confirmation">
+            <span class="form__error" v-if="errors.password_confirmation">
               {{ errors.password_confirmation }}
             </span>
           </div>
-          <div class="form__group text-center">
-            <div
-              @click="submitPasswordReset"
-              class="btn btn--main btn--md"
-            >
-              パスワードをリセットする
+          <div class="text-center">
+            <div @click="submitPasswordReset"
+                  class="btn btn--main btn--md">
+              パスワードをリセット
             </div>
           </div>
           <ul class="form__linkList form__linkList--password-reset">
             <li class="form__linkItem">
-              <guest-login></guest-login>
+              <GuestLogin />
             </li>
             <li class="form__linkItem">
               アカウントをお持ちの方は
@@ -70,7 +68,7 @@ export default {
     };
   },
   components: {
-    'guest-login': GuestLogin
+    GuestLogin
   },
   methods: {
     ...mapActions({
@@ -98,7 +96,7 @@ export default {
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
-          if (!!error.response.data.message) {
+          if (error.response.data.message) {
             this.flashMessage.error({
               title: error.response.data.message,
               icon: '/icons/error.svg',

@@ -35,7 +35,7 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <div v-show="!loading">
+    <div v-if="!loading">
       <ul class="list" v-if="shortcuts.length">
         <li
           class="list__item"
@@ -43,16 +43,12 @@
           :key="shortcut.id"
         >
           <div class="list__block list__block--left">
-            <div class="list__title-group" style="position: relative">
-              <div class="list__title">
-                {{ shortcut.title }}
-              </div>
+            <div class="list__title" :class="[ shortcut.label_title ? 'list__title--with-label' : '' ]">
+              {{ shortcut.title }}
             </div>
+            <LabelItem :label-item="shortcut.label" v-if="shortcut.label_color" />
           </div>
-          <div class="list__block list__block--right list__block--grow">
-            <div>
-              <label-item :label-item="shortcut.label" v-if="shortcut.label_color"></label-item>
-            </div>
+          <div class="list__block list__block--right">
             <div class="item-action">
               <a @click="setShortcut(shortcut)" class="item-action__btn">
                 <i class="fas fa-pencil-alt"></i>
@@ -73,10 +69,10 @@
         </div>
       </div>
     </div>
-    <shortcut-modal
+    <ShortcutModal
       @fetch-shortcuts="fetchShortcuts"
       ref="shortcutModal"
-    ></shortcut-modal>
+    />
   </div>
 </template>
 
@@ -89,8 +85,8 @@ import { mapActions } from "vuex";
 export default {
   name: "Shortcut",
   components: {
-    "shortcut-modal": ShortcutModal,
-    "label-item": LabelItem
+    ShortcutModal,
+    LabelItem
   },
   data() {
     return {
@@ -156,8 +152,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../stylesheets/mixin.scss";
+
 .loading-case {
-  width: 600px;
-  height: 350px;
+  @include loadingCase($spWidth:100%,
+                        $spHeight:200px)
 }
 </style>

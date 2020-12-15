@@ -8,7 +8,7 @@ module Api
         if @email == "guest@example.com"
           if user = User.find_by(email: @email)
             log_in user
-            render json: { user: user, message: "ゲストユーザーでログインしました" }, status: 200
+            render json: user, status: 200
           else
             render json: { message: "ログインに失敗しました"}, status: :unprocessable_entity
           end

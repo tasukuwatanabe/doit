@@ -7,7 +7,7 @@
             <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
             </div>
-            <div v-if="!!custom_error" class="error">
+            <div v-if="custom_error" class="error">
               <span class="error__icon">
                 <i class="fas fa-exclamation-triangle"></i>
               </span>
@@ -23,7 +23,7 @@
                 <div class="col-3">
                   <div
                     class="form__label"
-                    :class="{ 'form__label--with-error': !!errors.title }"
+                    :class="{ 'form__label--with-error': errors.title }"
                   >
                     タイトル<span class="form__label--required">*</span>
                   </div>
@@ -36,7 +36,7 @@
                     v-model="label.title"
                     required
                   />
-                  <span class="form__error" v-if="!!errors.title">
+                  <span class="form__error" v-if="errors.title">
                     {{ errors.title }}
                   </span>
                 </div>
@@ -57,10 +57,10 @@
                       {{ colorPicker.hex }}
                     </div>
                     <div class="color-select__picker">
-                      <compact-picker
+                      <Compact
                         v-if="displayColorPicker"
                         v-model="colorPicker"
-                      ></compact-picker>
+                      ></Compact>
                     </div>
                   </div>
                 </div>
@@ -105,7 +105,7 @@ export default {
     };
   },
   components: {
-    "compact-picker": Compact
+    Compact
   },
   mixins: [Modal],
   methods: {
@@ -115,7 +115,7 @@ export default {
       this.label.id = val.id;
       this.label.title = val.title;
       this.colorPicker.hex = val.color || defaultColor;
-      this.btnText = !!val ? "更新する" : "新規作成";
+      this.btnText = val ? "更新する" : "新規作成";
     },
     setError(error) {
       this.custom_error = error;
