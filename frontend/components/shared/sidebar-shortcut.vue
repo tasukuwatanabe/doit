@@ -16,7 +16,7 @@
       <div class="spinner-border text-info" v-if="loading" role="status">
         <span class="sr-only">Loading...</span>
       </div>
-      <div v-show="!loading">
+      <div v-if="!loading">
         <ul v-if="shortcuts.length" class="sidebar-shortcut__list">
           <li
             v-for="shortcut in shortcuts"

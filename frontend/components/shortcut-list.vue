@@ -35,7 +35,7 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <div v-show="!loading">
+    <div v-if="!loading">
       <ul class="list" v-if="shortcuts.length">
         <li
           class="list__item"

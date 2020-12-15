@@ -16,7 +16,7 @@
             <span class="sr-only">Loading...</span>
           </div>
         </div>
-        <div v-show="!loading">
+        <div v-if="!loading">
           <template v-if="results && results.length">
             <div v-for="resultDate in resultDateArray" :key="resultDate">
               <div class="search__date">

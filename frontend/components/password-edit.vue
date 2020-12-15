@@ -16,7 +16,7 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <form v-show="!loading" class="form user-form">
+    <form v-if="!loading" class="form user-form">
       <div v-if="isGuest" class="form__group">
         <div class="guest-message">
           <i class="fas fa-exclamation-triangle"></i>

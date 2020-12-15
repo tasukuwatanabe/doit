@@ -26,7 +26,7 @@
           <span class="sr-only">Loading...</span>
         </div>
       </div>
-      <div v-show="!loading">
+      <div v-if="!loading">
         <ul class="list" v-if="todos.length">
           <li v-for="todo in todos" class="list__item" :key="todo.id">
             <div
