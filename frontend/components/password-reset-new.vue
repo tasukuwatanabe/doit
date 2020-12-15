@@ -11,11 +11,9 @@
               {{ errors.email }}
             </span>
           </div>
-          <div class="form__group text-center">
-            <div
-              @click="submitPasswordReset"
-              class="btn btn--main btn--md"
-            >
+          <div class="text-center">
+            <div @click="submitPasswordReset"
+                class="btn btn--main btn--md">
               再設定用のメールを発行
             </div>
           </div>

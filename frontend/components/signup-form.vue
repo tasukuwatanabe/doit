@@ -41,7 +41,7 @@
               {{ errors.password_confirmation }}
             </span>
           </div>
-          <div class="form-group text-center">
+          <div class="text-center">
             <div
               @click="submitRegister"
               class="btn btn--main btn--md"

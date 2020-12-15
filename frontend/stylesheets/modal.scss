@@ -12,6 +12,10 @@
     display: flex;
     align-items: center;
 
+    @media (max-width: 991px) {
+      margin-bottom: 1em;
+    }
+
     &--end-day {
       margin-bottom: 3em;
     }
@@ -51,10 +55,10 @@
     width: 85%;
     max-width: 500px;
 
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       width: calc(100% - 20px);
       top: 0;
-      padding: 50px 15px 30px;
+      padding: 50px 20px 30px;
     }
 
     .fa-case {
@@ -67,11 +71,18 @@
   }
 
   .btn-case {
-    margin-top: 1.8em;
+    margin-top: 2.4em;
     text-align: center;
+    display: flex;
+    justify-content: center;
 
     .btn {
-      padding: 0 2em;
+      min-width: 150px;
+
+      @media (max-width: 374px) {
+        min-width: auto;
+        width: 100%;
+      }
     }
 
     .btn--gray {

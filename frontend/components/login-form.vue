@@ -29,9 +29,9 @@
               パスワード再設定
             </router-link>
           </div>
-          <div class="form-group text-center">
+          <div class="text-center">
             <div @click="submitLogin" class="btn btn--main btn--md">
-              ログイン
+              ログインする
             </div>
           </div>
           <ul class="form__linkList form__linkList--login">

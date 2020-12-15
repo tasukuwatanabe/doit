@@ -4,12 +4,16 @@
   margin-bottom: 30px;
   position: relative;
 
+  @media (max-width: 991px) {
+    margin-bottom: 20px;
+  }
+
   &__title {
     font-size: 1.6em;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       font-size: 1.2em;
     }
   }
@@ -21,7 +25,7 @@
   &__icon {
     margin-left: 12px;
 
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       margin-left: 8px;
     }
 
@@ -35,7 +39,7 @@
     top: 5px;
     right: 0;
 
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       position: static;
       text-align: right;
     }

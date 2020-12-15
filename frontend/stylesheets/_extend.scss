@@ -1,11 +1,5 @@
 @import "variables";
 
-%sidebar-display {
-  @media (max-width: 991px) {
-    display: none;
-  }
-}
-
 %link {
   color: $color-base-font;
   cursor: pointer;
@@ -30,7 +24,7 @@
   border-radius: 0.25em;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     height: 40px;
   }
 }

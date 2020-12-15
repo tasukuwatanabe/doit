@@ -5,21 +5,20 @@
   @extend %link;
   border: none;
   border-radius: 0;
+  padding: 0;
   transition-duration: .3s;
 
   &--sm {
-    height: 45px;
-    line-height: 45px;
-    padding: 0 3em;
+    height: 40px;
+    line-height: 40px;
   }
 
   &--md {
-    height: 50px;
-    line-height: 50px;
-    padding: 0 4em;
+    height: 45px;
+    line-height: 45px;
     font-size: 1.1em;
 
-    @media (max-width: 767px) {
+    @media (max-width: 991px) {
       font-size: 1em;
     }
   }
@@ -51,6 +50,8 @@
     background: linear-gradient(135deg, rgb(37, 227, 241) 0%,#7a4aec 100%);
     border-radius: 100px;
     position: relative;
+    min-width: 150px;
+    padding: 0 3em;
   
     &:hover {
       opacity: .8;
@@ -59,9 +60,25 @@
     &__icon {
       svg {
         font-size: 16px;
-        margin-right: 5px;
+        margin-right: 7px;
         color: $color-main-theme;
       }
     }
+  }
+}
+
+.page-action {
+  &__btn {
+    min-width: 150px;
+  }
+
+  &__icon {
+    svg {
+      font-size: 16px;
+    }
+  }
+
+  &__text {
+    margin-left: 5px;
   }
 }

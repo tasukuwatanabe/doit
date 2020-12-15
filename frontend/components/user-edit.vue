@@ -305,6 +305,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../stylesheets/variables.scss";
+@import "../stylesheets/mixin.scss";
 
 .sns-link {
   &__table {
@@ -324,6 +325,8 @@ export default {
 .loading-case {
   width: 600px;
   height: 350px;
+  @include loadingCase($spWidth:100%,
+                        $spHeight:200px)
 }
 
 .link {

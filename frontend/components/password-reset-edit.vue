@@ -31,12 +31,10 @@
               {{ errors.password_confirmation }}
             </span>
           </div>
-          <div class="form__group text-center">
-            <div
-              @click="submitPasswordReset"
-              class="btn btn--main btn--md"
-            >
-              パスワードをリセットする
+          <div class="text-center">
+            <div @click="submitPasswordReset"
+                  class="btn btn--main btn--md">
+              パスワードをリセット
             </div>
           </div>
           <ul class="form__linkList form__linkList--password-reset">

@@ -181,6 +181,12 @@ export default {
     background-color: #fff;
     padding: 20px 20px 15px;
     box-shadow: $box-shadow-common;
+    @media (max-width: 991px) {
+      padding: 25px;
+    }
+    @media (max-width: 767px) {
+      padding: 20px;
+    }
   }
 
   &__control {
@@ -191,6 +197,11 @@ export default {
     user-select: none;
     font-size: 1.1em;
     color: #777;
+
+    @media (max-width: 991px) {
+      font-size: 1.2em;
+      padding: 0 20px 15px;
+    }
   }
 
   &__controlBtn {
@@ -207,9 +218,22 @@ export default {
     margin-bottom: 8px;
     user-select: none;
 
+    @media (max-width: 991px) {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
     th, td {
       padding: 6px 0;
       width: calc(100% / 7);
+      
+      @media (max-width: 991px) {
+        padding: 10px 0;
+      }
+
+      @media (max-width: 374px) {
+        padding: 8px 0;
+      }
     }
 
     th {
@@ -235,6 +259,11 @@ export default {
       height: 22px;
       border-radius: 50%;
       z-index: -1;
+
+      @media (max-width: 991px) {
+        width: 30px;
+        height: 30px;
+      }
     }
 
     &--out {
@@ -268,6 +297,10 @@ export default {
     text-decoration: underline;
     color: $color-main-theme;
     cursor: pointer;
+
+    @media (max-width: 991px) {
+      font-size: 15px;
+    }
   }
 }
 </style>

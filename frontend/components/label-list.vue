@@ -128,12 +128,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../stylesheets/mixin.scss";
+
 .loading-case {
-  width: 600px;
-  height: 350px;
+  @include loadingCase($spWidth:100%,
+                        $spHeight:200px)
 }
 
 .label-in-use {
-  margin-right: 70px;
+  margin-left: 10px;
+  margin-right: 50px;
+  @media (max-width: 767px) {
+    margin-right: 20px;
+    font-size: 14px;
+  }
+  @media (max-width: 424px) {
+    margin-right: 15px;
+    font-size: 13px;
+  }
+  @media (max-width: 374px) {
+    font-size: 12px;
+  }
 }
 </style>

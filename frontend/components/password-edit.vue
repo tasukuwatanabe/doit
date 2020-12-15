@@ -113,8 +113,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../stylesheets/mixin.scss";
+
 .loading-case {
-  width: 600px;
-  height: 350px;
+  @include loadingCase($spWidth:100%,
+                        $spHeight:200px)
 }
 </style>
