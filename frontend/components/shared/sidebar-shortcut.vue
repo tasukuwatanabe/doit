@@ -4,7 +4,7 @@
       <div class="sidebar-shortcut__title">ショートカットからToDo作成</div>
       <router-link
         to="/shortcuts"
-        v-if="!!shortcuts"
+        v-if="shortcuts"
         class="sidebar-shortcut__edit"
       >
         編集

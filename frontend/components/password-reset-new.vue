@@ -7,7 +7,7 @@
           <div class="form__group">
             <label class="form__label">メールアドレス</label>
             <input class="form__input" type="email" v-model="email" />
-            <span class="form__error" v-if="!!errors.email">
+            <span class="form__error" v-if="errors.email">
               {{ errors.email }}
             </span>
           </div>

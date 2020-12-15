@@ -32,7 +32,7 @@
           autocomplete="on"
           :readonly="isGuest"
         />
-        <span class="form__error" v-if="!!errors.password">
+        <span class="form__error" v-if="errors.password">
           {{ errors.password }}
         </span>
       </div>
@@ -45,7 +45,7 @@
           autocomplete="on"
           :readonly="isGuest"
         />
-        <span class="form__error" v-if="!!errors.password_confirmation">
+        <span class="form__error" v-if="errors.password_confirmation">
           {{ errors.password_confirmation }}
         </span>
       </div>

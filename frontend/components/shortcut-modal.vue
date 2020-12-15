@@ -7,7 +7,7 @@
             <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
             </div>
-            <div v-if="!!custom_error" class="error">
+            <div v-if="custom_error" class="error">
               <span class="error__icon">
                 <i class="fas fa-exclamation-triangle"></i>
               </span>
@@ -23,7 +23,7 @@
                 <div class="col-3">
                   <div
                     class="form__label"
-                    :class="{ 'form__label--with-error': !!errors.title }"
+                    :class="{ 'form__label--with-error': errors.title }"
                   >
                     タイトル<span class="form__label--required">*</span>
                   </div>
@@ -35,7 +35,7 @@
                     class="form__input"
                     required
                   />
-                  <span class="form__error" v-if="!!errors.title">
+                  <span class="form__error" v-if="errors.title">
                     {{ errors.title }}
                   </span>
                 </div>
@@ -110,7 +110,7 @@ export default {
       this.shortcut.id = val.id;
       this.shortcut.title = val.title;
       this.shortcut.label_id = val.label_id;
-      this.btnText = !!val.id ? "更新する" : "新規作成";
+      this.btnText = val.id ? "更新する" : "新規作成";
     },
     setError(error) {
       this.custom_error = error;
