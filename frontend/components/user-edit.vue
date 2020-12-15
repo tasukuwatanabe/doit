@@ -52,7 +52,7 @@
         <div class="form__profile-box">
           <img
             :alt="username + 'のプロフィール画像'"
-            :src="user_image_with_number"
+            :src="userImageWithNumber"
             class="profile-img"
           />
           <input type="file"
@@ -60,7 +60,7 @@
                   :disabled="isGuest"
                   @change="onImageUpload" />
         </div>
-        <div v-if="has_user_image" class="form__profile-default">
+        <div v-if="hasUserImage" class="form__profile-default">
           <input
             type="checkbox"
             v-model="remove_user_image"
@@ -184,10 +184,10 @@ export default {
     isGuest() {
       return this.email === 'guest@example.com';
     },
-    has_user_image() {
+    hasUserImage() {
       return !this.user_image.includes("/user_icons/default.jpg");
     },
-    user_image_with_number() {
+    userImageWithNumber() {
       return this.user_image + '?' + Math.random();
     }
   },

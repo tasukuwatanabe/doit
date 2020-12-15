@@ -17,7 +17,7 @@
           <img
             :alt="this.getCurrentUser.username + ' アイコン'"
             class="profile-img"
-            :src="user_image_with_number"
+            :src="userImageWithNumber"
           />
           <div class="userinfo__username">
             {{ this.getCurrentUser.username }}
@@ -119,7 +119,7 @@ export default {
       getCurrentUser: "user/getCurrentUser",
       getToggleStatus: "slideMenu/getToggleStatus"
     }),
-    user_image_with_number() {
+    userImageWithNumber() {
       return this.getCurrentUser.user_image.url + '?' + Math.random();
     }
   },
