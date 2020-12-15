@@ -23,10 +23,10 @@ export default {
       axios
         .post('/login', { session: session_params })
         .then((res) => {
-          this.setCurrentUserAction(res.data.user);
+          this.setCurrentUserAction(res.data);
           this.$router.push({ name: 'todos' });
           this.flashMessage.success({
-            title: res.data.message,
+            title: "ゲストユーザーでログインしました",
             time: 5000,
             icon: '/icons/success.svg',
           });
