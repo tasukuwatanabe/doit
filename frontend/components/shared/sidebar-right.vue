@@ -23,8 +23,8 @@
                     {{ resultFormatDate(resultDate) }}
                 </div>
                 <div class="search__list">
-                  <div v-for="result in todoByDate(resultDate)"       
-                      @click="fetchDate(result.todo_date)" :key="result.id" 
+                  <div v-for="result in todoByDate(resultDate)"
+                      @click="fetchDate(result.todo_date)" :key="result.id"
                       class="search__item">
                     <div :class="[ result.label_title ? 'search__title--with-label' : '' ]">
                       {{ result.title }}
@@ -48,7 +48,7 @@
 
 <script>
 import axios from "axios";
-import moment from "moment";
+import moment from "../../modules/myMoment";
 import { mapGetters, mapActions } from "vuex";
 import SidebarCalendar from "./sidebar-calendar";
 import SidebarShortcut from "./sidebar-shortcut";

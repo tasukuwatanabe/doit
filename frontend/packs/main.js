@@ -11,54 +11,7 @@ Vue.use(VueRouter);
 import router from '../router/router';
 
 // Font Awesome
-import { dom, library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faTag,
-  faPlus,
-  faPencilAlt,
-  faTrash,
-  faCheck,
-  faTimes,
-  faExclamationTriangle,
-  faSearch,
-  faCog,
-  faCaretLeft,
-  faCaretRight,
-  faKey,
-  faTimesCircle,
-  faPlusCircle,
-  faSignOutAlt,
-  faCalendarCheck,
-} from '@fortawesome/free-solid-svg-icons';
-
-import {
-  faFacebookF,
-  faTwitter,
-  faGoogle,
-} from '@fortawesome/free-brands-svg-icons';
-
-library.add(
-  faTag,
-  faPlus,
-  faPencilAlt,
-  faTrash,
-  faCheck,
-  faTimes,
-  faExclamationTriangle,
-  faSearch,
-  faCog,
-  faCaretLeft,
-  faCaretRight,
-  faKey,
-  faTimesCircle,
-  faPlusCircle,
-  faSignOutAlt,
-  faCalendarCheck,
-  faFacebookF,
-  faTwitter,
-  faGoogle
-);
-dom.watch();
+import '../config/fontawesome';
 
 // application.scss
 import '../stylesheets/style.scss';
@@ -68,34 +21,7 @@ import FlashMessage from '@smartweb/vue-flash-message';
 Vue.use(FlashMessage);
 
 // axios
-import axios from 'axios';
-
-// storeの読み込み
-import store from '../store/index';
-
-// Rails-APIを叩く際のaxiosのcors対策
-const url =
-  process.env.NODE_ENV === 'production'
-    ? 'https://doit-app.com/api/v1'
-    : 'http://localhost:3000/api/v1';
-axios.defaults.baseURL = url;
-axios.defaults.withCredentials = true;
-
-// axiosのキャンセルトークンの発行
-axios.interceptors.request.use(
-  function (config) {
-    const source = axios.CancelToken.source();
-
-    config.cancelToken = source.token;
-
-    store.commit('request/addCancelToken', source);
-
-    return config;
-  },
-  function (error) {
-    return Promise.reject(error);
-  }
-);
+import '../config/axios';
 
 new Vue({
   store,
