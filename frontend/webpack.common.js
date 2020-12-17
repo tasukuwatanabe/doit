@@ -3,6 +3,7 @@ const { VueLoaderPlugin } = require("vue-loader");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   entry: './packs/main.js',
@@ -88,7 +89,8 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].[contenthash].css',
-    })
+    }),
+    new BundleAnalyzerPlugin()
   ],
   resolve: {
     alias: {
