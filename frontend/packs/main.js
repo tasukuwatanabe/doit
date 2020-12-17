@@ -22,6 +22,7 @@ Vue.use(FlashMessage);
 
 // axios
 import '../config/axios';
+import store from '../store/index';
 
 new Vue({
   store,
