@@ -1,8 +1,10 @@
 const path = require('path');
+const webpack = require('webpack');
 const { VueLoaderPlugin } = require("vue-loader");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   entry: './packs/main.js',
@@ -20,7 +22,8 @@ module.exports = {
           name: 'vendor'
         }
       }
-    }
+    },
+    usedExports: true
   },
   module: {
     rules: [
@@ -88,7 +91,9 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].[contenthash].css',
-    })
+    }),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    // new BundleAnalyzerPlugin()
   ],
   resolve: {
     alias: {

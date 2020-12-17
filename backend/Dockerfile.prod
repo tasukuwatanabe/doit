@@ -10,7 +10,7 @@ ENV APP_HOME /doit
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
 COPY Gemfile /doit/
-RUN bundle install
+RUN bundle install --without development,test
 ADD . $APP_HOME
 RUN mkdir -p $APP_HOME/tmp/pids && mkdir -p $APP_HOME/tmp/sockets
 
