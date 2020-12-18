@@ -60,7 +60,7 @@
                     :key="label.id"
                     :value="label.id"
                   >
-                    {{ label.title }}
+                    {{ label.label_title }}
                   </option>
                 </select>
               </div>
@@ -97,13 +97,7 @@ export default {
   data() {
     return {
       labels: [],
-      todo: {
-        id: "",
-        title: "",
-        todo_date: "",
-        body: "",
-        label_id: ""
-      },
+      todo: {},
       btnText: "",
     };
   },

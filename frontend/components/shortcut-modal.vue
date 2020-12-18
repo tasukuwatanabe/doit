@@ -50,7 +50,7 @@
                       :key="label.id"
                       :value="label.id"
                     >
-                      {{ label.title }}
+                      {{ label.label_title }}
                     </option>
                   </select>
                 </div>

@@ -44,7 +44,7 @@
             <div class="list__inner">
               <div class="list__block list__block--left">
                 <div class="list__title" :class="[ todo.label_title ? 'list__title--with-label' : '' ]">{{ todo.title }}</div>
-                <LabelItem :label-item="todo.label" v-if="todo.label_color" />
+                <LabelItem :target-item="todo" v-if="todo.label_id" />
               </div>
               <div class="list__block list__block--right">
                 <div class="item-action">
@@ -104,7 +104,7 @@ export default {
     this.fetchDate();
   },
   watch: {
-    getSelectedDate: function() {
+    getSelectedDate() {
       this.fetchTodos(this.getSelectedDate);
     }
   },
@@ -150,15 +150,9 @@ export default {
     fetchTodos(date) {
       this.cancelPendingRequests();
       axios
-        .get("/todos", { params: { date: date } })
+        .get("/todos", { params: { date: date }})
         .then((res) => {
           this.todos = res.data;
-          for (let i = 0; i < this.todos.length; i++) {
-            this.todos[i].label = {
-              title: this.todos[i].label_title,
-              color: this.todos[i].label_color
-            }
-          }
           this.loading = false;
         })
         .catch(error => {
@@ -187,7 +181,7 @@ export default {
         });
     },
     toggleStatus(todo) {
-      axios.put(`/todos/${todo.id}/toggle_status`, { todo: todo });
+      axios.put(`/todos/${todo.id}/toggle_status`, todo);
     }
   }
 };

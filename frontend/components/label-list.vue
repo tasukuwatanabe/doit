@@ -31,7 +31,7 @@
       <ul class="list" v-if="labels.length">
         <li class="list__item" v-for="label in labels" :key="label.id">
           <div class="list__block list__block--left">
-            <LabelItem :label-item="label" />
+            <LabelItem :target-item="label" />
           </div>
           <div class="list__block list__block--right">
             <div class="label-in-use">

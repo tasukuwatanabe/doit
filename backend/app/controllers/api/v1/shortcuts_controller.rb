@@ -2,7 +2,9 @@ module Api
   module V1
     class ShortcutsController < ApplicationController
       def index
-        @shortcuts = current_user.shortcuts.includes([:labels]).order(created_at: :desc)
+        @shortcuts = current_user.shortcuts
+                                 .includes([:labels])
+                                 .order(created_at: :desc)
         render 'index', formats: :json, handlers: 'jbuilder'
       end
 
