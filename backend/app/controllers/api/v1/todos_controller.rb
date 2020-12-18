@@ -43,15 +43,10 @@ module Api
       end
 
       def search
-        todos = current_user.todos.search(params[:query])
-                                  .left_joins(:labels)
-                                  .select('todos.id,
-                                            todos.title,
-                                            todos.todo_date,
-                                            labels.title AS label_title,
-                                            labels.color AS label_color')
-
-        render json: todos, status: 200
+        @todos = current_user.todos
+                             .search(params[:query])
+                             .includes([:labels])
+        render 'index', formats: :json, handlers: 'jbuilder'
       end
 
       private

@@ -29,7 +29,7 @@
                     <div :class="[ result.label_title ? 'search__title--with-label' : '' ]">
                       {{ result.title }}
                     </div>
-                    <LabelItem :label-item="result.label" v-if="result.label_color" />
+                    <LabelItem :target-item="result" v-if="result.label_color" />
                   </div>
                 </div>
               </div>
