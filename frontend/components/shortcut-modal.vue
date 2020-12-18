@@ -79,11 +79,7 @@ export default {
   name: "ShortcutModal",
   data() {
     return {
-      shortcut: {
-        id: "",
-        title: "",
-        label_id: ""
-      },
+      shortcut: {},
       labels: [],
       btnText: "",
       custom_error: "",
