@@ -3,7 +3,7 @@ import store from '../index';
 const namespaced = true;
 
 const state = {
-  currentUser: undefined,
+  currentUser: {},
 };
 
 const getters = {
@@ -23,7 +23,7 @@ const actions = {
     commit('setCurrentUser', userObj);
   },
   logoutAction({ commit }) {
-    commit('setCurrentUser', undefined);
+    commit('setCurrentUser', {});
     store.dispatch('date/resetSelectedDateAction');
   },
 };

@@ -20,7 +20,7 @@ RSpec.describe "Users", type: :request do
     it '情報を取得できる' do
       sign_in_as(user)
 
-      get "/api/v1/current_user"
+      get "/api/v1/users/current"
 
       expect(response.status).to eq(200)
     end

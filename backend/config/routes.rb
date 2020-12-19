@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       get '/search', to: 'todos#search'
       resources :shortcuts, only: %i[index create update destroy]
       resources :labels, only: %i[index create update destroy]
-      get '/current_user', to: 'users#current_user'
+      get '/users/current', to: 'users#current'
       resources :users, only: %i[create update destroy] do
         resource :password, only: %i[update]
       end

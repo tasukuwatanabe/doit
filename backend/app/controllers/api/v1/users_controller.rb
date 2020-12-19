@@ -3,25 +3,11 @@ module Api
     class UsersController < ApplicationController
       before_action :check_email, only: [:create, :update]
 
-      def current_user
-        if user_id = cookies.signed[:user_id]
-          current_user = User.find(user_id)
-          current_user = {
-            id: current_user.id,
-            username: current_user.username,
-            email: current_user.email,
-            user_image: current_user.user_image,
-            facebook_uid: current_user.facebook_uid,
-            twitter_uid: current_user.twitter_uid,
-            google_uid: current_user.google_uid,
-            auto_generated_password: current_user.auto_generated_password,
-            unconfirmed_email: current_user.unconfirmed_email
-          }
-        else
-          current_user = nil
-        end
-
-        render json: current_user, status: 200
+      def current
+        @current_user = if user_id = cookies.signed[:user_id]
+                          User.find(user_id)
+                        end
+        render 'current', formats: :json, handlers: 'jbuilder'
       end
 
       def create
