@@ -2,12 +2,10 @@ module Api
   module V1
     class LabelsController < ApplicationController
       def index
-        labels = current_user.labels
-                              .left_joins(:todos)
-                              .group(:id)
+        @labels = current_user.labels
                               .order(created_at: :desc)
-                              .select('labels.id, labels.title, color, COUNT(todos.id) AS todo_count')
-        render json: labels, status: 200
+
+        render 'index', formats: :json, handlers: 'jbuilder'
       end
 
       def create

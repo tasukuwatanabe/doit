@@ -2,20 +2,12 @@ module Api
   module V1
     class TodosController < ApplicationController
       def index
-        todos = current_user.todos
-                            .where(todo_date: params[:date])
-                            .left_joins(:labels)
-                            .order(created_at: :desc)
-                            .select('todos.id,
-                                      todos.title,
-                                      todos.status,
-                                      todos.todo_date,
-                                      todos.body,
-                                      labels.id AS label_id,
-                                      labels.title AS label_title,
-                                      labels.color AS label_color')
+        @todos = current_user.todos
+                             .where(todo_date: params[:date])
+                             .includes([:labels])
+                             .order(created_at: :desc)
                             
-        render json: todos, status: 200
+        render 'index', formats: :json, handlers: 'jbuilder'
       end
 
       def create
@@ -44,27 +36,23 @@ module Api
       end
 
       def toggle_status
-        todo = Todo.find_by(id: params[:todo_id])
+        todo = Todo.find(params[:todo_id])
         todo.status = !todo.status
         todo.save
+        head :no_content
       end
 
       def search
-        todos = current_user.todos.search(params[:query])
-                                  .left_joins(:labels)
-                                  .select('todos.id,
-                                            todos.title,
-                                            todos.todo_date,
-                                            labels.title AS label_title,
-                                            labels.color AS label_color')
-
-        render json: todos, status: 200
+        @todos = current_user.todos
+                             .search(params[:query])
+                             .includes([:labels])
+        render 'index', formats: :json, handlers: 'jbuilder'
       end
 
       private
 
       def todo_params
-        params.require(:todo).permit(:id, :title, :status, :todo_date, :body, { label_ids: [] })
+        params.require(:todo).permit(:title, :status, :todo_date, :body, { label_ids: [] })
       end
     end
   end

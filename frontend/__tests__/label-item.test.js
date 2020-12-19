@@ -1,19 +1,18 @@
 import { mount, shallowMount } from '@vue/test-utils';
-import LabelList from '@/label-list';
 import LabelItem from '@/label-item';
 
 describe('Label Item Component', () => {
   const wrapper = mount(LabelItem, {
     propsData: {
-      labelItem: {
-        title: "ラベルテスト",
-        color: '#ff11bb'
+      targetItem: {
+        label_title: "ラベルテスト",
+        label_color: '#ff11bb'
       }
     }
   });
 
   it("ラベルタイトルとカラーの値がpropsで渡ってくる", () => {
-    expect(wrapper.props().labelItem.title).toBe('ラベルテスト');
-    expect(wrapper.props().labelItem.color).toBe('#ff11bb');
+    expect(wrapper.props().targetItem.label_title).toBe('ラベルテスト');
+    expect(wrapper.props().targetItem.label_color).toBe('#ff11bb');
   });
 });

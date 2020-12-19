@@ -2,15 +2,10 @@ module Api
   module V1
     class ShortcutsController < ApplicationController
       def index
-        shortcuts = current_user.shortcuts
-                                .left_joins(:labels)
-                                .order(created_at: :desc)
-                                .select('shortcuts.id,
-                                        shortcuts.title,
-                                        labels.id AS label_id,
-                                        labels.title AS label_title,
-                                        labels.color AS label_color')
-        render json: shortcuts, status: 200
+        @shortcuts = current_user.shortcuts
+                                 .includes([:labels])
+                                 .order(created_at: :desc)
+        render 'index', formats: :json, handlers: 'jbuilder'
       end
 
       def create

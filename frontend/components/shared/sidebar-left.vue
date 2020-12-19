@@ -176,9 +176,7 @@ export default {
 .loading-case {
   box-sizing: border-box;
   @include loadingCase($width: 100%,
-                        $spWidth:100%,
-                        $height: auto,
-                        $spHeight:200px)
+                        $height: 300px)
 }
 
 .sidebar-left {

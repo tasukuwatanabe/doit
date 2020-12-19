@@ -33,7 +33,7 @@
                     ref="inputLabelTitle"
                     type="text"
                     class="form__input"
-                    v-model="label.title"
+                    v-model="label.label_title"
                     required
                   />
                   <span class="form__error" v-if="errors.title">
@@ -113,7 +113,7 @@ export default {
       this.custom_error = "";
       this.toggleModal();
       this.label.id = val.id;
-      this.label.title = val.title;
+      this.label.label_title = val.title;
       this.colorPicker.hex = val.color || defaultColor;
       this.btnText = val ? "更新する" : "新規作成";
     },
@@ -123,7 +123,7 @@ export default {
     },
     labelSubmit() {
       const label_params = {
-        title: this.label.title,
+        title: this.label.label_title,
         color: this.colorPicker.hex
       };
       if (this.label.id) {

@@ -46,7 +46,7 @@
             <div class="list__title" :class="[ shortcut.label_title ? 'list__title--with-label' : '' ]">
               {{ shortcut.title }}
             </div>
-            <LabelItem :label-item="shortcut.label" v-if="shortcut.label_color" />
+            <LabelItem :target-item="shortcut" v-if="shortcut.label_color" />
           </div>
           <div class="list__block list__block--right">
             <div class="item-action">
@@ -107,12 +107,6 @@ export default {
         .get("/shortcuts")
         .then((res) => {
           this.shortcuts = res.data;
-          for (let i = 0; i < this.shortcuts.length; i++) {
-            this.shortcuts[i].label = {
-              title: this.shortcuts[i].label_title,
-              color: this.shortcuts[i].label_color
-            }
-          }
           this.loading = false;
         })
         .catch(error => {

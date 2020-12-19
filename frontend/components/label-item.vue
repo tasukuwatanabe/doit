@@ -3,20 +3,20 @@
     <span class="label"
           :style="{
             color: labelFontColor,
-            backgroundColor: labelItem.color
+            backgroundColor: targetItem.label_color
           }">
-      {{ labelItem.title }}
+      {{ targetItem.label_title }}
     </span>
   </div>
 </template>
 
 <script>
 export default {
-  name: "LabelItem",
-  props: ['labelItem'],
+  name: "TargetItem",
+  props: ['targetItem'],
   computed: {
     labelFontColor() {
-      return this.colorOnRgb(this.labelItem.color)
+      return this.colorOnRgb(this.targetItem.label_color)
     }
   },
   methods: {
@@ -63,5 +63,4 @@ export default {
   line-height: 1;
   border-radius: 2em;
 }
-
 </style>
