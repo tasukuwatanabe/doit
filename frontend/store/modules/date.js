@@ -1,7 +1,7 @@
 const namespaced = true;
 
 const state = {
-  selectedDate: undefined,
+  selectedDate: {},
 };
 
 const getters = {
