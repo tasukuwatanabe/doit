@@ -60,14 +60,14 @@
                   :disabled="isGuest"
                   @change="onImageUpload" />
         </div>
-        <div v-if="hasUserImage" class="form__profile-default">
+        <div v-if="!hasUserImage" class="form__profile-default">
           <input
             type="checkbox"
             v-model="remove_user_image"
-            id="remove_user_image" 
+            id="remove_user_image"
             :disabled="isGuest"
             true-value="1" />
-          <label for="remove_user_image" 
+          <label for="remove_user_image"
                   :disabled="isGuest">デフォルトの画像を使用</label>
         </div>
       </div>
@@ -156,7 +156,7 @@ export default {
       id: "",
       username: "",
       email: "",
-      user_image: "",
+      user_image: {},
       facebook_uid: "",
       twitter_uid: "",
       google_uid: "",
@@ -185,10 +185,10 @@ export default {
       return this.email === 'guest@example.com';
     },
     hasUserImage() {
-      return !this.user_image.includes("/user_icons/default.jpg");
+      return this.user_image.url.includes('user_icons/default.jpg');
     },
     userImageWithNumber() {
-      return this.user_image + '?' + Math.random();
+      return this.user_image.url + '?' + Math.random();
     }
   },
   methods: {
@@ -200,7 +200,7 @@ export default {
         this.id = this.getCurrentUser.id;
         this.username = this.getCurrentUser.username;
         this.email = this.getCurrentUser.email;
-        this.user_image = this.getCurrentUser.user_image.url;
+        this.user_image = this.getCurrentUser.user_image;
         this.facebook_uid = this.getCurrentUser.facebook_uid;
         this.twitter_uid = this.getCurrentUser.twitter_uid;
         this.google_uid = this.getCurrentUser.google_uid;
@@ -219,7 +219,7 @@ export default {
           icon: '/icons/success.svg',
         });
       });
-      await axios.get("/current_user").then((res) => {
+      await axios.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
         this.loading = false;
       });
@@ -259,7 +259,7 @@ export default {
           this.setCurrentUserAction(res.data.user);
           this.flashMessage.success({
             title: res.data.message,
-          time: 5000,
+            time: 5000,
             icon: '/icons/success.svg',
           });
           this.loading = false;
@@ -278,7 +278,7 @@ export default {
             icon: '/icons/success.svg',
           });
         });
-      await axios.get("/current_user").then((res) => {
+      await axios.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
         this.loading = false;
       });

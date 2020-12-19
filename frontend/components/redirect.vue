@@ -1,11 +1,16 @@
 <template></template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   created() {
     this.showFlash();
   },
   methods: {
+    ...mapActions({
+      setSelectedDateAction: 'date/setSelectedDateAction',
+    }),
     showFlash() {
       if (this.$route.query.email_confirmed === 'true') {
         this.flashMessage.success({
@@ -44,6 +49,7 @@ export default {
           icon: '/icons/error.svg',
         });
       } else if (this.$route.query.oauth === 'success') {
+        this.setSelectedDateAction();
         this.flashMessage.success({
           title: this.$route.query.provider + "でログインしました",
           time: 5000,

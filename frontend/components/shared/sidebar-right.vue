@@ -1,6 +1,6 @@
 <template>
   <aside v-if="isTodo" class="sidebar sidebar-right">
-    <div v-if="this.getCurrentUser" class="sidebar--stickey sidebar-right__inner">
+    <div class="sidebar--stickey sidebar-right__inner">
       <SidebarShortcut class="display--sp" />
       <section class="sidebar-right__search search">
         <div class="search__form">

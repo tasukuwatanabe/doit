@@ -1,12 +1,14 @@
 <template>
-  <aside v-if="this.getCurrentUser" class="sidebar sidebar-left">
+  <aside
+    v-if="userLoggedIn"
+    class="sidebar sidebar-left">
     <div class="sidebar-left__inner sidebar--stickey">
       <div class="loading-case" v-if="loading">
         <div class="spinner-border text-info" role="status">
           <span class="sr-only">Loading...</span>
         </div>
       </div>
-      <div v-if="this.getCurrentUser && !loading">
+      <div v-else>
         <div class="sidebar-left__userinfo userinfo">
           <router-link
             :to="{
@@ -106,9 +108,7 @@
 
 <script>
 import axios from "axios";
-import { cookieStatus } from "../mixins/cookie";
 import { mapGetters, mapActions } from "vuex";
-
 export default {
   data() {
     return {
@@ -122,6 +122,12 @@ export default {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
     }),
+    userLoggedIn() {
+      return (this.$route.name !== 'login') &&
+             (this.$route.name !== 'signup') &&
+             (this.$route.name !== 'password_resets_new') &&
+             (this.$route.name !== 'password_resets_edit')
+    },
     userImageWithNumber() {
       return this.getCurrentUser.user_image.url + '?' + Math.random();
     }
@@ -134,7 +140,7 @@ export default {
     fetchUser() {
       this.loading = true;
       axios
-        .get("/current_user")
+        .get("/users/current")
         .then((res) => {
           this.setCurrentUserAction(res.data);
           this.loading = false;
