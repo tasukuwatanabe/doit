@@ -40,6 +40,7 @@ class User < ApplicationRecord
   validates :password_confirmation,
             presence: true,
             on: :create
+  validate :uniqueness_unconfirmed_eamil_with_email
 
   has_secure_password
 
@@ -187,5 +188,11 @@ class User < ApplicationRecord
   def email_downcase
     email.downcase! if email
     unconfirmed_email.downcase! if unconfirmed_email
+  end
+
+  def uniqueness_unconfirmed_eamil_with_email
+    if User.exists?(email: unconfirmed_email)
+      errors.add(:unconfirmed_email, I18n.t("errors.messages.taken"))
+    end
   end
 end
