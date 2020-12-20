@@ -22,44 +22,12 @@ module Api
       end
 
       def update
-        user = User.find(params[:id])
-
-        # プロフィール画像を初期化
-        user.update(sns_profile_image: nil) if user_params[:remove_user_image] == '1'
-
-        # パラメータ[:email]を取得
-        new_email = user_params[:email]
-
-        # メールアドレス使用状況をチェック
-        if new_email && user && User.email_used?(user, new_email)
-          email_error = { unconfirmed_email: 'このメールアドレスはすでに使われています。' }
-          render json: { errors: email_error }, status: :unprocessable_entity
-          return
-        end
-
-        # メールアドレスに変更がある場合
-        if new_email != user.email
-
-          # new_emailがバリデーションを通る場合
-          if user.update(unconfirmed_email: new_email, confirmation_token: User.new_token)
-            user.update_attribute(:confirmation_digest, User.digest(user.confirmation_token))
-            user.update_attribute(:confirmation_sent_at, Time.zone.now)
-            # メールアドレス確認用のメールを送信
-            UserMailer.email_confirmation(user).deliver_now
-          else # バリデーションを取得
-            if email_error.present?
-              errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
-            end
-          end
-        end
-
-        # email、unconfirmed_email以外を更新
-        if user&.update(user_params.except(:email, :unconfirmed_email))
-          render json: { user: user, message: "ユーザー情報が更新されました" }
-          return
-        else # バリデーションエラーを取得
-          errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
-          errors.merge!(email_error) if email_error
+        user_form = UserForm.new(User.find(params[:id]), user_params)
+        if user_form.save
+          UserMailer.email_confirmation(user_form.user).deliver_now if user_form.changed_email
+          render json: { user: user_form.user, message: "ユーザー情報が更新されました" }
+        else
+          errors = user_form.errors.map { |key, _v| [key, user_form.errors.full_messages_for(key)] }.to_h
           render json: { errors: errors }, status: :unprocessable_entity
         end
       end
