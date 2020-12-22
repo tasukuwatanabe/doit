@@ -16,7 +16,7 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <form v-if="!loading" class="form user-form">
+    <form @submit.prevent="submitPassword" v-if="!loading" class="form user-form">
       <div v-if="isGuest" class="form__group">
         <div class="guest-message">
           <i class="fas fa-exclamation-triangle"></i>
@@ -50,9 +50,9 @@
         </span>
       </div>
       <div class="form__action">
-        <div @click="submitPassword" class="btn btn--main btn--md">
+        <button type="submit" class="btn btn--main btn--md">
           更新する
-        </div>
+        </button>
       </div>
     </form>
   </div>

@@ -11,7 +11,7 @@
         ユーザー名、メールアドレスなどのユーザー情報を変更することができます。
       </p>
     </div>
-    <form class="form user-form">
+    <form @submit.prevent="submitUser" class="form user-form" >
       <div v-if="isGuest" class="form__group">
         <div class="guest-message">
           <i class="fas fa-exclamation-triangle"></i>
@@ -135,7 +135,7 @@
         </div>
       </div>
       <div class="form__action">
-        <div @click="submitUser" class="btn btn--main btn--md">更新する</div>
+        <button type="submit" class="btn btn--main btn--md">更新する</button>
         <a @click="accountCancel" 
             class="form__cancel" 
             :class="{ 'form__cancel--disabled' : isGuest }"

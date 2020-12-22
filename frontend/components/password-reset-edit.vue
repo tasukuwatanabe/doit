@@ -3,7 +3,7 @@
     <div class="login__case">
       <div class="login__title">パスワードリセット</div>
       <div class="login__inner">
-        <form class="form">
+        <form class="form" @submit.prevent="submitPasswordReset">
           <span class="form__error form__error--base" v-if="errors.base">
             {{ errors.base }}
           </span>
@@ -32,10 +32,10 @@
             </span>
           </div>
           <div class="text-center">
-            <div @click="submitPasswordReset"
+            <button type="submit"
                   class="btn btn--main btn--md">
               パスワードをリセット
-            </div>
+            </button>
           </div>
           <ul class="form__linkList form__linkList--password-reset">
             <li class="form__linkItem">
