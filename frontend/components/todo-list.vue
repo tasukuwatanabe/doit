@@ -21,12 +21,8 @@
           <i class="fas fa-caret-right"></i>
         </div>
       </section>
-      <div class="loading-case" v-if="loading">
-        <div class="spinner-border text-info" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-      <div v-if="!loading">
+      <Loading v-if="loading" />
+      <template v-else>
         <ul class="list" v-if="todos.length">
           <li v-for="todo in todos" class="list__item" :key="todo.id">
             <div
@@ -68,7 +64,7 @@
           </div>
           <div class="no-result__text">まだToDoが作成されていません</div>
         </div>
-      </div>
+      </template>
       <div class="todo__page-action page-action">
         <a @click="setTodo" class="btn btn--main btn--md">
           <span class="page-action__icon">
@@ -87,11 +83,13 @@ import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import TodoModal from "./todo-modal";
 import LabelItem from "./label-item";
+import Loading from "./shared/loading";
 
 export default {
   components: {
     TodoModal,
-    LabelItem
+    LabelItem,
+    Loading
   },
   data() {
     return {

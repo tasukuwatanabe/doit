@@ -10,13 +10,10 @@
         編集
       </router-link>
     </div>
-    <div 
-      class="sidebar-shortcut__field" 
-      :class="{ 'sidebar-shortcut__field--center' : (loading || !shortcuts.length) }">
-      <div class="spinner-border text-info" v-if="loading" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-      <div v-if="!loading">
+    <div class="sidebar-shortcut__field" 
+        :class="{ 'sidebar-shortcut__field--center' : (loading || !shortcuts.length) }">
+      <Loading v-if="loading" />
+      <template v-else>
         <ul v-if="shortcuts.length" class="sidebar-shortcut__list">
           <li
             v-for="shortcut in shortcuts"
@@ -40,7 +37,7 @@
             </router-link>
           </div>
         </div>
-      </div>
+      </template>
     </div>
   </section>
 </template>
@@ -48,6 +45,7 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import Loading from "./loading";
 
 export default {
   data() {
@@ -55,6 +53,9 @@ export default {
       shortcuts: [],
       loading: ''
     };
+  },
+  components: {
+    Loading
   },
   created() {
     this.loading = true;
