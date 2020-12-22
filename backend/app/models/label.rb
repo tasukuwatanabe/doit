@@ -7,6 +7,8 @@ class Label < ApplicationRecord
   has_many :shortcut_labels, dependent: :destroy
   has_many :shortcuts, through: :shortcut_labels
 
+  scope :order_created_desc, -> { order(created_at: :desc) }
+
   before_validation do
     self.title = normalize_as_text(title)
     self.color = normalize_as_color(color)
