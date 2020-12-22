@@ -30,12 +30,8 @@
         </a>
       </div>
     </div>
-    <div class="loading-case" v-if="loading">
-      <div class="spinner-border text-info" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
-    <div v-if="!loading">
+    <Loading v-if="loading" />
+    <template v-else>
       <ul class="list" v-if="shortcuts.length">
         <li
           class="list__item"
@@ -68,7 +64,7 @@
           />
         </div>
       </div>
-    </div>
+    </template>
     <ShortcutModal
       @fetch-shortcuts="fetchShortcuts"
       ref="shortcutModal"
@@ -80,13 +76,15 @@
 import axios from "axios";
 import ShortcutModal from "./shortcut-modal";
 import LabelItem from "./label-item";
+import Loading from "./shared/loading";
 import { mapActions } from "vuex";
 
 export default {
   name: "Shortcut",
   components: {
     ShortcutModal,
-    LabelItem
+    LabelItem,
+    Loading
   },
   data() {
     return {

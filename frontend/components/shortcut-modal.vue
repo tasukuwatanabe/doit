@@ -2,23 +2,12 @@
   <div class="modal" v-if="modalActive">
     <div class="modal__layer">
       <div class="modal__box">
-        <form @submit.prevent novalidate="true" class="form">
+        <form @submit.prevent="shortcutSubmit" class="form">
           <div class="modal-form">
             <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
             </div>
-            <div v-if="custom_error" class="error">
-              <span class="error__icon">
-                <i class="fas fa-exclamation-triangle"></i>
-              </span>
-              <p class="error__text">{{ custom_error }}</p>
-              <div class="btn-case">
-                <div @click="toggleModal" class="btn btn--gray btn--sm error__btn">
-                  閉じる
-                </div>
-              </div>
-            </div>
-            <div v-else>
+            <div>
               <div class="form__group row">
                 <div class="col-3">
                   <div
@@ -33,7 +22,6 @@
                     type="text"
                     v-model="shortcut.title"
                     class="form__input"
-                    required
                   />
                   <span class="form__error" v-if="errors.title">
                     {{ errors.title }}
@@ -59,9 +47,9 @@
                 <div @click="toggleModal" class="btn btn--gray btn--sm">
                   キャンセル
                 </div>
-                <div @click="shortcutSubmit" class="btn btn--blue btn--sm">
+                <button type="submit" class="btn btn--blue btn--sm">
                   {{ btnText }}
-                </div>
+                </button>
               </div>
             </div>
           </div>
@@ -82,7 +70,6 @@ export default {
       shortcut: {},
       labels: [],
       btnText: "",
-      custom_error: "",
     };
   },
   created() {
@@ -101,16 +88,11 @@ export default {
         });
     },
     setShortcutValue(val) {
-      this.custom_error = "";
       this.toggleModal();
       this.shortcut.id = val.id;
       this.shortcut.title = val.title;
       this.shortcut.label_id = val.label_id;
       this.btnText = val.id ? "更新する" : "新規作成";
-    },
-    setError(error) {
-      this.custom_error = error;
-      this.toggleModal();
     },
     shortcutSubmit() {
       if (this.shortcut.id) {

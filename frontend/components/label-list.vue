@@ -22,12 +22,8 @@
         </a>
       </div>
     </div>
-    <div class="loading-case" v-if="loading">
-      <div class="spinner-border text-info" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
-    <div v-if="!loading">
+    <Loading v-if="loading" />
+    <template v-else>
       <ul class="list" v-if="labels.length">
         <li class="list__item" v-for="label in labels" :key="label.id">
           <div class="list__block list__block--left">
@@ -53,7 +49,7 @@
           <img src="../images/illustrations/il-mindmap.png" alt="目標達成のイラスト" />
         </div>
       </div>
-    </div>
+    </template>
     <LabelModal @fetch-labels="fetchLabels" ref="labelModal" />
   </div>
 </template>
@@ -62,13 +58,15 @@
 import axios from "axios";
 import LabelItem from "./label-item";
 import LabelModal from "./label-modal";
+import Loading from "./shared/loading";
 import { mapActions } from "vuex";
 
 export default {
   name: "LabelList",
   components: {
     LabelModal,
-    LabelItem
+    LabelItem,
+    Loading
   },
   data() {
     return {

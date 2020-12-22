@@ -32,7 +32,7 @@ module Api
       end
 
       def search
-        @todos = current_user.todos.search(params[:query])
+        @todos = current_user.todos.search(params[:search_query])
         render 'index', formats: :json, handlers: 'jbuilder'
       end
 

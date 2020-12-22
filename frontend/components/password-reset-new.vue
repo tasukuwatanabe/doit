@@ -3,7 +3,7 @@
     <div class="login__case">
       <div class="login__title">パスワードリセット</div>
       <div class="login__inner">
-        <form class="form">
+        <form class="form" @submit.prevent="submitPasswordReset">
           <div class="form__group">
             <label class="form__label">メールアドレス</label>
             <input class="form__input" type="email" v-model="email" />
@@ -12,10 +12,9 @@
             </span>
           </div>
           <div class="text-center">
-            <div @click="submitPasswordReset"
-                class="btn btn--main btn--md">
+            <button type="submit" class="btn btn--main btn--md">
               再設定用のメールを発行
-            </div>
+            </button>
           </div>
           <ul class="form__linkList form__linkList--password-reset">
             <li class="form__linkItem">
