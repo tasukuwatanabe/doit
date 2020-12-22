@@ -3,7 +3,7 @@
     <div class="login__case">
       <div class="login__title">ログイン</div>
       <div class="login__inner">
-        <form class="form">
+        <form class="form" @submit.prevent="submitLogin">
           <div class="form__group">
             <label class="form__label">メールアドレス</label>
             <input class="form__input" type="email" v-model="email" />
@@ -30,9 +30,9 @@
             </router-link>
           </div>
           <div class="text-center">
-            <div @click="submitLogin" class="btn btn--main btn--md">
+            <button type="submit" class="btn btn--main btn--md">
               ログインする
-            </div>
+            </button>
           </div>
           <ul class="form__linkList form__linkList--login">
             <li class="form__linkItem">

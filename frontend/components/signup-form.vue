@@ -3,7 +3,7 @@
     <div class="login__case">
       <div class="login__title">新規登録</div>
       <div class="login__inner">
-        <form class="form">
+        <form class="form" @submit.prevent="submitRegister">
           <div class="form__group">
             <label class="form__label">ユーザー名</label>
             <input class="form__input" type="text" v-model="username" />
@@ -42,12 +42,12 @@
             </span>
           </div>
           <div class="text-center">
-            <div
-              @click="submitRegister"
+            <button
+              type="submit"
               class="btn btn--main btn--md"
             >
               新規登録
-            </div>
+            </button>
           </div>
           <ul class="form__linkList form__linkList--login">
             <li class="form__linkItem">

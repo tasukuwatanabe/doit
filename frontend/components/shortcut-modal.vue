@@ -2,7 +2,7 @@
   <div class="modal" v-if="modalActive">
     <div class="modal__layer">
       <div class="modal__box">
-        <form @submit.prevent novalidate="true" class="form">
+        <form @submit.prevent="shortcutSubmit" class="form">
           <div class="modal-form">
             <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
@@ -33,7 +33,6 @@
                     type="text"
                     v-model="shortcut.title"
                     class="form__input"
-                    required
                   />
                   <span class="form__error" v-if="errors.title">
                     {{ errors.title }}
@@ -59,9 +58,9 @@
                 <div @click="toggleModal" class="btn btn--gray btn--sm">
                   キャンセル
                 </div>
-                <div @click="shortcutSubmit" class="btn btn--blue btn--sm">
+                <button type="submit" class="btn btn--blue btn--sm">
                   {{ btnText }}
-                </div>
+                </button>
               </div>
             </div>
           </div>
