@@ -11,13 +11,9 @@
           </div>
         </div>
         <div v-if="query" class="search__box">
-          <div class="loading-case" v-if="loading">
-            <div class="spinner-border text-info" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-          </div>
-          <div v-if="!loading">
-            <template v-if="results && results.length">
+          <Loading v-if="loading" />
+          <template v-else>
+            <template v-if="results.length">
               <div v-for="resultDate in resultDateArray" :key="resultDate">
                 <div class="search__date">
                     {{ resultFormatDate(resultDate) }}
@@ -35,7 +31,7 @@
               </div>
             </template>
             <div v-else class="search__no-result">結果なし</div>
-          </div>
+          </template>
         </div>
       </section>
       <template v-if="!query">
@@ -53,6 +49,7 @@ import { mapGetters, mapActions } from "vuex";
 import SidebarCalendar from "./sidebar-calendar";
 import SidebarShortcut from "./sidebar-shortcut";
 import LabelItem from "../label-item";
+import Loading from "./loading";
 
 export default {
   data() {
@@ -65,7 +62,8 @@ export default {
   components: {
     SidebarCalendar,
     SidebarShortcut,
-    LabelItem
+    LabelItem,
+    Loading
   },
   computed: {
     ...mapGetters({
@@ -113,7 +111,7 @@ export default {
       this.setSelectedDateAction(todo_date);
     },
     todoSearch() {
-      if (this.query == '') {
+      if (this.query.length === 0) {
         this.loading = false;
         return;
       }
@@ -127,12 +125,6 @@ export default {
         })
         .then((res) => {
           this.results = res.data;
-          for (let i = 0; i < this.results.length; i++) {
-            this.results[i].label = {
-              title: this.results[i].label_title,
-              color: this.results[i].label_color
-            }
-          }
           this.loading = false;
         }).catch(error => {
           this.loading = false;

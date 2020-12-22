@@ -11,12 +11,8 @@
         ログインに必要なパスワードを変更することができます。
       </p>
     </div>
-    <div class="loading-case" v-if="loading">
-      <div class="spinner-border text-info" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
-    <form @submit.prevent="submitPassword" v-if="!loading" class="form user-form">
+    <Loading v-if="loading" />
+    <form @submit.prevent="submitPassword" v-else class="form user-form">
       <div v-if="isGuest" class="form__group">
         <div class="guest-message">
           <i class="fas fa-exclamation-triangle"></i>
@@ -61,6 +57,7 @@
 <script>
 import axios from "axios";
 import { mapGetters } from "vuex";
+import Loading from "./shared/loading";
 
 export default {
   data() {
@@ -70,6 +67,9 @@ export default {
       errors: "",
       loading: ''
     };
+  },
+  components: {
+    Loading
   },
   computed: {
     ...mapGetters({

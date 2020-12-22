@@ -3,12 +3,8 @@
     v-if="userLoggedIn"
     class="sidebar sidebar-left">
     <div class="sidebar-left__inner sidebar--stickey">
-      <div class="loading-case" v-if="loading">
-        <div class="spinner-border text-info" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-      <div v-else>
+      <Loading v-if="loading" />
+      <template v-else>
         <div class="sidebar-left__userinfo userinfo">
           <router-link
             :to="{
@@ -101,7 +97,7 @@
             </li>
           </ul>
         </nav>
-      </div>
+      </template>
     </div>
   </aside>
 </template>
@@ -109,11 +105,16 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import Loading from "./loading";
+
 export default {
   data() {
     return {
       loading: ''
     }
+  },
+  components: {
+    Loading
   },
   created() {
     this.fetchUser();
