@@ -107,7 +107,7 @@ export default {
         });
     },
     setLabel(label) {
-      if (this.labels.length >= 10 && !label) {
+      if (this.labels.length >= 10 && !label.id) {
         this.flashMessage.error({
           title: "ラベルが登録できるのは10個までです",
           time: 5000,

@@ -185,10 +185,14 @@ export default {
       return this.email === 'guest@example.com';
     },
     hasUserImage() {
-      return this.user_image.url.includes('user_icons/default.jpg');
+      if (this.user_image) {
+        return this.user_image.url.includes('user_icons/default.jpg');
+      }
     },
     userImageWithNumber() {
-      return this.user_image.url + '?' + Math.random();
+      if (this.user_image) {
+        return this.user_image.url + '?' + Math.random();
+      }
     }
   },
   methods: {

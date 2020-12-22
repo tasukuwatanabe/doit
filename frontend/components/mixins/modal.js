@@ -2,13 +2,13 @@ export default {
   data() {
     return {
       modalActive: false,
-      errors: '',
+      errors: {},
     };
   },
   methods: {
     toggleModal() {
       this.modalActive = !this.modalActive;
-      this.errors = '';
+      this.errors = {};
     },
   },
 };
