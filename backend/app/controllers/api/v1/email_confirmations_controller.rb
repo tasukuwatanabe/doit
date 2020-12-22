@@ -12,7 +12,7 @@ module Api
           query = '?email_confirmed=false'
         end
 
-        redirect_to host + '/redirect' + query
+        redirect_to client_host + '/redirect' + query
       end
 
       def destroy
@@ -32,7 +32,7 @@ module Api
         if @user && @user.expired?(:confirmation)
           @user.update(confirmation_digest: nil, unconfirmed_email: nil)
 
-          redirect_to host + '/redirect?email_confirmed=expired'
+          redirect_to client_host + '/redirect?email_confirmed=expired'
         end
       end
     end

@@ -14,7 +14,7 @@ module Api
           query = '?account_activation=invalid'
         end
 
-        redirect_to host + '/redirect' + query
+        redirect_to client_host + '/redirect' + query
       end
     end
   end
