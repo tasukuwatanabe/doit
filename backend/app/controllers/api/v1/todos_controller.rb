@@ -44,7 +44,7 @@ module Api
 
       def search
         @todos = current_user.todos
-                             .search(params[:query])
+                             .search(params[:search_query])
                              .includes([:labels])
         render 'index', formats: :json, handlers: 'jbuilder'
       end
