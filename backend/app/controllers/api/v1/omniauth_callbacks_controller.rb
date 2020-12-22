@@ -18,8 +18,9 @@ module Api
           query_result = '?oauth=success'
           query_provider = "&provider=#{provider}"
 
-          # redirect_to host + '/todos'
-          redirect_to host + '/redirect' + query_result + query_provider
+          # redirect_to client_host + '/todos'
+          p client_host
+          redirect_to client_host + '/redirect' + query_result + query_provider
         else
           render json: { message: "ログインできませんでした" }, status: :unprocessable_entity
         end

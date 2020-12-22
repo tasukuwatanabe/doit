@@ -5,7 +5,7 @@
         <router-link :to="{ name: 'todos' }" class="header__logo">
           <img src="../../images/logo/logo-white.png" alt="DoITロゴ" />
         </router-link>
-        <div @click="toggleSlide" id="hamburger" class="hamburger">
+        <div v-if="userLoggedIn" @click="toggleSlide" id="hamburger" class="hamburger">
           <span class="hamburger__line"></span>
           <span class="hamburger__line"></span>
           <span class="hamburger__line"></span>
@@ -27,7 +27,13 @@ export default {
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
-    })
+    }),
+    userLoggedIn() {
+      return (this.$route.name !== 'login') &&
+             (this.$route.name !== 'signup') &&
+             (this.$route.name !== 'password_resets_new') &&
+             (this.$route.name !== 'password_resets_edit')
+    }
   },
   methods: {
     ...mapActions({

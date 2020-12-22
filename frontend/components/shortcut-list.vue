@@ -123,7 +123,7 @@ export default {
         });
     },
     setShortcut(shortcut) {
-      if (this.shortcuts.length >= 10 && !shortcut) {
+      if (this.shortcuts.length >= 10 && !shortcut.id) {
         this.flashMessage.error({
           title: "ショートカットが登録できるのは10個までです",
           time: 5000,

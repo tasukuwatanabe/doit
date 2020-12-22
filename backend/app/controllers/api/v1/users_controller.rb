@@ -16,8 +16,7 @@ module Api
           user.send_activation_email
           render json: { message: "アカウント認証用のメールが送信されました" }
         else
-          errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(user) }, status: :unprocessable_entity
         end
       end
 
@@ -48,7 +47,7 @@ module Api
             UserMailer.email_confirmation(user).deliver_now
           else # バリデーションを取得
             if email_error.present?
-              errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
+              render json: { errors: format_errors(user) }, status: :unprocessable_entity
             end
           end
         end
@@ -58,9 +57,7 @@ module Api
           render json: { user: user, message: "ユーザー情報が更新されました" }
           return
         else # バリデーションエラーを取得
-          errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
-          errors.merge!(email_error) if email_error
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(user) }, status: :unprocessable_entity
         end
       end
 

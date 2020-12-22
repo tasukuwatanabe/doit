@@ -80,10 +80,7 @@ export default {
   name: "LabelModal",
   data() {
     return {
-      label: {
-        id: "",
-        title: ""
-      },
+      label: {},
       colorPicker: {
         hex: defaultColor
       },
@@ -99,9 +96,9 @@ export default {
     setLabelValue(val) {
       this.toggleModal();
       this.label.id = val.id;
-      this.label.label_title = val.title;
-      this.colorPicker.hex = val.color || defaultColor;
-      this.btnText = val ? "更新する" : "新規作成";
+      this.label.label_title = val.label_title;
+      this.colorPicker.hex = val.label_color || defaultColor;
+      this.btnText = val.id ? "更新する" : "新規作成";
     },
     labelSubmit() {
       const label_params = {
@@ -137,6 +134,7 @@ export default {
     },
     toggleModal() {
       this.modalActive = !this.modalActive;
+      this.errors = {};
       this.displayColorPicker = false;
       this.colorPicker.hex = defaultColor;
     }

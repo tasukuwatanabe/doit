@@ -26,8 +26,7 @@ module Api
           log_in @user
           render json: { user: @user, message: "パスワードがリセットされました" }, status: 200
         else
-          errors = change_password_form.errors.keys.map { |key| [key, change_password_form.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(change_password_form) }, status: :unprocessable_entity
         end
       end
 

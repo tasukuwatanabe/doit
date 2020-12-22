@@ -5,6 +5,10 @@ class Todo < ApplicationRecord
   has_many :todo_labels, dependent: :destroy
   has_many :labels, through: :todo_labels
 
+  scope :include_labels, -> { includes([:labels]) }
+  scope :match_date, -> (date) { where(todo_date: date).include_labels }
+  scope :search, -> (query) { where(['todos.title LIKE ?', "%#{query.strip}%"]).include_labels }
+
   before_validation { self.title = normalize_as_text(title) }
 
   validates :title, presence: true
@@ -13,10 +17,4 @@ class Todo < ApplicationRecord
     before: ->(_obj) { 1.year.from_now.to_date },
     allow_blank: true
   }
-
-  def self.search(query)
-    return nil unless query.present?
-
-    Todo.where(['todos.title LIKE ?', "%#{query.strip}%"]).order(todo_date: :asc)
-  end
 end

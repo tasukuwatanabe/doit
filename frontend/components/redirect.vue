@@ -14,7 +14,7 @@ export default {
     showFlash() {
       if (this.$route.query.email_confirmed === 'true') {
         this.flashMessage.success({
-          title: "メールアドレスが更新されました",
+          title: "メールアドレスが更新されました。再度ログインしてください",
           time: 5000,
           icon: '/icons/success.svg',
         });

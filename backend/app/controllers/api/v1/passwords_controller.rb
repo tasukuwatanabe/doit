@@ -8,8 +8,7 @@ module Api
         if change_password_form.save
           render json: { message: "パスワードが更新されました"}, status: 200
         else
-          errors = change_password_form.errors.keys.map { |key| [key, change_password_form.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(change_password_form) }, status: :unprocessable_entity
         end
       end
 
