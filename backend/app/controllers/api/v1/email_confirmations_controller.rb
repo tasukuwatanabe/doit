@@ -18,10 +18,9 @@ module Api
       def destroy
         user = User.find(params[:id])
         if user && user.update(confirmation_digest: nil, unconfirmed_email: nil)
-          render json: { message: "メールアドレスの更新がキャンセルされました"}
+          render json: { message: "メールアドレスの更新がキャンセルされました" }
         else
-          errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(user) }, status: :unprocessable_entity
         end
       end
 

@@ -13,8 +13,7 @@ module Api
         if shortcut.save
           head :no_content
         else
-          errors = shortcut.errors.keys.map { |key| [key, shortcut.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(shortcut) }, status: :unprocessable_entity
         end
       end
 
@@ -23,8 +22,7 @@ module Api
         if shortcut.update(shortcut_params)
           head :no_content
         else
-          errors = shortcut.errors.keys.map { |key| [key, shortcut.errors.full_messages_for(key)] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(shortcut) }, status: :unprocessable_entity
         end
       end
 

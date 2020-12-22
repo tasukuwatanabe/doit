@@ -15,8 +15,7 @@ module Api
         if todo.save
           render json: todo, status: 200
         else
-          errors = todo.errors.keys.map { |key| [key, todo.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(todo) }, status: :unprocessable_entity
         end
       end
 
@@ -25,8 +24,7 @@ module Api
         if todo.update(todo_params)
           render json: todo, status: 200
         else
-          errors = todo.errors.keys.map { |key| [key, todo.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(todo) }, status: :unprocessable_entity
         end
       end
 

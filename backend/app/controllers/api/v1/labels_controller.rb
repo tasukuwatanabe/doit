@@ -13,8 +13,7 @@ module Api
         if label.save
           head :no_content
         else
-          errors = label.errors.keys.map { |key| [key, label.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(label) }, status: :unprocessable_entity
         end
       end
 
@@ -23,8 +22,7 @@ module Api
         if label.update(label_params)
           head :no_content
         else
-          errors = label.errors.keys.map { |key| [key, label.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(label) }, status: :unprocessable_entity
         end
       end
 
