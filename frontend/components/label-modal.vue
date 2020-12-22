@@ -7,18 +7,7 @@
             <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
             </div>
-            <div v-if="custom_error" class="error">
-              <span class="error__icon">
-                <i class="fas fa-exclamation-triangle"></i>
-              </span>
-              <p class="error__text">{{ custom_error }}</p>
-              <div class="btn-case">
-                <div @click="toggleModal" class="btn btn--gray btn--sm error__btn">
-                  閉じる
-                </div>
-              </div>
-            </div>
-            <div v-else>
+            <div>
               <div class="form__group row">
                 <div class="col-3">
                   <div
@@ -99,8 +88,7 @@ export default {
         hex: defaultColor
       },
       displayColorPicker: "",
-      btnText: "",
-      custom_error: "",
+      btnText: ""
     };
   },
   components: {
@@ -109,16 +97,11 @@ export default {
   mixins: [Modal],
   methods: {
     setLabelValue(val) {
-      this.custom_error = "";
       this.toggleModal();
       this.label.id = val.id;
       this.label.label_title = val.title;
       this.colorPicker.hex = val.color || defaultColor;
       this.btnText = val ? "更新する" : "新規作成";
-    },
-    setError(error) {
-      this.custom_error = error;
-      this.toggleModal();
     },
     labelSubmit() {
       const label_params = {
