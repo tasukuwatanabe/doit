@@ -181,7 +181,7 @@ export default {
         });
     },
     toggleStatus(todo) {
-      axios.put(`/todos/${todo.id}/toggle_status`, todo);
+      axios.put(`/todos/${todo.id}/toggle_status`);
     }
   }
 };

@@ -10,17 +10,13 @@ module Api
 
       def create
         label = current_user.labels.build(label_params)
-        if label.save
-          head :no_content
-        else
+        unless label.save
           render json: { errors: format_errors(label) }, status: :unprocessable_entity
         end
       end
 
       def update
-        if @label.update(label_params)
-          head :no_content
-        else
+        unless @label.update(label_params)
           render json: { errors: format_errors(@label) }, status: :unprocessable_entity
         end
       end

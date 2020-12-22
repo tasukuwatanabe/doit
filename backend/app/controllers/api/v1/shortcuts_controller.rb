@@ -12,9 +12,7 @@ module Api
 
       def create
         shortcut = current_user.shortcuts.build(shortcut_params)
-        if shortcut.save
-          head :no_content
-        else
+        unless shortcut.save
           render json: { errors: format_errors(shortcut) }, status: :unprocessable_entity
         end
       end
