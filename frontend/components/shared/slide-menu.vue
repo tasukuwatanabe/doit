@@ -1,7 +1,6 @@
 <template>
   <div>
     <aside
-      v-if="userLoggedIn"
       id="slide-menu"
       class="slide-menu"
       :class="{ 'is-open': this.getToggleStatus }"
@@ -127,11 +126,10 @@ export default {
       getCurrentUser: "user/getCurrentUser",
       getToggleStatus: "slideMenu/getToggleStatus"
     }),
-    userLoggedIn() {
-      return this.$route.name !== ('password_resets_new' || 'password_resets_edit' || 'signup' || 'login')
-    },
     userImageWithNumber() {
-      return this.getCurrentUser.user_image + '?' + Math.random();
+      if (this.getCurrentUser.user_image) {
+        return this.getCurrentUser.user_image.url + '?' + Math.random();
+      }
     }
   },
   methods: {
