@@ -134,7 +134,6 @@ export default {
   methods: {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction",
-      cancelPendingRequests: "request/cancelPendingRequests",
       addLoadingCountAction: "loading/addLoadingCountAction",
       subtractLoadingCountAction: "loading/subtractLoadingCountAction"
     }),
@@ -143,7 +142,6 @@ export default {
     },
     fetchTodos(date) {
       this.addLoadingCountAction();
-      this.cancelPendingRequests();
       axios
         .get("/todos", { params: { date: date }})
         .then((res) => {
