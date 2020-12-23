@@ -60,26 +60,7 @@
               </router-link>
             </li>
           </ul>
-          <div class="sns-login">
-            <p class="sns-login__title">SNSで新規登録</p>
-            <ul class="sns-login__list">
-              <li class="sns-login__item">
-                <a href="/api/v1/auth/facebook" class="sns-icon sns-icon--facebook">
-                  <i class="fab fa-facebook-f"></i>
-                </a>
-              </li>
-              <li class="sns-login__item">
-                <a href="/api/v1/auth/twitter" class="sns-icon sns-icon--twitter">
-                  <i class="fab fa-twitter"></i>
-                </a>
-              </li>
-              <li class="sns-login__item">
-                <a href="/api/v1/auth/google_oauth2" class="sns-icon sns-icon--google">
-                  <i class="fab fa-google"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
+          <OmniauthLogin />
         </form>
       </div>
     </div>
@@ -89,7 +70,8 @@
 <script>
 import axios from "axios";
 import { mapActions } from "vuex";
-import GuestLogin from './guest-login.vue';
+import GuestLogin from './shared/guest-login.vue';
+import OmniauthLogin from './shared/omniauth-login.vue';
 
 export default {
   data() {
@@ -102,7 +84,8 @@ export default {
     };
   },
   components: {
-    GuestLogin
+    GuestLogin,
+    OmniauthLogin
   },
   methods: {
     ...mapActions({

@@ -1,8 +1,8 @@
 export default {
   methods: {
-    getServerHost() {
+    getUploadHost() {
       return process.env.NODE_ENV === 'production'
-        ? 'https://doit-app.com'
+        ? 'https://doit-image.s3-ap-northeast-1.amazonaws.com'
         : 'http://localhost:3000';
     },
   },

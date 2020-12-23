@@ -117,13 +117,13 @@
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import Logout from "../mixins/logout";
-import ServerHost from "../mixins/server_host";
+import UploadHost from "../mixins/upload_host";
 
 export default {
   created() {
     this.fetchUser();
   },
-  mixins: [Logout, ServerHost],
+  mixins: [Logout, UploadHost],
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser",
@@ -131,7 +131,7 @@ export default {
     }),
     userImageWithNumber() {
       if (this.getCurrentUser.user_image) {
-        return this.getServerHost() + this.getCurrentUser.user_image.url + '?' + Math.random();
+        return this.getUploadHost() + this.getCurrentUser.user_image.url + '?' + Math.random();
       }
     }
   },

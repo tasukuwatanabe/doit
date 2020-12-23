@@ -149,7 +149,7 @@
 import Vue from 'vue/dist/vue.esm.js'
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-import ServerHost from "./mixins/server_host";
+import UploadHost from "./mixins/upload_host";
 
 export default {
   data() {
@@ -168,7 +168,7 @@ export default {
       errors: ""
     };
   },
-  mixins: [ServerHost],
+  mixins: [UploadHost],
   created() {
     this.setUserData();
   },
@@ -191,7 +191,7 @@ export default {
     },
     userImageWithNumber() {
       if (this.user_image) {
-        return this.getServerHost() + this.user_image.url + '?' + Math.random();
+        return this.getUploadHost() + this.user_image.url + '?' + Math.random();
       }
     }
   },

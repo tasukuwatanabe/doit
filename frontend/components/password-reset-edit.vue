@@ -57,7 +57,7 @@
 <script>
 import axios from "axios";
 import { mapActions } from "vuex";
-import GuestLogin from './guest-login.vue';
+import GuestLogin from './shared/guest-login.vue';
 
 export default {
   data() {
