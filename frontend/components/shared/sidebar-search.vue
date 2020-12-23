@@ -8,7 +8,9 @@
       </div>
     </div>
     <div v-if="searchQuery" class="search__box">
-      <Loading v-if="loading" />
+      <div v-if="searchLoading" class="loading-case">
+        <div class="spinner-border"></div>
+      </div>
       <template v-else>
         <template v-if="searchResults.length">
           <div v-for="resultDate in resultDateArray" :key="resultDate">
@@ -19,7 +21,7 @@
               <div v-for="result in todoByDate(resultDate)"
                   @click="fetchDate(result.todo_date)" :key="result.id"
                   class="search__item">
-                <div :class="[ result.label_title ? 'search__title--with-label' : '' ]">
+                <div :class="{ 'search__title--with-label' : result.label_title }">
                   {{ result.title }}
                 </div>
                 <LabelItem :target-item="result" v-if="result.label_color" />
@@ -36,7 +38,6 @@
 <script>
 import axios from "axios";
 import moment from "../../modules/myMoment";
-import Loading from "./loading";
 import LabelItem from "../label-item";
 import { mapActions } from "vuex";
 
@@ -45,11 +46,10 @@ export default {
     return {
       searchResults: [],
       searchQuery: '',
-      loading: ''
+      searchLoading: false
     }
   },
   components: {
-    Loading,
     LabelItem
   },
   computed: {
@@ -85,12 +85,12 @@ export default {
       this.setSelectedDateAction(todo_date);
     },
     todoSearch() {
+      this.searchLoading = true;
       if (this.searchQuery.length === 0) {
-        this.loading = false;
+        this.searchLoading = false;
         return;
       }
       this.cancelPendingRequests();
-      this.loading = true;
       axios
         .get('/search', {
           params: {
@@ -98,15 +98,16 @@ export default {
           }
         })
         .then((res) => {
+          this.searchLoading = false;
           this.searchResults = res.data;
-          this.loading = false;
         }).catch(error => {
-          this.loading = false;
+          this.searchLoading = false;
           return error;
         });
     },
     resetSearchQuery() {
       this.searchQuery = '';
+      this.sendSearchStatus();
     }
   }
 }
@@ -114,13 +115,17 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../stylesheets/variables.scss";
-@import "../../stylesheets/mixin.scss";
 
 .loading-case {
-  @include loadingCase($width: 100%,
-                        $spWidth:100%,
-                        $height: 220px,
-                        $spHeight:200px)
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 220px;
+
+  @media (max-width: 991px) {
+    height: 200px;
+  }
 }
 
 .search {

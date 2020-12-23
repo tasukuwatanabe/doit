@@ -49,17 +49,17 @@
             <p class="sns-login__title">SNSでログイン</p>
             <ul class="sns-login__list">
               <li class="sns-login__item">
-                <a :href="getHost + '/api/v1/auth/facebook'" class="sns-icon sns-icon--facebook">
+                <a :href="this.getServerHost + '/api/v1/auth/facebook'" class="sns-icon sns-icon--facebook">
                   <i class="fab fa-facebook-f"></i>
                 </a>
               </li>
               <li class="sns-login__item">
-                <a :href="getHost + '/api/v1/auth/twitter'" class="sns-icon sns-icon--twitter">
+                <a :href="this.getServerHost + '/api/v1/auth/twitter'" class="sns-icon sns-icon--twitter">
                   <i class="fab fa-twitter"></i>
                 </a>
               </li>
               <li class="sns-login__item">
-                <a :href="getHost + '/api/v1/auth/google_oauth2'"  class="sns-icon sns-icon--google">
+                <a :href="this.getServerHost + '/api/v1/auth/google_oauth2'"  class="sns-icon sns-icon--google">
                   <i class="fab fa-google"></i>
                 </a>
               </li>
@@ -75,6 +75,7 @@
 import axios from "axios";
 import { mapActions } from "vuex";
 import GuestLogin from './guest-login.vue';
+import ServerHost from "./mixins/server_host";
 
 export default {
   data() {
@@ -87,21 +88,15 @@ export default {
   components: {
     GuestLogin
   },
-  computed: {
-    getHost() {
-      const host =
-        process.env.NODE_ENV === 'production'
-          ? 'https://doit-app.com'
-          : 'http://localhost:3000';
-      return host;
-    }
-  },
+  mixins: [ServerHost],
   methods: {
     ...mapActions({
-      logoutAction: "user/logoutAction",
-      setCurrentUserAction: "user/setCurrentUserAction"
+      setCurrentUserAction: "user/setCurrentUserAction",
+      addLoadingCountAction: "loading/addLoadingCountAction",
+      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
     }),
     submitLogin() {
+      this.addLoadingCountAction();
       const session_params = {
         email: this.email,
         password: this.password
@@ -109,6 +104,7 @@ export default {
       axios
         .post("/login", { session: session_params })
         .then((res) => {
+          this.subtractLoadingCountAction();
           this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
@@ -118,6 +114,7 @@ export default {
           });
         })
         .catch((error) => {
+          this.subtractLoadingCountAction();
           const base_error = error.response.data.errors.base;
           if (base_error) {
             this.flashMessage.error({

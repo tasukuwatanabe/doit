@@ -13,7 +13,7 @@ import PasswordResetNew from '../components/password-reset-new';
 import PasswordResetEdit from '../components/password-reset-edit';
 import NotFound from '../components/not-found';
 import store from '../store/index';
-import { cookieStatus, deleteCookie } from '../components/mixins/cookie';
+import { cookieStatus, deleteCookie } from '../modules/cookie';
 
 Vue.use(VueRouter);
 Vue.use(Vuex);

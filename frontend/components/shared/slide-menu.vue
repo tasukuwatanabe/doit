@@ -116,11 +116,14 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import Logout from "../mixins/logout";
+import ServerHost from "../mixins/server_host";
 
 export default {
   created() {
     this.fetchUser();
   },
+  mixins: [Logout, ServerHost],
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser",
@@ -128,43 +131,35 @@ export default {
     }),
     userImageWithNumber() {
       if (this.getCurrentUser.user_image) {
-        return this.getCurrentUser.user_image.url + '?' + Math.random();
+        return this.getServerHost() + this.getCurrentUser.user_image.url + '?' + Math.random();
       }
     }
   },
   methods: {
     ...mapActions({
       setToggleStatusAction: "slideMenu/setToggleStatusAction",
-      logoutAction: "user/logoutAction",
-      setCurrentUserAction: "user/setCurrentUserAction"
+      setCurrentUserAction: "user/setCurrentUserAction",
+      addLoadingCountAction: "loading/addLoadingCountAction",
+      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
     }),
     fetchUser() {
-      this.loading = true;
+      this.addLoadingCountAction();
       axios
         .get("/users/current")
         .then((res) => {
+          this.subtractLoadingCountAction();
           this.setCurrentUserAction(res.data);
-          this.loading = false;
         })
         .catch(error => {
-          this.loading = false;
-          if (error.response && error.response.status === 500) {
-            axios.delete("/logout").then(() => {
-              this.logoutAction();
-              this.$router.push({ name: "login" });
-              this.flashMessage.error({
-                title: "再度ログインしてください",
-                time: 5000,
-                icon: '/icons/error.svg',
-              });
-            });
-          }
+          this.subtractLoadingCountAction();
+          this.forceLogout(error);
         });
     },
     toggleSlide() {
       this.setToggleStatusAction();
     },
     logout() {
+      this.addLoadingCountAction();
       axios.delete("/logout").then((res) => {
         this.logoutAction();
         this.toggleSlide();
@@ -174,6 +169,7 @@ export default {
           time: 5000,
           icon: '/icons/success.svg',
         });
+        this.subtractLoadingCountAction();
       });
     }
   }

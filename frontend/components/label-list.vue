@@ -22,86 +22,73 @@
         </a>
       </div>
     </div>
-    <Loading v-if="loading" />
-    <template v-else>
-      <ul class="list" v-if="labels.length">
-        <li class="list__item" v-for="label in labels" :key="label.id">
-          <div class="list__block list__block--left">
-            <LabelItem :target-item="label" />
-          </div>
-          <div class="list__block list__block--right">
-            <div class="label-in-use">
-              {{ label.todo_count }}個のToDoで使用中
-            </div>
-            <div class="item-action">
-              <a @click="setLabel(label)" class="item-action__btn">
-                <i class="fas fa-pencil-alt"></i>
-              </a>
-              <a @click="deleteLabel(label)" class="item-action__btn">
-                <i class="fas fa-trash"></i>
-              </a>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div class="no-result no-result" v-else>
-        <div class="no-result__illustration">
-          <img src="../images/illustrations/il-mindmap.png" alt="目標達成のイラスト" />
+    <ul class="list" v-if="labels.length">
+      <li class="list__item" v-for="label in labels" :key="label.id">
+        <div class="list__block list__block--left">
+          <LabelItem :target-item="label" />
         </div>
+        <div class="list__block list__block--right">
+          <div class="label-in-use">
+            {{ label.todo_count }}個のToDoで使用中
+          </div>
+          <div class="item-action">
+            <a @click="setLabel(label)" class="item-action__btn">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+            <a @click="deleteLabel(label)" class="item-action__btn">
+              <i class="fas fa-trash"></i>
+            </a>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="no-result no-result" v-else>
+      <div class="no-result__illustration">
+        <img src="../images/illustrations/il-mindmap.png" alt="目標達成のイラスト" />
       </div>
-    </template>
+    </div>
     <LabelModal @fetch-labels="fetchLabels" ref="labelModal" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { mapActions } from "vuex";
 import LabelItem from "./label-item";
 import LabelModal from "./label-modal";
-import Loading from "./shared/loading";
-import { mapActions } from "vuex";
+import Logout from "./mixins/logout";
 
 export default {
   name: "LabelList",
   components: {
     LabelModal,
-    LabelItem,
-    Loading
+    LabelItem
   },
   data() {
     return {
-      labels: [],
-      loading: ''
+      labels: []
     };
   },
+  mixins: [Logout],
   created() {
-    this.loading = true;
     this.fetchLabels();
   },
   methods: {
     ...mapActions({
-      logoutAction: "user/logoutAction"
+      addLoadingCountAction: "loading/addLoadingCountAction",
+      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
     }),
     fetchLabels() {
+      this.addLoadingCountAction();
       axios
         .get("/labels")
         .then((res) => {
+          this.subtractLoadingCountAction();
           this.labels = res.data;
-          this.loading = false;
         })
         .catch(error => {
-          this.loading = false;
-          if (error.response && error.response.status === 500) {
-            axios.delete("/logout").then(() => {
-              this.logoutAction();
-              this.$router.push({ name: "login" });
-              this.flashMessage.error({
-                title: "再度ログインしてください",
-                time: 5000,
-                icon: '/icons/error.svg',
-              });
-            });
-          }
+          this.subtractLoadingCountAction();
+          this.forceLogout(error);
         });
     },
     setLabel(label) {
@@ -127,11 +114,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../stylesheets/mixin.scss";
-
-.loading-case {
-  @include loadingCase($spWidth:100%,
-                        $spHeight:200px)
-}
 
 .label-in-use {
   margin-left: 10px;

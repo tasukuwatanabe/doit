@@ -24,7 +24,7 @@ module Api
         user = User.find(params[:id])
 
         # プロフィール画像を初期化
-        user.update(sns_profile_image: nil) if user_params[:remove_user_image] == '1'
+        user.update(sns_profile_image: nil) if user_params[:remove_user_image] == "1"
 
         # パラメータ[:email]を取得
         new_email = user_params[:email]

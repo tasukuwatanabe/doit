@@ -91,6 +91,7 @@
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import Modal from "./mixins/modal";
+import Logout from "./mixins/logout";
 
 export default {
   data() {
@@ -100,7 +101,7 @@ export default {
       btnText: "",
     };
   },
-  mixins: [Modal],
+  mixins: [Modal, Logout],
   created() {
     this.fetchLabels();
   },
@@ -122,7 +123,8 @@ export default {
   methods: {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction",
-      logoutAction: "user/logoutAction"
+      addLoadingCountAction: "loading/addLoadingCountAction",
+      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
     }),
     fetchLabels() {
       axios
@@ -131,17 +133,7 @@ export default {
           this.labels = res.data;
         })
         .catch(error => {
-          if (error.response && error.response.status === 500) {
-            axios.delete("/logout").then(() => {
-              this.logoutAction();
-              this.$router.push({ name: "login" });
-              this.flashMessage.error({
-                title: "再度ログインしてください",
-                time: 5000,
-                icon: '/icons/error.svg',
-              });
-            });
-          }
+          this.forceLogout(error);
         });
     },
     setTodoValue(val) {
@@ -154,6 +146,8 @@ export default {
       this.btnText = val.id ? "更新する" : "新規作成";
     },
     todoSubmit() {
+      this.addLoadingCountAction();
+
       const label_arr = [];
       if (this.todo.label_id) {
         label_arr.push(this.todo.label_id);
@@ -172,10 +166,12 @@ export default {
           })
           .then(() => {
             this.toggleModal();
+            this.subtractLoadingCountAction();
             this.setSelectedDateAction(this.todo.todo_date);
             this.todo = {};
           })
           .catch((error) => {
+            this.subtractLoadingCountAction();
             this.errors = error.response.data.errors;
           });
       } else {
@@ -191,10 +187,12 @@ export default {
           })
           .then(() => {
             this.toggleModal();
+            this.subtractLoadingCountAction();
             this.setSelectedDateAction(this.todo.todo_date);
             this.todo = {};
           })
           .catch((error) => {
+            this.subtractLoadingCountAction();
             this.errors = error.response.data.errors;
           });
       }

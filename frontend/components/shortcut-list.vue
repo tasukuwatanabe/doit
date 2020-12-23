@@ -30,41 +30,38 @@
         </a>
       </div>
     </div>
-    <Loading v-if="loading" />
-    <template v-else>
-      <ul class="list" v-if="shortcuts.length">
-        <li
-          class="list__item"
-          v-for="shortcut in shortcuts"
-          :key="shortcut.id"
-        >
-          <div class="list__block list__block--left">
-            <div class="list__title" :class="[ shortcut.label_title ? 'list__title--with-label' : '' ]">
-              {{ shortcut.title }}
-            </div>
-            <LabelItem :target-item="shortcut" v-if="shortcut.label_color" />
+    <ul class="list" v-if="shortcuts.length">
+      <li
+        class="list__item"
+        v-for="shortcut in shortcuts"
+        :key="shortcut.id"
+      >
+        <div class="list__block list__block--left">
+          <div class="list__title" :class="{ 'list__title--with-label': shortcut.label_title }">
+            {{ shortcut.title }}
           </div>
-          <div class="list__block list__block--right">
-            <div class="item-action">
-              <a @click="setShortcut(shortcut)" class="item-action__btn">
-                <i class="fas fa-pencil-alt"></i>
-              </a>
-              <a @click="deleteShortcut(shortcut)" class="item-action__btn">
-                <i class="fas fa-trash"></i>
-              </a>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div class="no-result no-result" v-else>
-        <div class="no-result__illustration">
-          <img
-            src="../images/illustrations/il-navigation.png"
-            alt="チェックリストのイラスト"
-          />
+          <LabelItem :target-item="shortcut" v-if="shortcut.label_color" />
         </div>
+        <div class="list__block list__block--right">
+          <div class="item-action">
+            <a @click="setShortcut(shortcut)" class="item-action__btn">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+            <a @click="deleteShortcut(shortcut)" class="item-action__btn">
+              <i class="fas fa-trash"></i>
+            </a>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="no-result no-result" v-else>
+      <div class="no-result__illustration">
+        <img
+          src="../images/illustrations/il-navigation.png"
+          alt="チェックリストのイラスト"
+        />
       </div>
-    </template>
+    </div>
     <ShortcutModal
       @fetch-shortcuts="fetchShortcuts"
       ref="shortcutModal"
@@ -76,50 +73,40 @@
 import axios from "axios";
 import ShortcutModal from "./shortcut-modal";
 import LabelItem from "./label-item";
-import Loading from "./shared/loading";
 import { mapActions } from "vuex";
+import Logout from "./mixins/logout";
 
 export default {
   name: "Shortcut",
   components: {
     ShortcutModal,
-    LabelItem,
-    Loading
+    LabelItem
   },
   data() {
     return {
-      shortcuts: [],
-      loading: ''
+      shortcuts: []
     };
   },
+  mixins: [Logout],
   created() {
-    this.loading = true;
     this.fetchShortcuts();
   },
   methods: {
     ...mapActions({
-      logoutAction: "user/logoutAction"
+      addLoadingCountAction: "loading/addLoadingCountAction",
+      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
     }),
     fetchShortcuts() {
+      this.addLoadingCountAction();
       axios
         .get("/shortcuts")
         .then((res) => {
+          this.subtractLoadingCountAction();
           this.shortcuts = res.data;
-          this.loading = false;
         })
         .catch(error => {
-          this.loading = false;
-          if (error.response && error.response.status === 500) {
-            axios.delete("/logout").then(() => {
-              this.logoutAction();
-              this.$router.push({ name: "login" });
-              this.flashMessage.error({
-                title: "再度ログインしてください",
-                time: 5000,
-                icon: '/icons/error.svg',
-              });
-            });
-          }
+          this.subtractLoadingCountAction();
+          this.forceLogout(error);
         });
     },
     setShortcut(shortcut) {
@@ -142,12 +129,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "../stylesheets/mixin.scss";
-
-.loading-case {
-  @include loadingCase($spWidth:100%,
-                        $spHeight:200px)
-}
-</style>

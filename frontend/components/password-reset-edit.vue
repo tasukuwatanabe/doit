@@ -56,8 +56,8 @@
 
 <script>
 import axios from "axios";
-import GuestLogin from './guest-login.vue';
 import { mapActions } from "vuex";
+import GuestLogin from './guest-login.vue';
 
 export default {
   data() {
@@ -72,9 +72,12 @@ export default {
   },
   methods: {
     ...mapActions({
-      setCurrentUserAction: "user/setCurrentUserAction"
+      setCurrentUserAction: "user/setCurrentUserAction",
+      addLoadingCountAction: "loading/addLoadingCountAction",
+      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
     }),
     submitPasswordReset() {
+      this.addLoadingCountAction();
       const password_reset_params = {
         password: this.password,
         password_confirmation: this.password_confirmation
@@ -86,6 +89,7 @@ export default {
           email: this.$route.query.email
         })
         .then((res) => {
+          this.subtractLoadingCountAction();
           this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
@@ -95,6 +99,7 @@ export default {
           });
         })
         .catch((error) => {
+          this.subtractLoadingCountAction();
           this.errors = error.response.data.errors;
           if (error.response.data.message) {
             this.flashMessage.error({

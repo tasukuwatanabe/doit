@@ -11,8 +11,7 @@
         ログインに必要なパスワードを変更することができます。
       </p>
     </div>
-    <Loading v-if="loading" />
-    <form @submit.prevent="submitPassword" v-else class="form user-form">
+    <form @submit.prevent="submitPassword" class="form user-form">
       <div v-if="isGuest" class="form__group">
         <div class="guest-message">
           <i class="fas fa-exclamation-triangle"></i>
@@ -56,20 +55,15 @@
 
 <script>
 import axios from "axios";
-import { mapGetters } from "vuex";
-import Loading from "./shared/loading";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
     return {
       password: "",
       password_confirmation: "",
-      errors: "",
-      loading: ''
+      errors: ""
     };
-  },
-  components: {
-    Loading
   },
   computed: {
     ...mapGetters({
@@ -82,13 +76,18 @@ export default {
     },
   },
   methods: {
-    submitPassword() {
+    ...mapActions({
+      setCurrentUserAction: "user/setCurrentUserAction",
+      addLoadingCountAction: "loading/addLoadingCountAction",
+      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+    }),
+    async submitPassword() {
+      this.addLoadingCountAction();
       const password_params = {
         password: this.password,
         password_confirmation: this.password_confirmation
       };
-      this.loading = true;
-      axios
+      await axios
         .put(`/users/${this.getCurrentUser.id}/password`, {
           change_password_form: password_params
         })
@@ -101,22 +100,15 @@ export default {
           this.password = "";
           this.password_confirmation = "";
           this.errors = "";
-          this.loading = false;
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
-          this.loading = false;
         });
+      await axios.get("/users/current").then((res) => {
+        this.setCurrentUserAction(res.data);
+        this.subtractLoadingCountAction();
+      });
     }
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "../stylesheets/mixin.scss";
-
-.loading-case {
-  @include loadingCase($spWidth:100%,
-                        $spHeight:200px)
-}
-</style>
