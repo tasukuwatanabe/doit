@@ -7,8 +7,10 @@ Rails.application.routes.draw do
       get '/search', to: 'todos#search'
       resources :shortcuts, only: %i[index create update destroy]
       resources :labels, only: %i[index create update destroy]
-      get '/users/current', to: 'users#current'
       resources :users, only: %i[create update destroy] do
+        collection do
+          get :current, to: 'users#current'
+        end
         resource :password, only: %i[update]
       end
       post '/login', to: 'sessions#create'
