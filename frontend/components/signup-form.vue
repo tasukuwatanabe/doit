@@ -88,12 +88,7 @@ export default {
     OmniauthLogin
   },
   methods: {
-    ...mapActions({
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
-    }),
     submitRegister() {
-      this.addLoadingCountAction();
       const user_params = {
         username: this.username,
         email: this.email,
@@ -103,7 +98,6 @@ export default {
       axios
         .post("/users", { user: user_params })
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.$router.push({ name: "login" });
           this.flashMessage.success({
             title: res.data.message,
@@ -112,7 +106,6 @@ export default {
           });
         })
         .catch((error) => {
-          this.subtractLoadingCountAction();
           this.errors = error.response.data.errors;
         });
     }

@@ -77,12 +77,9 @@ export default {
   },
   methods: {
     ...mapActions({
-      setCurrentUserAction: "user/setCurrentUserAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setCurrentUserAction: "user/setCurrentUserAction"
     }),
     async submitPassword() {
-      this.addLoadingCountAction();
       const password_params = {
         password: this.password,
         password_confirmation: this.password_confirmation
@@ -106,7 +103,6 @@ export default {
         });
       await axios.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
-        this.subtractLoadingCountAction();
       });
     }
   }

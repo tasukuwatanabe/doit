@@ -5,12 +5,9 @@ export default {
   methods: {
     ...mapActions({
       logoutAction: 'user/logoutAction',
-      addLoadingCountAction: 'loading/addLoadingCountAction',
-      subtractLoadingCountAction: 'loading/subtractLoadingCountAction',
     }),
     forceLogout(error) {
       if (error.response && error.response.status === 500) {
-        this.addLoadingCountAction();
         axios.delete('/logout').then(() => {
           this.logoutAction();
           this.$router.push({ name: 'login' });
@@ -20,7 +17,6 @@ export default {
             icon: '/icons/error.svg',
           });
         });
-        this.subtractLoadingCountAction();
       }
     },
   },

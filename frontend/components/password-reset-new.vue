@@ -51,18 +51,12 @@ export default {
     GuestLogin
   },
   methods: {
-    ...mapActions({
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
-    }),
     submitPasswordReset() {
-      this.addLoadingCountAction();
       axios
         .post("/password_resets", {
           password_reset_form: { email: this.email }
         })
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.$router.push({ name: "login" });
           this.flashMessage.success({
             title: res.data.message,
@@ -71,7 +65,6 @@ export default {
           });
         })
         .catch((error) => {
-          this.subtractLoadingCountAction();
           this.errors = error.response.data.errors;
         });
     }

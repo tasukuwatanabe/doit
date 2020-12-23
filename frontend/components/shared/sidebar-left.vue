@@ -128,25 +128,19 @@ export default {
   },
   methods: {
     ...mapActions({
-      setCurrentUserAction: "user/setCurrentUserAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setCurrentUserAction: "user/setCurrentUserAction"
     }),
     fetchUser() {
-      this.addLoadingCountAction();
       axios
         .get("/users/current")
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.setCurrentUserAction(res.data);
         })
         .catch(error => {
-          this.subtractLoadingCountAction();
           this.forceLogout(error);
         });
     },
     logout() {
-      this.addLoadingCountAction();
       axios.delete("/logout").then((res) => {
         this.logoutAction();
         this.$router.push({ name: "login" });
@@ -155,7 +149,6 @@ export default {
           time: 5000,
           icon: '/icons/success.svg',
         });
-        this.subtractLoadingCountAction();
       });
     }
   }

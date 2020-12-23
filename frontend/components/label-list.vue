@@ -74,20 +74,13 @@ export default {
     this.fetchLabels();
   },
   methods: {
-    ...mapActions({
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
-    }),
     fetchLabels() {
-      this.addLoadingCountAction();
       axios
         .get("/labels")
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.labels = res.data;
         })
         .catch(error => {
-          this.subtractLoadingCountAction();
           this.forceLogout(error);
         });
     },

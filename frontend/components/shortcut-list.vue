@@ -92,20 +92,13 @@ export default {
     this.fetchShortcuts();
   },
   methods: {
-    ...mapActions({
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
-    }),
     fetchShortcuts() {
-      this.addLoadingCountAction();
       axios
         .get("/shortcuts")
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.shortcuts = res.data;
         })
         .catch(error => {
-          this.subtractLoadingCountAction();
           this.forceLogout(error);
         });
     },

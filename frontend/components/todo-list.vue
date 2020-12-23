@@ -133,23 +133,18 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchDate(date) {
       this.setSelectedDateAction(date);
     },
     fetchTodos(date) {
-      this.addLoadingCountAction();
       axios
         .get("/todos", { params: { date: date }})
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.todos = res.data;
         })
         .catch(error => {
-          this.subtractLoadingCountAction();
           this.forceLogout(error);
         });
     },

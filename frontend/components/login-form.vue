@@ -74,12 +74,9 @@ export default {
   mixins: [UploadHost],
   methods: {
     ...mapActions({
-      setCurrentUserAction: "user/setCurrentUserAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setCurrentUserAction: "user/setCurrentUserAction"
     }),
     submitLogin() {
-      this.addLoadingCountAction();
       const session_params = {
         email: this.email,
         password: this.password
@@ -87,7 +84,6 @@ export default {
       axios
         .post("/login", { session: session_params })
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
           this.flashMessage.success({
@@ -97,7 +93,6 @@ export default {
           });
         })
         .catch((error) => {
-          this.subtractLoadingCountAction();
           const base_error = error.response.data.errors.base;
           if (base_error) {
             this.flashMessage.error({

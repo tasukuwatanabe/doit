@@ -197,9 +197,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      setCurrentUserAction: "user/setCurrentUserAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setCurrentUserAction: "user/setCurrentUserAction"
     }),
     setUserData() {
       this.id = this.getCurrentUser.id;
@@ -213,7 +211,6 @@ export default {
       this.auto_generated_password = this.getCurrentUser.auto_generated_password;
     },
     async cancelEmailConfirmation() {
-      this.addLoadingCountAction();
       await axios.delete(`/email_confirmations/${this.id}`).then((res) => {
         this.flashMessage.success({
           title: res.data.message,
@@ -223,7 +220,6 @@ export default {
       });
       await axios.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
-        this.subtractLoadingCountAction();
       });
     },
     onImageUpload: function (e) {
@@ -249,11 +245,9 @@ export default {
         formData.append("user[user_image]", this.file);
       }
 
-      this.addLoadingCountAction();
       axios
         .put(`/users/${this.id}`, formData)
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.$refs.file.value = '';
           this.file = '';
           this.remove_user_image = "0";
@@ -265,12 +259,10 @@ export default {
           });
         })
         .catch((error) => {
-          this.subtractLoadingCountAction();
           this.errors = error.response.data.errors;
         });
     },
     async cancelOauth(provider) {
-      this.addLoadingCountAction();
       await axios.delete("/auth/" + provider).then((res) => {
           this.flashMessage.success({
             title: res.data.message,
@@ -280,19 +272,16 @@ export default {
         });
       await axios.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
-        this.subtractLoadingCountAction();
       });
     },
     accountCancel() {
       if (this.isGuest) {
         return;
       }
-      this.addLoadingCountAction();
       axios
         .delete(`/users/${this.id}`)
         .then((res) => {
           this.setCurrentUserAction("");
-          this.subtractLoadingCountAction();
           this.$router.push({ name: "login" });
           this.flashMessage.success({
             title: res.data.message,

@@ -122,9 +122,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchLabels() {
       axios
@@ -146,7 +144,6 @@ export default {
       this.btnText = val.id ? "更新する" : "新規作成";
     },
     todoSubmit() {
-      this.addLoadingCountAction();
 
       const label_arr = [];
       if (this.todo.label_id) {
@@ -166,12 +163,10 @@ export default {
           })
           .then(() => {
             this.toggleModal();
-            this.subtractLoadingCountAction();
             this.setSelectedDateAction(this.todo.todo_date);
             this.todo = {};
           })
           .catch((error) => {
-            this.subtractLoadingCountAction();
             this.errors = error.response.data.errors;
           });
       } else {
@@ -187,12 +182,10 @@ export default {
           })
           .then(() => {
             this.toggleModal();
-            this.subtractLoadingCountAction();
             this.setSelectedDateAction(this.todo.todo_date);
             this.todo = {};
           })
           .catch((error) => {
-            this.subtractLoadingCountAction();
             this.errors = error.response.data.errors;
           });
       }

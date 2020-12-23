@@ -61,24 +61,18 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchShortcut() {
-      this.addLoadingCountAction();
       axios
         .get("/shortcuts")
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.shortcuts = res.data;
         }).catch(error => {
-          this.subtractLoadingCountAction();
           this.forceLogout(error);
         });
     },
     createTodo(shortcut) {
-      this.addLoadingCountAction();
       const label_arr = [];
       label_arr.push(shortcut.label_id);
       axios.post("/todos", {
@@ -88,7 +82,6 @@ export default {
           label_ids: label_arr
         }
       }).then(() => {
-        this.subtractLoadingCountAction();
         this.setSelectedDateAction(this.getSelectedDate);
       });
     }
