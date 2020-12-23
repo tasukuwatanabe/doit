@@ -16,13 +16,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
 
   def default_url(*_args)
-    default_image_path = "/user_icons/default.jpg"
-
-    if Rails.env.production?
-      "https://doit-image.s3-ap-northeast-1.amazonaws.com/" + default_image_path
-    else
-      default_image_path
-    end
+    "/user_icons/default.jpg"
   end
 
   process resize_to_fill: [300, 300]

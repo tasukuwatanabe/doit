@@ -8,10 +8,12 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axiosForBackend from 'axios';
 import { mapActions } from 'vuex';
+import Flash from "../mixins/flash";
 
 export default {
+  mixins: [Flash],
   methods: {
     ...mapActions({
       setCurrentUserAction: 'user/setCurrentUserAction',
@@ -20,23 +22,16 @@ export default {
       const session_params = {
         email: 'guest@example.com',
       };
-      axios
+      axiosForBackend
         .post('/login', { session: session_params })
         .then((res) => {
           this.setCurrentUserAction(res.data);
           this.$router.push({ name: 'todos' });
-          this.flashMessage.success({
-            title: "ゲストユーザーでログインしました",
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
+          const message = "ゲストユーザーでログインしました。"
+          this.generateFlash('success', message);
         })
         .catch((error) => {
-          this.flashMessage.error({
-            title: error.message,
-            time: 5000,
-            icon: '/icons/error.svg',
-          });
+          this.generateFlash('error', error.message);
         });
     },
   },

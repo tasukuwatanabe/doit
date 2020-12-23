@@ -55,9 +55,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { mapActions } from "vuex";
-import GuestLogin from './guest-login.vue';
+import GuestLogin from './shared/guest-login.vue';
+import Flash from "./mixins/flash";
 
 export default {
   data() {
@@ -67,45 +68,34 @@ export default {
       errors: ""
     };
   },
+  mixins: [Flash],
   components: {
     GuestLogin
   },
   methods: {
     ...mapActions({
-      setCurrentUserAction: "user/setCurrentUserAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setCurrentUserAction: "user/setCurrentUserAction"
     }),
     submitPasswordReset() {
-      this.addLoadingCountAction();
       const password_reset_params = {
         password: this.password,
         password_confirmation: this.password_confirmation
       };
 
-      axios
+      axiosForBackend
         .put(`/password_resets/${this.$route.params.id}`, {
           user: password_reset_params,
           email: this.$route.query.email
         })
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
+          this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
-          this.subtractLoadingCountAction();
           this.errors = error.response.data.errors;
           if (error.response.data.message) {
-            this.flashMessage.error({
-              title: error.response.data.message,
-              icon: '/icons/error.svg',
-            });
+            this.generateFlash('error', error.response.data.message);
             this.$router.push({ name: 'password_resets_new' })
           }
         });

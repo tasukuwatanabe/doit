@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import Modal from "./mixins/modal";
 
 export default {
@@ -78,7 +78,7 @@ export default {
   mixins: [Modal],
   methods: {
     fetchLabels() {
-      axios
+      axiosForBackend
         .get("/labels")
         .then((res) => {
           this.labels = res.data;
@@ -96,7 +96,7 @@ export default {
     },
     shortcutSubmit() {
       if (this.shortcut.id) {
-        axios
+        axiosForBackend
           .put(`/shortcuts/${this.shortcut.id}`, {
             shortcut: {
               title: this.shortcut.title,
@@ -112,7 +112,7 @@ export default {
             this.errors = error.response.data.errors;
           });
       } else {
-        axios
+        axiosForBackend
           .post("/shortcuts", {
             shortcut: {
               title: this.shortcut.title,

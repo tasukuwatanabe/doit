@@ -147,9 +147,10 @@
 
 <script>
 import Vue from 'vue/dist/vue.esm.js'
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
-import ServerHost from "./mixins/server_host";
+import UploadHost from "./mixins/upload_host";
+import Flash from "./mixins/flash";
 
 export default {
   data() {
@@ -168,7 +169,7 @@ export default {
       errors: ""
     };
   },
-  mixins: [ServerHost],
+  mixins: [UploadHost, Flash],
   created() {
     this.setUserData();
   },
@@ -191,15 +192,13 @@ export default {
     },
     userImageWithNumber() {
       if (this.user_image) {
-        return this.getServerHost() + this.user_image.url + '?' + Math.random();
+        return this.getUploadHost() + this.user_image.url + '?' + Math.random();
       }
     }
   },
   methods: {
     ...mapActions({
-      setCurrentUserAction: "user/setCurrentUserAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setCurrentUserAction: "user/setCurrentUserAction"
     }),
     setUserData() {
       this.id = this.getCurrentUser.id;
@@ -213,17 +212,11 @@ export default {
       this.auto_generated_password = this.getCurrentUser.auto_generated_password;
     },
     async cancelEmailConfirmation() {
-      this.addLoadingCountAction();
-      await axios.delete(`/email_confirmations/${this.id}`).then((res) => {
-        this.flashMessage.success({
-          title: res.data.message,
-          time: 5000,
-          icon: '/icons/success.svg',
-        });
+      await axiosForBackend.delete(`/email_confirmations/${this.id}`).then((res) => {
+        this.generateFlash('success', res.data.message);
       });
-      await axios.get("/users/current").then((res) => {
+      await axiosForBackend.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
-        this.subtractLoadingCountAction();
       });
     },
     onImageUpload: function (e) {
@@ -249,56 +242,37 @@ export default {
         formData.append("user[user_image]", this.file);
       }
 
-      this.addLoadingCountAction();
-      axios
+      axiosForBackend
         .put(`/users/${this.id}`, formData)
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.$refs.file.value = '';
           this.file = '';
           this.remove_user_image = "0";
           this.setCurrentUserAction(res.data.user);
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
+          this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
-          this.subtractLoadingCountAction();
           this.errors = error.response.data.errors;
         });
     },
     async cancelOauth(provider) {
-      this.addLoadingCountAction();
-      await axios.delete("/auth/" + provider).then((res) => {
-          this.flashMessage.success({
-            title: res.data.message,
-          time: 5000,
-            icon: '/icons/success.svg',
-          });
-        });
-      await axios.get("/users/current").then((res) => {
+      await axiosForBackend.delete("/auth/" + provider).then((res) => {
+        this.generateFlash('error', res.data.message);
+      });
+      await axiosForBackend.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
-        this.subtractLoadingCountAction();
       });
     },
     accountCancel() {
       if (this.isGuest) {
         return;
       }
-      this.addLoadingCountAction();
-      axios
+      axiosForBackend
         .delete(`/users/${this.id}`)
         .then((res) => {
           this.setCurrentUserAction("");
-          this.subtractLoadingCountAction();
           this.$router.push({ name: "login" });
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
+          this.generateFlash('success', res.data.message);
       });
     }
   }

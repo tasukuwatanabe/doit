@@ -100,16 +100,17 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Logout from "../mixins/logout";
-import ServerHost from "../mixins/server_host";
+import UploadHost from "../mixins/upload_host";
+import Flash from "../mixins/flash";
 
 export default {
   created() {
     this.fetchUser();
   },
-  mixins: [Logout, ServerHost],
+  mixins: [Logout, UploadHost, Flash],
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
@@ -122,41 +123,33 @@ export default {
     },
     userImageWithNumber() {
       if (this.getCurrentUser.user_image) {
-        return this.getServerHost() + this.getCurrentUser.user_image.url + '?' + Math.random();
+        return this.getUploadHost() + this.getCurrentUser.user_image.url + '?' + Math.random();
       }
     }
   },
   methods: {
     ...mapActions({
-      setCurrentUserAction: "user/setCurrentUserAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      logoutAction: 'user/logoutAction',
+      setCurrentUserAction: "user/setCurrentUserAction"
     }),
     fetchUser() {
-      this.addLoadingCountAction();
-      axios
+      axiosForBackend
         .get("/users/current")
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.setCurrentUserAction(res.data);
         })
         .catch(error => {
-          this.subtractLoadingCountAction();
           this.forceLogout(error);
         });
     },
     logout() {
-      this.addLoadingCountAction();
-      axios.delete("/logout").then((res) => {
-        this.logoutAction();
-        this.$router.push({ name: "login" });
-        this.flashMessage.success({
-          title: res.data.message,
-          time: 5000,
-          icon: '/icons/success.svg',
+      axiosForBackend
+        .delete("/logout")
+        .then((res) => {
+          this.logoutAction();
+          this.$router.push({ name: "login" });
+          this.generateFlash('success', res.data.message);
         });
-        this.subtractLoadingCountAction();
-      });
     }
   }
 };

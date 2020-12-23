@@ -52,11 +52,12 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { mapActions } from "vuex";
 import LabelItem from "./label-item";
 import LabelModal from "./label-modal";
 import Logout from "./mixins/logout";
+import Flash from "./mixins/flash";
 
 export default {
   name: "LabelList",
@@ -69,44 +70,35 @@ export default {
       labels: []
     };
   },
-  mixins: [Logout],
+  mixins: [Logout, Flash],
   created() {
     this.fetchLabels();
   },
   methods: {
-    ...mapActions({
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
-    }),
     fetchLabels() {
-      this.addLoadingCountAction();
-      axios
+      axiosForBackend
         .get("/labels")
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.labels = res.data;
         })
         .catch(error => {
-          this.subtractLoadingCountAction();
           this.forceLogout(error);
         });
     },
     setLabel(label) {
       if (this.labels.length >= 10 && !label.id) {
-        this.flashMessage.error({
-          title: "ラベルが登録できるのは10個までです",
-          time: 5000,
-          icon: '/icons/error.svg',
-        });
+        const message = "ラベルが登録できるのは10個までです";
+        this.generateFlash('error', message);
       } else {
         this.$refs.labelModal.setLabelValue(label);
       }
     },
     deleteLabel(label) {
-      axios.delete(`/labels/${label.id}`)
-            .then(() => {
-              this.fetchLabels();
-            });
+      axiosForBackend
+        .delete(`/labels/${label.id}`)
+        .then(() => {
+          this.fetchLabels();
+        });
     }
   }
 };

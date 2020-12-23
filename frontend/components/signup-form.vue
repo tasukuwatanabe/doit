@@ -60,26 +60,7 @@
               </router-link>
             </li>
           </ul>
-          <div class="sns-login">
-            <p class="sns-login__title">SNSで新規登録</p>
-            <ul class="sns-login__list">
-              <li class="sns-login__item">
-                <a href="/api/v1/auth/facebook" class="sns-icon sns-icon--facebook">
-                  <i class="fab fa-facebook-f"></i>
-                </a>
-              </li>
-              <li class="sns-login__item">
-                <a href="/api/v1/auth/twitter" class="sns-icon sns-icon--twitter">
-                  <i class="fab fa-twitter"></i>
-                </a>
-              </li>
-              <li class="sns-login__item">
-                <a href="/api/v1/auth/google_oauth2" class="sns-icon sns-icon--google">
-                  <i class="fab fa-google"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
+          <OmniauthLogin />
         </form>
       </div>
     </div>
@@ -87,9 +68,11 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { mapActions } from "vuex";
-import GuestLogin from './guest-login.vue';
+import GuestLogin from './shared/guest-login.vue';
+import OmniauthLogin from './shared/omniauth-login.vue';
+import Flash from "./mixins/flash";
 
 export default {
   data() {
@@ -101,35 +84,26 @@ export default {
       errors: ""
     };
   },
+  mixins: [Flash],
   components: {
-    GuestLogin
+    GuestLogin,
+    OmniauthLogin
   },
   methods: {
-    ...mapActions({
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
-    }),
     submitRegister() {
-      this.addLoadingCountAction();
       const user_params = {
         username: this.username,
         email: this.email,
         password: this.password,
         password_confirmation: this.password_confirmation
       };
-      axios
+      axiosForBackend
         .post("/users", { user: user_params })
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.$router.push({ name: "login" });
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
+          this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
-          this.subtractLoadingCountAction();
           this.errors = error.response.data.errors;
         });
     }

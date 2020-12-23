@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { Compact } from "vue-color";
 import Modal from "./mixins/modal";
 
@@ -106,7 +106,7 @@ export default {
         color: this.colorPicker.hex
       };
       if (this.label.id) {
-        axios
+        axiosForBackend
           .put(`/labels/${this.label.id}`, { label: label_params })
           .then(() => {
             this.label = {};
@@ -117,7 +117,7 @@ export default {
             this.errors = error.response.data.errors;
           });
       } else {
-        axios
+        axiosForBackend
           .post("/labels", { label: label_params })
           .then(() => {
             this.label = {};

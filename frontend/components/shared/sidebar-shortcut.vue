@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Logout from "../mixins/logout";
 
@@ -61,34 +61,27 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchShortcut() {
-      this.addLoadingCountAction();
-      axios
+      axiosForBackend
         .get("/shortcuts")
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.shortcuts = res.data;
         }).catch(error => {
-          this.subtractLoadingCountAction();
           this.forceLogout(error);
         });
     },
     createTodo(shortcut) {
-      this.addLoadingCountAction();
       const label_arr = [];
       label_arr.push(shortcut.label_id);
-      axios.post("/todos", {
+      axiosForBackend.post("/todos", {
         todo: {
           title: shortcut.title,
           todo_date: this.getSelectedDate,
           label_ids: label_arr
         }
       }).then(() => {
-        this.subtractLoadingCountAction();
         this.setSelectedDateAction(this.getSelectedDate);
       });
     }

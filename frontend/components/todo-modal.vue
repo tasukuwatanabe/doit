@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Modal from "./mixins/modal";
 import Logout from "./mixins/logout";
@@ -122,12 +122,10 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchLabels() {
-      axios
+      axiosForBackend
         .get("/labels")
         .then((res) => {
           this.labels = res.data;
@@ -146,7 +144,6 @@ export default {
       this.btnText = val.id ? "更新する" : "新規作成";
     },
     todoSubmit() {
-      this.addLoadingCountAction();
 
       const label_arr = [];
       if (this.todo.label_id) {
@@ -154,7 +151,7 @@ export default {
       }
 
       if (this.todo.id) {
-        axios
+        axiosForBackend
           .put(`/todos/${this.todo.id}`, { 
             todo: {
               title: this.todo.title,
@@ -166,16 +163,14 @@ export default {
           })
           .then(() => {
             this.toggleModal();
-            this.subtractLoadingCountAction();
             this.setSelectedDateAction(this.todo.todo_date);
             this.todo = {};
           })
           .catch((error) => {
-            this.subtractLoadingCountAction();
             this.errors = error.response.data.errors;
           });
       } else {
-        axios
+        axiosForBackend
           .post("/todos", {
             todo: {
               title: this.todo.title,
@@ -187,12 +182,10 @@ export default {
           })
           .then(() => {
             this.toggleModal();
-            this.subtractLoadingCountAction();
             this.setSelectedDateAction(this.todo.todo_date);
             this.todo = {};
           })
           .catch((error) => {
-            this.subtractLoadingCountAction();
             this.errors = error.response.data.errors;
           });
       }

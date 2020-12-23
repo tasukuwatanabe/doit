@@ -75,8 +75,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction",
-      cancelPendingRequests: "request/cancelPendingRequests"
+      setSelectedDateAction: "date/setSelectedDateAction"
     }),
     sendSearchStatus() {
       this.$emit("search-status", this.searchQuery);
@@ -86,11 +85,12 @@ export default {
     },
     todoSearch() {
       this.searchLoading = true;
+
       if (this.searchQuery.length === 0) {
         this.searchLoading = false;
         return;
       }
-      this.cancelPendingRequests();
+
       axios
         .get('/search', {
           params: {

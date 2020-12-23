@@ -19,19 +19,9 @@ const mutations = {
   },
 };
 
-const actions = {
-  addLoadingCountAction({ commit }) {
-    commit('addLoadingCount');
-  },
-  subtractLoadingCountAction({ commit }) {
-    commit('subtractLoadingCount');
-  },
-};
-
 export default {
   namespaced,
   state,
   mutations,
-  actions,
   getters,
 };

@@ -54,8 +54,9 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
+import Flash from "./mixins/flash";
 
 export default {
   data() {
@@ -65,6 +66,7 @@ export default {
       errors: ""
     };
   },
+  mixins: [Flash],
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser",
@@ -77,26 +79,19 @@ export default {
   },
   methods: {
     ...mapActions({
-      setCurrentUserAction: "user/setCurrentUserAction",
-      addLoadingCountAction: "loading/addLoadingCountAction",
-      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
+      setCurrentUserAction: "user/setCurrentUserAction"
     }),
     async submitPassword() {
-      this.addLoadingCountAction();
       const password_params = {
         password: this.password,
         password_confirmation: this.password_confirmation
       };
-      await axios
+      await axiosForBackend
         .put(`/users/${this.getCurrentUser.id}/password`, {
           change_password_form: password_params
         })
         .then((res) => {
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
+          this.generateFlash('success', res.data.message);
           this.password = "";
           this.password_confirmation = "";
           this.errors = "";
@@ -104,9 +99,8 @@ export default {
         .catch((error) => {
           this.errors = error.response.data.errors;
         });
-      await axios.get("/users/current").then((res) => {
+      await axiosForBackend.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
-        this.subtractLoadingCountAction();
       });
     }
   }
