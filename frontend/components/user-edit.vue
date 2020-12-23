@@ -165,8 +165,7 @@ export default {
       unconfirmed_email: "",
       auto_generated_password: "",
       remove_user_image: "",
-      errors: "",
-      message: ""
+      errors: ""
     };
   },
   mixins: [ServerHost],
@@ -187,7 +186,7 @@ export default {
     },
     hasUserImage() {
       if (this.user_image) {
-        return this.user_image.url.includes('default.jpg');
+        return this.user_image.url === '/user_icons/default.jpg';
       }
     },
     userImageWithNumber() {
@@ -203,18 +202,15 @@ export default {
       subtractLoadingCountAction: "loading/subtractLoadingCountAction"
     }),
     setUserData() {
-      if (this.getCurrentUser != null) {
-        this.id = this.getCurrentUser.id;
-        this.username = this.getCurrentUser.username;
-        this.email = this.getCurrentUser.email;
-        this.user_image = this.getCurrentUser.user_image;
-        this.facebook_uid = this.getCurrentUser.facebook_uid;
-        this.twitter_uid = this.getCurrentUser.twitter_uid;
-        this.google_uid = this.getCurrentUser.google_uid;
-        this.unconfirmed_email = this.getCurrentUser.unconfirmed_email;
-        this.auto_generated_password = this.getCurrentUser.auto_generated_password;
-        this.remove_user_image = this.getCurrentUser.remove_user_image;
-      }
+      this.id = this.getCurrentUser.id;
+      this.username = this.getCurrentUser.username;
+      this.email = this.getCurrentUser.email;
+      this.user_image = this.getCurrentUser.user_image;
+      this.facebook_uid = this.getCurrentUser.facebook_uid;
+      this.twitter_uid = this.getCurrentUser.twitter_uid;
+      this.google_uid = this.getCurrentUser.google_uid;
+      this.unconfirmed_email = this.getCurrentUser.unconfirmed_email;
+      this.auto_generated_password = this.getCurrentUser.auto_generated_password;
     },
     async cancelEmailConfirmation() {
       this.addLoadingCountAction();
@@ -249,20 +245,18 @@ export default {
       if (this.remove_user_image === "1") {
         formData.append("user[remove_user_image]", this.remove_user_image);
       }
-      if (this.file != undefined) {
+      if (this.file) {
         formData.append("user[user_image]", this.file);
       }
 
       this.addLoadingCountAction();
       axios
-        .put(`/users/${this.id}`, formData, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
+        .put(`/users/${this.id}`, formData)
         .then((res) => {
           this.subtractLoadingCountAction();
-          this.$refs.file.value = null;
+          this.$refs.file.value = '';
+          this.file = '';
+          this.remove_user_image = "0";
           this.setCurrentUserAction(res.data.user);
           this.flashMessage.success({
             title: res.data.message,
