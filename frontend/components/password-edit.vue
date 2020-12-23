@@ -77,21 +77,21 @@ export default {
   },
   methods: {
     ...mapActions({
+      setCurrentUserAction: "user/setCurrentUserAction",
       addLoadingCountAction: "loading/addLoadingCountAction",
       subtractLoadingCountAction: "loading/subtractLoadingCountAction"
     }),
-    submitPassword() {
+    async submitPassword() {
       this.addLoadingCountAction();
       const password_params = {
         password: this.password,
         password_confirmation: this.password_confirmation
       };
-      axios
+      await axios
         .put(`/users/${this.getCurrentUser.id}/password`, {
           change_password_form: password_params
         })
         .then((res) => {
-          this.subtractLoadingCountAction();
           this.flashMessage.success({
             title: res.data.message,
             time: 5000,
@@ -102,9 +102,12 @@ export default {
           this.errors = "";
         })
         .catch((error) => {
-          this.subtractLoadingCountAction();
           this.errors = error.response.data.errors;
         });
+      await axios.get("/users/current").then((res) => {
+        this.setCurrentUserAction(res.data);
+        this.subtractLoadingCountAction();
+      });
     }
   }
 };

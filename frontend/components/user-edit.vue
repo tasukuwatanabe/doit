@@ -149,6 +149,7 @@
 import Vue from 'vue/dist/vue.esm.js'
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import ServerHost from "./mixins/server_host";
 
 export default {
   data() {
@@ -168,6 +169,7 @@ export default {
       message: ""
     };
   },
+  mixins: [ServerHost],
   created() {
     this.setUserData();
   },
@@ -185,12 +187,12 @@ export default {
     },
     hasUserImage() {
       if (this.user_image) {
-        return this.user_image.url.includes('user_icons/default.jpg');
+        return this.user_image.url.includes('default.jpg');
       }
     },
     userImageWithNumber() {
       if (this.user_image) {
-        return this.user_image.url + '?' + Math.random();
+        return this.getServerHost() + this.user_image.url + '?' + Math.random();
       }
     }
   },
@@ -215,6 +217,7 @@ export default {
       }
     },
     async cancelEmailConfirmation() {
+      this.addLoadingCountAction();
       await axios.delete(`/email_confirmations/${this.id}`).then((res) => {
         this.flashMessage.success({
           title: res.data.message,
@@ -224,6 +227,7 @@ export default {
       });
       await axios.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
+        this.subtractLoadingCountAction();
       });
     },
     onImageUpload: function (e) {
@@ -272,6 +276,7 @@ export default {
         });
     },
     async cancelOauth(provider) {
+      this.addLoadingCountAction();
       await axios.delete("/auth/" + provider).then((res) => {
           this.flashMessage.success({
             title: res.data.message,
@@ -281,16 +286,19 @@ export default {
         });
       await axios.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
+        this.subtractLoadingCountAction();
       });
     },
     accountCancel() {
       if (this.isGuest) {
         return;
       }
+      this.addLoadingCountAction();
       axios
         .delete(`/users/${this.id}`)
         .then((res) => {
           this.setCurrentUserAction("");
+          this.subtractLoadingCountAction();
           this.$router.push({ name: "login" });
           this.flashMessage.success({
             title: res.data.message,
