@@ -144,7 +144,6 @@ export default {
       this.btnText = val.id ? "更新する" : "新規作成";
     },
     todoSubmit() {
-
       const label_arr = [];
       if (this.todo.label_id) {
         label_arr.push(this.todo.label_id);

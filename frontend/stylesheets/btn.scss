@@ -34,6 +34,17 @@
     }
   }
 
+  &--red {
+    color: #fff !important;
+    background-color: $color-red;
+    outline: 2px solid $color-red;
+    
+    &:hover {
+      color: $color-red !important;
+      background-color: #fff;
+    }
+  }
+
   &--gray {
     color: #999;
     background-color: #dfdfdf;
