@@ -85,10 +85,12 @@ export default {
     },
     todoSearch() {
       this.searchLoading = true;
+
       if (this.searchQuery.length === 0) {
         this.searchLoading = false;
         return;
       }
+
       axios
         .get('/search', {
           params: {

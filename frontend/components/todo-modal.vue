@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Modal from "./mixins/modal";
 import Logout from "./mixins/logout";
@@ -125,7 +125,7 @@ export default {
       setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchLabels() {
-      axios
+      axiosForBackend
         .get("/labels")
         .then((res) => {
           this.labels = res.data;
@@ -151,7 +151,7 @@ export default {
       }
 
       if (this.todo.id) {
-        axios
+        axiosForBackend
           .put(`/todos/${this.todo.id}`, { 
             todo: {
               title: this.todo.title,
@@ -170,7 +170,7 @@ export default {
             this.errors = error.response.data.errors;
           });
       } else {
-        axios
+        axiosForBackend
           .post("/todos", {
             todo: {
               title: this.todo.title,

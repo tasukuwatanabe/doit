@@ -70,11 +70,12 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import ShortcutModal from "./shortcut-modal";
 import LabelItem from "./label-item";
 import { mapActions } from "vuex";
 import Logout from "./mixins/logout";
+import Flash from "./mixins/flash";
 
 export default {
   name: "Shortcut",
@@ -87,13 +88,13 @@ export default {
       shortcuts: []
     };
   },
-  mixins: [Logout],
+  mixins: [Logout, Flash],
   created() {
     this.fetchShortcuts();
   },
   methods: {
     fetchShortcuts() {
-      axios
+      axiosForBackend
         .get("/shortcuts")
         .then((res) => {
           this.shortcuts = res.data;
@@ -104,17 +105,14 @@ export default {
     },
     setShortcut(shortcut) {
       if (this.shortcuts.length >= 10 && !shortcut.id) {
-        this.flashMessage.error({
-          title: "ショートカットが登録できるのは10個までです",
-          time: 5000,
-          icon: '/icons/error.svg',
-        });
+        const message = "ショートカットが登録できるのは10個までです"
+        this.generateFlash('error', message);
       } else {
         this.$refs.shortcutModal.setShortcutValue(shortcut);
       }
     },
     deleteShortcut(shortcut) {
-      axios.delete(`/shortcuts/${shortcut.id}`)
+      axiosForBackend.delete(`/shortcuts/${shortcut.id}`)
             .then(() => {
               this.fetchShortcuts();
             });

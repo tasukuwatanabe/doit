@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import TodoModal from "./todo-modal";
 import LabelItem from "./label-item";
@@ -139,7 +139,7 @@ export default {
       this.setSelectedDateAction(date);
     },
     fetchTodos(date) {
-      axios
+      axiosForBackend
         .get("/todos", { params: { date: date }})
         .then((res) => {
           this.todos = res.data;
@@ -152,7 +152,7 @@ export default {
       this.$refs.todoModal.setTodoValue(todo);
     },
     deleteTodo(todo) {
-      axios
+      axiosForBackend
         .delete(`/todos/${todo.id}`)
         .then(() => {
           this.fetchTodos(this.getSelectedDate);

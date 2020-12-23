@@ -53,11 +53,12 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { mapActions } from "vuex";
 import GuestLogin from './shared/guest-login.vue';
 import OmniauthLogin from './shared/omniauth-login.vue';
 import UploadHost from "./mixins/upload_host";
+import Flash from "./mixins/flash";
 
 export default {
   data() {
@@ -71,7 +72,7 @@ export default {
     GuestLogin,
     OmniauthLogin
   },
-  mixins: [UploadHost],
+  mixins: [UploadHost, Flash],
   methods: {
     ...mapActions({
       setCurrentUserAction: "user/setCurrentUserAction"
@@ -81,25 +82,17 @@ export default {
         email: this.email,
         password: this.password
       };
-      axios
+      axiosForBackend
         .post("/login", { session: session_params })
         .then((res) => {
           this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg'
-          });
+          this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
           const base_error = error.response.data.errors.base;
           if (base_error) {
-            this.flashMessage.error({
-              title: base_error,
-              time: 5000,
-              icon: '/icons/error.svg'
-            });
+            this.generateFlash('error', base_error);
           }
           this.errors = error.response.data.errors;
         });

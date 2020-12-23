@@ -10,12 +10,15 @@ axios.defaults.baseURL =
     : 'http://localhost:3000/api/v1';
 axios.defaults.withCredentials = true;
 
-axios.interceptors.request.use((request) => {
+// API取得用axios;
+const axiosForBackend = axios.create();
+
+axiosForBackend.interceptors.request.use((request) => {
   store.commit('loading/addLoadingCount');
   return request;
 });
 
-axios.interceptors.response.use(
+axiosForBackend.interceptors.response.use(
   (response) => {
     store.commit('loading/subtractLoadingCount');
     return response;
@@ -25,3 +28,5 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export default axiosForBackend;

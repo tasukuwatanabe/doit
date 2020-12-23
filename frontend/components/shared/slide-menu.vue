@@ -114,16 +114,17 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Logout from "../mixins/logout";
 import UploadHost from "../mixins/upload_host";
+import Flash from "../mixins/flash";
 
 export default {
   created() {
     this.fetchUser();
   },
-  mixins: [Logout, UploadHost],
+  mixins: [Logout, UploadHost, Flash],
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser",
@@ -141,7 +142,7 @@ export default {
       setCurrentUserAction: "user/setCurrentUserAction"
     }),
     fetchUser() {
-      axios
+      axiosForBackend
         .get("/users/current")
         .then((res) => {
           this.setCurrentUserAction(res.data);
@@ -154,15 +155,11 @@ export default {
       this.setToggleStatusAction();
     },
     logout() {
-      axios.delete("/logout").then((res) => {
+      axiosForBackend.delete("/logout").then((res) => {
         this.logoutAction();
         this.toggleSlide();
         this.$router.push({ name: "login" });
-        this.flashMessage.success({
-          title: res.data.message,
-          time: 5000,
-          icon: '/icons/success.svg',
-        });
+        this.generateFlash('success', res.data.message);
       });
     }
   }

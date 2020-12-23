@@ -68,10 +68,11 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { mapActions } from "vuex";
 import GuestLogin from './shared/guest-login.vue';
 import OmniauthLogin from './shared/omniauth-login.vue';
+import Flash from "./mixins/flash";
 
 export default {
   data() {
@@ -83,6 +84,7 @@ export default {
       errors: ""
     };
   },
+  mixins: [Flash],
   components: {
     GuestLogin,
     OmniauthLogin
@@ -95,15 +97,11 @@ export default {
         password: this.password,
         password_confirmation: this.password_confirmation
       };
-      axios
+      axiosForBackend
         .post("/users", { user: user_params })
         .then((res) => {
           this.$router.push({ name: "login" });
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
+          this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
           this.errors = error.response.data.errors;

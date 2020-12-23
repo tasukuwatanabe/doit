@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Logout from "../mixins/logout";
 
@@ -64,7 +64,7 @@ export default {
       setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchShortcut() {
-      axios
+      axiosForBackend
         .get("/shortcuts")
         .then((res) => {
           this.shortcuts = res.data;
@@ -75,7 +75,7 @@ export default {
     createTodo(shortcut) {
       const label_arr = [];
       label_arr.push(shortcut.label_id);
-      axios.post("/todos", {
+      axiosForBackend.post("/todos", {
         todo: {
           title: shortcut.title,
           todo_date: this.getSelectedDate,

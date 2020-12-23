@@ -34,9 +34,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosForBackend from "../config/axios";
 import { mapActions } from "vuex";
 import GuestLogin from './shared/guest-login.vue';
+import Flash from "./mixins/flash";
 
 export default {
   data() {
@@ -47,22 +48,19 @@ export default {
       }
     };
   },
+  mixins: [Flash],
   components: {
     GuestLogin
   },
   methods: {
     submitPasswordReset() {
-      axios
+      axiosForBackend
         .post("/password_resets", {
           password_reset_form: { email: this.email }
         })
         .then((res) => {
           this.$router.push({ name: "login" });
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
+          this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
