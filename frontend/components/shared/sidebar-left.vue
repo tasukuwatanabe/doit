@@ -129,6 +129,7 @@ export default {
   },
   methods: {
     ...mapActions({
+      logoutAction: 'user/logoutAction',
       setCurrentUserAction: "user/setCurrentUserAction"
     }),
     fetchUser() {

@@ -127,6 +127,7 @@ export default {
   mixins: [Logout, UploadHost, Flash],
   computed: {
     ...mapGetters({
+      logoutAction: 'user/logoutAction',
       getCurrentUser: "user/getCurrentUser",
       getToggleStatus: "slideMenu/getToggleStatus"
     }),
