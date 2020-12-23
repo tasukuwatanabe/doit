@@ -12,19 +12,27 @@ module Api
 
       def create
         shortcut = current_user.shortcuts.build(shortcut_params)
-        unless shortcut.save
+        if shortcut.save
+          head :created
+        else
           render json: { errors: format_errors(shortcut) }, status: :unprocessable_entity
         end
       end
 
       def update
-        unless @shortcut.update(shortcut_params)
+        if @shortcut.update(shortcut_params)
+          head :ok
+        else
           render json: { errors: format_errors(@shortcut) }, status: :unprocessable_entity
         end
       end
 
       def destroy
-        @shortcut.destroy
+        if @shortcut.destroy!
+          head :ok
+        else
+          head :internal_server_error
+        end
       end
 
       private
