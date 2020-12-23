@@ -169,7 +169,6 @@ export default {
     };
   },
   created() {
-    this.loading = true;
     this.setUserData();
   },
   watch: {
@@ -197,7 +196,9 @@ export default {
   },
   methods: {
     ...mapActions({
-      setCurrentUserAction: "user/setCurrentUserAction"
+      setCurrentUserAction: "user/setCurrentUserAction",
+      addLoadingCountAction: "loading/addLoadingCountAction",
+      subtractLoadingCountAction: "loading/subtractLoadingCountAction"
     }),
     setUserData() {
       if (this.getCurrentUser != null) {
@@ -212,10 +213,8 @@ export default {
         this.auto_generated_password = this.getCurrentUser.auto_generated_password;
         this.remove_user_image = this.getCurrentUser.remove_user_image;
       }
-      this.loading = false;
     },
     async cancelEmailConfirmation() {
-      this.loading = true;
       await axios.delete(`/email_confirmations/${this.id}`).then((res) => {
         this.flashMessage.success({
           title: res.data.message,
@@ -225,7 +224,6 @@ export default {
       });
       await axios.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
-        this.loading = false;
       });
     },
     onImageUpload: function (e) {
@@ -240,7 +238,6 @@ export default {
       reader.readAsDataURL(this.file);
     },
     submitUser() {
-      this.loading = true;
       this.errors = "";
       let formData = new FormData();
       formData.append("user[username]", this.username);
@@ -252,6 +249,7 @@ export default {
         formData.append("user[user_image]", this.file);
       }
 
+      this.addLoadingCountAction();
       axios
         .put(`/users/${this.id}`, formData, {
           headers: {
@@ -259,6 +257,7 @@ export default {
           }
         })
         .then((res) => {
+          this.subtractLoadingCountAction();
           this.$refs.file.value = null;
           this.setCurrentUserAction(res.data.user);
           this.flashMessage.success({
@@ -266,15 +265,13 @@ export default {
             time: 5000,
             icon: '/icons/success.svg',
           });
-          this.loading = false;
         })
         .catch((error) => {
+          this.subtractLoadingCountAction();
           this.errors = error.response.data.errors;
-          this.loading = false;
         });
     },
     async cancelOauth(provider) {
-      this.loading = true;
       await axios.delete("/auth/" + provider).then((res) => {
           this.flashMessage.success({
             title: res.data.message,
@@ -284,7 +281,6 @@ export default {
         });
       await axios.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
-        this.loading = false;
       });
     },
     accountCancel() {
@@ -324,13 +320,6 @@ export default {
   &__cancel {
     margin-left: 1em;
   }
-}
-
-.loading-case {
-  width: 600px;
-  height: 350px;
-  @include loadingCase($spWidth:100%,
-                        $spHeight:200px)
 }
 
 .link {

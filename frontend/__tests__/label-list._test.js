@@ -1,6 +1,9 @@
-import { mount } from '@vue/test-utils';
+import { mount, createLocalVue } from '@vue/test-utils';
 import LabelList from '@/label-list';
 import LabelModal from '@/label-modal';
+
+const localVue = createLocalVue();
+localVue.use(Vuex);
 
 describe('Testing App component', () => {
   const wrapper = mount(LabelList);
