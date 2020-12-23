@@ -136,21 +136,22 @@
       </div>
       <div class="form__action">
         <button type="submit" class="btn btn--main btn--md">更新する</button>
-        <a @click="accountCancel" 
-            class="form__cancel" 
-            :class="{ 'form__cancel--disabled' : isGuest }"
-            :disabled="isGuest">退会する</a>
+        <div @click="showPopup"
+              class="form__cancel" 
+              :class="{ 'disabled' : isGuest }"
+              :disabled="isGuest">退会する</div>
       </div>
     </form>
+    <AccountCancelModal ref="accountCancelModal" />
   </div>
 </template>
 
 <script>
-import Vue from 'vue/dist/vue.esm.js'
 import axiosForBackend from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import UploadHost from "./mixins/upload_host";
 import Flash from "./mixins/flash";
+import AccountCancelModal from "./shared/account-cancel-modal";
 
 export default {
   data() {
@@ -168,6 +169,9 @@ export default {
       remove_user_image: "",
       errors: ""
     };
+  },
+  components: {
+    AccountCancelModal
   },
   mixins: [UploadHost, Flash],
   created() {
@@ -263,17 +267,11 @@ export default {
         this.setCurrentUserAction(res.data);
       });
     },
-    accountCancel() {
+    showPopup() {
       if (this.isGuest) {
         return;
       }
-      axiosForBackend
-        .delete(`/users/${this.id}`)
-        .then((res) => {
-          this.setCurrentUserAction("");
-          this.$router.push({ name: "login" });
-          this.generateFlash('success', res.data.message);
-      });
+      this.$refs.accountCancelModal.toggleModalStatus();
     }
   }
 };
@@ -292,9 +290,17 @@ export default {
       padding: 10px 30px 10px 0;
     }
   }
+}
 
+.form {
   &__cancel {
-    margin-left: 1em;
+    cursor: pointer;
+    user-select: none;
+
+    &.disabled {
+      opacity: .5;
+      cursor: default;
+    }
   }
 }
 
