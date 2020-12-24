@@ -34,13 +34,7 @@ module SessionsHelper
     'disabled' if user_is_guest?
   end
 
-  def destroy_cookie
-    cookies.delete(:user_id) if cookies[:user_id]
-    cookies.delete(:remember_token)
-  end
-
   def log_out
-    destroy_cookie
     current_user = nil
   end
 end
