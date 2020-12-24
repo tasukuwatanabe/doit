@@ -25,7 +25,7 @@ export default {
       axiosForBackend
         .post('/guest', { session: guest_email })
         .then((res) => {
-          this.setCurrentUserAction(res.data.user);
+          this.setCurrentUserAction(res.data);
           this.$router.push({ name: 'todos' });
           const message = "ゲストユーザーでログインしました"
           this.generateFlash('success', message);

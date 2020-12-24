@@ -80,15 +80,20 @@ export default {
       this.errors = {};
     },
     validateForm() {
-      if (this.email === "" || this.password === "") {
+      if (this.email === "") {
         this.errors.email = "メールアドレスの入力は必須です";
+      }
+      if (this.password === "") {
         this.errors.password = "パスワードの入力は必須です";
-        return;
       }
     },
     submitLogin() {
       this.clearErrors();
-      this.validateForm();
+      if (this.email === "" || this.password === "") {
+        this.validateForm();
+        return;
+      }
+
       const session_params = {
         email: this.email,
         password: this.password
@@ -96,7 +101,7 @@ export default {
       axiosForBackend
         .post("/login", { session: session_params })
         .then((res) => {
-          const user = res.data.user;
+          const user = res.data;
           this.setCurrentUserAction(user.username);
           this.$router.push({ name: "todos" });
           this.generateFlash('success', `${user.username}でログインしました`);

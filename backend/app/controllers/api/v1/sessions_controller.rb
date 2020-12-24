@@ -6,7 +6,7 @@ module Api
         user = User.find_by(email: session_params[:email])
         if Authenticator.new(user).authenticate(session_params[:password])
           log_in user
-          render json: { user: user }, status: 200
+          render json: user, status: 200
         else
           head :unprocessable_entity
         end
@@ -20,7 +20,7 @@ module Api
       def guest
         user = User.find_by(email: "guest@example.com")
         log_in user
-        render json: { user: user }, status: 200
+        render json: user, status: 200
       end
 
       private
