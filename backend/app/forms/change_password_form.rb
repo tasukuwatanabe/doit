@@ -3,25 +3,31 @@ class ChangePasswordForm
 
   attr_accessor :user, :password, :password_confirmation
 
-  validates :password,
-            presence: true,
-            length: { minimum: 6, maximum: 20 },
-            confirmation: true
-  validates :password_confirmation,
-            presence: true
-
-  delegate :persisted?, to: :user
+  validate :promote_user_valid
 
   def initialize(user, params)
     @user = user
-    @params = params
+    @password = params[:password]
+    @password_confirmation = params[:password_confirmation]
   end
 
   def save
-    return false if invalid?
-    @user.auto_generated_password = nil
-    @user.password = @params[:password]
-    @user.save!
-    true
+    return false unless valid?
+
+    user.save
+  end
+
+  private
+
+  def promote_user_valid
+    user.attributes = {
+      auto_generated_password: nil,
+      password: password,
+      password_confirmation: password_confirmation
+    }
+    user.valid?
+    user.errors.each do |attribute, message|
+      errors.add(attribute, message)
+    end
   end
 end
