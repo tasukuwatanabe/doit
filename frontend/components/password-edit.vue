@@ -63,7 +63,7 @@ export default {
     return {
       password: "",
       password_confirmation: "",
-      errors: ""
+      errors: {}
     };
   },
   mixins: [Flash],
@@ -81,27 +81,32 @@ export default {
     ...mapActions({
       setCurrentUserAction: "user/setCurrentUserAction"
     }),
-    async submitPassword() {
+    clearErrors() {
+      this.errors = {};
+    },
+    clearFormValue() {
+      this.password = "";
+      this.password_confirmation = "";
+    },
+    submitPassword() {
       const password_params = {
         password: this.password,
         password_confirmation: this.password_confirmation
       };
-      await axiosForBackend
+      axiosForBackend
         .put(`/users/${this.getCurrentUser.id}/password`, {
           change_password_form: password_params
         })
         .then((res) => {
-          this.generateFlash('success', res.data.message);
-          this.password = "";
-          this.password_confirmation = "";
-          this.errors = "";
+          this.setCurrentUserAction(res.data);
+          const message = "パスワードが更新されました";
+          this.generateFlash('success', message);
+          this.clearFormValue();
+          this.clearErrors();
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
         });
-      await axiosForBackend.get("/users/current").then((res) => {
-        this.setCurrentUserAction(res.data);
-      });
     }
   }
 };

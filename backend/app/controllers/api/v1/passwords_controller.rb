@@ -2,11 +2,9 @@ module Api
   module V1
     class PasswordsController < ApplicationController
       def update
-        change_password_form = ChangePasswordForm.new(password_params)
-        change_password_form.object = current_user
-        change_password_form.object.auto_generated_password = nil
+        change_password_form = ChangePasswordForm.new(current_user, password_params)
         if change_password_form.save
-          render json: { message: "パスワードが更新されました"}, status: 200
+          render json: current_user, status: 200
         else
           render json: { errors: format_errors(change_password_form) }, status: :unprocessable_entity
         end
