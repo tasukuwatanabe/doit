@@ -169,7 +169,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../stylesheets/variables.scss";
+$width-slide-menu: 270px;
 
 #screen-layer {
   position: absolute;
@@ -178,13 +178,13 @@ export default {
   left: 0;
   right: 0;
   z-index: 99;
-  background-color: rgba(0, 0, 0, 0.3);
-  transition-duration: 0.1s;
+  background-color: rgba(0, 0, 0, 0.7);
+  transition-duration: 0.5s;
 }
 
 .slide-menu {
   width: $width-slide-menu;
-  background-color: $slide-menu-bg-color;
+  background-color:#fafbfc;;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -192,7 +192,7 @@ export default {
   z-index: 100;
   transform: translateX($width-slide-menu * -1);
   transition-duration: 0.1s;
-  padding: 30px 15px;
+  padding: 30px 15px 30px 30px;
 
   &.is-open {
     transform: translateX(0);
