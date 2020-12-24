@@ -8,13 +8,12 @@ RSpec.describe "Sessions", type: :request do
       post '/api/v1/login', params: { session: { email: user.email, password: user.password } }
 
       expect(response.status).to eq(200)
-      expect(response.body).to include 'ログインしました'
     end
 
     it 'ログインに失敗すること' do
       post '/api/v1/login', params: { session: { email: user.email, password: '' } }
 
-      expect(response.body).to include 'パスワードが未入力です'
+      expect(response.status).to eq(422)
     end
 
     it 'ログアウトに成功すること' do
@@ -22,7 +21,7 @@ RSpec.describe "Sessions", type: :request do
 
       delete '/api/v1/logout'
 
-      expect(response.body).to include 'ログアウトしました'
+      expect(response.status).to eq(200)
     end
   end
 end
