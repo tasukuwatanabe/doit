@@ -6,8 +6,9 @@ class Todo < ApplicationRecord
   has_many :labels, through: :todo_labels
 
   scope :include_labels, -> { includes([:labels]) }
-  scope :match_date, -> (date) { where(todo_date: date).include_labels }
-  scope :search, -> (query) { where(['todos.title LIKE ?', "%#{query.strip}%"]).include_labels }
+  scope :order_created_asc, -> { order(created_at: :asc) }
+  scope :match_date, -> (date) { where(todo_date: date) }
+  scope :search, -> (query) { where(['todos.title LIKE ?', "%#{sanitize_sql_like(query.strip)}%"]) }
 
   before_validation { self.title = normalize_as_text(title) }
 

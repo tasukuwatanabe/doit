@@ -6,12 +6,12 @@ module Api
       before_action :forbid_expired_confirmation_token, only: :edit
 
       def edit
-        query = 'false'
+        query = false
 
         if @user.authenticated?(:confirmation, params[:id])
           @user.update_new_email
           log_out
-          query = 'true'
+          query = true
         end
 
         redirect_to client_host + "/redirect?email_confirmed=#{query}"

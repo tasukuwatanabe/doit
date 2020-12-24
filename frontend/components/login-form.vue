@@ -57,7 +57,6 @@ import axiosForBackend from "../config/axios";
 import { mapActions } from "vuex";
 import GuestLogin from './shared/guest-login.vue';
 import OmniauthLogin from './shared/omniauth-login.vue';
-import UploadHost from "./mixins/upload_host";
 import Flash from "./mixins/flash";
 
 export default {
@@ -65,19 +64,36 @@ export default {
     return {
       email: "",
       password: "",
-      errors: ""
+      errors: {}
     };
   },
   components: {
     GuestLogin,
     OmniauthLogin
   },
-  mixins: [UploadHost, Flash],
+  mixins: [Flash],
   methods: {
     ...mapActions({
       setCurrentUserAction: "user/setCurrentUserAction"
     }),
+    clearErrors() {
+      this.errors = {};
+    },
+    validateForm() {
+      if (this.email === "") {
+        this.errors.email = "メールアドレスの入力は必須です";
+      }
+      if (this.password === "") {
+        this.errors.password = "パスワードの入力は必須です";
+      }
+    },
     submitLogin() {
+      this.clearErrors();
+      if (this.email === "" || this.password === "") {
+        this.validateForm();
+        return;
+      }
+
       const session_params = {
         email: this.email,
         password: this.password
@@ -85,16 +101,14 @@ export default {
       axiosForBackend
         .post("/login", { session: session_params })
         .then((res) => {
-          this.setCurrentUserAction(res.data.user);
+          const user = res.data;
+          this.setCurrentUserAction(user.username);
           this.$router.push({ name: "todos" });
-          this.generateFlash('success', res.data.message);
+          this.generateFlash('success', `${user.username}でログインしました`);
         })
         .catch((error) => {
-          const base_error = error.response.data.errors.base;
-          if (base_error) {
-            this.generateFlash('error', base_error);
-          }
-          this.errors = error.response.data.errors;
+          const message = "メールアドレスもしくはパスワードが違います";
+          this.generateFlash('error', message);
         });
     }
   }

@@ -4,25 +4,36 @@ module Api
       before_action :set_todo, only: %i[update destroy]
 
       def index
-        @todos = current_user.todos.match_date(params[:date])
+        @todos = current_user.todos
+                             .include_labels
+                             .match_date(params[:date])
+                             .order_created_asc
         render 'index', formats: :json, handlers: 'jbuilder'
       end
 
       def create
         todo = current_user.todos.build(todo_params)
-        unless todo.save
+        if todo.save
+          head :created
+        else
           render json: { errors: format_errors(todo) }, status: :unprocessable_entity
         end
       end
 
       def update
-        unless @todo.update(todo_params)
+        if @todo.update(todo_params)
+          head :ok
+        else
           render json: { errors: format_errors(@todo) }, status: :unprocessable_entity
         end
       end
 
       def destroy
-        @todo.destroy
+        if @todo.destroy
+          head :ok
+        else
+          head :internal_server_error
+        end
       end
 
       def toggle_status
@@ -32,7 +43,7 @@ module Api
       end
 
       def search
-        @todos = current_user.todos.search(params[:search_query])
+        @todos = current_user.todos.include_labels.search(params[:search_query])
         render 'index', formats: :json, handlers: 'jbuilder'
       end
 

@@ -35,6 +35,7 @@ class User < ApplicationRecord
             allow_nil: true
   validates :password,
             presence: true,
+            length: { minimum: 6, maximum: 20 },
             confirmation: true,
             on: :create
   validates :password_confirmation,

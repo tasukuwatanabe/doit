@@ -1,6 +1,5 @@
 <template>
   <aside
-    v-if="userLoggedIn"
     class="sidebar sidebar-left">
     <div class="sidebar--stickey sidebar-left__inner">
       <div class="sidebar-left__userinfo userinfo">
@@ -115,12 +114,6 @@ export default {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
     }),
-    userLoggedIn() {
-      return (this.$route.name !== 'login') &&
-             (this.$route.name !== 'signup') &&
-             (this.$route.name !== 'password_resets_new') &&
-             (this.$route.name !== 'password_resets_edit')
-    },
     userImageWithNumber() {
       if (this.getCurrentUser.user_image) {
         return this.getUploadHost() + this.getCurrentUser.user_image.url + '?' + Math.random();
@@ -148,7 +141,8 @@ export default {
         .then((res) => {
           this.logoutAction();
           this.$router.push({ name: "login" });
-          this.generateFlash('success', res.data.message);
+          const message = "ログアウトしました";
+          this.generateFlash('success', message);
         });
     }
   }

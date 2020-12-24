@@ -1,5 +1,5 @@
 <template>
-  <aside v-if="isTodo" class="sidebar sidebar-right">
+  <aside class="sidebar sidebar-right">
     <div class="sidebar--stickey sidebar-right__inner">
       <SidebarShortcut class="display--sp" />
       <SidebarSearch @search-status='setSearchStatus' />
@@ -26,11 +26,6 @@ export default {
     SidebarSearch,
     SidebarCalendar,
     SidebarShortcut
-  },
-  computed: {
-    isTodo() {
-      return this.$route.name === 'todos';
-    }
   },
   methods: {
     setSearchStatus(query) {
