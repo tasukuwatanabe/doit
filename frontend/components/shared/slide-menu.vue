@@ -160,7 +160,8 @@ export default {
         this.logoutAction();
         this.toggleSlide();
         this.$router.push({ name: "login" });
-        this.generateFlash('success', res.data.message);
+        const message = "ログアウトしました";
+        this.generateFlash('success', message);
       });
     }
   }

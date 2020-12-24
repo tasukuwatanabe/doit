@@ -19,19 +19,20 @@ export default {
       setCurrentUserAction: 'user/setCurrentUserAction',
     }),
     guestLogin() {
-      const session_params = {
+      const guest_email = {
         email: 'guest@example.com',
       };
       axiosForBackend
-        .post('/login', { session: session_params })
+        .post('/guest', { session: guest_email })
         .then((res) => {
-          this.setCurrentUserAction(res.data);
+          this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: 'todos' });
-          const message = "ゲストユーザーでログインしました。"
+          const message = "ゲストユーザーでログインしました"
           this.generateFlash('success', message);
         })
         .catch((error) => {
-          this.generateFlash('error', error.message);
+          const message = "ゲストログインに失敗しました"
+          this.generateFlash('error', message);
         });
     },
   },
