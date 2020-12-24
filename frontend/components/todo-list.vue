@@ -298,11 +298,13 @@ export default {
     align-items: center;
     transition-duration: 0.2s;
 
-    &:hover {
-      background-color: $color-main-theme;
+    @media (min-width: 992px) {
+      &:hover {
+        background-color: $color-main-theme;
 
-      svg {
-        color: #fff;
+        svg {
+          color: #fff;
+        }
       }
     }
 
