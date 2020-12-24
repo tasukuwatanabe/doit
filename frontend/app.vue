@@ -1,13 +1,13 @@
 <template>
   <div id="app" class="wrapper" :class="{'loading-open': this.getLoadingCount }">
     <Header />
-    <SlideMenu />
+    <SlideMenu v-if="userLoggedIn" />
     <main>
       <Flash />
       <div class="container inner">
-        <SidebarLeft />
+        <SidebarLeft v-if="userLoggedIn" />
         <router-view></router-view>
-        <SidebarRight />
+        <SidebarRight v-if="isTodo" />
       </div>
     </main>
     <Footer></Footer>
@@ -38,7 +38,16 @@ export default {
   computed: {
     ...mapGetters({
       getLoadingCount: "loading/getLoadingCount"
-    })
+    }),
+    isTodo() {
+      return this.$route.name === 'todos';
+    },
+    userLoggedIn() {
+      return (this.$route.name !== 'login') &&
+             (this.$route.name !== 'signup') &&
+             (this.$route.name !== 'password_resets_new') &&
+             (this.$route.name !== 'password_resets_edit')
+    },
   }
 }
 </script>
