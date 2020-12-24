@@ -112,14 +112,10 @@ export default {
   margin-right: 50px;
   @media (max-width: 767px) {
     margin-right: 20px;
-    font-size: 14px;
+    font-size: 0.9em;
   }
   @media (max-width: 424px) {
     margin-right: 15px;
-    font-size: 13px;
-  }
-  @media (max-width: 374px) {
-    font-size: 12px;
   }
 }
 </style>
