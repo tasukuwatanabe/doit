@@ -98,9 +98,8 @@ export default {
           change_password_form: password_params
         })
         .then((res) => {
-          this.setCurrentUserAction(res.data);
-          const message = "パスワードが更新されました";
-          this.generateFlash('success', message);
+          this.setCurrentUserAction(res.data.user);
+          this.generateFlash('success', res.data.message);
           this.clearFormValue();
           this.clearErrors();
         })
