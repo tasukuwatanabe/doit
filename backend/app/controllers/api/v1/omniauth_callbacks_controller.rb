@@ -29,7 +29,7 @@ module Api
       def destroy
         provider = params[:provider]
         current_user.cancel_oauth(provider)
-        render json: { message: "#{provider}との連携を解除しました" }, status: 200
+        render json: { user: current_user, message: "#{provider}との連携を解除しました" }, status: 200
       end
     end
   end
