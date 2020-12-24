@@ -9,7 +9,7 @@
 
 .loading-bg-layer {
   background-color: rgba(255, 255, 255, .6);
-  position: absolute;
+  position: fixed;
   z-index: 100;
   top: 0;
   bottom: 0;

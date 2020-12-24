@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="wrapper" :class="{'loading-open': this.getLoadingCount }">
+  <div id="app" class="wrapper">
     <Header />
     <SlideMenu v-if="userLoggedIn" />
     <main>
