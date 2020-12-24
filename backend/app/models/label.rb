@@ -17,7 +17,7 @@ class Label < ApplicationRecord
   validates :title, presence: true, uniqueness: { scope: :user }
   validates :color, presence: true
   validate :label_color_must_be_hex_style
-  validate :label_counts_must_be_within_limit
+  validate :label_count_within_limit, if: -> { user.labels.size > 10 }
 
   private
   
@@ -37,7 +37,7 @@ class Label < ApplicationRecord
     end
   end
 
-  def label_counts_must_be_within_limit
-    errors.add(:base, 'ラベルが登録できるのは10個までです') if user.labels.size > 10
+  def label_count_within_limit
+    errors.add(:base, 'ラベルが登録できるのは10個までです')
   end
 end

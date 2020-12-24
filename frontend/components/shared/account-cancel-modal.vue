@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import axiosForBackend from "../../config/axios";
+import { axiosForBackend } from "../../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Modal from "../mixins/modal";
 import Flash from "../mixins/flash";
@@ -36,13 +36,13 @@ export default {
   },
   methods: {
     ...mapActions({
-      setCurrentUserAction: "user/setCurrentUserAction"
+      logoutAction: "user/logoutAction"
     }),
     accountCancel() {
       axiosForBackend
         .delete(`/users/${this.getCurrentUser.id}`)
         .then((res) => {
-          this.setCurrentUserAction("");
+          this.logoutAction();
           this.$router.push({ name: "login" });
           this.generateFlash('success', res.data.message);
       });

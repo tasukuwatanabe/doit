@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import axiosForBackend from "../config/axios";
+import { axiosForBackend } from "../config/axios";
 import Modal from "./mixins/modal";
 
 export default {

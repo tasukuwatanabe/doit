@@ -1,15 +1,33 @@
 class ChangePasswordForm
   include ActiveModel::Model
 
-  attr_accessor :object, :password, :password_confirmation
+  attr_accessor :user, :password, :password_confirmation
 
-  validates :password, presence: true, confirmation: true
-  validates :password_confirmation, presence: true
+  validate :promote_user_valid
+
+  def initialize(user, params)
+    @user = user
+    @password = params[:password]
+    @password_confirmation = params[:password_confirmation]
+  end
 
   def save
-    if valid?
-      object.password = password
-      object.save!
+    return false unless valid?
+
+    user.save
+  end
+
+  private
+
+  def promote_user_valid
+    user.attributes = {
+      auto_generated_password: nil,
+      password: password,
+      password_confirmation: password_confirmation
+    }
+    user.valid?
+    user.errors.each do |attribute, message|
+      errors.add(attribute, message)
     end
   end
 end

@@ -29,4 +29,4 @@ axiosForBackend.interceptors.response.use(
   }
 );
 
-export default axiosForBackend;
+export { axios, axiosForBackend };

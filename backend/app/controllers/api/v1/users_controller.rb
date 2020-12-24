@@ -62,8 +62,7 @@ module Api
       def destroy
         user = User.find(params[:id])
         user.destroy
-        destroy_cookie
-        render json: { message: "ユーザーが削除されました" }
+        render json: { message: "ユーザーが削除されました" }, status: 200
       end
 
       private

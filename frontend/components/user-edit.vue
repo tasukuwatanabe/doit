@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import axiosForBackend from "../config/axios";
+import { axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import UploadHost from "./mixins/upload_host";
 import Flash from "./mixins/flash";
@@ -259,12 +259,10 @@ export default {
           this.errors = error.response.data.errors;
         });
     },
-    async cancelOauth(provider) {
-      await axiosForBackend.delete("/auth/" + provider).then((res) => {
-        this.generateFlash('error', res.data.message);
-      });
-      await axiosForBackend.get("/users/current").then((res) => {
-        this.setCurrentUserAction(res.data);
+    cancelOauth(provider) {
+      axiosForBackend.delete("/auth/" + provider).then((res) => {
+        this.generateFlash('success', res.data.message);
+        this.setCurrentUserAction(res.data.user);
       });
     },
     showPopup() {

@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import axiosForBackend from "../config/axios";
+import { axiosForBackend } from "../config/axios";
 import { Compact } from "vue-color";
 import Modal from "./mixins/modal";
 

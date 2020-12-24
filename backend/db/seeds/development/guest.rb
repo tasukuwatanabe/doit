@@ -1,4 +1,4 @@
-password = SecureRandom.urlsafe_base64
+password = "password"
 
 user = User.create!(
   username: 'ゲストユーザー',

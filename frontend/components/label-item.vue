@@ -59,8 +59,9 @@ export default {
 .label {
   display: inline-block;
   padding: 6px 8px 5px;
-  font-size: 12px;
+  font-size: 0.9em;
   line-height: 1;
   border-radius: 2em;
+  white-space: nowrap;
 }
 </style>

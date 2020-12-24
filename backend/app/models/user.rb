@@ -33,14 +33,9 @@ class User < ApplicationRecord
             length: { maximum: 255 },
             uniqueness: { case_sensitive: false },
             allow_nil: true
-  validates :password,
-            presence: true,
-            length: { minimum: 6, maximum: 20 },
-            confirmation: true,
-            on: :create
-  validates :password_confirmation,
-            presence: true,
-            on: :create
+  validates :password, presence: true, on: :create
+  validates :password_confirmation, presence: true, on: :create
+  validates :password, length: { minimum: 6, maximum: 20 }, confirmation: true, allow_blank: true
 
   has_secure_password
 
