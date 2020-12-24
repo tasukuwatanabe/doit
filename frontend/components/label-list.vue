@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import axiosForBackend from "../config/axios";
+import { axiosForBackend } from "../config/axios";
 import { mapActions } from "vuex";
 import LabelItem from "./label-item";
 import LabelModal from "./label-modal";

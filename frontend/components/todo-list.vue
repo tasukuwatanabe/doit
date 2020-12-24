@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import axiosForBackend from "../config/axios";
+import { axios, axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import TodoModal from "./todo-modal";
 import LabelItem from "./label-item";

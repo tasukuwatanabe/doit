@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import axiosForBackend from "../config/axios";
+import { axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import UploadHost from "./mixins/upload_host";
 import Flash from "./mixins/flash";

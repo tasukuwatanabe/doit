@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import axiosForBackend from "../../config/axios";
+import { axiosForBackend } from "../../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Modal from "../mixins/modal";
 import Flash from "../mixins/flash";

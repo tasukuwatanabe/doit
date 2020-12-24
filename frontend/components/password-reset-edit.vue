@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import axiosForBackend from "../config/axios";
+import { axiosForBackend } from "../config/axios";
 import { mapActions } from "vuex";
 import GuestLogin from './shared/guest-login.vue';
 import Flash from "./mixins/flash";

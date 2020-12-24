@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import axiosForBackend from "../config/axios";
+import { axiosForBackend } from "../config/axios";
 import ShortcutModal from "./shortcut-modal";
 import LabelItem from "./label-item";
 import { mapActions } from "vuex";
