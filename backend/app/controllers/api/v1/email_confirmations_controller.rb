@@ -20,7 +20,7 @@ module Api
       def destroy
         user = User.find(params[:id])
         user.update!(confirmation_digest: nil, unconfirmed_email: nil)
-        render json: { message: "メールアドレスの更新がキャンセルされました" }
+        render json: { message: "メールアドレスの更新がキャンセルされました" }, status: 200
       end
 
       private
