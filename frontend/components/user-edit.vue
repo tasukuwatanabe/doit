@@ -190,7 +190,7 @@ export default {
     },
     hasUserImage() {
       if (this.user_image) {
-        return this.user_image.url === '/user_icons/default.jpg';
+        return this.user_image.url.includes('user_icons/default.jpg');
       }
     },
     userImageWithNumber() {
@@ -290,6 +290,9 @@ export default {
 }
 
 .form {
+  input[type="file"] {
+    font-size: 0.9em;
+  }
   &__cancel {
     cursor: pointer;
     user-select: none;

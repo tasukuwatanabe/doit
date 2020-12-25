@@ -17,7 +17,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
 
   def default_url(*_args)
-    UPLOAD_HOST + "user_icons/default.jpg"
+    UPLOAD_HOST + "/user_icons/default.jpg"
   end
 
   process resize_to_fill: [300, 300]

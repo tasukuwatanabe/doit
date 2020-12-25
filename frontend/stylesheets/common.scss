@@ -8,6 +8,9 @@ body {
   position: relative;
   font-family: -apple-system, "Segoe UI", "Helvetica Neue",
     "Hiragino Kaku Gothic ProN", メイリオ, meiryo, sans-serif;
+  @media (max-width: 991px) {
+    font-size: 1.05em;
+  }
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
