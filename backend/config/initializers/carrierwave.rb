@@ -1,7 +1,7 @@
 require_relative "constants"
 
 CarrierWave.configure do |config|
-  config.asset_host = Constants::SERVER_HOST
+  config.asset_host = Constants::UPLOAD_HOST
 
   if Rails.env.production?
     config.fog_directory = ENV['S3_DIRECTORY']

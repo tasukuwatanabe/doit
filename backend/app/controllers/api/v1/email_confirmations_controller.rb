@@ -14,7 +14,7 @@ module Api
           query = true
         end
 
-        redirect_to client_host + "/redirect?email_confirmed=#{query}"
+        redirect_to CLIENT_HOST + "/redirect?email_confirmed=#{query}"
       end
 
       def destroy
@@ -32,14 +32,14 @@ module Api
       def forbid_multiple_confirmation
         # アドレス更新後はparams[:email]に旧アドレスが入るためUserが見つからなくなる
         unless @user
-          redirect_to client_host + '/redirect?email_confirmed=false'
+          redirect_to CLIENT_HOST + '/redirect?email_confirmed=false'
         end
       end
 
       def forbid_expired_confirmation_token
         if @user.expired?(:confirmation)
           @user.update(confirmation_digest: nil, unconfirmed_email: nil)
-          redirect_to client_host + '/redirect?email_confirmed=expired'
+          redirect_to CLIENT_HOST + '/redirect?email_confirmed=expired'
         end
       end
     end
