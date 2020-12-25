@@ -6,7 +6,7 @@
   box-shadow: $box-shadow-common;
 
   &__item {
-    padding: 24px 30px 24px 30px;
+    padding: 24px 22px 24px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -69,6 +69,8 @@
 
   &__title {
     font-size: 1.1em;
+    display: flex;
+    align-items: center;
 
     &--with-label {
       margin-right: 15px;
@@ -114,11 +116,7 @@
     }
 
     &:not(:last-of-type) {
-      margin-right: 30px;
-
-      @media (max-width: 767px) {
-        margin-right: 25px;
-      }
+      margin-right: 25px;
 
       @media (max-width: 424px) {
         margin-right: 22px;
