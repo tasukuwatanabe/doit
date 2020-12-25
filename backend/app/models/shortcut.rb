@@ -13,7 +13,9 @@ class Shortcut < ApplicationRecord
   end
 
   validate :shortcut_count_within_limit, if: -> { user.shortcuts.size > 10 }
-  validates :title, presence: true, uniqueness: { scope: :user }
+  validates :title, presence: true,
+                    uniqueness: { scope: :user },
+                    length: { maximum: 40 }
 
   private
 

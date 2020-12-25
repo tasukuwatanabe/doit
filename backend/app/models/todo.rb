@@ -11,8 +11,7 @@ class Todo < ApplicationRecord
   scope :search, -> (query) { where(['todos.title LIKE ?', "%#{sanitize_sql_like(query.strip)}%"]) }
 
   before_validation { self.title = normalize_as_text(title) }
-
-  validates :title, presence: true
+  validates :title, presence: true, length: { maximum: 40 }
   validates :todo_date, presence: true, date: {
     after_or_equal_to: Date.new(2000, 1, 1),
     before: ->(_obj) { 1.year.from_now.to_date },
