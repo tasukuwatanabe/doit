@@ -1,5 +1,6 @@
 class ImageUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
+  include Constants
 
   if Rails.env.production?
     storage :fog
@@ -16,7 +17,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
 
   def default_url(*_args)
-    "user_icons/default.jpg"
+    UPLOAD_HOST + "user_icons/default.jpg"
   end
 
   process resize_to_fill: [300, 300]

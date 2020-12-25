@@ -5,7 +5,7 @@ module Api
         user = User.find_by(email: params[:email])
         redirect_query = generate_query(user)
         activate_user(user)
-        redirect_to client_host + '/redirect' + redirect_query
+        redirect_to CLIENT_HOST + '/redirect' + redirect_query
       end
 
       private
