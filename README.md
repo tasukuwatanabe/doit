@@ -68,6 +68,10 @@ DoITは、以下のような機能を持ったToDoアプリが欲しいという
 - yarn
 - Node.js
 
+### テスト
+- RSpec 3.10.0
+- Jest 25.1.0
+
 ### インフラ
 - Docker
   - docker-compose
@@ -86,9 +90,9 @@ DoITは、以下のような機能を持ったToDoアプリが欲しいという
 - CircleCI 2.1
 - Nginx(本番環境)
 
-### テスト
-- RSpec 3.10.0
-- Jest 25.1.0
+<br>
+
+![インフラ構成図](https://doit-image.s3-ap-northeast-1.amazonaws.com/readme/doit_infrastructure.jpg "インフラ構成図")
 
 ## 環境構築の手順
 
