@@ -6,9 +6,9 @@ module Api
         user = User.find_by(email: session_params[:email])
         if Authenticator.new(user).authenticate(session_params[:password])
           log_in user
-          render json: user, status: 200
+          render json: { user: user, message: "#{user.username}でログインしました"}, status: 200
         else
-          head :unprocessable_entity
+          render json: { message: "メールアドレスまたはパスワードが違います" }, status: :unprocessable_entity
         end
       end
 
@@ -20,11 +20,11 @@ module Api
       def guest
         user = User.find_by(email: "guest@example.com")
         log_in user
-        render json: user, status: 200
+        render json: { user: user, message: "ゲストユーザーでログインしました"}, status: 200
       end
 
       private
-      
+
       def session_params
         params.require(:session).permit(:email, :password)
       end

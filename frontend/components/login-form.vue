@@ -101,15 +101,12 @@ export default {
       axiosForBackend
         .post("/login", { session: session_params })
         .then((res) => {
-          const user = res.data;
-          this.setCurrentUserAction(user);
+          this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
-          const message = `${user.username}でログインしました`;
-          this.generateFlash('success', message);
+          this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
-          const message = "メールアドレスまたはパスワードが違います"
-          this.generateFlash('error', message);
+          this.generateFlash('error', error.response.data.message);
         });
     }
   }
