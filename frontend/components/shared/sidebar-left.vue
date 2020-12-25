@@ -102,21 +102,20 @@
 import { axiosForBackend } from "../../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Logout from "../mixins/logout";
-import UploadHost from "../mixins/upload_host";
 import Flash from "../mixins/flash";
 
 export default {
   created() {
     this.fetchUser();
   },
-  mixins: [Logout, UploadHost, Flash],
+  mixins: [Logout, Flash],
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
     }),
     userImageWithNumber() {
       if (this.getCurrentUser.user_image) {
-        return this.getUploadHost() + this.getCurrentUser.user_image.url + '?' + Math.random();
+        return this.getCurrentUser.user_image.url + '?' + Math.random();
       }
     }
   },
