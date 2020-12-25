@@ -149,7 +149,6 @@
 <script>
 import { axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
-import UploadHost from "./mixins/upload_host";
 import Flash from "./mixins/flash";
 import AccountCancelModal from "./shared/account-cancel-modal";
 
@@ -173,7 +172,7 @@ export default {
   components: {
     AccountCancelModal
   },
-  mixins: [UploadHost, Flash],
+  mixins: [Flash],
   created() {
     this.setUserData();
   },
@@ -196,7 +195,7 @@ export default {
     },
     userImageWithNumber() {
       if (this.user_image) {
-        return this.getUploadHost() + this.user_image.url + '?' + Math.random();
+        return this.user_image.url + '?' + Math.random();
       }
     }
   },
