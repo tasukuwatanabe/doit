@@ -173,5 +173,23 @@ export default {
     margin-bottom: 20px;
     font-size: 0.9em;
   }
+
+  .page-action {
+    border: 1px solid $color-main-theme;
+    background-color: #fff;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.2s;
+    padding: 4px 15px;
+    a {
+      font-size: 0.9em !important;
+      color: $color-main-theme !important;
+      &:hover {
+        opacity: .8;
+      }
+    }
+  }
 }
 </style>
