@@ -102,12 +102,13 @@ export default {
         .post("/login", { session: session_params })
         .then((res) => {
           const user = res.data;
-          this.setCurrentUserAction(user.username);
+          this.setCurrentUserAction(user);
           this.$router.push({ name: "todos" });
-          this.generateFlash('success', `${user.username}でログインしました`);
+          const message = `${user.username}でログインしました`;
+          this.generateFlash('success', message);
         })
         .catch((error) => {
-          const message = "メールアドレスもしくはパスワードが違います";
+          const message = "メールアドレスまたはパスワードが違います"
           this.generateFlash('error', message);
         });
     }
