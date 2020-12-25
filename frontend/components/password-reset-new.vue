@@ -43,9 +43,7 @@ export default {
   data() {
     return {
       email: "",
-      errors: {
-        email: ""
-      }
+      errors: {}
     };
   },
   mixins: [Flash],
@@ -54,6 +52,7 @@ export default {
   },
   methods: {
     submitPasswordReset() {
+      this.errors = {};
       axiosForBackend
         .post("/password_resets", {
           password_reset_form: { email: this.email }
