@@ -127,7 +127,6 @@ GEM
     jbuilder (2.10.1)
       activesupport (>= 5.0.0)
     jwt (2.2.2)
-    kgio (2.11.3)
     listen (3.3.3)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -223,7 +222,6 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.20.3, < 2.0)
-    raindrops (0.19.1)
     rake (13.0.3)
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
@@ -271,9 +269,6 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
-    unicorn (5.7.0)
-      kgio (~> 2.6)
-      raindrops (~> 0.7)
     uniform_notifier (1.13.0)
     valid_email2 (3.5.0)
       activemodel (>= 3.2)
@@ -327,7 +322,6 @@ DEPENDENCIES
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
   sprockets (~> 3.7.2)
-  unicorn
   valid_email2
   web-console (>= 3.3.0)
   webdrivers
