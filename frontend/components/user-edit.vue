@@ -60,6 +60,9 @@
                   :disabled="isGuest"
                   @change="onImageUpload" />
         </div>
+        <span class="form__error form__error--mt" v-if="errors.user_image">
+          {{ errors.user_image }}
+        </span>
         <div v-if="!hasUserImage" class="form__profile-default">
           <input
             type="checkbox"
@@ -256,6 +259,7 @@ export default {
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
+          this.generateFlash('error', "更新に失敗しました");
         });
     },
     cancelOauth(provider) {
