@@ -200,7 +200,7 @@ export default {
 
     @media (max-width: 991px) {
       font-size: 1.2em;
-      padding: 0 20px 15px;
+      padding: 0 20px 10px;
     }
   }
 
@@ -219,7 +219,7 @@ export default {
     user-select: none;
 
     @media (max-width: 991px) {
-      font-size: 15px;
+      font-size: .9em;
       margin-bottom: 10px;
     }
 
@@ -232,7 +232,7 @@ export default {
       }
 
       @media (max-width: 374px) {
-        padding: 8px 0;
+        padding: 7px 0;
       }
     }
 
