@@ -3,7 +3,8 @@ module Api
     class OmniauthCallbacksController < ApplicationController
       def create
         auth = request.env['omniauth.auth']
-        user = User.find_or_create_from_oauth(auth)
+        omniauth_user = OmniauthUser.new(auth)
+        user = omniauth_user.find_or_create
         if user&.activated?
           log_in user
 
@@ -18,8 +19,6 @@ module Api
           query_result = '?oauth=success'
           query_provider = "&provider=#{provider}"
 
-          # redirect_to CLIENT_HOST + '/todos'
-          p CLIENT_HOST
           redirect_to CLIENT_HOST + '/redirect' + query_result + query_provider
         else
           render json: { message: "ログインできませんでした" }, status: :unprocessable_entity
