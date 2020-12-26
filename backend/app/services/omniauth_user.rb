@@ -12,7 +12,7 @@ class OmniauthUser
     if @user.persisted?
       activate_and_update_uid
     else
-      password = "passwordhoge"
+      password = SecureRandom.hex(10)
       @user.attributes = {
         username: @name,
         email: @email,
