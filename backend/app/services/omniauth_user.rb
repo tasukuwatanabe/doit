@@ -2,11 +2,10 @@ class OmniauthUser
   attr_reader :user
 
   def initialize(auth)
-    @provider = auth[:provider]
     @uid = auth[:uid]
     @name = auth[:info][:name]
     @email = auth[:info][:email]
-    @user = find_user_from_auth || User.new 
+    @user = User.find_by(email: @email) || find_by_uid || User.new 
   end
 
   def find_or_create
@@ -22,18 +21,7 @@ class OmniauthUser
         auto_generated_password: true,
         activated: true,
         activated_at: Time.zone.now,
-        twitter_uid: nil,
-        facebook_uid: nil,
-        google_uid: nil
-      }
-
-      if @provider == 'twitter'
-        @user.twitter_uid = @uid
-      elsif @provider == 'facebook'
-        @user.facebook_uid = @uid
-      elsif @provider == 'google_oauth2'
-        @user.google_uid = @uid
-      end
+      }.merge(uid_hash)
 
       @user.save!
     end
@@ -44,13 +32,7 @@ class OmniauthUser
   private
 
   def activate_and_update_uid
-    if @provider == 'twitter' && @user.twitter_uid.nil?
-      @user.update(twitter_uid: @uid)
-    elsif @provider == 'facebook' && @user.facebook_uid.nil?
-      @user.update(facebook_uid: @uid)
-    elsif @provider == 'google_oauth2' && @user.google_uid.nil?
-      @user.update(google_uid: @uid)
-    end
+    update_uid
 
     unless user.activated?
       @user.update(
@@ -61,13 +43,15 @@ class OmniauthUser
     end
   end
 
-  def find_user_from_auth
-    user = User.find_by(email: @email)
-    if user.present?
-      user = User.find_by(twitter_uid: @uid) ||
-             User.find_by(facebook_uid: @uid) ||
-             User.find_by(google_uid: @uid)
-    end
-    user
+  def find_by_uid
+    raise NotImplementedError.new("You must implement #{self.class}##{__method__}")
+  end
+
+  def update_uid
+    raise NotImplementedError.new("You must implement #{self.class}##{__method__}")
+  end
+
+  def uid_hash
+    raise NotImplementedError.new("You must implement #{self.class}##{__method__}")
   end
 end

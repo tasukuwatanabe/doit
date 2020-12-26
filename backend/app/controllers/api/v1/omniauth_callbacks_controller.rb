@@ -3,23 +3,12 @@ module Api
     class OmniauthCallbacksController < ApplicationController
       def create
         auth = request.env['omniauth.auth']
-        omniauth_user = OmniauthUser.new(auth)
-        user = omniauth_user.find_or_create
+        service = OmniauthUserCreateService.new(auth)
+        user = service.result
         if user&.activated?
           log_in user
 
-          provider =  if auth[:provider] == 'twitter'
-                        'Twitter'
-                      elsif auth[:provider] == 'facebook'
-                        'Facebook'
-                      elsif auth[:provider] == 'google_oauth2'
-                        'Google'
-                      end
-
-          query_result = '?oauth=success'
-          query_provider = "&provider=#{provider}"
-
-          redirect_to CLIENT_HOST + '/redirect' + query_result + query_provider
+          redirect_to CLIENT_HOST + '/redirect' + generate_query(auth[:provider])
         else
           render json: { message: "ログインできませんでした" }, status: :unprocessable_entity
         end
@@ -29,6 +18,18 @@ module Api
         provider = params[:provider]
         current_user.cancel_oauth(provider)
         render json: { user: current_user, message: "#{provider}との連携を解除しました" }, status: 200
+      end
+
+      private
+
+      def generate_query(provider)
+        provider_names = {
+          twitter: "Twitter",
+          facebook: "Facebook",
+          google: "Google",
+        }
+
+        "?oauth=success&provider=#{provider_names[provider.to_sym]}"
       end
     end
   end
