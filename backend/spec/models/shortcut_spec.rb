@@ -3,6 +3,26 @@ require 'rails_helper'
 RSpec.describe Shortcut, type: :model do
   let(:user) { create(:user) }
 
+  describe 'Association' do
+    let(:association) do
+      described_class.reflect_on_association(target)
+    end
+
+    context 'users' do
+      let(:target) { :user }
+
+      it { expect(association.macro).to eq :belongs_to }
+      it { expect(association.class_name).to eq 'User' }
+    end
+
+    context 'shortcut_labels' do
+      let(:target) { :shortcut_labels }
+
+      it { expect(association.macro).to eq :has_many }
+      it { expect(association.class_name).to eq 'ShortcutLabel' }
+    end
+  end
+
   describe '値の正規化' do
     it 'タイトルを半角カナで入力すると全角に変換' do
       shortcut = create(:shortcut, title: 'ﾃｽﾄ')

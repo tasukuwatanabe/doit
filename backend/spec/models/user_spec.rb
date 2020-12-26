@@ -3,6 +3,43 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   let(:user) { create(:user) }
 
+  describe '.connection_config' do
+    subject { described_class.connection_config[:database] }
+
+    it '指定のDBに接続していること' do
+      is_expected.to match(/doit_test/)
+      is_expected.not_to match(/doit_development/)
+    end
+  end
+
+  # アソシエーションのテスト
+  describe 'Association' do
+    let(:association) do
+      described_class.reflect_on_association(target)
+    end
+
+    context 'todos' do
+      let(:target) { :todos }
+
+      it { expect(association.macro).to eq :has_many }
+      it { expect(association.class_name).to eq 'Todo' }
+    end
+
+    context 'shortcuts' do
+      let(:target) { :shortcuts }
+
+      it { expect(association.macro).to eq :has_many }
+      it { expect(association.class_name).to eq 'Shortcut' }
+    end
+
+    context 'labels' do
+      let(:target) { :labels }
+
+      it { expect(association.macro).to eq :has_many }
+      it { expect(association.class_name).to eq 'Label' }
+    end
+  end
+
   describe 'passwordの保存' do
     it '文字列を与えると、password_digestは長さ60の文字列になる' do
       user.password = 'password'
@@ -36,7 +73,7 @@ RSpec.describe User, type: :model do
       user = create(:user, username: ' ユーザー ')
       expect(user.username).to eq('ユーザー')
     end
-    
+
     it 'username前後の全角スペースを除去' do
       user = create(:user, username: "\u{3000}ユーザー\u{3000}")
       expect(user.username).to eq('ユーザー')
