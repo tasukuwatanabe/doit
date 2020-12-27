@@ -43,10 +43,8 @@ export default {
       return this.$route.name === 'todos';
     },
     userLoggedIn() {
-      return (this.$route.name !== 'login') &&
-             (this.$route.name !== 'signup') &&
-             (this.$route.name !== 'password_resets_new') &&
-             (this.$route.name !== 'password_resets_edit')
+      const logoutPages = ['login', 'signup', 'password_resets_new', 'password_resets_edit']
+      return !logoutPages.includes(this.$route.name);
     },
   }
 }

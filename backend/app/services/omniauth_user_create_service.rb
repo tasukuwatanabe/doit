@@ -2,7 +2,7 @@ class OmniauthUserCreateService
   OMNIAUTH_USER_CLASSES = {
     twitter: TwitterOmniauthUser,
     facebook: FacebookOmniauthUser,
-    google: GoogleOmniauthUser,
+    google_oauth2: GoogleOmniauthUser,
   }.freeze
 
   def initialize(auth)
