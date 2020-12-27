@@ -4,7 +4,7 @@ RSpec.describe UserMailer, type: :mailer do
   let(:user) { create(:user) }
   let(:mail_body) { mail.body.encoded.split(/\r\n/).map { |i| Base64.decode64(i) }.join }
 
-  describe 'account_activation' do
+  describe 'AccountActivation' do
     let(:mail) { UserMailer.account_activation(user) }
 
     it 'renders the headers' do
@@ -18,7 +18,7 @@ RSpec.describe UserMailer, type: :mailer do
     end
   end
 
-  describe 'email_confirmation' do
+  describe 'EmailConfirmation' do
     let(:mail) { UserMailer.email_confirmation(user) }
 
     it 'renders the headers' do
@@ -34,7 +34,7 @@ RSpec.describe UserMailer, type: :mailer do
     end
   end
 
-  describe 'password_resets' do
+  describe 'PasswordResets' do
     let(:mail) { UserMailer.password_reset(user) }
 
     it 'renders the headers' do

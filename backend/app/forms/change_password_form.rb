@@ -21,7 +21,7 @@ class ChangePasswordForm
 
   def promote_user_valid
     user.attributes = {
-      auto_generated_password: nil,
+      auto_generated_password: false,
       password: password,
       password_confirmation: password_confirmation
     }

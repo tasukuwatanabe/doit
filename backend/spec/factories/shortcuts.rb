@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :shortcut do
     association :user
-    title { 'ショートカットタイトル' }
+    sequence(:title) { |n| "ショートカットタイトル#{n}" }
   end
 end

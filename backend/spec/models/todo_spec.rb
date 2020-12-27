@@ -42,23 +42,19 @@ RSpec.describe Todo, type: :model do
 
   describe 'バリデーション' do
     it 'todo_dateが空白の場合は無効' do
-      todo = build(:todo, todo_date: nil)
-      expect(todo).not_to be_valid
+      expect(build(:todo, todo_date: nil)).not_to be_valid
     end
 
     it '2000年1月1日より前の日付は無効' do
-      todo = build(:todo, todo_date: Date.new(1999, 12, 31))
-      expect(todo).not_to be_valid
+      expect(build(:todo, todo_date: Date.new(1999, 12, 31))).not_to be_valid
     end
 
     it '1年後より後の日付は無効' do
-      todo = build(:todo, todo_date: 1.year.since(Date.today) + 1.day)
-      expect(todo).not_to be_valid
+      expect(build(:todo, todo_date: 1.year.since(Date.today) + 1.day)).not_to be_valid
     end
     
     it 'ラベルの指定がなくても有効' do
-      todo = build(:todo, label_ids: [])
-      expect(todo).to be_valid
+      expect(build(:todo, label_ids: [])).to be_valid
     end
   end
 end
