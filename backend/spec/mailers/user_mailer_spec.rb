@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe UserMailer, type: :mailer do
-  let!(:user) { create(:user) }
+  let(:user) { create(:user) }
   let(:mail_body) { mail.body.encoded.split(/\r\n/).map { |i| Base64.decode64(i) }.join }
 
-  describe 'account_activation' do
+  describe 'AccountActivation' do
     let(:mail) { UserMailer.account_activation(user) }
 
     it 'renders the headers' do
@@ -18,20 +18,35 @@ RSpec.describe UserMailer, type: :mailer do
     end
   end
 
-  describe 'email_confirmation' do
+  describe 'EmailConfirmation' do
     let(:mail) { UserMailer.email_confirmation(user) }
 
     it 'renders the headers' do
       user.confirmation_token = User.new_token
-      mail = UserMailer.email_confirmation(user)
       expect(mail.subject).to eq('メールアドレスの確認')
       expect(mail.from).to eq(['noreply@doit-app.com'])
+      expect(mail.to).to eq(['user3_new@email.com'])
     end
 
     it 'renders the body' do
       user.confirmation_token = User.new_token
-      mail = UserMailer.email_confirmation(user)
       expect(mail_body).to match CGI.escape(user.email)
+    end
+  end
+
+  describe 'PasswordResets' do
+    let(:mail) { UserMailer.password_reset(user) }
+
+    it 'renders the headers' do
+      user.reset_token = User.new_token
+      expect(mail.subject).to eq('パスワードリセット')
+      expect(mail.from).to eq(['noreply@doit-app.com'])
+      expect(mail.to).to eq(['user5@email.com'])
+    end
+
+    it 'renders the body' do
+      user.reset_token = User.new_token
+      expect(mail_body).to match(user.email)
     end
   end
 end

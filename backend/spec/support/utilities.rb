@@ -1,3 +1,10 @@
 def sign_in_as(user)
-  post '/api/v1/login', params: { session: { email: user.email, password: user.password } }
+  session_params = {
+    session: {
+      email: user.email,
+      password: user.password
+    }
+  }
+
+  post '/api/v1/login', params: session_params
 end
