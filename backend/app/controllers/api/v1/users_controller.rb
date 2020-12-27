@@ -24,8 +24,7 @@ module Api
           UserMailer.email_confirmation(user_form.user).deliver_now if user_form.changed_email
           render json: { user: user_form.user, message: "ユーザー情報が更新されました" }
         else
-          errors = user_form.errors.map { |key, _v| [key, user_form.errors.full_messages_for(key)] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(user_form) }, status: :unprocessable_entity
         end
       end
 

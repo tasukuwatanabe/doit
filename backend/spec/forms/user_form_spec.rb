@@ -32,8 +32,9 @@ RSpec.describe UserForm, type: :model do
         let(:email) { "update@example.com" }
 
         it "email は unconfirmed_email カラムに保存されて、token なども同時に登録する" do
+          old_email = user.email
           is_expected.to eq true
-          expect(user.email).to eq user.email
+          expect(user.email).to eq old_email
           expect(user.unconfirmed_email).to eq email
           expect(user.confirmation_token).not_to eq nil
           expect(user.confirmation_digest).not_to eq nil
@@ -67,7 +68,7 @@ RSpec.describe UserForm, type: :model do
 
           it "画像は変更しない" do
             is_expected.to eq true
-            expect(user.user_image.url).to eq  "/user_icons/user_#{user.id}.jpg"
+            expect(user.user_image.url).to eq  "http://localhost:3000/user_icons/user_#{user.id}.jpg"
           end
         end
       end

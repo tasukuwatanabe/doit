@@ -35,8 +35,7 @@ class UserForm
   end
 
   def delete_no_change_params(params)
-    no_change_columns = [:email]
-    params.delete_if { |key, _value| no_change_columns.include?(key) }
+    params.delete(:email)
     params
   end
 
