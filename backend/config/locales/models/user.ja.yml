@@ -3,10 +3,13 @@ ja:
     models:
       user: ユーザー
     attributes:
-      user:
+      user: &user_attributes
         username: ユーザー名
         email: メールアドレス
         unconfirmed_email: メールアドレス
         user_image: プロフィール画像
         password: パスワード
         password_confirmation: パスワード(確認用)
+  activemodel:
+    attributes:
+      user_form: *user_attributes

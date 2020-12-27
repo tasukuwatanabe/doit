@@ -126,5 +126,12 @@ RSpec.describe User, type: :model do
     it 'passwordが20文字より多い場合は無効' do
       expect(build(:user, password: "hogehogehogehogehogehoge")).not_to be_valid
     end
+
+    it '未確認 email は他のユーザーの email と重複しない' do
+      create(:user, email: 'already@example.com')
+      user = build(:user, unconfirmed_email: 'already@example.com')
+      expect(user).not_to be_valid
+      expect(user.errors.messages[:unconfirmed_email]).to include "はすでに存在します"
+    end
   end
 end
