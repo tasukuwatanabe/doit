@@ -20,8 +20,8 @@ const mutations = {
 };
 
 const actions = {
-  setCurrentUserAction({ commit }, userObj) {
-    commit('setCurrentUser', userObj);
+  setCurrentUserAction({ commit }, user) {
+    commit('setCurrentUser', user);
   },
   logoutAction({ commit }) {
     deleteCookie();
