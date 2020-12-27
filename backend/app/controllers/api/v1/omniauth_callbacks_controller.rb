@@ -26,7 +26,7 @@ module Api
         provider_names = {
           twitter: "Twitter",
           facebook: "Facebook",
-          google: "Google",
+          google_oauth2: "Google",
         }
 
         "?oauth=success&provider=#{provider_names[provider.to_sym]}"
