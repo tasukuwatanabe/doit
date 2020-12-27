@@ -2,23 +2,12 @@
   <div class="modal" v-if="modalActive">
     <div class="modal__layer">
       <div class="modal__box">
-        <form @submit.prevent novalidate="true" class="form">
+        <form @submit.prevent="labelSubmit" class="form">
           <div class="modal-form">
             <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
             </div>
-            <div v-if="custom_error" class="error">
-              <span class="error__icon">
-                <i class="fas fa-exclamation-triangle"></i>
-              </span>
-              <p class="error__text">{{ custom_error }}</p>
-              <div class="btn-case">
-                <div @click="toggleModal" class="btn btn--gray btn--sm error__btn">
-                  閉じる
-                </div>
-              </div>
-            </div>
-            <div v-else>
+            <div>
               <div class="form__group row">
                 <div class="col-3">
                   <div
@@ -34,7 +23,6 @@
                     type="text"
                     class="form__input"
                     v-model="label.label_title"
-                    required
                   />
                   <span class="form__error" v-if="errors.title">
                     {{ errors.title }}
@@ -69,9 +57,9 @@
                 <div @click="toggleModal" class="btn btn--gray btn--sm">
                   キャンセル
                 </div>
-                <div @click="labelSubmit" class="btn btn--blue btn--sm">
+                <button type="submit" class="btn btn--blue btn--sm">
                   {{ btnText }}
-                </div>
+                </button>
               </div>
             </div>
           </div>
@@ -82,7 +70,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { axiosForBackend } from "../config/axios";
 import { Compact } from "vue-color";
 import Modal from "./mixins/modal";
 
@@ -92,16 +80,12 @@ export default {
   name: "LabelModal",
   data() {
     return {
-      label: {
-        id: "",
-        title: ""
-      },
+      label: {},
       colorPicker: {
         hex: defaultColor
       },
       displayColorPicker: "",
-      btnText: "",
-      custom_error: "",
+      btnText: ""
     };
   },
   components: {
@@ -110,16 +94,11 @@ export default {
   mixins: [Modal],
   methods: {
     setLabelValue(val) {
-      this.custom_error = "";
       this.toggleModal();
       this.label.id = val.id;
-      this.label.label_title = val.title;
-      this.colorPicker.hex = val.color || defaultColor;
-      this.btnText = val ? "更新する" : "新規作成";
-    },
-    setError(error) {
-      this.custom_error = error;
-      this.toggleModal();
+      this.label.label_title = val.label_title;
+      this.colorPicker.hex = val.label_color || defaultColor;
+      this.btnText = val.id ? "更新する" : "新規作成";
     },
     labelSubmit() {
       const label_params = {
@@ -127,7 +106,7 @@ export default {
         color: this.colorPicker.hex
       };
       if (this.label.id) {
-        axios
+        axiosForBackend
           .put(`/labels/${this.label.id}`, { label: label_params })
           .then(() => {
             this.label = {};
@@ -138,7 +117,7 @@ export default {
             this.errors = error.response.data.errors;
           });
       } else {
-        axios
+        axiosForBackend
           .post("/labels", { label: label_params })
           .then(() => {
             this.label = {};
@@ -155,6 +134,7 @@ export default {
     },
     toggleModal() {
       this.modalActive = !this.modalActive;
+      this.errors = {};
       this.displayColorPicker = false;
       this.colorPicker.hex = defaultColor;
     }

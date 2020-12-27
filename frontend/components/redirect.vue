@@ -2,8 +2,10 @@
 
 <script>
 import { mapActions } from 'vuex';
+import Flash from "./mixins/flash";
 
 export default {
+  mixins: [Flash],
   created() {
     this.showFlash();
   },
@@ -13,48 +15,26 @@ export default {
     }),
     showFlash() {
       if (this.$route.query.email_confirmed === 'true') {
-        this.flashMessage.success({
-          title: "メールアドレスが更新されました",
-          time: 5000,
-          icon: '/icons/success.svg',
-        });
+        const message = "メールアドレスが更新されました。再度ログインしてください"
+        this.generateFlash('success', message);
       } else if (this.$route.query.email_confirmed === 'false') {
-        this.flashMessage.error({
-          title: "リンクが有効ではありません",
-          time: 5000,
-          icon: '/icons/error.svg',
-        });
+        const message = "リンクが有効ではありません"
+        this.generateFlash('error', message);
       } else if (this.$route.query.email_confirmed === 'expired') {
-        this.flashMessage.error({
-          title: "リンクの有効期限が過ぎています",
-          time: 5000,
-          icon: '/icons/error.svg',
-        });
+        const message = "リンクの有効期限が過ぎています"
+        this.generateFlash('error', message);
       } else if (this.$route.query.account_activation === 'already') {
-        this.flashMessage.info({
-          title: "アカウントはすでに有効です",
-          time: 5000,
-          icon: '/icons/info.svg',
-        });
+        const message = "アカウントはすでに有効です"
+        this.generateFlash('info', message);
       } else if (this.$route.query.account_activation === 'activated') {
-        this.flashMessage.success({
-          title: "アカウントが有効化されました",
-          time: 5000,
-          icon: '/icons/success.svg',
-        });
+        const message = "アカウントが有効化されました"
+        this.generateFlash('success', message);
       } else if (this.$route.query.account_activation === 'invalid') {
-        this.flashMessage.error({
-          title: "有効化リンクが無効です",
-          time: 5000,
-          icon: '/icons/error.svg',
-        });
+        const message = "有効化リンクが無効です"
+        this.generateFlash('error', message);
       } else if (this.$route.query.oauth === 'success') {
-        this.setSelectedDateAction();
-        this.flashMessage.success({
-          title: this.$route.query.provider + "でログインしました",
-          time: 5000,
-          icon: '/icons/success.svg',
-        });
+        const message = this.$route.query.provider + "でログインしました";
+        this.generateFlash('success', message);
       }
 
       this.$router.push({ name: 'todos' });

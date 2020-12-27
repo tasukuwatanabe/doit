@@ -152,7 +152,7 @@ export default {
       }
       const year = this.currentMoment.year(); // 表示するyearを取得
       const month = this.currentMoment.month() + 1; // 表示するmonthを取得
-      const selectedDate = `${year}-${month}-${date}`;
+      const selectedDate = `${year}/${month}/${date}`;
       this.setSelectedDateAction(selectedDate);
     },
     todoMatchCalendar() {
@@ -165,8 +165,6 @@ export default {
       this.current += year_difference * 12 + month_difference * 1;
     },
     fetchToday() {
-      this.current = 0;
-      const selectedDate = moment().format('YYYY-MM-DD');
       this.setSelectedDateAction(moment());
     }
   }
@@ -200,7 +198,7 @@ export default {
 
     @media (max-width: 991px) {
       font-size: 1.2em;
-      padding: 0 20px 15px;
+      padding: 0 20px 10px;
     }
   }
 
@@ -219,7 +217,7 @@ export default {
     user-select: none;
 
     @media (max-width: 991px) {
-      font-size: 15px;
+      font-size: .9em;
       margin-bottom: 10px;
     }
 
@@ -232,7 +230,7 @@ export default {
       }
 
       @media (max-width: 374px) {
-        padding: 8px 0;
+        padding: 7px 0;
       }
     }
 

@@ -29,10 +29,10 @@
     color: red;
     font-size: 0.8em;
     display: block;
-    margin-top: 0.3em;
+    margin-top: 0.4em;
 
-    &--base {
-      margin-bottom: 1em;
+    &--mt {
+      margin-top: 1em;
     }
   }
 }
@@ -92,8 +92,8 @@
         margin-right: 30px;
 
         @media (max-width: 991px) {
-          width: 70px;
-          margin: 0 0 15px;
+          width: 80px;
+          margin: 5px 0 20px;
         }
       }
     }

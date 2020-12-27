@@ -2,7 +2,7 @@
   <div class="modal" v-if="modalActive">
     <div class="modal__layer">
       <div class="modal__box">
-        <form @submit.prevent novalidate="true" class="form">
+        <form @submit.prevent="todoSubmit" class="form">
           <div class="modal-form">
             <div class="fa-case" @click="toggleModal">
               <i class="fas fa-times"></i>
@@ -21,7 +21,6 @@
                   type="text"
                   class="form__input"
                   v-model="todo.title"
-                  required
                 />
                 <span class="form__error" v-if="errors.title">
                   {{ errors.title }}
@@ -77,9 +76,9 @@
               <div @click="toggleModal" class="btn btn--gray btn--sm">
                 キャンセル
               </div>
-              <div @click="todoSubmit" class="btn btn--blue btn--sm">
+              <button type="submit" class="btn btn--blue btn--sm">
                 {{ btnText }}
-              </div>
+              </button>
             </div>
           </div>
         </form>
@@ -89,9 +88,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import { axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Modal from "./mixins/modal";
+import Logout from "./mixins/logout";
 
 export default {
   data() {
@@ -101,7 +101,7 @@ export default {
       btnText: "",
     };
   },
-  mixins: [Modal],
+  mixins: [Modal, Logout],
   created() {
     this.fetchLabels();
   },
@@ -122,27 +122,16 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction",
-      logoutAction: "user/logoutAction"
+      setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchLabels() {
-      axios
+      axiosForBackend
         .get("/labels")
         .then((res) => {
           this.labels = res.data;
         })
         .catch(error => {
-          if (error.response && error.response.status === 500) {
-            axios.delete("/logout").then(() => {
-              this.logoutAction();
-              this.$router.push({ name: "login" });
-              this.flashMessage.error({
-                title: "再度ログインしてください",
-                time: 5000,
-                icon: '/icons/error.svg',
-              });
-            });
-          }
+          this.forceLogout(error);
         });
     },
     setTodoValue(val) {
@@ -161,7 +150,7 @@ export default {
       }
 
       if (this.todo.id) {
-        axios
+        axiosForBackend
           .put(`/todos/${this.todo.id}`, { 
             todo: {
               title: this.todo.title,
@@ -180,7 +169,7 @@ export default {
             this.errors = error.response.data.errors;
           });
       } else {
-        axios
+        axiosForBackend
           .post("/todos", {
             todo: {
               title: this.todo.title,

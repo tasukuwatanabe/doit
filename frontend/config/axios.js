@@ -4,25 +4,29 @@ import axios from 'axios';
 import store from '../store/index';
 
 // Rails-APIを叩く際のaxiosのcors対策
-const url =
+axios.defaults.baseURL =
   process.env.NODE_ENV === 'production'
     ? 'https://doit-app.com/api/v1'
     : 'http://localhost:3000/api/v1';
-axios.defaults.baseURL = url;
 axios.defaults.withCredentials = true;
 
-// axiosのキャンセルトークンの発行
-axios.interceptors.request.use(
-  function (config) {
-    const source = axios.CancelToken.source();
+// API取得用axios;
+const axiosForBackend = axios.create();
 
-    config.cancelToken = source.token;
+axiosForBackend.interceptors.request.use((request) => {
+  store.commit('loading/addLoadingCount');
+  return request;
+});
 
-    store.commit('request/addCancelToken', source);
-
-    return config;
+axiosForBackend.interceptors.response.use(
+  (response) => {
+    store.commit('loading/subtractLoadingCount');
+    return response;
   },
-  function (error) {
+  (error) => {
+    store.commit('loading/subtractLoadingCount');
     return Promise.reject(error);
   }
 );
+
+export { axios, axiosForBackend };

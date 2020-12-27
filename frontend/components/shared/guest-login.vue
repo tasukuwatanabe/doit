@@ -8,35 +8,30 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axiosForBackend from 'axios';
 import { mapActions } from 'vuex';
+import Flash from "../mixins/flash";
 
 export default {
+  mixins: [Flash],
   methods: {
     ...mapActions({
       setCurrentUserAction: 'user/setCurrentUserAction',
     }),
     guestLogin() {
-      const session_params = {
+      const guest_email = {
         email: 'guest@example.com',
       };
-      axios
-        .post('/login', { session: session_params })
+      axiosForBackend
+        .post('/guest', { session: guest_email })
         .then((res) => {
-          this.setCurrentUserAction(res.data);
+          this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: 'todos' });
-          this.flashMessage.success({
-            title: "ゲストユーザーでログインしました",
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
+          this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
-          this.flashMessage.error({
-            title: error.message,
-            time: 5000,
-            icon: '/icons/error.svg',
-          });
+          const message = "ゲストログインに失敗しました"
+          this.generateFlash('error', message);
         });
     },
   },

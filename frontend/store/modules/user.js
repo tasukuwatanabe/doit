@@ -1,4 +1,5 @@
 import store from '../index';
+import { deleteCookie } from '../../modules/cookie';
 
 const namespaced = true;
 
@@ -23,6 +24,7 @@ const actions = {
     commit('setCurrentUser', userObj);
   },
   logoutAction({ commit }) {
+    deleteCookie();
     commit('setCurrentUser', {});
     store.dispatch('date/resetSelectedDateAction');
   },

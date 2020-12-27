@@ -33,4 +33,4 @@
 .env
 
 /public/uploads
-!/public/user_icons/default.jpg
+/public/user_icons/user_*.*

@@ -7,15 +7,19 @@ class Label < ApplicationRecord
   has_many :shortcut_labels, dependent: :destroy
   has_many :shortcuts, through: :shortcut_labels
 
+  scope :order_created_desc, -> { order(created_at: :desc) }
+
   before_validation do
     self.title = normalize_as_text(title)
     self.color = normalize_as_color(color)
   end
 
-  validates :title, presence: true, uniqueness: { scope: :user }
+  validates :title, presence: true,
+                    uniqueness: { scope: :user },
+                    length: { maximum: 30 }
   validates :color, presence: true
   validate :label_color_must_be_hex_style
-  validate :label_counts_must_be_within_limit
+  validate :label_count_within_limit, if: -> { user.labels.size > 10 }
 
   private
   
@@ -35,7 +39,7 @@ class Label < ApplicationRecord
     end
   end
 
-  def label_counts_must_be_within_limit
-    errors.add(:base, 'ラベルが登録できるのは10個までです') if user.labels.size > 10
+  def label_count_within_limit
+    errors.add(:base, 'ラベルが登録できるのは10個までです')
   end
 end

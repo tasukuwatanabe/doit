@@ -3,18 +3,25 @@ module Api
     class AccountActivationsController < ApplicationController
       def edit
         user = User.find_by(email: params[:email])
+        redirect_query = generate_query(user)
+        activate_user(user)
+        redirect_to CLIENT_HOST + '/redirect' + redirect_query
+      end
 
-        if user && user.activated?
-          query = '?account_activation=already'
-        elsif user && !user.activated? && user.authenticated?(:activation, params[:id])
+      private
+
+      def activate_user(user)
+        if !user.activated? && user.authenticated?(:activation, params[:id])
           user.activate
           log_in user
-          query = '?account_activation=activated'
-        else
-          query = '?account_activation=invalid'
         end
+      end
 
-        redirect_to host + '/redirect' + query
+      def generate_query(user)
+        query = 'invalid'
+        query = 'already' if user.activated?
+        query = 'activated' if !user.activated? && user.authenticated?(:activation, params[:id])
+        "?account_activation=#{query}"
       end
     end
   end

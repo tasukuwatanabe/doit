@@ -3,7 +3,7 @@
     <div class="login__case">
       <div class="login__title">パスワードリセット</div>
       <div class="login__inner">
-        <form class="form">
+        <form class="form" @submit.prevent="submitPasswordReset">
           <span class="form__error form__error--base" v-if="errors.base">
             {{ errors.base }}
           </span>
@@ -32,10 +32,10 @@
             </span>
           </div>
           <div class="text-center">
-            <div @click="submitPasswordReset"
+            <button type="submit"
                   class="btn btn--main btn--md">
               パスワードをリセット
-            </div>
+            </button>
           </div>
           <ul class="form__linkList form__linkList--password-reset">
             <li class="form__linkItem">
@@ -55,9 +55,10 @@
 </template>
 
 <script>
-import axios from "axios";
-import GuestLogin from './guest-login.vue';
+import { axiosForBackend } from "../config/axios";
 import { mapActions } from "vuex";
+import GuestLogin from './shared/guest-login.vue';
+import Flash from "./mixins/flash";
 
 export default {
   data() {
@@ -67,6 +68,7 @@ export default {
       errors: ""
     };
   },
+  mixins: [Flash],
   components: {
     GuestLogin
   },
@@ -80,7 +82,7 @@ export default {
         password_confirmation: this.password_confirmation
       };
 
-      axios
+      axiosForBackend
         .put(`/password_resets/${this.$route.params.id}`, {
           user: password_reset_params,
           email: this.$route.query.email
@@ -88,19 +90,12 @@ export default {
         .then((res) => {
           this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
+          this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
           if (error.response.data.message) {
-            this.flashMessage.error({
-              title: error.response.data.message,
-              icon: '/icons/error.svg',
-            });
+            this.generateFlash('error', error.response.data.message);
             this.$router.push({ name: 'password_resets_new' })
           }
         });

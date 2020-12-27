@@ -1,17 +1,16 @@
 module Api
   module V1
     class PasswordResetsController < ApplicationController
-      before_action :check_empty, only: :create
-      before_action :get_user, only: :update
-      before_action :check_expiration, only: :update
-      before_action :valid_user, only: :update
-      before_action :check_email, only: :create
+      before_action :forbid_guest_email, only: :create
+      before_action :set_user, only: :update
+      before_action :forbid_expired_reset_token, only: :update
+      before_action :authenticate_user, only: :update
 
       def create
         user = User.find_by(email: password_reset_params[:email])
-        user.create_reset_digest if user
-
-        if user&.send_password_reset_email
+        if user
+          user.create_reset_digest
+          user.send_password_reset_email
           render json: { message: "パスワード再設定用のメールが送信されました"}, status: 200
         else
           errors = { email: 'メールアドレスが見つかりません' }
@@ -20,14 +19,12 @@ module Api
       end
 
       def update
-        change_password_form = ChangePasswordForm.new(user_params)
-        change_password_form.object = @user
+        change_password_form = ChangePasswordForm.new(@user, user_params)
         if change_password_form.save
           log_in @user
           render json: { user: @user, message: "パスワードがリセットされました" }, status: 200
         else
-          errors = change_password_form.errors.keys.map { |key| [key, change_password_form.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(change_password_form) }, status: :unprocessable_entity
         end
       end
 
@@ -41,33 +38,25 @@ module Api
         params.require(:user).permit(:password, :password_confirmation)
       end
 
-      def check_empty
-        if password_reset_params[:email].empty?
-          errors = { email:  'メールアドレスが未入力です' }
-          render json: { errors: errors }, status: :unprocessable_entity
-          return
-        end
-      end
-
-      def check_email
+      def forbid_guest_email
         if password_reset_params[:email] == 'guest@example.com'
           render json: { errors: { email: "このアカウントはパスワードリセットできません。"} }, status: :unprocessable_entity
         end
       end
 
-      def get_user
+      def set_user
         @user = User.find_by(email: params[:email])
       end
 
-      def check_expiration
-        if @user && @user.expired?(:reset)
+      def forbid_expired_reset_token
+        if @user&.expired?(:reset)
           render json: { message: "リンクの有効期限が過ぎています"}, status: :unprocessable_entity
           return
         end
       end
 
-      def valid_user
-        unless (@user && @user.authenticated?(:reset, params[:id]))
+      def authenticate_user
+        unless @user&.authenticated?(:reset, params[:id])
           render json: { message: "リンクが有効ではありません"}, status: :unprocessable_entity
           return
         end

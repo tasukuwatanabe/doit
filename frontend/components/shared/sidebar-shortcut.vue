@@ -10,35 +10,29 @@
         編集
       </router-link>
     </div>
-    <div 
-      class="sidebar-shortcut__field" 
-      :class="{ 'sidebar-shortcut__field--center' : (loading || !shortcuts.length) }">
-      <div class="spinner-border text-info" v-if="loading" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-      <div v-if="!loading">
-        <ul v-if="shortcuts.length" class="sidebar-shortcut__list">
-          <li
-            v-for="shortcut in shortcuts"
-            :key="shortcut.id"
-            class="sidebar-shortcut__item"
-          >
-            <a @click="createTodo(shortcut)" class="sidebar-shortcut__link">
-              <i class="fas fa-plus-circle"></i>
-              {{ shortcut.title }}
-            </a>
-          </li>
-        </ul>
-        <div v-else class="sidebar-shortcut__no-result">
-          <p class="sidebar-shortcut__text">ショートカットが未作成です</p>
-          <div class="page-action">
-            <router-link to="/shortcuts" class="btn">
-              <span class="page-action__icon">
-                <i class="fas fa-plus"></i>
-              </span>
-              <span class="page-action__text">ショートカットを追加</span>
-            </router-link>
-          </div>
+    <div class="sidebar-shortcut__field" 
+        :class="{ 'sidebar-shortcut__field--center' : !shortcuts.length }">
+      <ul v-if="shortcuts.length" class="sidebar-shortcut__list">
+        <li
+          v-for="shortcut in shortcuts"
+          :key="shortcut.id"
+          class="sidebar-shortcut__item"
+        >
+          <a @click="createTodo(shortcut)" class="sidebar-shortcut__link">
+            <i class="fas fa-plus-circle"></i>
+            {{ shortcut.title }}
+          </a>
+        </li>
+      </ul>
+      <div v-else class="sidebar-shortcut__no-result">
+        <p class="sidebar-shortcut__text">ショートカットが未作成です</p>
+        <div class="page-action">
+          <router-link to="/shortcuts" class="btn">
+            <span class="page-action__icon">
+              <i class="fas fa-plus"></i>
+            </span>
+            <span class="page-action__text">ショートカットを追加</span>
+          </router-link>
         </div>
       </div>
     </div>
@@ -46,20 +40,20 @@
 </template>
 
 <script>
-import axios from "axios";
+import { axiosForBackend } from "../../config/axios";
 import { mapGetters, mapActions } from "vuex";
+import Logout from "../mixins/logout";
 
 export default {
   data() {
     return {
-      shortcuts: [],
-      loading: ''
+      shortcuts: []
     };
   },
   created() {
-    this.loading = true;
     this.fetchShortcut();
   },
+  mixins: [Logout],
   computed: {
     ...mapGetters({
       getSelectedDate: "date/getSelectedDate",
@@ -67,34 +61,21 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction",
-      logoutAction: "user/logoutAction"
+      setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchShortcut() {
-      axios
+      axiosForBackend
         .get("/shortcuts")
         .then((res) => {
           this.shortcuts = res.data;
-          this.loading = false;
         }).catch(error => {
-          this.loading = false;
-          if (error.response && error.response.status === 500) {
-            axios.delete("/logout").then(() => {
-              this.logoutAction();
-              this.$router.push({ name: "login" });
-              this.flashMessage.error({
-                title: "再度ログインしてください",
-                time: 5000,
-                icon: '/icons/error.svg',
-              });
-            });
-          }
+          this.forceLogout(error);
         });
     },
     createTodo(shortcut) {
       const label_arr = [];
       label_arr.push(shortcut.label_id);
-      axios.post("/todos", {
+      axiosForBackend.post("/todos", {
         todo: {
           title: shortcut.title,
           todo_date: this.getSelectedDate,
@@ -202,11 +183,9 @@ export default {
     align-items: center;
     transition-duration: 0.2s;
     padding: 4px 15px;
-
     a {
       font-size: 0.9em !important;
       color: $color-main-theme !important;
-
       &:hover {
         opacity: .8;
       }

@@ -33,13 +33,9 @@ class User < ApplicationRecord
             length: { maximum: 255 },
             uniqueness: { case_sensitive: false },
             allow_nil: true
-  validates :password,
-            presence: true,
-            confirmation: true,
-            on: :create
-  validates :password_confirmation,
-            presence: true,
-            on: :create
+  validates :password, presence: true, on: :create
+  validates :password_confirmation, presence: true, on: :create
+  validates :password, length: { minimum: 6, maximum: 20 }, confirmation: true, allow_blank: true
   validate :uniqueness_unconfirmed_eamil_with_email
 
   has_secure_password
@@ -57,60 +53,6 @@ class User < ApplicationRecord
     def email_used?(user, email)
       existing_user = find_by('email = ?', email)
       existing_user.present? && existing_user != user
-    end
-
-    def find_or_create_from_oauth(auth)
-      provider = auth[:provider]
-      uid = auth[:uid]
-      name = auth[:info][:name]
-      email = auth[:info][:email]
-
-      if user = User.find_by(email: email)
-        if provider == 'twitter' && user.twitter_uid.nil?
-          user.update(twitter_uid: uid)
-        elsif provider == 'facebook' && user.facebook_uid.nil?
-          user.update(facebook_uid: uid)
-        elsif provider == 'google_oauth2' && user.google_uid.nil?
-          user.update(google_uid: uid)
-        end
-
-        unless user.activated?
-          user.update(
-            activated: true,
-            activated_at: Time.zone.now,
-            activation_digest: nil
-          )
-        end
-      else
-        user = User.find_by(twitter_uid: uid) ||
-               User.find_by(facebook_uid: uid) ||
-               User.find_by(google_uid: uid)
-      end
-
-      unless user
-        password = new_token
-        user = User.create!(
-          username: name,
-          email: email,
-          password: password,
-          password_confirmation: password,
-          auto_generated_password: true,
-          activated: true,
-          activated_at: Time.zone.now,
-          twitter_uid: nil,
-          facebook_uid: nil,
-          google_uid: nil
-        )
-
-        if provider == 'twitter'
-          user.update(twitter_uid: uid)
-        elsif provider == 'facebook'
-          user.update(facebook_uid: uid)
-        elsif provider == 'google_oauth2'
-          user.update(google_uid: uid)
-        end
-      end
-      user
     end
   end
 

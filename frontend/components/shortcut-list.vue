@@ -30,43 +30,36 @@
         </a>
       </div>
     </div>
-    <div class="loading-case" v-if="loading">
-      <div class="spinner-border text-info" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
-    <div v-if="!loading">
-      <ul class="list" v-if="shortcuts.length">
-        <li
-          class="list__item"
-          v-for="shortcut in shortcuts"
-          :key="shortcut.id"
-        >
-          <div class="list__block list__block--left">
-            <div class="list__title" :class="[ shortcut.label_title ? 'list__title--with-label' : '' ]">
-              {{ shortcut.title }}
-            </div>
-            <LabelItem :target-item="shortcut" v-if="shortcut.label_color" />
+    <ul class="list" v-if="shortcuts.length">
+      <li
+        class="list__item"
+        v-for="shortcut in shortcuts"
+        :key="shortcut.id"
+      >
+        <div class="list__block list__block--left">
+          <div class="list__title" :class="{ 'list__title--with-label': shortcut.label_title }">
+            {{ shortcut.title }}
           </div>
-          <div class="list__block list__block--right">
-            <div class="item-action">
-              <a @click="setShortcut(shortcut)" class="item-action__btn">
-                <i class="fas fa-pencil-alt"></i>
-              </a>
-              <a @click="deleteShortcut(shortcut)" class="item-action__btn">
-                <i class="fas fa-trash"></i>
-              </a>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div class="no-result no-result" v-else>
-        <div class="no-result__illustration">
-          <img
-            src="../images/illustrations/il-navigation.png"
-            alt="チェックリストのイラスト"
-          />
+          <LabelItem :target-item="shortcut" v-if="shortcut.label_color" />
         </div>
+        <div class="list__block list__block--right">
+          <div class="item-action">
+            <a @click="setShortcut(shortcut)" class="item-action__btn">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+            <a @click="deleteShortcut(shortcut)" class="item-action__btn">
+              <i class="fas fa-trash"></i>
+            </a>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="no-result no-result" v-else>
+      <div class="no-result__illustration">
+        <img
+          src="../images/illustrations/il-navigation.png"
+          alt="チェックリストのイラスト"
+        />
       </div>
     </div>
     <ShortcutModal
@@ -77,10 +70,12 @@
 </template>
 
 <script>
-import axios from "axios";
+import { axiosForBackend } from "../config/axios";
 import ShortcutModal from "./shortcut-modal";
 import LabelItem from "./label-item";
 import { mapActions } from "vuex";
+import Logout from "./mixins/logout";
+import Flash from "./mixins/flash";
 
 export default {
   name: "Shortcut",
@@ -90,53 +85,34 @@ export default {
   },
   data() {
     return {
-      shortcuts: [],
-      loading: ''
+      shortcuts: []
     };
   },
+  mixins: [Logout, Flash],
   created() {
-    this.loading = true;
     this.fetchShortcuts();
   },
   methods: {
-    ...mapActions({
-      logoutAction: "user/logoutAction"
-    }),
     fetchShortcuts() {
-      axios
+      axiosForBackend
         .get("/shortcuts")
         .then((res) => {
           this.shortcuts = res.data;
-          this.loading = false;
         })
         .catch(error => {
-          this.loading = false;
-          if (error.response && error.response.status === 500) {
-            axios.delete("/logout").then(() => {
-              this.logoutAction();
-              this.$router.push({ name: "login" });
-              this.flashMessage.error({
-                title: "再度ログインしてください",
-                time: 5000,
-                icon: '/icons/error.svg',
-              });
-            });
-          }
+          this.forceLogout(error);
         });
     },
     setShortcut(shortcut) {
-      if (this.shortcuts.length >= 10 && !shortcut) {
-        this.flashMessage.error({
-          title: "ショートカットが登録できるのは10個までです",
-          time: 5000,
-          icon: '/icons/error.svg',
-        });
+      if (this.shortcuts.length >= 10 && !shortcut.id) {
+        const message = "ショートカットが登録できるのは10個までです"
+        this.generateFlash('error', message);
       } else {
         this.$refs.shortcutModal.setShortcutValue(shortcut);
       }
     },
     deleteShortcut(shortcut) {
-      axios.delete(`/shortcuts/${shortcut.id}`)
+      axiosForBackend.delete(`/shortcuts/${shortcut.id}`)
             .then(() => {
               this.fetchShortcuts();
             });
@@ -144,12 +120,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "../stylesheets/mixin.scss";
-
-.loading-case {
-  @include loadingCase($spWidth:100%,
-                        $spHeight:200px)
-}
-</style>

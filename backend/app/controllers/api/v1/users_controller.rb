@@ -4,9 +4,7 @@ module Api
       before_action :check_email, only: [:create, :update]
 
       def current
-        @current_user = if user_id = cookies.signed[:user_id]
-                          User.find(user_id)
-                        end
+        @current_user = User.find(cookies.signed[:user_id])
         render 'current', formats: :json, handlers: 'jbuilder'
       end
 
@@ -14,10 +12,9 @@ module Api
         user = User.new(user_params)
         if user.save
           user.send_activation_email
-          render json: { message: "アカウント認証用のメールが送信されました" }
+          render json: { message: "アカウント認証用のメールが送信されました" }, status: 200
         else
-          errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: format_errors(user) }, status: :unprocessable_entity
         end
       end
 
@@ -35,8 +32,7 @@ module Api
       def destroy
         user = User.find(params[:id])
         user.destroy
-        destroy_cookie
-        render json: { message: "ユーザーが削除されました" }
+        render json: { message: "ユーザーが削除されました" }, status: 200
       end
 
       private

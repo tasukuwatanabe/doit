@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :label do
     association :user
-    title { 'ショートカットタイトル' }
+    sequence(:title) { |n| "ラベルタイトル#{n+1}" }
     color { '#FF00BB' }
   end
 end

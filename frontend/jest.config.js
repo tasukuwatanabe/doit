@@ -14,5 +14,8 @@ module.exports = {
   },
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/components/$1"
-  }
+  },
+  transformIgnorePatterns: [
+    "<roodDir>/node_modules/"
+  ]
 }

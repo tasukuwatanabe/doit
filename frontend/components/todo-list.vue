@@ -21,53 +21,46 @@
           <i class="fas fa-caret-right"></i>
         </div>
       </section>
-      <div class="loading-case" v-if="loading">
-        <div class="spinner-border text-info" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-      <div v-if="!loading">
-        <ul class="list" v-if="todos.length">
-          <li v-for="todo in todos" class="list__item" :key="todo.id">
-            <div
-              class="todo-status"
-              :class="{ 'todo__status--checked': todo.todo_status }"
-            >
-              <input
-                :id="'todo_status_' + todo.id"
-                type="checkbox"
-                v-model="todo.status"
-                @click="toggleStatus(todo)"
-              />
-              <label :for="'todo_status_' + todo.id"></label>
-            </div>
-            <div class="list__inner">
-              <div class="list__block list__block--left">
-                <div class="list__title" :class="[ todo.label_title ? 'list__title--with-label' : '' ]">{{ todo.title }}</div>
-                <LabelItem :target-item="todo" v-if="todo.label_id" />
-              </div>
-              <div class="list__block list__block--right">
-                <div class="item-action">
-                  <a @click="setTodo(todo)" class="item-action__btn">
-                    <i class="fas fa-pencil-alt"></i>
-                  </a>
-                  <a @click="deleteTodo(todo)" class="item-action__btn">
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
-        <div v-else class="no-result todo__no-result">
-          <div class="no-result__illustration">
-            <img
-              src="../images/illustrations/il-checklist.png"
-              alt="チェックリストのイラスト"
+      <ul class="list" v-if="todos.length">
+        <li v-for="todo in todos" class="list__item" :key="todo.id">
+          <div
+            class="todo-status"
+            :class="{ 'todo__status--checked': todo.todo_status }"
+          >
+            <input
+              :id="'todo_status_' + todo.id"
+              type="checkbox"
+              v-model="todo.status"
+              @click="toggleStatus(todo)"
             />
+            <label :for="'todo_status_' + todo.id"></label>
           </div>
-          <div class="no-result__text">まだToDoが作成されていません</div>
+          <div class="list__inner">
+            <div class="list__block list__block--left">
+              <div class="list__title" :class="{ 'list__title--with-label' : todo.label_title }">{{ todo.title }}</div>
+              <LabelItem :target-item="todo" v-if="todo.label_id" />
+            </div>
+            <div class="list__block list__block--right">
+              <div class="item-action">
+                <a @click="setTodo(todo)" class="item-action__btn">
+                  <i class="fas fa-pencil-alt"></i>
+                </a>
+                <a @click="deleteTodo(todo)" class="item-action__btn">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div v-else class="no-result todo__no-result">
+        <div class="no-result__illustration">
+          <img
+            src="../images/illustrations/il-checklist.png"
+            alt="チェックリストのイラスト"
+          />
         </div>
+        <div class="no-result__text">まだToDoが作成されていません</div>
       </div>
       <div class="todo__page-action page-action">
         <a @click="setTodo" class="btn btn--main btn--md">
@@ -83,26 +76,26 @@
 </template>
 
 <script>
-import axios from "axios";
+import { axios, axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import TodoModal from "./todo-modal";
 import LabelItem from "./label-item";
+import Logout from "./mixins/logout";
 
 export default {
   components: {
     TodoModal,
-    LabelItem
+    LabelItem,
   },
   data() {
     return {
       todos: [],
-      loading: ''
     };
   },
   created() {
-    this.loading = true;
     this.fetchDate();
   },
+  mixins: [Logout],
   watch: {
     getSelectedDate() {
       this.fetchTodos(this.getSelectedDate);
@@ -110,7 +103,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getSelectedDate: "date/getSelectedDate",
+      getSelectedDate: "date/getSelectedDate"
     }),
     setSelectedDate() {
       const selected_date = new Date(this.getSelectedDate);
@@ -140,48 +133,33 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction",
-      cancelPendingRequests: "request/cancelPendingRequests",
-      logoutAction: "user/logoutAction"
+      setSelectedDateAction: "date/setSelectedDateAction"
     }),
     fetchDate(date) {
       this.setSelectedDateAction(date);
     },
     fetchTodos(date) {
-      this.cancelPendingRequests();
-      axios
+      axiosForBackend
         .get("/todos", { params: { date: date }})
         .then((res) => {
           this.todos = res.data;
-          this.loading = false;
         })
         .catch(error => {
-          this.loading = false;
-          if (error.response && error.response.status === 500) {
-            axios.delete("/logout").then(() => {
-              this.logoutAction();
-              this.$router.push({ name: "login" });
-              this.flashMessage.error({
-                title: "再度ログインしてください",
-                time: 5000,
-                icon: '/icons/error.svg',
-              });
-            });
-          }
+          this.forceLogout(error);
         });
     },
     setTodo(todo) {
       this.$refs.todoModal.setTodoValue(todo);
     },
     deleteTodo(todo) {
-      axios
+      axiosForBackend
         .delete(`/todos/${todo.id}`)
         .then(() => {
           this.fetchTodos(this.getSelectedDate);
         });
     },
     toggleStatus(todo) {
-      axios.put(`/todos/${todo.id}/toggle_status`, todo);
+      axios.put(`/todos/${todo.id}/toggle_status`);
     }
   }
 };
@@ -191,14 +169,6 @@ export default {
 @import "../stylesheets/variables.scss";
 @import "../stylesheets/extend.scss";
 @import "../stylesheets/mixin.scss";
-
-.loading-case {
-  @include loadingCase($width: 100%,
-                        $height: 300px);
-  @media (max-width: 991px) {
-    margin-bottom: 50px;
-  }
-}
 
 .todo {
   &__date-box {
@@ -328,11 +298,13 @@ export default {
     align-items: center;
     transition-duration: 0.2s;
 
-    &:hover {
-      background-color: $color-main-theme;
+    @media (min-width: 992px) {
+      &:hover {
+        background-color: $color-main-theme;
 
-      svg {
-        color: #fff;
+        svg {
+          color: #fff;
+        }
       }
     }
 

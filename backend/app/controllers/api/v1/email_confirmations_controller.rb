@@ -1,38 +1,45 @@
 module Api
   module V1
     class EmailConfirmationsController < ApplicationController
-      before_action :check_expiration, only: [:edit]
+      before_action :set_user, only: :edit
+      before_action :forbid_multiple_confirmation, only: :edit
+      before_action :forbid_expired_confirmation_token, only: :edit
 
       def edit
+        query = false
+
         if @user.authenticated?(:confirmation, params[:id])
           @user.update_new_email
           log_out
-          query = '?email_confirmed=true'
-        else
-          query = '?email_confirmed=false'
+          query = true
         end
 
-        redirect_to host + '/redirect' + query
+        redirect_to CLIENT_HOST + "/redirect?email_confirmed=#{query}"
       end
 
       def destroy
         user = User.find(params[:id])
-        if user && user.update(confirmation_digest: nil, unconfirmed_email: nil)
-          render json: { message: "メールアドレスの更新がキャンセルされました"}
-        else
-          errors = user.errors.keys.map { |key| [key, user.errors.full_messages_for(key)[0]] }.to_h
-          render json: { errors: errors }, status: :unprocessable_entity
-        end
+        user.update!(confirmation_digest: nil, unconfirmed_email: nil)
+        render json: { message: "メールアドレスの更新がキャンセルされました" }, status: 200
       end
 
       private
 
-      def check_expiration
+      def set_user
         @user = User.find_by(email: params[:email])
-        if @user && @user.expired?(:confirmation)
-          @user.update(confirmation_digest: nil, unconfirmed_email: nil)
+      end
 
-          redirect_to host + '/redirect?email_confirmed=expired'
+      def forbid_multiple_confirmation
+        # アドレス更新後はparams[:email]に旧アドレスが入るためUserが見つからなくなる
+        unless @user
+          redirect_to CLIENT_HOST + '/redirect?email_confirmed=false'
+        end
+      end
+
+      def forbid_expired_confirmation_token
+        if @user.expired?(:confirmation)
+          @user.update(confirmation_digest: nil, unconfirmed_email: nil)
+          redirect_to CLIENT_HOST + '/redirect?email_confirmed=expired'
         end
       end
     end

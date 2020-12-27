@@ -3,7 +3,7 @@
     <div class="login__case">
       <div class="login__title">ログイン</div>
       <div class="login__inner">
-        <form class="form">
+        <form class="form" @submit.prevent="submitLogin">
           <div class="form__group">
             <label class="form__label">メールアドレス</label>
             <input class="form__input" type="email" v-model="email" />
@@ -30,9 +30,9 @@
             </router-link>
           </div>
           <div class="text-center">
-            <div @click="submitLogin" class="btn btn--main btn--md">
+            <button type="submit" class="btn btn--main btn--md">
               ログインする
-            </div>
+            </button>
           </div>
           <ul class="form__linkList form__linkList--login">
             <li class="form__linkItem">
@@ -45,26 +45,7 @@
               </router-link>
             </li>
           </ul>
-          <div class="sns-login">
-            <p class="sns-login__title">SNSでログイン</p>
-            <ul class="sns-login__list">
-              <li class="sns-login__item">
-                <a :href="getHost + '/api/v1/auth/facebook'" class="sns-icon sns-icon--facebook">
-                  <i class="fab fa-facebook-f"></i>
-                </a>
-              </li>
-              <li class="sns-login__item">
-                <a :href="getHost + '/api/v1/auth/twitter'" class="sns-icon sns-icon--twitter">
-                  <i class="fab fa-twitter"></i>
-                </a>
-              </li>
-              <li class="sns-login__item">
-                <a :href="getHost + '/api/v1/auth/google_oauth2'"  class="sns-icon sns-icon--google">
-                  <i class="fab fa-google"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
+          <OmniauthLogin />
         </form>
       </div>
     </div>
@@ -72,61 +53,60 @@
 </template>
 
 <script>
-import axios from "axios";
+import { axiosForBackend } from "../config/axios";
 import { mapActions } from "vuex";
-import GuestLogin from './guest-login.vue';
+import GuestLogin from './shared/guest-login.vue';
+import OmniauthLogin from './shared/omniauth-login.vue';
+import Flash from "./mixins/flash";
 
 export default {
   data() {
     return {
       email: "",
       password: "",
-      errors: ""
+      errors: {}
     };
   },
   components: {
-    GuestLogin
+    GuestLogin,
+    OmniauthLogin
   },
-  computed: {
-    getHost() {
-      const host =
-        process.env.NODE_ENV === 'production'
-          ? 'https://doit-app.com'
-          : 'http://localhost:3000';
-      return host;
-    }
-  },
+  mixins: [Flash],
   methods: {
     ...mapActions({
-      logoutAction: "user/logoutAction",
       setCurrentUserAction: "user/setCurrentUserAction"
     }),
+    clearErrors() {
+      this.errors = {};
+    },
+    validateForm() {
+      if (this.email === "") {
+        this.errors.email = "メールアドレスの入力は必須です";
+      }
+      if (this.password === "") {
+        this.errors.password = "パスワードの入力は必須です";
+      }
+    },
     submitLogin() {
+      this.clearErrors();
+      if (this.email === "" || this.password === "") {
+        this.validateForm();
+        return;
+      }
+
       const session_params = {
         email: this.email,
         password: this.password
       };
-      axios
+      axiosForBackend
         .post("/login", { session: session_params })
         .then((res) => {
           this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg'
-          });
+          this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
-          const base_error = error.response.data.errors.base;
-          if (base_error) {
-            this.flashMessage.error({
-              title: base_error,
-              time: 5000,
-              icon: '/icons/error.svg'
-            });
-          }
-          this.errors = error.response.data.errors;
+          this.generateFlash('error', error.response.data.message);
         });
     }
   }

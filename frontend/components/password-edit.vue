@@ -11,12 +11,7 @@
         ログインに必要なパスワードを変更することができます。
       </p>
     </div>
-    <div class="loading-case" v-if="loading">
-      <div class="spinner-border text-info" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
-    <form v-if="!loading" class="form user-form">
+    <form @submit.prevent="submitPassword" class="form user-form">
       <div v-if="isGuest" class="form__group">
         <div class="guest-message">
           <i class="fas fa-exclamation-triangle"></i>
@@ -50,27 +45,28 @@
         </span>
       </div>
       <div class="form__action">
-        <div @click="submitPassword" class="btn btn--main btn--md">
+        <button type="submit" class="btn btn--main btn--md">
           更新する
-        </div>
+        </button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import { mapGetters } from "vuex";
+import { axiosForBackend } from "../config/axios";
+import { mapGetters, mapActions } from "vuex";
+import Flash from "./mixins/flash";
 
 export default {
   data() {
     return {
       password: "",
       password_confirmation: "",
-      errors: "",
-      loading: ''
+      errors: {}
     };
   },
+  mixins: [Flash],
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser",
@@ -82,41 +78,35 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      setCurrentUserAction: "user/setCurrentUserAction"
+    }),
+    clearErrors() {
+      this.errors = {};
+    },
+    clearFormValue() {
+      this.password = "";
+      this.password_confirmation = "";
+    },
     submitPassword() {
       const password_params = {
         password: this.password,
         password_confirmation: this.password_confirmation
       };
-      this.loading = true;
-      axios
+      axiosForBackend
         .put(`/users/${this.getCurrentUser.id}/password`, {
           change_password_form: password_params
         })
         .then((res) => {
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
-          this.password = "";
-          this.password_confirmation = "";
-          this.errors = "";
-          this.loading = false;
+          this.setCurrentUserAction(res.data.user);
+          this.generateFlash('success', res.data.message);
+          this.clearFormValue();
+          this.clearErrors();
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
-          this.loading = false;
         });
     }
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "../stylesheets/mixin.scss";
-
-.loading-case {
-  @include loadingCase($spWidth:100%,
-                        $spHeight:200px)
-}
-</style>

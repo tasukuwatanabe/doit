@@ -11,7 +11,7 @@
         ユーザー名、メールアドレスなどのユーザー情報を変更することができます。
       </p>
     </div>
-    <form class="form user-form">
+    <form @submit.prevent="submitUser" class="form user-form" >
       <div v-if="isGuest" class="form__group">
         <div class="guest-message">
           <i class="fas fa-exclamation-triangle"></i>
@@ -60,6 +60,9 @@
                   :disabled="isGuest"
                   @change="onImageUpload" />
         </div>
+        <span class="form__error form__error--mt" v-if="errors.user_image">
+          {{ errors.user_image }}
+        </span>
         <div v-if="!hasUserImage" class="form__profile-default">
           <input
             type="checkbox"
@@ -135,20 +138,22 @@
         </div>
       </div>
       <div class="form__action">
-        <div @click="submitUser" class="btn btn--main btn--md">更新する</div>
-        <a @click="accountCancel" 
-            class="form__cancel" 
-            :class="{ 'form__cancel--disabled' : isGuest }"
-            :disabled="isGuest">退会する</a>
+        <button type="submit" class="btn btn--main btn--md">更新する</button>
+        <div @click="showPopup"
+              class="form__cancel" 
+              :class="{ 'disabled' : isGuest }"
+              :disabled="isGuest">退会する</div>
       </div>
     </form>
+    <AccountCancelModal ref="accountCancelModal" />
   </div>
 </template>
 
 <script>
-import Vue from 'vue/dist/vue.esm.js'
-import axios from "axios";
+import { axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
+import Flash from "./mixins/flash";
+import AccountCancelModal from "./shared/account-cancel-modal";
 
 export default {
   data() {
@@ -164,12 +169,14 @@ export default {
       unconfirmed_email: "",
       auto_generated_password: "",
       remove_user_image: "",
-      errors: "",
-      message: ""
+      errors: ""
     };
   },
+  components: {
+    AccountCancelModal
+  },
+  mixins: [Flash],
   created() {
-    this.loading = true;
     this.setUserData();
   },
   watch: {
@@ -185,10 +192,14 @@ export default {
       return this.email === 'guest@example.com';
     },
     hasUserImage() {
-      return this.user_image.url.includes('user_icons/default.jpg');
+      if (this.user_image) {
+        return this.user_image.url.includes('user_icons/default.jpg');
+      }
     },
     userImageWithNumber() {
-      return this.user_image.url + '?' + Math.random();
+      if (this.user_image) {
+        return this.user_image.url + '?' + Math.random();
+      }
     }
   },
   methods: {
@@ -196,32 +207,22 @@ export default {
       setCurrentUserAction: "user/setCurrentUserAction"
     }),
     setUserData() {
-      if (this.getCurrentUser != null) {
-        this.id = this.getCurrentUser.id;
-        this.username = this.getCurrentUser.username;
-        this.email = this.getCurrentUser.email;
-        this.user_image = this.getCurrentUser.user_image;
-        this.facebook_uid = this.getCurrentUser.facebook_uid;
-        this.twitter_uid = this.getCurrentUser.twitter_uid;
-        this.google_uid = this.getCurrentUser.google_uid;
-        this.unconfirmed_email = this.getCurrentUser.unconfirmed_email;
-        this.auto_generated_password = this.getCurrentUser.auto_generated_password;
-        this.remove_user_image = this.getCurrentUser.remove_user_image;
-      }
-      this.loading = false;
+      this.id = this.getCurrentUser.id;
+      this.username = this.getCurrentUser.username;
+      this.email = this.getCurrentUser.email;
+      this.user_image = this.getCurrentUser.user_image;
+      this.facebook_uid = this.getCurrentUser.facebook_uid;
+      this.twitter_uid = this.getCurrentUser.twitter_uid;
+      this.google_uid = this.getCurrentUser.google_uid;
+      this.unconfirmed_email = this.getCurrentUser.unconfirmed_email;
+      this.auto_generated_password = this.getCurrentUser.auto_generated_password;
     },
     async cancelEmailConfirmation() {
-      this.loading = true;
-      await axios.delete(`/email_confirmations/${this.id}`).then((res) => {
-        this.flashMessage.success({
-          title: res.data.message,
-          time: 5000,
-          icon: '/icons/success.svg',
-        });
+      await axiosForBackend.delete(`/email_confirmations/${this.id}`).then((res) => {
+        this.generateFlash('success', res.data.message);
       });
-      await axios.get("/users/current").then((res) => {
+      await axiosForBackend.get("/users/current").then((res) => {
         this.setCurrentUserAction(res.data);
-        this.loading = false;
       });
     },
     onImageUpload: function (e) {
@@ -236,7 +237,6 @@ export default {
       reader.readAsDataURL(this.file);
     },
     submitUser() {
-      this.loading = true;
       this.errors = "";
       let formData = new FormData();
       formData.append("user[username]", this.username);
@@ -244,60 +244,35 @@ export default {
       if (this.remove_user_image === "1") {
         formData.append("user[remove_user_image]", this.remove_user_image);
       }
-      if (this.file != undefined) {
+      if (this.file) {
         formData.append("user[user_image]", this.file);
       }
 
-      axios
-        .put(`/users/${this.id}`, formData, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
+      axiosForBackend
+        .put(`/users/${this.id}`, formData)
         .then((res) => {
-          this.$refs.file.value = null;
+          this.$refs.file.value = '';
+          this.file = '';
+          this.remove_user_image = "0";
           this.setCurrentUserAction(res.data.user);
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
-          this.loading = false;
+          this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
-          this.loading = false;
+          this.generateFlash('error', "更新に失敗しました");
         });
     },
-    async cancelOauth(provider) {
-      this.loading = true;
-      await axios.delete("/auth/" + provider).then((res) => {
-          this.flashMessage.success({
-            title: res.data.message,
-          time: 5000,
-            icon: '/icons/success.svg',
-          });
-        });
-      await axios.get("/users/current").then((res) => {
-        this.setCurrentUserAction(res.data);
-        this.loading = false;
+    cancelOauth(provider) {
+      axiosForBackend.delete("/auth/" + provider).then((res) => {
+        this.generateFlash('success', res.data.message);
+        this.setCurrentUserAction(res.data.user);
       });
     },
-    accountCancel() {
+    showPopup() {
       if (this.isGuest) {
         return;
       }
-      axios
-        .delete(`/users/${this.id}`)
-        .then((res) => {
-          this.setCurrentUserAction("");
-          this.$router.push({ name: "login" });
-          this.flashMessage.success({
-            title: res.data.message,
-            time: 5000,
-            icon: '/icons/success.svg',
-          });
-      });
+      this.$refs.accountCancelModal.toggleModalStatus();
     }
   }
 };
@@ -316,17 +291,21 @@ export default {
       padding: 10px 30px 10px 0;
     }
   }
-
-  &__cancel {
-    margin-left: 1em;
-  }
 }
 
-.loading-case {
-  width: 600px;
-  height: 350px;
-  @include loadingCase($spWidth:100%,
-                        $spHeight:200px)
+.form {
+  input[type="file"] {
+    font-size: 0.9em;
+  }
+  &__cancel {
+    cursor: pointer;
+    user-select: none;
+
+    &.disabled {
+      opacity: .5;
+      cursor: default;
+    }
+  }
 }
 
 .link {
