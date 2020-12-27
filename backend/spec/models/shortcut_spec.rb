@@ -3,41 +3,62 @@ require 'rails_helper'
 RSpec.describe Shortcut, type: :model do
   let(:user) { create(:user) }
 
-  describe '値の正規化' do
-    it 'タイトルを半角カナで入力すると全角に変換' do
-      shortcut = create(:shortcut, title: 'ﾃｽﾄ')
-      expect(shortcut.title).to eq('テスト')
+  describe 'Association' do
+    let(:association) do
+      described_class.reflect_on_association(target)
     end
 
-    it 'タイトル前後の半角スペースを除去' do
-      shortcut = create(:shortcut, title: ' テスト ')
-      expect(shortcut.title).to eq('テスト')
+    context 'users' do
+      let(:target) { :user }
+
+      it { expect(association.macro).to eq :belongs_to }
+      it { expect(association.class_name).to eq 'User' }
+    end
+
+    context 'shortcut_labels' do
+      let(:target) { :shortcut_labels }
+
+      it { expect(association.macro).to eq :has_many }
+      it { expect(association.class_name).to eq 'ShortcutLabel' }
+    end
+  end
+
+  describe '値の正規化' do
+    context 'タイトルを半角カナで入力' do
+      it '全角に変換' do
+        shortcut = create(:shortcut, title: 'ﾃｽﾄ')
+        expect(shortcut.title).to eq('テスト')
+      end
+    end
+
+    context 'タイトル前後に半角スペースを入力' do
+      it '半角スペースを除去' do
+        shortcut = create(:shortcut, title: ' テスト ')
+        expect(shortcut.title).to eq('テスト')
+      end
     end
     
-    it 'タイトル前後の全角スペースを除去' do
-      shortcut = create(:shortcut, title: "\u{3000}テスト\u{3000}")
-      expect(shortcut.title).to eq('テスト')
+    context 'タイトル前後に全角スペースを入力' do
+      it '全角スペースを除去' do
+        shortcut = create(:shortcut, title: "\u{3000}テスト\u{3000}")
+        expect(shortcut.title).to eq('テスト')
+      end
     end
   end
 
   describe 'バリデーション' do
     it 'タイトルが空白の場合は無効' do
-      shortcut = build(:shortcut, title: nil)
-      expect(shortcut).not_to be_valid
+      expect(build(:shortcut, title: nil)).not_to be_valid
     end
 
     it 'タイトルが重複している場合は無効' do
-      shortcut1 = create(:shortcut, user: user)
-      shortcut2 = build(:shortcut, user: user)
-      expect(shortcut2).not_to be_valid
+      shortcut1 = create(:shortcut, title: "重複したタイトル", user: user)
+      expect(shortcut1.dup).not_to be_valid
     end
 
     it '11個目以上は無効' do
-      (1..10).each do |i|
-        shortcut = create(:shortcut, title: "タイトル_#{i}", user: user)
-      end
-      shortcut11 = build(:shortcut, user: user)
-      expect(user.shortcuts.count).to eq(10)
+      10.times { |i| create(:shortcut, user: user) }
+      expect { build(:shortcut, user: user) }.not_to change(Shortcut, :count)
     end
   end
 end
