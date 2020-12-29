@@ -58,6 +58,7 @@ import { mapActions } from "vuex";
 import GuestLogin from './shared/guest-login.vue';
 import OmniauthLogin from './shared/omniauth-login.vue';
 import Flash from "./mixins/flash";
+import Data from "./mixins/data";
 
 export default {
   data() {
@@ -71,7 +72,7 @@ export default {
     GuestLogin,
     OmniauthLogin
   },
-  mixins: [Flash],
+  mixins: [Flash, Data],
   methods: {
     ...mapActions({
       setCurrentUserAction: "user/setCurrentUserAction"
@@ -98,11 +99,13 @@ export default {
         email: this.email,
         password: this.password
       };
+
       axiosForBackend
         .post("/login", { session: session_params })
         .then((res) => {
           this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: "todos" });
+          this.fetchData();
           this.generateFlash('success', res.data.message);
         })
         .catch((error) => {

@@ -3,7 +3,7 @@
     <div class="todo">
       <section class="horizontal-arrows">
         <div
-          @click="fetchDate(setYesterday)"
+          @click="setDate(setYesterday)"
           class="horizontal-arrows__btn horizontal-arrows__btn--left"
         >
           <i class="fas fa-caret-left"></i>
@@ -15,14 +15,14 @@
           <p class="todo__date-day">{{ setDay }}</p>
         </div>
         <div
-          @click="fetchDate(setTomorrow)"
+          @click="setDate(setTomorrow)"
           class="horizontal-arrows__btn horizontal-arrows__btn--right"
         >
           <i class="fas fa-caret-right"></i>
         </div>
       </section>
-      <ul class="list" v-if="todos.length">
-        <li v-for="todo in todos" class="list__item" :key="todo.id">
+      <ul class="list" v-if="this.getTodos.length">
+        <li v-for="todo in this.getTodos" class="list__item" :key="todo.id">
           <div
             class="todo-status"
             :class="{ 'todo__status--checked': todo.todo_status }"
@@ -41,14 +41,7 @@
               <LabelItem :target-item="todo" v-if="todo.label_id" />
             </div>
             <div class="list__block list__block--right">
-              <div class="item-action">
-                <a @click="setTodo(todo)" class="item-action__btn">
-                  <i class="fas fa-pencil-alt"></i>
-                </a>
-                <a @click="deleteTodo(todo)" class="item-action__btn">
-                  <i class="fas fa-trash"></i>
-                </a>
-              </div>
+              <ItemAction :item="todo" @set-item="setTodo" @delete-item="deleteTodo" />
             </div>
           </div>
         </li>
@@ -78,22 +71,16 @@
 <script>
 import { axios, axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
+import ItemAction from "./shared/item-action";
 import TodoModal from "./todo-modal";
 import LabelItem from "./label-item";
 import Logout from "./mixins/logout";
 
 export default {
   components: {
+    ItemAction,
     TodoModal,
     LabelItem,
-  },
-  data() {
-    return {
-      todos: [],
-    };
-  },
-  created() {
-    this.fetchDate();
   },
   mixins: [Logout],
   watch: {
@@ -103,7 +90,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getSelectedDate: "date/getSelectedDate"
+      getSelectedDate: "date/getSelectedDate",
+      getTodos: "todo/getTodos"
     }),
     setSelectedDate() {
       const selected_date = new Date(this.getSelectedDate);
@@ -133,16 +121,17 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: "date/setSelectedDateAction"
+      setSelectedDateAction: "date/setSelectedDateAction",
+      setTodosAction: "todo/setTodosAction",
     }),
-    fetchDate(date) {
+    setDate(date) {
       this.setSelectedDateAction(date);
     },
     fetchTodos(date) {
       axiosForBackend
         .get("/todos", { params: { date: date }})
         .then((res) => {
-          this.todos = res.data;
+          this.setTodosAction(res.data);
         })
         .catch(error => {
           this.forceLogout(error);

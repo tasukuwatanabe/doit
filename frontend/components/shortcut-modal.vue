@@ -34,7 +34,7 @@
                   <select class="form__select" v-model="shortcut.label_id">
                     <option :value="null">ラベルを選択</option>
                     <option
-                      v-for="label in labels"
+                      v-for="label in this.getLabels"
                       :key="label.id"
                       :value="label.id"
                     >
@@ -61,6 +61,7 @@
 
 <script>
 import { axiosForBackend } from "../config/axios";
+import { mapGetters } from "vuex";
 import Modal from "./mixins/modal";
 
 export default {
@@ -68,25 +69,16 @@ export default {
   data() {
     return {
       shortcut: {},
-      labels: [],
       btnText: "",
     };
   },
-  created() {
-    this.fetchLabels();
-  },
   mixins: [Modal],
+  computed: {
+    ...mapGetters({
+      getLabels: "label/getLabels"
+    })
+  },
   methods: {
-    fetchLabels() {
-      axiosForBackend
-        .get("/labels")
-        .then((res) => {
-          this.labels = res.data;
-        })
-        .catch(error => {
-          return error;
-        });
-    },
     setShortcutValue(val) {
       this.toggleModal();
       this.shortcut.id = val.id;

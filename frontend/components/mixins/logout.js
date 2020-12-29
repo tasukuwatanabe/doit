@@ -1,4 +1,4 @@
-import axiosForBackend from 'axios';
+import { axiosForBackend } from '../../config/axios';
 import { mapActions } from 'vuex';
 import Flash from './flash';
 

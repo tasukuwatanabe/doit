@@ -8,15 +8,16 @@
 </template>
 
 <script>
-import axiosForBackend from 'axios';
+import { axiosForBackend } from '../../config/axios';
 import { mapActions } from 'vuex';
+import Data from "../mixins/data";
 import Flash from "../mixins/flash";
 
 export default {
-  mixins: [Flash],
+  mixins: [Flash, Data],
   methods: {
     ...mapActions({
-      setCurrentUserAction: 'user/setCurrentUserAction',
+      setCurrentUserAction: 'user/setCurrentUserAction'
     }),
     guestLogin() {
       const guest_email = {
@@ -27,6 +28,7 @@ export default {
         .then((res) => {
           this.setCurrentUserAction(res.data.user);
           this.$router.push({ name: 'todos' });
+          this.fetchData();
           this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
