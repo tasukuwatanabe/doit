@@ -7,7 +7,7 @@ class Label < ApplicationRecord
   has_many :shortcut_labels, dependent: :destroy
   has_many :shortcuts, through: :shortcut_labels
 
-  scope :recent, -> { order(created_at: :desc) }
+  scope :order_created_desc, -> { order(created_at: :desc) }
 
   before_validation :normalize_text
 

@@ -4,7 +4,7 @@ module Api
       before_action :set_label, only: %i[update destroy]
 
       def index
-        @labels = current_user.labels.recent
+        @labels = current_user.labels.order_created_desc
         render 'index', formats: :json, handlers: 'jbuilder'
       end
 
