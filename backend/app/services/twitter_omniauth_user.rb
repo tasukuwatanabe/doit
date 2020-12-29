@@ -10,6 +10,6 @@ class TwitterOmniauthUser < OmniauthUser
   end
 
   def uid_hash
-    { tiwtter_uid: @uid }
+    { twitter_uid: @uid }
   end
 end

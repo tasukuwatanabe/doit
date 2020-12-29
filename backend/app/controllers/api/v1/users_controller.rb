@@ -11,7 +11,7 @@ module Api
       def create
         user = User.new(user_params)
         if user.save
-          user.send_activation_email
+          UserMailer.account_activation(user).deliver_now
           render json: { message: "アカウント認証用のメールが送信されました" }, status: 200
         else
           render json: { errors: format_errors(user) }, status: :unprocessable_entity

@@ -12,14 +12,14 @@ class Shortcut < ApplicationRecord
     self.title = normalize_as_text(title)
   end
 
-  validate :shortcut_count_within_limit, if: -> { user.shortcuts.size > 10 }
+  validate :user_shortcut_count_within_limit
   validates :title, presence: true,
                     uniqueness: { scope: :user },
                     length: { maximum: 40 }
 
   private
 
-  def shortcut_count_within_limit
-    errors.add(:base, 'ショートカットが登録できるのは10個までです')
+  def user_shortcut_count_within_limit
+    errors.add(:shortcuts, count: I18n.t("errors.message.exceed")) if user.shortcuts.size > 10
   end
 end
