@@ -11,10 +11,10 @@
       </router-link>
     </div>
     <div class="sidebar-shortcut__field" 
-        :class="{ 'sidebar-shortcut__field--center' : !shortcuts.length }">
-      <ul v-if="shortcuts.length" class="sidebar-shortcut__list">
+        :class="{ 'sidebar-shortcut__field--center' : !this.getShortcuts.length }">
+      <ul v-if="this.getShortcuts.length" class="sidebar-shortcut__list">
         <li
-          v-for="shortcut in shortcuts"
+          v-for="shortcut in this.getShortcuts"
           :key="shortcut.id"
           class="sidebar-shortcut__item"
         >
@@ -50,12 +50,10 @@ export default {
       shortcuts: []
     };
   },
-  created() {
-    this.fetchShortcut();
-  },
   mixins: [Logout],
   computed: {
     ...mapGetters({
+      getShortcuts: "shortcut/getShortcuts",
       getSelectedDate: "date/getSelectedDate",
     })
   },
@@ -63,15 +61,6 @@ export default {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction"
     }),
-    fetchShortcut() {
-      axiosForBackend
-        .get("/shortcuts")
-        .then((res) => {
-          this.shortcuts = res.data;
-        }).catch(error => {
-          this.forceLogout(error);
-        });
-    },
     createTodo(shortcut) {
       const label_arr = [];
       label_arr.push(shortcut.label_id);

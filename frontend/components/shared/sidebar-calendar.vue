@@ -44,9 +44,6 @@ export default {
       judgeMonth: ''
     }
   },
-  created() {
-    this.todoMatchCalendar();
-  },
   computed: {
     ...mapGetters({
       getSelectedDate: "date/getSelectedDate"
@@ -76,14 +73,14 @@ export default {
         const isSelected = selectedYear === this.getSelectedDate.getFullYear() &&
                             selectedMonth === this.getSelectedDate.getMonth() + 1 &&
                             date === this.getSelectedDate.getDate() &&
-                           !outOfMonth // 月外なら除外する
+                          !outOfMonth // 月外なら除外する
 
         if (outOfMonth) {
-          classCase = 'calendar__date--out'; // 月外の場合のクラス
+          classCase = 'out'; // 月外の場合のクラス
         } else if (isToday) {
-          classCase += ' calendar__date--today'; // 今日の場合のクラス
+          classCase = 'today'; // 今日の場合のクラス
         } else if(isSelected) {
-          classCase += ' calendar__date--selected'; // 選択中の場合のクラス
+          classCase = 'selected'; // 選択中の場合のクラス
         }
 
         return classCase;
@@ -264,11 +261,11 @@ export default {
       }
     }
 
-    &--out {
+    &.out {
       color: #bbb;
     }
 
-    &--selected {
+    &.selected {
       color: #fff;
 
       &:after {
@@ -276,7 +273,7 @@ export default {
       }
     }
 
-    &--today {
+    &.today {
       color: #fff;
 
       &:after {

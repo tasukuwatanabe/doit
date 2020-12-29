@@ -6,6 +6,7 @@ class Todo < ApplicationRecord
   has_many :labels, through: :todo_labels
 
   scope :include_labels, -> { includes([:labels]) }
+  scope :order_todo_date_asc, -> { order(todo_date: :asc) }
 
   scope :match_date, -> (date) do
     return unless date

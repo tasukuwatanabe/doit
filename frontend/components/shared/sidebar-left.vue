@@ -97,9 +97,6 @@ import Logout from "../mixins/logout";
 import Flash from "../mixins/flash";
 
 export default {
-  created() {
-    this.fetchUser();
-  },
   mixins: [Logout, Flash],
   computed: {
     ...mapGetters({

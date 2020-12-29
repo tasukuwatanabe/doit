@@ -139,8 +139,8 @@
       </div>
       <div class="form__action">
         <button type="submit" class="btn btn--main btn--md">更新する</button>
-        <div @click="showPopup"
-              class="form__cancel" 
+        <div @click="showCancelPopup"
+              class="form__cancel"
               :class="{ 'disabled' : isGuest }"
               :disabled="isGuest">退会する</div>
       </div>
@@ -165,10 +165,10 @@ export default {
       facebook_uid: "",
       twitter_uid: "",
       google_uid: "",
-      file: "",
       unconfirmed_email: "",
       auto_generated_password: "",
       remove_user_image: "",
+      file: "",
       errors: ""
     };
   },
@@ -179,11 +179,6 @@ export default {
   created() {
     this.setUserData();
   },
-  watch: {
-    getCurrentUser: function() {
-      this.setUserData();
-    }
-  },
   computed: {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
@@ -193,7 +188,7 @@ export default {
     },
     hasUserImage() {
       if (this.user_image) {
-        return this.user_image.url.includes('user_icons/default.jpg');
+        return this.user_image.url.includes('default.jpg');
       }
     },
     userImageWithNumber() {
@@ -217,14 +212,6 @@ export default {
       this.unconfirmed_email = this.getCurrentUser.unconfirmed_email;
       this.auto_generated_password = this.getCurrentUser.auto_generated_password;
     },
-    async cancelEmailConfirmation() {
-      await axiosForBackend.delete(`/email_confirmations/${this.id}`).then((res) => {
-        this.generateFlash('success', res.data.message);
-      });
-      await axiosForBackend.get("/users/current").then((res) => {
-        this.setCurrentUserAction(res.data);
-      });
-    },
     onImageUpload: function (e) {
       this.file = this.$refs.file.files[0];
       const image = new Image();
@@ -233,7 +220,7 @@ export default {
 
       reader.onload = (e) => {
         vm.image = e.target.result;
-      };
+      }
       reader.readAsDataURL(this.file);
     },
     submitUser() {
@@ -255,6 +242,7 @@ export default {
           this.file = '';
           this.remove_user_image = "0";
           this.setCurrentUserAction(res.data.user);
+          this.setUserData();
           this.generateFlash('success', res.data.message);
         })
         .catch((error) => {
@@ -262,13 +250,21 @@ export default {
           this.generateFlash('error', "更新に失敗しました");
         });
     },
-    cancelOauth(provider) {
-      axiosForBackend.delete("/auth/" + provider).then((res) => {
-        this.generateFlash('success', res.data.message);
+    cancelEmailConfirmation() {
+      axiosForBackend.delete(`/email_confirmations/${this.id}`).then((res) => {
         this.setCurrentUserAction(res.data.user);
+        this.setUserData();
+        this.generateFlash('success', res.data.message);
       });
     },
-    showPopup() {
+    cancelOauth(provider) {
+      axiosForBackend.delete("/auth/" + provider).then((res) => {
+        this.setCurrentUserAction(res.data.user);
+        this.setUserData();
+        this.generateFlash('success', res.data.message);
+      });
+    },
+    showCancelPopup() {
       if (this.isGuest) {
         return;
       }
@@ -296,6 +292,9 @@ export default {
 .form {
   input[type="file"] {
     font-size: 0.9em;
+    width: 100%;
+    white-space: initial;
+    word-wrap: break-word;
   }
   &__cancel {
     cursor: pointer;
