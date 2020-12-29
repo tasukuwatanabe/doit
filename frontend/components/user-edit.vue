@@ -117,7 +117,7 @@
             <td>
               <div v-if="google_uid != null">
                 <span v-if="auto_generated_password">連携中</span>
-                <a v-else @click="cancelOauth('google')" class="link--default">連携を解除</a>
+                <a v-else @click="cancelOauth('google_oauth2')" class="link--default">連携を解除</a>
               </div>
               <span v-else>未連携</span>
             </td>

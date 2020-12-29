@@ -8,7 +8,7 @@ module Api
         if user&.activated?
           log_in user
 
-          redirect_to CLIENT_HOST + '/redirect' + generate_query(auth[:provider])
+          redirect_to CLIENT_HOST + '/redirect?oauth=success&provider=' + generate_query(auth[:provider])
         else
           render json: { message: "ログインできませんでした" }, status: :unprocessable_entity
         end
@@ -16,8 +16,9 @@ module Api
 
       def destroy
         provider = params[:provider]
-        current_user.cancel_oauth(provider)
-        render json: { user: current_user, message: "#{provider}との連携を解除しました" }, status: 200
+        current_user.cancel_oauth!(provider)
+        message = generate_query(provider) + "との連携を解除しました"
+        render json: { user: current_user, message: message }, status: 200
       end
 
       private
@@ -29,7 +30,7 @@ module Api
           google_oauth2: "Google",
         }
 
-        "?oauth=success&provider=#{provider_names[provider.to_sym]}"
+        provider_names[provider.to_sym]
       end
     end
   end

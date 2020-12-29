@@ -12,7 +12,7 @@ module Api
 
       def activate_user(user)
         if !user.activated? && user.authenticated?(:activation, params[:id])
-          user.activate
+          user.activate!
           log_in user
         end
       end

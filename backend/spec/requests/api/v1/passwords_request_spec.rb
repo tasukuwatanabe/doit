@@ -22,8 +22,6 @@ RSpec.describe 'Passwords', type: :request do
 
         expect(response.status).to eq(200)
         expect(response.body).to include "パスワードが更新されました"
-        expect(user.reload.auto_generated_password).to be false
-        # expect(user.reload.password).to eq("newpassword")
       end
     end
 
@@ -39,8 +37,6 @@ RSpec.describe 'Passwords', type: :request do
         put @password_path, params: password_params
 
         expect(response.status).to eq(422)
-        expect(user.reload.auto_generated_password).to be true
-        expect(user.reload.password).to eq("password")
       end
     end
 
@@ -56,8 +52,6 @@ RSpec.describe 'Passwords', type: :request do
         put @password_path, params: password_params
 
         expect(response.status).to eq(422)
-        expect(user.reload.auto_generated_password).to be true
-        expect(user.reload.password).to eq("password")
       end
     end
 
@@ -73,7 +67,6 @@ RSpec.describe 'Passwords', type: :request do
         put @password_path, params: password_params
 
         expect(response.status).to eq(422)
-        expect(user.reload.password).to eq("password")
       end
     end
   end

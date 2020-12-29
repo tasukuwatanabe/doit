@@ -92,7 +92,7 @@ export default {
       }
 
       axios
-        .get('/search', {
+        .get('/todos', {
           params: {
             search_query: this.searchQuery
           }

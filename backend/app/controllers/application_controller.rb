@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
   include ActionController::Cookies
   include SessionsHelper
-  include ErrorFormat
+  include SessionModule
+  include ErrorModule
   include Constants
 end

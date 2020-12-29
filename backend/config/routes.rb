@@ -4,7 +4,6 @@ Rails.application.routes.draw do
       resources :todos, only: %i[index create update destroy] do
         put '/toggle_status', to: 'todos#toggle_status'
       end
-      get '/search', to: 'todos#search'
       resources :shortcuts, only: %i[index create update destroy]
       resources :labels, only: %i[index create update destroy]
       resources :users, only: %i[create update destroy] do

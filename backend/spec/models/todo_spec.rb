@@ -44,14 +44,6 @@ RSpec.describe Todo, type: :model do
     it 'todo_dateが空白の場合は無効' do
       expect(build(:todo, todo_date: nil)).not_to be_valid
     end
-
-    it '2000年1月1日より前の日付は無効' do
-      expect(build(:todo, todo_date: Date.new(1999, 12, 31))).not_to be_valid
-    end
-
-    it '1年後より後の日付は無効' do
-      expect(build(:todo, todo_date: 1.year.since(Date.today) + 1.day)).not_to be_valid
-    end
     
     it 'ラベルの指定がなくても有効' do
       expect(build(:todo, label_ids: [])).to be_valid

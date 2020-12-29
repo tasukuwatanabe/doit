@@ -9,8 +9,8 @@ module Api
       def create
         user = User.find_by(email: password_reset_params[:email])
         if user
-          user.create_reset_digest
-          user.send_password_reset_email
+          user.create_reset_digest!
+          UserMailer.password_reset(user).deliver_now
           render json: { message: "パスワード再設定用のメールが送信されました"}, status: 200
         else
           errors = { email: 'メールアドレスが見つかりません' }
