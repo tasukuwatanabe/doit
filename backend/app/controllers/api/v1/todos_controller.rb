@@ -42,6 +42,7 @@ module Api
         todo = Todo.find(params[:todo_id])
         todo.status = !todo.status
         todo.save!
+        head :ok
       end
 
       private
