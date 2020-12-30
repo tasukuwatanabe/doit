@@ -8,7 +8,7 @@ module Api
                              .include_labels
                              .search(params[:search_query])
                              .match_date(params[:date])
-                             .order_todo_date_asc
+                             .order_date_and_time_asc
 
         render 'index', formats: :json, handlers: 'jbuilder'
       end
