@@ -24,29 +24,111 @@ RSpec.describe Todo, type: :model do
   end
 
   describe '値の正規化' do
-    it 'タイトルを半角カナで入力すると全角に変換' do
-      todo = create(:todo, title: 'ﾃｽﾄ')
-      expect(todo.title).to eq('テスト')
+
+    context 'タイトル' do
+      subject { todo.title }
+      let(:todo) { create(:todo, title: title) }
+
+      context '半角カナで入力する場合' do
+        let(:title) { 'ﾃｽﾄ' }
+
+        it '全角に変換' do
+          is_expected.to eq('テスト')
+        end
+      end
+
+      context '前後に半角スペースを入力' do
+        let(:title) { ' テスト ' }
+
+        it '半角スペースを除去' do
+          is_expected.to eq('テスト')
+        end
+      end
+
+      context '前後に全角スペースを入力' do
+        let(:title) { "\u{3000}テスト\u{3000}" }
+
+        it '全角スペースを除去' do
+          is_expected.to eq('テスト')
+        end
+      end
     end
 
-    it 'タイトル前後の半角スペースを除去' do
-      todo = create(:todo, title: ' テスト ')
-      expect(todo.title).to eq('テスト')
-    end
+    context 'メモ' do
+      subject { todo.body }
+      let(:todo) { create(:todo, body: body) }
 
-    it 'タイトル前後の全角スペースを除去' do
-      todo = create(:todo, title: "\u{3000}テスト\u{3000}")
-      expect(todo.title).to eq('テスト')
+      context '半角カナで入力する場合' do
+        let(:body) { 'ﾃｽﾄ' }
+
+        it '全角に変換' do
+          is_expected.to eq('テスト')
+        end
+      end
+
+      context '前後に半角スペースを入力' do
+        let(:body) { ' テスト ' }
+
+        it '半角スペースを除去' do
+          is_expected.to eq('テスト')
+        end
+      end
+
+      context '前後に全角スペースを入力' do
+        let(:body) { "\u{3000}テスト\u{3000}" }
+
+        it '全角スペースを除去' do
+          is_expected.to eq('テスト')
+        end
+      end
     end
   end
 
   describe 'バリデーション' do
-    it 'todo_dateが空白の場合は無効' do
-      expect(build(:todo, todo_date: nil)).not_to be_valid
+    subject { todo }
+
+    context 'タイトル' do
+      let(:todo) { build(:todo, title: title) }
+
+      context '空白の場合' do
+        let(:title) { nil }
+
+        it '無効' do
+          is_expected.not_to be_valid
+        end
+      end
+
+      context '40文字以上の場合' do
+        let(:title) { 'a' * 41 }
+
+        it '無効' do
+          is_expected.not_to be_valid
+        end
+      end
     end
-    
-    it 'ラベルの指定がなくても有効' do
-      expect(build(:todo, label_ids: [])).to be_valid
+
+    context '日付' do
+      let(:todo) { build(:todo, todo_date: todo_date) }
+
+      context '空白の場合' do
+        let(:todo_date) { nil }
+
+        it '無効' do
+          is_expected.not_to be_valid
+        end
+      end
+    end
+
+    context 'メモ' do
+      let(:todo) { build(:todo, body: body) }
+
+      context '空白の場合' do
+        let(:body) { nil }
+
+        it '有効' do
+          is_expected.to be_valid
+        end
+      end
     end
   end
 end

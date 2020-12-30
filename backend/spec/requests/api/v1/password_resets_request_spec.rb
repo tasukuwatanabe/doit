@@ -6,9 +6,11 @@ RSpec.describe 'PasswordResets', type: :request do
   describe "パスワードリセット用のメール発行" do
 
     context '存在するメールアドレスを入力' do
-      it 'メール発行に成功する' do
-        correct_email = { email: user.email }
+      let(:correct_email) { 
+        { email: user.email }
+      }
 
+      it 'メール発行に成功する' do
         post "/api/v1/password_resets", params: { password_reset_form: correct_email }
 
         expect(response.status).to eq(200)
@@ -17,81 +19,105 @@ RSpec.describe 'PasswordResets', type: :request do
     end
 
     context '存在しないメールアドレスを入力' do
-      it 'メール発行に失敗する' do
-        new_email = { email: "newemail@example.com" }
+      let(:new_email) { 
+        { email: "newemail@example.com" }
+      }
 
+      it 'メール発行に失敗する' do
         post "/api/v1/password_resets", params: { password_reset_form: new_email }
 
         expect(response.status).to eq(422)
+        expect(response.body).to include "メールアドレスが見つかりません"
       end
     end
 
     context 'ゲストユーザー用のメールアドレスを入力' do
+      let(:guest_email) {
+        { email: "guest@example.com" }
+      }
+
       it 'メール発行に失敗する' do
-        guest_email = { email: "guest@example.com" }
-
         post "/api/v1/password_resets", params: { password_reset_form:  guest_email }
-
+        
         expect(response.status).to eq(422)
+        expect(response.body).to include "このアカウントはパスワードリセットできません"
       end
     end
   end
 
   describe "新しいパスワードを入力" do
 
-    before do
-      user.update(
-        reset_digest: User.digest(user.reset_token),
-        reset_sent_at: Time.zone.now
-      )
-    end
-
-    context '新しいパスワードの組み合わせが一致' do
-      it 'パスワード更新に成功する' do
-        user_params = {
-          user: {
-            password: "foobar",
-            password_confirmation: "foobar"
-          },
-          email: user.email
+    context '新しいパスワードの組み合わせ' do
+      context '組み合わせが一致' do
+        let(:password_params) {
+          {
+            user: {
+              password: "new_password",
+              password_confirmation: "new_password"
+            },
+            email: user.email
+          }
         }
 
-        put "/api/v1/password_resets/#{user.reset_token}", params: user_params
+        it 'パスワード更新に成功する' do
+          put "/api/v1/password_resets/#{user.reset_token}", params: password_params
 
-        expect(response.status).to eq(200)
-        expect(response.body).to include "パスワードがリセットされました"
+          expect(response.status).to eq(200)
+          expect(response.body).to include "パスワードがリセットされました"
+        end
+      end
+
+      context '組み合わせが不一致' do
+        let(:password_params) {
+          {
+            user: {
+              password: "foobar",
+              password_confirmation: "hogehoge",
+            },
+            email: user.email
+          }
+        }
+
+        it 'パスワード更新に失敗する' do
+          put "/api/v1/password_resets/#{user.reset_token}", params: password_params
+  
+          expect(response.status).to eq(422)
+          expect(response.body).to include "新しいパスワード(確認)とパスワードの入力が一致しません"
+        end
       end
     end
 
-    context '新しいパスワードの組み合わせが不一致' do
-      it 'パスワード更新に失敗する' do
-        user_params = {
+    context '新しいパスワードの文字数' do
+      context '6文字より少ない' do
+        let(:user_params) {{
           user: {
-            password: "foobar",
-            password_confirmation: "hogehoge",
+            password: "a" * 5,
+            password_confirmation: "a" * 5,
           },
           email: user.email
-        }
+        }}
 
-        put "/api/v1/password_resets/#{user.reset_token}", params: user_params
+        it 'パスワード更新に失敗する' do
+          put "/api/v1/password_resets/#{user.reset_token}", params: user_params
 
-        expect(response.status).to eq(422)
+          expect(response.status).to eq(422)
+        end
       end
-    end
 
-    context '新しいパスワードの組み合わせが6文字より少ない' do
-      it 'パスワード更新に失敗する' do
-        user_params = {
+      context '20文字より多い' do
+        let(:user_params) {{
           user: {
-            password: "hoge",
-            password_confirmation: "hoge",
+            password: "a" * 21,
+            password_confirmation: "a" * 21,
           },
           email: user.email
-        }
+        }}
 
-        put "/api/v1/password_resets/#{user.reset_token}", params: user_params
+        it 'パスワード更新に失敗する' do
+          put "/api/v1/password_resets/#{user.reset_token}", params: user_params
 
-        expect(response.status).to eq(422)
+          expect(response.status).to eq(422)
+        end
       end
     end
 
