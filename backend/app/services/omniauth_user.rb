@@ -12,7 +12,7 @@ class OmniauthUser
     if @user.persisted?
       activate_and_update_uid
     else
-      password = SecureRandom.hex(10)
+      password = Faker::Lorem.characters(number: 20)
       @user.attributes = {
         username: @name,
         email: @email,

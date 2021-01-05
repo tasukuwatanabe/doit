@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe UserMailer, type: :mailer do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, email: "useremail@example.com", unconfirmed_email: 'unconfirmed@example.com') }
   let(:mail_body) { mail.body.encoded.split(/\r\n/).map { |i| Base64.decode64(i) }.join }
 
   describe 'AccountActivation' do
@@ -10,7 +10,7 @@ RSpec.describe UserMailer, type: :mailer do
     it 'mail headers' do
       expect(mail.subject).to eq('アカウントの有効化')
       expect(mail.from).to eq(['noreply@doit-app.com'])
-      expect(mail.to).to eq(['user1@email.com'])
+      expect(mail.to).to eq(['useremail@example.com'])
     end
 
     it 'mail body' do
@@ -24,7 +24,7 @@ RSpec.describe UserMailer, type: :mailer do
     it 'mail headers' do
       expect(mail.subject).to eq('メールアドレスの確認')
       expect(mail.from).to eq(['noreply@doit-app.com'])
-      expect(mail.to).to eq(['user3_new@email.com'])
+      expect(mail.to).to eq(['unconfirmed@example.com'])
     end
 
     it 'mail body' do
@@ -38,7 +38,7 @@ RSpec.describe UserMailer, type: :mailer do
     it 'mail headers' do
       expect(mail.subject).to eq('パスワードリセット')
       expect(mail.from).to eq(['noreply@doit-app.com'])
-      expect(mail.to).to eq(['user5@email.com'])
+      expect(mail.to).to eq(['useremail@example.com'])
     end
 
     it 'mail body' do

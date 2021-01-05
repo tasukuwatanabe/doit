@@ -1,13 +1,14 @@
 token = User.new_token
 digest = User.digest(token)
+password = Faker::Lorem.characters(number: 20)
 
 FactoryBot.define do
   factory :user do
-    username { 'ユーザー' }
-    sequence(:email) { |n| "user#{n}@email.com" }
-    sequence(:unconfirmed_email) { |n| "user#{n}_new@email.com" }
-    password { 'password' }
-    password_confirmation { 'password' }
+    username { Faker::Name.first_name }
+    email { Faker::Internet.email }
+    unconfirmed_email { Faker::Internet.email }
+    password { password }
+    password_confirmation { password }
     activated { true }
     user_image { nil }
     activation_token { token }

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :label do
     association :user
-    sequence(:title) { |n| "ラベルタイトル#{n}" }
+    title { Faker::Games::Pokemon.name }
     color { '#FF00BB' }
   end
 end
