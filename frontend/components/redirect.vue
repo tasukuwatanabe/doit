@@ -2,16 +2,18 @@
 
 <script>
 import { mapActions } from 'vuex';
+import Data from "./mixins/data";
 import Flash from "./mixins/flash";
 
 export default {
-  mixins: [Flash],
-  created() {
+  mixins: [Flash, Data],
+  mounted() {
     this.showFlash();
   },
   methods: {
     ...mapActions({
-      setSelectedDateAction: 'date/setSelectedDateAction',
+      setSelectedDateAction: "date/setSelectedDateAction",
+      setCurrentUserAction: 'user/setCurrentUserAction'
     }),
     showFlash() {
       if (this.$route.query.email_confirmed === 'true') {
@@ -33,6 +35,7 @@ export default {
         const message = "有効化リンクが無効です"
         this.generateFlash('error', message);
       } else if (this.$route.query.oauth === 'success') {
+        this.fetchData();
         const message = this.$route.query.provider + "でログインしました";
         this.generateFlash('success', message);
       }

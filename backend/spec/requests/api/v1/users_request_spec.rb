@@ -5,13 +5,13 @@ RSpec.describe "Users", type: :request do
     let(:user) { create(:user) }
 
     it '新規登録が成功する' do
-      user_params = { 
-        user: { 
+      user_params = {
+        user: {
           username: 'ユーザー' ,
-          email: 'signup@example.com', 
-          password: 'password', 
-          password_confirmation: 'password' 
-        } 
+          email: 'signup@example.com',
+          password: 'password',
+          password_confirmation: 'password'
+        }
       }
 
       post '/api/v1/users', params: user_params
@@ -40,11 +40,11 @@ RSpec.describe "Users", type: :request do
     it '情報を更新できる' do
       sign_in_as(user)
 
-      user_params = { 
-        user: { 
-          username: "更新後のユーザー名", 
-          email: user.email 
-        } 
+      user_params = {
+        user: {
+          username: "更新後のユーザー名",
+          email: user.email
+        }
       }
 
       put "/api/v1/users/#{user.id}", params: user_params

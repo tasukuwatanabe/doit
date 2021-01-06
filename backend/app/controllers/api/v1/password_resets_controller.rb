@@ -40,7 +40,7 @@ module Api
 
       def forbid_guest_email
         if password_reset_params[:email] == 'guest@example.com'
-          render json: { errors: { email: "このアカウントはパスワードリセットできません。"} }, status: :unprocessable_entity
+          render json: { errors: { email: "このアカウントはパスワードリセットできません"} }, status: :unprocessable_entity
         end
       end
 

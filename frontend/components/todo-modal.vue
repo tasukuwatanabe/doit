@@ -55,7 +55,7 @@
                 <select v-model="todo.label_id" class="form__select">
                   <option :value="null">ラベルを選択</option>
                   <option
-                    v-for="label in labels"
+                    v-for="label in this.getLabels"
                     :key="label.id"
                     :value="label.id"
                   >
@@ -102,12 +102,10 @@ export default {
     };
   },
   mixins: [Modal, Logout],
-  created() {
-    this.fetchLabels();
-  },
   computed: {
     ...mapGetters({
-      getSelectedDate: "date/getSelectedDate"
+      getSelectedDate: "date/getSelectedDate",
+      getLabels: "label/getLabels"
     }),
     formattedDate() {
       let year = this.getSelectedDate.getFullYear();
@@ -124,16 +122,6 @@ export default {
     ...mapActions({
       setSelectedDateAction: "date/setSelectedDateAction"
     }),
-    fetchLabels() {
-      axiosForBackend
-        .get("/labels")
-        .then((res) => {
-          this.labels = res.data;
-        })
-        .catch(error => {
-          this.forceLogout(error);
-        });
-    },
     setTodoValue(val) {
       this.toggleModal();
       this.todo.id = val.id;

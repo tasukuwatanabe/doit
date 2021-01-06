@@ -1,6 +1,6 @@
 FROM ruby:2.6.3
 WORKDIR /doit
-COPY Gemfile /doit/
+COPY Gemfile Gemfile.lock /doit/
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \

@@ -22,8 +22,8 @@
         </a>
       </div>
     </div>
-    <ul class="list" v-if="labels.length">
-      <li class="list__item" v-for="label in labels" :key="label.id">
+    <ul class="list" v-if="this.getLabels.length">
+      <li class="list__item" v-for="label in this.getLabels" :key="label.id">
         <div class="list__block list__block--left">
           <LabelItem :target-item="label" />
         </div>
@@ -31,14 +31,7 @@
           <div class="label-in-use">
             {{ label.todo_count }}個のToDoで使用中
           </div>
-          <div class="item-action">
-            <a @click="setLabel(label)" class="item-action__btn">
-              <i class="fas fa-pencil-alt"></i>
-            </a>
-            <a @click="deleteLabel(label)" class="item-action__btn">
-              <i class="fas fa-trash"></i>
-            </a>
-          </div>
+          <ItemAction :item="label" @set-item="setLabel" @delete-item="deleteLabel" />
         </div>
       </li>
     </ul>
@@ -53,7 +46,8 @@
 
 <script>
 import { axiosForBackend } from "../config/axios";
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import ItemAction from "./shared/item-action";
 import LabelItem from "./label-item";
 import LabelModal from "./label-modal";
 import Logout from "./mixins/logout";
@@ -62,31 +56,32 @@ import Flash from "./mixins/flash";
 export default {
   name: "LabelList",
   components: {
+    ItemAction,
     LabelModal,
     LabelItem
   },
-  data() {
-    return {
-      labels: []
-    };
-  },
   mixins: [Logout, Flash],
-  created() {
-    this.fetchLabels();
+  computed: {
+    ...mapGetters({
+      getLabels: "label/getLabels"
+    })
   },
   methods: {
+    ...mapActions({
+      setLabelsAction: "label/setLabelsAction",
+    }),
     fetchLabels() {
       axiosForBackend
         .get("/labels")
         .then((res) => {
-          this.labels = res.data;
+          this.setLabelsAction(res.data);
         })
         .catch(error => {
           this.forceLogout(error);
         });
     },
     setLabel(label) {
-      if (this.labels.length >= 10 && !label.id) {
+      if (this.getLabels.length >= 10 && !label.id) {
         const message = "ラベルが登録できるのは10個までです";
         this.generateFlash('error', message);
       } else {

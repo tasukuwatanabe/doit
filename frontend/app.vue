@@ -17,6 +17,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import Data from "./components/mixins/data";
 import Header from "./components/shared/header";
 import Footer from "./components/shared/footer";
 import SidebarLeft from "./components/shared/sidebar-left";
@@ -35,9 +36,15 @@ export default {
     Flash,
     Loading
   },
+  mixins: [Flash, Data],
+  created() {
+    if (this.userLoggedIn) {
+      this.fetchData();
+    }
+  },
   computed: {
     ...mapGetters({
-      getLoadingCount: "loading/getLoadingCount"
+      getLoadingCount: "loading/getLoadingCount",
     }),
     isTodo() {
       return this.$route.name === 'todos';

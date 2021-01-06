@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Todos', type: :request do
+
   describe 'Todo' do
     let(:user) { create(:user) }
 
@@ -13,49 +14,62 @@ RSpec.describe 'Todos', type: :request do
 
       get '/api/v1/todos', params: { date: Date.today }
 
-      json = JSON.parse(response.body)
-
       expect(response.status).to eq(200)
-      expect(json.length).to eq(10)
     end
 
-    it '投稿に成功する' do
-      todo_params = { title: "Todoタイトル", todo_date: Date.today }
-
-      expect { post '/api/v1/todos', params: { todo: todo_params } }.to change(Todo, :count).by(+1)
-
-      expect(response.status).to eq(201)
-    end
-
-    it '更新に成功する' do
-      todo = create(:todo, title: "old-title")
-
-      todo_params = { 
-        todo: { 
-          title: 'new-title' 
+    context 'todoの新規作成' do
+      let(:todo_params) { 
+        {
+          todo: {
+            title: "Todoタイトル",
+            todo_date: Date.today
+          }
         }
       }
 
-      put "/api/v1/todos/#{todo.id}", params: todo_params
+      it '成功する' do
+        post '/api/v1/todos', params: todo_params
 
-      expect(response.status).to eq(200)
-      expect(todo.reload.title).to eq("new-title")
+        expect(response.status).to eq(201)
+      end
     end
 
-    it '削除に成功する' do
-      todo = create(:todo)
+    context 'todoの更新' do
+      let(:todo) { create(:todo, title: "old-title") }
+      let(:todo_params) {
+        {
+          todo: {
+            title: "new-title",
+            todo_date: Date.tomorrow
+          }
+        }
+      }
 
-      expect { delete "/api/v1/todos/#{todo.id}" }.to change(Todo, :count).by(-1)
+      it '成功する' do
+        put "/api/v1/todos/#{todo.id}", params: todo_params
 
-      expect(response.status).to eq(200)
+        expect(response.status).to eq(200)
+      end
     end
 
-    it 'ステータスの切り替えに成功する' do
-      todo = create(:todo)
+    context 'todoの削除' do
+      let(:todo) { create(:todo) }
 
-      put "/api/v1/todos/#{todo.id}/toggle_status"
+      it '削除に成功する' do
+        delete "/api/v1/todos/#{todo.id}"
 
-      expect(todo.reload.status).to be(true)
+        expect(response.status).to eq(200)
+      end
+    end
+
+    context 'ステータスの切り替え' do
+      let(:todo) { create(:todo) }
+
+      it '成功する' do
+        put "/api/v1/todos/#{todo.id}/toggle_status"
+
+        expect(response.status).to eq(200)
+      end
     end
   end
 end
