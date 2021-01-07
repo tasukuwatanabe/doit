@@ -3,7 +3,7 @@
     <div class="todo">
       <section class="horizontal-arrows">
         <div
-          @click="setDate(setYesterday)"
+          @click="setDate(setPreviousDay)"
           class="horizontal-arrows__btn horizontal-arrows__btn--left"
         >
           <i class="fas fa-caret-left"></i>
@@ -15,7 +15,7 @@
           <p class="todo__date-day">{{ setDay }}</p>
         </div>
         <div
-          @click="setDate(setTomorrow)"
+          @click="setDate(setNextDay)"
           class="horizontal-arrows__btn horizontal-arrows__btn--right"
         >
           <i class="fas fa-caret-right"></i>
@@ -71,6 +71,7 @@
 <script>
 import { axios, axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
+import moment from "../modules/myMoment";
 import ItemAction from "./shared/item-action";
 import TodoModal from "./todo-modal";
 import LabelItem from "./label-item";
@@ -94,29 +95,21 @@ export default {
       getTodos: "todo/getTodos"
     }),
     setSelectedDate() {
-      const selected_date = new Date(this.getSelectedDate);
-      const year = selected_date.getFullYear();
-      const month = selected_date.getMonth() + 1;
-      const date = selected_date.getDate();
+      const selected_date = moment(this.getSelectedDate);
+      const year = selected_date.year();
+      const month = selected_date.month() + 1;
+      const date = selected_date.date();
 
       return `${year}年${month}月${date}日`;
     },
     setDay() {
-      const weeks = ["日", "月", "火", "水", "木", "金", "土"];
-      const selected_date = new Date(this.getSelectedDate);
-      const week = selected_date.getDay();
-
-      return `${weeks[week]}曜日`;
+      return moment(this.getSelectedDate).format('dd') + '曜日';
     },
-    setYesterday() {
-      const selected_date = new Date(this.getSelectedDate);
-      const yesterday = selected_date.setDate(selected_date.getDate() - 1);
-      return new Date(yesterday);
+    setPreviousDay() {
+      return moment(this.getSelectedDate).subtract(1, 'days');
     },
-    setTomorrow() {
-      const selected_date = new Date(this.getSelectedDate);
-      const tomorrow = selected_date.setDate(selected_date.getDate() + 1);
-      return new Date(tomorrow);
+    setNextDay() {
+      return moment(this.getSelectedDate).add(1, 'days');
     }
   },
   methods: {

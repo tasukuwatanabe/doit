@@ -108,9 +108,9 @@ export default {
       getLabels: "label/getLabels"
     }),
     formattedDate() {
-      let year = this.getSelectedDate.getFullYear();
-      let month = this.getSelectedDate.getMonth() + 1;
-      let date = this.getSelectedDate.getDate();
+      let year = this.getSelectedDate.year();
+      let month = this.getSelectedDate.month() + 1;
+      let date = this.getSelectedDate.date();
 
       month = ('0' + month).slice(-2)
       date = ('0' + date).slice(-2)
