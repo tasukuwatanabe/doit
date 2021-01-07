@@ -1,7 +1,7 @@
 # アプリケーション概要
 
 ## アプリ名
-[DoIT \~履歴が確認できるToDoアプリ\~](https://doit-app.com)
+[DoIT \~日単位で管理できるToDoアプリ\~](https://doit-app.com)
 
 ## 概要
 
@@ -165,8 +165,23 @@ docker-compose exec backend bundle exec rspec
 docker-compose exec frontend yarn run test
 ```
 
-## 今後の課題
+## パフォーマンスチューニングについて
 
-サービスの改善とコードのリファクタリングを継続的に行っています。
+PageSpeed Insightにて、モバイル端末の速度スコアを33点→95点まで改善しました。
 
-詳しい改善点についてはgithub issuesに記載しています。
+表示速度の改善のために行った施策は以下の通りです。
+
+- gzip圧縮の適用
+- 使用するFontAwesomeアイコンのみ読み込み
+- moment.jsで日本語ファイルのみ読み込み
+- ブラウザキャッシュの利用
+
+上記はwebpack-bundle-analyzerを導入し、改善に取り組みました。
+
+<br>
+
+**パフォーマンスチューニング前**
+![パフォーマンスチューニング前](https://doit-image.s3-ap-northeast-1.amazonaws.com/readme/doit_performance_tuning_before.png "パフォーマンスチューニング前")
+
+**パフォーマンスチューニング後**
+![パフォーマンスチューニング後](https://doit-image.s3-ap-northeast-1.amazonaws.com/readme/doit_performance_tuning_after.jpg	"パフォーマンスチューニング後")
