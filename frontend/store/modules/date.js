@@ -1,3 +1,5 @@
+import moment from '../../modules/myMoment';
+
 const namespaced = true;
 
 const state = {
@@ -23,11 +25,11 @@ const actions = {
   setSelectedDateAction({ commit, state }, set_date) {
     let selected_date;
     if (set_date) {
-      selected_date = new Date(set_date);
+      selected_date = moment(set_date);
     } else if (state.selectedDate) {
-      selected_date = new Date(state.selectedDate);
+      selected_date = moment(state.selectedDate);
     } else {
-      selected_date = new Date();
+      selected_date = moment();
     }
     commit('setSelectedDate', selected_date);
   },

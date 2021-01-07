@@ -70,9 +70,9 @@ export default {
                         selectedDate === moment().date()
 
         // カレンダーから選択中の日付を判別
-        const isSelected = selectedYear === this.getSelectedDate.getFullYear() &&
-                            selectedMonth === this.getSelectedDate.getMonth() + 1 &&
-                            date === this.getSelectedDate.getDate() &&
+        const isSelected = selectedYear === this.getSelectedDate.year() &&
+                            selectedMonth === this.getSelectedDate.month() + 1 &&
+                            date === this.getSelectedDate.date() &&
                           !outOfMonth // 月外なら除外する
 
         if (outOfMonth) {
@@ -153,8 +153,8 @@ export default {
       this.setSelectedDateAction(selectedDate);
     },
     todoMatchCalendar() {
-      const year = this.getSelectedDate.getFullYear();
-      const month = this.getSelectedDate.getMonth();
+      const year = this.getSelectedDate.year();
+      const month = this.getSelectedDate.month();
 
       const year_difference = year - this.currentMoment.year();
       const month_difference = month - this.currentMoment.month();
