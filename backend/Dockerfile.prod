@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
 ENV APP_HOME /doit
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
-COPY Gemfile /doit/
+COPY Gemfile Gemfile.lock /doit/
 RUN bundle install --without development,test
 ADD . $APP_HOME
 RUN mkdir -p $APP_HOME/tmp/pids && mkdir -p $APP_HOME/tmp/sockets

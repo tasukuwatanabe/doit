@@ -14,7 +14,6 @@ services:
     volumes:
       - ./backend:/doit:cached
       - bundle_data:/usr/local/bundle:cached
-      - /doit/vendor
       - /doit/tmp
       - /doit/log
       - /doit/.git
