@@ -35,13 +35,10 @@ DoIT は、以下のような機能を持った ToDo アプリが欲しいとい
 
 - バックエンドのテストには RSpec、フロントエンドのテストには Jest を採用。
 
-- 本番環境には、AWS ECS(Fargate)を採用。
-
 ### バックエンド
 
 - Ruby 2.6.3
 - Ruby on Rails 6.0.3 (API モード)
-- Postgres
 
 ### フロントエンド
 
@@ -72,11 +69,3 @@ PageSpeed Insight にて、モバイル端末の速度スコアを 33 点 →95 
 - ブラウザキャッシュの利用
 
 上記は webpack-bundle-analyzer を導入し、改善に取り組みました。
-
-<br>
-
-**パフォーマンスチューニング前**
-![パフォーマンスチューニング前](https://doit-image.s3-ap-northeast-1.amazonaws.com/readme/doit_performance_tuning_before.png "パフォーマンスチューニング前")
-
-**パフォーマンスチューニング後**
-![パフォーマンスチューニング後](https://doit-image.s3-ap-northeast-1.amazonaws.com/readme/doit_performance_tuning_after.jpg "パフォーマンスチューニング後")
