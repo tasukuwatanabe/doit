@@ -19,11 +19,8 @@ services:
     depends_on:
       - db
 
-  web:
-    container_name: web
-    build:
-      context: ./front
-      dockerfile: Dockerfile
+  front:
+    build: ./front
     command: yarn run start
     volumes:
       - ./front:/doit
