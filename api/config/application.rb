@@ -26,7 +26,7 @@ module Doit
 
     config.autoload_paths += Dir["#{config.root}/lib"]
     config.hosts << '.example.com'
-    config.hosts << 'doit-app.com'
+    config.hosts << "app-doit.herokuapp.com"
 
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, key: '_namespace_key'

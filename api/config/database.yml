@@ -17,6 +17,7 @@ test:
 
 production:
   <<: *default
-  database: <%= ENV['RDS_DBNAME'] %>
-  password: <%= ENV['RDS_PASSWORD'] %>
-  host: <%= ENV['RDS_HOST'] %>
+  database: doit_production
+  username: doit
+  password: <%= ENV['MYAPI_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>

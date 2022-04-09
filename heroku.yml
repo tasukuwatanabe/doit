@@ -1,0 +1,9 @@
+setup:
+  config:
+    NODE_ENV: production
+build:
+  docker:
+    web: frontend/Dockerfile.web
+    app: backend/Dockerfile.app
+run:
+  app: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
