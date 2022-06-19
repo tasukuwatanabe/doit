@@ -29,7 +29,7 @@ class User < ApplicationRecord
             allow_nil: true
   validates :password, presence: true, on: :create
   validates :password_confirmation, presence: true, on: :create
-  validates :password, length: { minimum: 6, maximum: 20 }, confirmation: true, allow_blank: true
+  validates :password, length: { minimum: 6, maximum: 99 }, confirmation: true, allow_blank: true
   validate :uniqueness_unconfirmed_eamil_with_email
 
   has_secure_password
