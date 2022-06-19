@@ -1,9 +1,0 @@
-/node_modules
-/yarn-error.log
-yarn-debug.log*
-.yarn-integrity
-
-/public/css
-/public/js
-/public/images
-/public/*.html
