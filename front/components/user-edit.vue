@@ -74,7 +74,7 @@
                   :disabled="isGuest">デフォルトの画像を使用</label>
         </div>
       </div>
-      <div class="form__group">
+      <!-- <div class="form__group">
         <label class="form__label">SNS連携</label>
         <table class="sns-link__table">
           <tr>
@@ -136,7 +136,7 @@
             >してください
           </p>
         </div>
-      </div>
+      </div> -->
       <div class="form__action">
         <button type="submit" class="btn btn--main btn--md">更新する</button>
         <div @click="showCancelPopup"

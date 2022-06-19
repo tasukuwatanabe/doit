@@ -45,7 +45,7 @@
               </router-link>
             </li>
           </ul>
-          <OmniauthLogin />
+          <!-- <OmniauthLogin /> -->
         </form>
       </div>
     </div>
