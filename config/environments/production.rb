@@ -27,22 +27,22 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   config.action_mailer.perform_caching = true
-  
+
   config.action_mailer.raise_delivery_errors = true
-  
+
   config.action_mailer.delivery_method = :smtp
 
-  config.action_mailer.default_url_options = { host: 'doit-app.com' }
+  config.action_mailer.default_url_options = { host: 'twatanabe-doit-backend.herokuapp.com' }
 
-  ActionMailer::Base.smtp_settings = {
-    address: ENV['SES_SMTP_ADDRESS'],
-    port: 587,
-    domain: 'doit-app.com',
-    authentication: :login,
-    user_name: ENV['SES_SMTP_USER'],
-    password: ENV['SES_SMTP_PASSWORD'],
-    enable_starttls_auto: true
-  }
+  # ActionMailer::Base.smtp_settings = {
+  #   address: ENV['SES_SMTP_ADDRESS'],
+  #   port: 587,
+  #   domain: 'twatanabe-doit-backend.herokuapp.com',
+  #   authentication: :login,
+  #   user_name: ENV['SES_SMTP_USER'],
+  #   password: ENV['SES_SMTP_PASSWORD'],
+  #   enable_starttls_auto: true
+  # }
 
   config.i18n.fallbacks = true
 

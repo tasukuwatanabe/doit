@@ -6,7 +6,7 @@ module Constants
                 end
 
   CLIENT_HOST = if Rails.env.production?
-                  "https://doit-app.com"
+                  "https://twatanabe-doit-backend.herokuapp.com"
                 elsif Rails.env.test?
                   "http://www.example.com"
                 else
