@@ -12,8 +12,11 @@
 
 ActiveRecord::Schema.define(version: 2020_11_23_120033) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "labels", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "title"
@@ -23,8 +26,8 @@ ActiveRecord::Schema.define(version: 2020_11_23_120033) do
   end
 
   create_table "shortcut_labels", force: :cascade do |t|
-    t.integer "shortcut_id", null: false
-    t.integer "label_id", null: false
+    t.bigint "shortcut_id", null: false
+    t.bigint "label_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["label_id"], name: "index_shortcut_labels_on_label_id"
@@ -33,15 +36,15 @@ ActiveRecord::Schema.define(version: 2020_11_23_120033) do
 
   create_table "shortcuts", force: :cascade do |t|
     t.string "title", null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_shortcuts_on_user_id"
   end
 
   create_table "todo_labels", force: :cascade do |t|
-    t.integer "todo_id", null: false
-    t.integer "label_id", null: false
+    t.bigint "todo_id", null: false
+    t.bigint "label_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["label_id"], name: "index_todo_labels_on_label_id"
@@ -54,7 +57,7 @@ ActiveRecord::Schema.define(version: 2020_11_23_120033) do
     t.boolean "status", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.text "body"
     t.index ["user_id"], name: "index_todos_on_user_id"
   end
