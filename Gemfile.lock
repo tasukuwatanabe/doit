@@ -318,7 +318,7 @@ DEPENDENCIES
   omniauth-twitter
   pg
   pry-rails
-  puma (~> 4.3)
+  puma
   rack-cors
   rails (~> 6.0.3)
   rails-i18n
