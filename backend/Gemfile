@@ -4,7 +4,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.6'
 
 gem 'jbuilder', '~> 2.7'
-gem 'pg'
 gem 'puma'
 gem 'rails', '~> 6.0.3'
 gem 'bootsnap', '>= 1.4.2', require: false
@@ -26,6 +25,7 @@ gem 'rack-cors'
 gem 'sprockets', '~> 3.7.2'
 
 group :development, :test do
+  gem 'sqlite3', '1.4.2'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'awesome_print'
   gem 'pry-rails'
@@ -46,8 +46,4 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers'
   gem 'rspec_junit_formatter'
-end
-
-group :production do
-  gem 'fog-aws'
 end
