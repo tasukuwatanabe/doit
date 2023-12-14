@@ -91,5 +91,10 @@ module.exports = {
       vue$: "vue/dist/vue.esm.js"
     },
     extensions: ['.js', '.vue']
+  },
+  devServer: {
+    port: 8080,
+    host: "0.0.0.0",
+    contentBase: path.resolve(__dirname, 'public'),
   }
 };
