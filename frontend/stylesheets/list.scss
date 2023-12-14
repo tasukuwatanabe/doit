@@ -1,0 +1,130 @@
+@import "variables";
+
+.list {
+  padding: 0;
+  margin-bottom: 30px;
+  box-shadow: $box-shadow-common;
+
+  &__item {
+    padding: 24px 22px 24px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    position: relative;
+
+    @media (max-width: 991px) {
+      padding: 18px 22px;
+      min-height: 86px;
+    }
+
+    @media (max-width: 424px) {
+      padding: 15px 18px 15px 15px;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $border-color;
+    }
+
+    .todo-status {
+      position: absolute;
+      left: 16px;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+
+      @media (max-width: 374px) {
+        left: 12px;
+      }
+    }
+  }
+
+  &__inner {
+    display: flex;
+    flex-grow: 1;
+  }
+
+  &__block {
+    &--right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    &--left {
+      display: flex;
+      align-self: center;
+      flex-grow: 1;
+      margin-right: 15px;
+
+      @media (max-width: 767px) {
+        flex-direction: column;
+      }
+
+      @media (max-width: 374px) {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  &__title {
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+
+    &--with-label {
+      margin-right: 15px;
+
+      @media (max-width: 767px) {
+        margin-bottom: 5px;
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.no-result {
+  &__illustration {
+    max-width: 500px;
+    width: 100%;
+    padding: 0 10px;
+    margin-top: 80px;
+    margin-left: 100px;
+
+    @media (max-width: 991px) {
+      width: 80%;
+      margin: 50px auto 0;
+    }
+  }
+}
+
+.item-action {
+  display: flex;
+
+  &__btn {
+    color: rgb(170, 170, 170);
+    font-size: 20px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+
+    @media (max-width: 424px) {
+      font-size: 18px;
+    }
+
+    &:hover {
+      color: $color-main-theme;
+    }
+
+    &:not(:last-of-type) {
+      margin-right: 25px;
+
+      @media (max-width: 424px) {
+        margin-right: 22px;
+      }
+
+      @media (max-width: 374px) {
+        margin-right: 18px;
+      }
+    }
+  }
+}

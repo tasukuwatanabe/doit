@@ -1,0 +1,95 @@
+@import "variables";
+@import "extend";
+
+.btn {
+  @extend %link;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  transition-duration: .3s;
+
+  &--sm {
+    height: 40px;
+    line-height: 40px;
+  }
+
+  &--md {
+    height: 45px;
+    line-height: 45px;
+    font-size: 1.1em;
+
+    @media (max-width: 991px) {
+      font-size: 1em;
+    }
+  }
+
+  &--blue {
+    color: #fff !important;
+    background-color: $color-main-theme;
+    outline: 2px solid $color-main-theme;
+    
+    &:hover {
+      color: $color-main-theme !important;
+      background-color: #fff;
+    }
+  }
+
+  &--red {
+    color: #fff !important;
+    background-color: $color-red;
+    outline: 2px solid $color-red;
+    
+    &:hover {
+      color: $color-red !important;
+      background-color: #fff;
+    }
+  }
+
+  &--gray {
+    color: #999;
+    background-color: #dfdfdf;
+    outline: 2px solid #dfdfdf;
+
+    &:hover {
+      background-color: #fff;
+      outline-color: #999;
+    }
+  }
+
+  &--main {
+    color: #fff !important;
+    background: linear-gradient(135deg, rgb(37, 227, 241) 0%,#7a4aec 100%);
+    border-radius: 100px;
+    position: relative;
+    min-width: 150px;
+    padding: 0 3em;
+  
+    &:hover {
+      opacity: .8;
+    }
+  
+    &__icon {
+      svg {
+        font-size: 16px;
+        margin-right: 7px;
+        color: $color-main-theme;
+      }
+    }
+  }
+}
+
+.page-action {
+  &__btn {
+    min-width: 150px;
+  }
+
+  &__icon {
+    svg {
+      font-size: 16px;
+    }
+  }
+
+  &__text {
+    margin-left: 5px;
+  }
+}
