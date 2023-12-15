@@ -6,7 +6,7 @@ import store from '../store/index';
 // Rails-APIを叩く際のaxiosのcors対策
 axios.defaults.baseURL =
   process.env.NODE_ENV === 'production'
-    ? 'https://app-doit.herokuapp.com/api/v1'
+    ? 'https://doit-backend.onrender.com/api/v1'
     : 'http://localhost:3000/api/v1';
 axios.defaults.withCredentials = true;
 
