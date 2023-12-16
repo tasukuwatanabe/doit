@@ -11,7 +11,6 @@
 !/backend/storage/.keep
 /backend/.byebug_history
 /backend/config/master.key
-/backend/config/credentials.yml.enc
 /backend/.ruby-version
 /backend/.env
 /backend/public/uploads
