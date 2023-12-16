@@ -131,6 +131,8 @@ GEM
     minitest (5.20.0)
     msgpack (1.7.2)
     multi_xml (0.6.0)
+    net-http (0.4.0)
+      uri
     net-imap (0.4.8)
       date
       net-protocol
@@ -281,6 +283,7 @@ GEM
     tzinfo (1.2.11)
       thread_safe (~> 0.1)
     uniform_notifier (1.16.0)
+    uri (0.13.0)
     valid_email2 (5.1.1)
       activemodel (>= 3.2)
       mail (~> 2.5)
@@ -316,6 +319,7 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   listen (~> 3.2)
   mini_magick
+  net-http
   nokogiri
   omniauth
   omniauth-facebook
