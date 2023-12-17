@@ -26,7 +26,7 @@ export default {
   computed: {
     getServerHost() {
       return process.env.NODE_ENV === 'production'
-                                    ? 'https://doit-app.com'
+                                    ? 'https://api.doit-plan.com'
                                     : 'http://localhost:3000';
     },
   }
