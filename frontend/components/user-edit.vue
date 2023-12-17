@@ -50,11 +50,7 @@
       <div class="form__group">
         <label class="form__label">プロフィール画像</label>
         <div class="form__profile-box">
-          <img
-            :alt="username + 'のプロフィール画像'"
-            :src="userImageWithNumber"
-            class="profile-img"
-          />
+          <UserImage />
           <input type="file"
                   ref="file"
                   :disabled="isGuest"
@@ -154,6 +150,7 @@ import { axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Flash from "./mixins/flash";
 import AccountCancelModal from "./shared/account-cancel-modal";
+import UserImage from "./shared/user-image";
 
 export default {
   data() {
@@ -173,7 +170,8 @@ export default {
     };
   },
   components: {
-    AccountCancelModal
+    AccountCancelModal,
+    UserImage
   },
   mixins: [Flash],
   created() {
@@ -189,11 +187,6 @@ export default {
     hasUserImage() {
       if (this.user_image) {
         return this.user_image.url.includes('default.jpg');
-      }
-    },
-    userImageWithNumber() {
-      if (this.user_image) {
-        return this.user_image.url + '?' + Math.random();
       }
     }
   },

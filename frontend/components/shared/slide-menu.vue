@@ -14,11 +14,7 @@
           @click.native="toggleSlide"
           class="userinfo__link"
         >
-          <img
-            :alt="this.getCurrentUser.username + ' アイコン'"
-            class="profile-img"
-            :src="userImageWithNumber"
-          />
+          <UserImage />
           <div class="userinfo__username">
             {{ this.getCurrentUser.username }}
           </div>
@@ -110,6 +106,7 @@ import { axiosForBackend } from "../../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Logout from "../mixins/logout";
 import Flash from "../mixins/flash";
+import UserImage from "./user-image";
 
 export default {
   mixins: [Logout, Flash],
@@ -117,12 +114,10 @@ export default {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser",
       getToggleStatus: "slideMenu/getToggleStatus"
-    }),
-    userImageWithNumber() {
-      if (this.getCurrentUser.user_image) {
-        return this.getCurrentUser.user_image.url + '?' + Math.random();
-      }
-    }
+    })
+  },
+  components: {
+    UserImage
   },
   methods: {
     ...mapActions({

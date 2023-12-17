@@ -1,7 +1,7 @@
 <template>
   <img class="profile-img"
     :alt="this.getCurrentUser.username + ' アイコン'"
-    :src="userImageWithRandomNumber"
+    :src="userImageWithNumber"
   />
 </template>
 
@@ -15,9 +15,11 @@ export default {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
     }),
-    userImageWithRandomNumber() {
+    userImageWithNumber() {
       if (this.userImage) {
         return this.userImage.url + '?' + Math.random();
+      } else {
+        return 'http://localhost:3000/user_icons/default.jpg';
       }
     }
   }
