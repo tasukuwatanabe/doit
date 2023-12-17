@@ -10,7 +10,7 @@
         <SidebarRight v-if="isTodo" />
       </div>
     </main>
-    <Footer></Footer>
+    <Footer />
     <Loading v-if="this.getLoadingCount" />
   </div>
 </template>
