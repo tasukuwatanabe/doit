@@ -6,16 +6,16 @@ module SessionModule
     user.remember!
     cookies.permanent.signed[:user_id] = {
       value: user.id,
-      domain: 'doit-plan.com'
+      domain: :all
     }
     cookies.permanent[:remember_token] = {
       value: user.remember_token,
-      domain: 'doit-plan.com'
+      domain: :all
     }
   end
 
   def log_out
-    cookies.delete(:user_id, domain: 'doit-plan.com') if cookies[:user_id]
-    cookies.delete(:remember_token, domain: 'doit-plan.com')
+    cookies.delete(:user_id, domain: :all) if cookies[:user_id]
+    cookies.delete(:remember_token, domain: :all)
   end
 end
