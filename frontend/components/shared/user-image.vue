@@ -16,10 +16,13 @@ export default {
       getCurrentUser: "user/getCurrentUser"
     }),
     userImageWithNumber() {
+      const hostPath = process.env.NODE_ENV === 'production'
+                                              ? 'https://api.doit-plan.com'
+                                              : 'http://localhost:3000';
       if (this.userImage) {
         return this.userImage.url + '?' + Math.random();
       } else {
-        return 'http://localhost:3000/user_icons/default.jpg';
+        return `${hostPath}/user_icons/default.jpg`;
       }
     }
   }
