@@ -12,8 +12,8 @@ const cookieStatus = () => {
 };
 
 const deleteCookie = () => {
-  document.cookie = 'user_id=;';
-  document.cookie = 'remember_token=;';
+  document.cookie = 'user_id=; domain=.doit-plan.com';
+  document.cookie = 'remember_token=; domain=.doit-plan.com';
 };
 
 export { cookieStatus, deleteCookie };
