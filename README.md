@@ -11,29 +11,22 @@ DoIT は、以下のような機能を持った ToDo アプリが欲しいとい
 - 日ごとに ToDo が管理できる
 - 過去の履歴が確認できる
 
-プログラミング学習やトレーニングなど、日ごとに ToDo を管理でき、過去の達成度を確認することも可能です。
+日ごとにToDoを管理でき、過去の達成度を確認することも可能です。
 
 ## 機能一覧
 
-- ToDo 作成
-- ToDo 検索
-- 日付切り替え
-- ショートカット作成
-- ラベル作成
+- スケジュールのCRUD
 - アカウント情報変更
 - パスワード変更
 - ログイン・新規登録
 - ゲストログイン
-- Omniauth ログイン(Twitter/Facebook/Google)
 - アカウント認証
 - メールアドレス認証(変更時)
 - パスワードリセット
 
 ## 使用した技術
 
-- Backend for Frontend のアーキテクチャを採用し、バックエンドに Rails(API モード)、フロントエンドに Vue.js を使用した SPA となっています。
-
-- バックエンドのテストには RSpec、フロントエンドのテストには Jest を採用。
+Backend for Frontend のアーキテクチャを採用し、バックエンドに Rails(API モード)、フロントエンドに Vue.js を使用した SPA となっています。
 
 ### バックエンド
 
@@ -49,100 +42,3 @@ DoIT は、以下のような機能を持った ToDo アプリが欲しいとい
   - bootstrap 4.5.3
 - webpack 4.43.0
   - webpack-dev-server(開発環境)
-- yarn
-- Node.js
-
-### テスト
-
-- RSpec 3.10.0
-- Jest 25.1.0
-
-## 環境構築の手順
-
-以下をローカルにインストールします。
-
-- Docker
-- docker-compose
-
-<br>
-リポジトリをcloneします。
-
-```
-git clone git@github.com:tasukuwatanabe/doit.git
-```
-
-<br>
-ディレクトリに移動します。
-
-```
-cd doit
-```
-
-<br>
-dockerイメージをビルドし、バックグラウンドで起動します。
-
-```
-docker-compose up --build -d
-```
-
-<br>
-環境変数の管理にdotenv-railsを使用しているため、backendディレクトリに.envファイルを追加してください。
-
-- `POSTGRES_PASSWORD=hoge`を追加(`hoge`は適当に置き換え)。
-- Oauth 起動に必要な環境変数など適宜必要に応じて。
-
-<br>DB を作成し、シードデータを入れます。
-
-```
-docker-compose exec api bundle exec rails db:create
-```
-
-```
-docker-compose exec api bundle exec rails db:migrate
-```
-
-```
-docker-compose exec api bundle exec rails db:seed
-```
-
-<br>
-
-ブラウザで`localhost:8080`を開きます。
-
-開発環境ではフロント用に webpack-dev-server、バックエンド用に rails server が起動しています。
-
-メールを確認する場合は、`localhost:1080`で Mailcatcher が開きます。
-
-## テストの実行
-
-Docker コンテナが up 状態になっていることを確認してください。
-up 状態になっていない時は以下のコマンドで立ち上げてください。
-
-```
-docker-compose up -d
-```
-
-### Rspec の実行
-
-```
-docker-compose exec api bundle exec rspec
-```
-
-### Jest の実行
-
-```
-docker-compose exec frontend yarn run test
-```
-
-## パフォーマンスチューニングについて
-
-PageSpeed Insight にて、モバイル端末の速度スコアを 33 点 →95 点まで改善しました。
-
-表示速度の改善のために行った施策は以下の通りです。
-
-- gzip 圧縮の適用
-- 使用する FontAwesome アイコンのみ読み込み
-- moment.js で日本語ファイルのみ読み込み
-- ブラウザキャッシュの利用
-
-上記は webpack-bundle-analyzer を導入し、改善に取り組みました。
