@@ -9,7 +9,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     it 'mail headers' do
       expect(mail.subject).to eq('アカウントの有効化')
-      expect(mail.from).to eq(['noreply@twatanabe-doit-backend.herokuapp.com'])
+      expect(mail.from).to eq(['noreply@doit-plan.com'])
       expect(mail.to).to eq(['user1@email.com'])
     end
 
@@ -23,7 +23,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     it 'mail headers' do
       expect(mail.subject).to eq('メールアドレスの確認')
-      expect(mail.from).to eq(['noreply@twatanabe-doit-backend.herokuapp.com'])
+      expect(mail.from).to eq(['noreply@doit-plan.com'])
       expect(mail.to).to eq(['user3_new@email.com'])
     end
 
@@ -37,7 +37,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     it 'mail headers' do
       expect(mail.subject).to eq('パスワードリセット')
-      expect(mail.from).to eq(['noreply@twatanabe-doit-backend.herokuapp.com'])
+      expect(mail.from).to eq(['noreply@doit-plan.com'])
       expect(mail.to).to eq(['user5@email.com'])
     end
 
