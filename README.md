@@ -1,8 +1,6 @@
-# アプリケーション概要
+# DoIT \~日単位で管理できる ToDo アプリ\~
 
-## アプリ名
-
-DoIT \~日単位で管理できる ToDo アプリ\~
+https://app.doit-plan.com/
 
 ## 概要
 
@@ -42,3 +40,7 @@ Backend for Frontend のアーキテクチャを採用し、バックエンド�
   - bootstrap 4.5.3
 - webpack 4.43.0
   - webpack-dev-server(開発環境)
+
+<br>
+
+<img width="1234" alt="doit" src="https://github.com/mf-watanabe-tasuku/doit/assets/79836621/c4c95cc4-c9b8-457c-8e0a-e26ebecd262b">
