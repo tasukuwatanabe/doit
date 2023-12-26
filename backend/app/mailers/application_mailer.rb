@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'DoIT <noreply@twatanabe-doit-backend.herokuapp.com>'
+  default from: 'noreply@example.com'
   layout 'mailer'
 end

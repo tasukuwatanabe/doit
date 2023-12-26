@@ -29,20 +29,17 @@ Rails.application.configure do
   config.action_mailer.perform_caching = true
 
   config.action_mailer.raise_delivery_errors = true
-
   config.action_mailer.delivery_method = :smtp
-
-  config.action_mailer.default_url_options = { host: 'twatanabe-doit-backend.herokuapp.com' }
-
-  # ActionMailer::Base.smtp_settings = {
-  #   address: ENV['SES_SMTP_ADDRESS'],
-  #   port: 587,
-  #   domain: 'twatanabe-doit-backend.herokuapp.com',
-  #   authentication: :login,
-  #   user_name: ENV['SES_SMTP_USER'],
-  #   password: ENV['SES_SMTP_PASSWORD'],
-  #   enable_starttls_auto: true
-  # }
+  host = 'api.doit-plan.com'
+  config.action_mailer.default_url_options = { host: host }
+  ActionMailer::Base.smtp_settings = {
+    :port           => 587,
+    :address        => 'smtp.mailgun.org',
+    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
+    :domain         => host,
+    :authentication => :plain,
+  }
 
   config.i18n.fallbacks = true
 
