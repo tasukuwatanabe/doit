@@ -34,10 +34,6 @@ export default {
       } else if (this.$route.query.account_activation === 'invalid') {
         const message = "有効化リンクが無効です"
         this.generateFlash('error', message);
-      } else if (this.$route.query.oauth === 'success') {
-        this.fetchData();
-        const message = this.$route.query.provider + "でログインしました";
-        this.generateFlash('success', message);
       }
 
       this.$router.push({ name: 'todos' });

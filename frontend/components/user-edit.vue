@@ -47,69 +47,6 @@
           <a @click="cancelEmailConfirmation" class="link--default">キャンセル</a>
         </div>
       </div>
-      <!-- <div class="form__group">
-        <label class="form__label">SNS連携</label>
-        <table class="sns-link__table">
-          <tr>
-            <td>Facebook</td>
-            <td>
-              <div class="sns-icon sns-icon--facebook">
-                <i class="fab fa-facebook-f"></i>
-              </div>
-            </td>
-            <td>
-              <div v-if="facebook_uid != null">
-                <span v-if="auto_generated_password">連携中</span>
-                <a v-else @click="cancelOauth('facebook')" class="link--default">連携を解除</a>
-              </div>
-              <span v-else>未連携</span>
-            </td>
-          </tr>
-          <tr>
-            <td>Twitter</td>
-            <td>
-              <div class="sns-icon sns-icon--twitter">
-                <i class="fab fa-twitter"></i>
-              </div>
-            </td>
-            <td>
-              <div v-if="twitter_uid != null">
-                <span v-if="auto_generated_password">連携中</span>
-                <a v-else @click="cancelOauth('twitter')" class="link--default">連携を解除</a>
-              </div>
-              <span v-else>未連携</span>
-            </td>
-          </tr>
-          <tr>
-            <td>Google</td>
-            <td>
-              <div class="sns-icon sns-icon--google">
-                <i class="fab fa-google"></i>
-              </div>
-            </td>
-            <td>
-              <div v-if="google_uid != null">
-                <span v-if="auto_generated_password">連携中</span>
-                <a v-else @click="cancelOauth('google_oauth2')" class="link--default">連携を解除</a>
-              </div>
-              <span v-else>未連携</span>
-            </td>
-          </tr>
-        </table>
-        <div v-if="auto_generated_password">
-          <p>
-            SNS連携を解除するには
-            <router-link
-              :to="{
-                name: 'password_edit',
-                params: { userId: id }
-              }"
-              class="link--default"
-              >パスワードを設定</router-link
-            >してください
-          </p>
-        </div>
-      </div> -->
       <div class="form__action">
         <button type="submit" class="btn btn--main btn--md">更新する</button>
         <div @click="showCancelPopup"
@@ -134,12 +71,7 @@ export default {
       id: "",
       username: "",
       email: "",
-      facebook_uid: "",
-      twitter_uid: "",
-      google_uid: "",
       unconfirmed_email: "",
-      auto_generated_password: "",
-      file: "",
       errors: ""
     };
   },
@@ -166,11 +98,7 @@ export default {
       this.id = this.getCurrentUser.id;
       this.username = this.getCurrentUser.username;
       this.email = this.getCurrentUser.email;
-      this.facebook_uid = this.getCurrentUser.facebook_uid;
-      this.twitter_uid = this.getCurrentUser.twitter_uid;
-      this.google_uid = this.getCurrentUser.google_uid;
       this.unconfirmed_email = this.getCurrentUser.unconfirmed_email;
-      this.auto_generated_password = this.getCurrentUser.auto_generated_password;
     },
     submitUser() {
       this.errors = "";
@@ -199,13 +127,6 @@ export default {
         this.generateFlash('success', res.data.message);
       });
     },
-    cancelOauth(provider) {
-      axiosForBackend.delete("/auth/" + provider).then((res) => {
-        this.setCurrentUserAction(res.data.user);
-        this.setUserData();
-        this.generateFlash('success', res.data.message);
-      });
-    },
     showCancelPopup() {
       if (this.isGuest) {
         return;
@@ -219,17 +140,6 @@ export default {
 <style lang="scss" scoped>
 @import "../stylesheets/variables.scss";
 @import "../stylesheets/mixin.scss";
-
-.sns-link {
-  &__table {
-    margin-top: 0.5em;
-    margin-bottom: 1em;
-
-    td {
-      padding: 10px 30px 10px 0;
-    }
-  }
-}
 
 .form {
   input[type="file"] {

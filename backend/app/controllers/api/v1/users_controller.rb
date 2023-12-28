@@ -37,7 +37,7 @@ module Api
       private
 
       def user_params
-        params.require(:user).permit(:username, :password, :email, :password_confirmation, :facebook_uid, :twitter_uid, :google_uid, :auto_generated_password, :unconfirmed_email)
+        params.require(:user).permit(:username, :password, :email, :password_confirmation, :unconfirmed_email)
       end
 
       def check_email

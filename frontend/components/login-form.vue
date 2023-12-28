@@ -45,7 +45,6 @@
               </router-link>
             </li>
           </ul>
-          <!-- <OmniauthLogin /> -->
         </form>
       </div>
     </div>
@@ -56,7 +55,6 @@
 import { axiosForBackend } from "../config/axios";
 import { mapActions } from "vuex";
 import GuestLogin from './shared/guest-login.vue';
-import OmniauthLogin from './shared/omniauth-login.vue';
 import Flash from "./mixins/flash";
 import Data from "./mixins/data";
 
@@ -69,8 +67,7 @@ export default {
     };
   },
   components: {
-    GuestLogin,
-    OmniauthLogin
+    GuestLogin
   },
   mixins: [Flash, Data],
   methods: {

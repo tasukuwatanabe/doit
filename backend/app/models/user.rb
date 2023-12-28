@@ -78,12 +78,6 @@ class User < ApplicationRecord
     update(email: unconfirmed_email, unconfirmed_email: nil)
   end
 
-  def cancel_oauth!(provider)
-    provider = "google" if provider == "google_oauth2"
-    provider_uid = "#{provider}_uid".to_sym
-    update_attribute(provider_uid, nil)
-  end
-
   def set_activation_digest!
     self.activation_token =  User.new_token
     self.activation_digest = User.digest(activation_token)

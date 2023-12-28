@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Passwords', type: :request do
   describe "Password" do
-    let(:user) { create(:user, auto_generated_password: true) }
+    let(:user) { create(:user) }
     let(:password_params) {
       {
         change_password_form: {

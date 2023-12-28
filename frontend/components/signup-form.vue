@@ -60,7 +60,6 @@
               </router-link>
             </li>
           </ul>
-          <!-- <OmniauthLogin /> -->
         </form>
       </div>
     </div>
@@ -69,9 +68,7 @@
 
 <script>
 import { axiosForBackend } from "../config/axios";
-import { mapActions } from "vuex";
 import GuestLogin from './shared/guest-login.vue';
-import OmniauthLogin from './shared/omniauth-login.vue';
 import Flash from "./mixins/flash";
 
 export default {
@@ -86,8 +83,7 @@ export default {
   },
   mixins: [Flash],
   components: {
-    GuestLogin,
-    OmniauthLogin
+    GuestLogin
   },
   methods: {
     submitRegister() {

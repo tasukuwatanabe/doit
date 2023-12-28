@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_28_141308) do
+ActiveRecord::Schema.define(version: 2023_12_28_143008) do
 
   create_table "labels", force: :cascade do |t|
     t.integer "user_id"
@@ -68,17 +68,12 @@ ActiveRecord::Schema.define(version: 2023_12_28_141308) do
     t.string "remember_digest"
     t.string "reset_digest"
     t.datetime "reset_sent_at"
-    t.string "twitter_uid"
-    t.string "sns_profile_image"
-    t.string "facebook_uid"
     t.string "activation_digest"
     t.boolean "activated", default: false
     t.datetime "activated_at"
     t.string "confirmation_digest"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
-    t.string "google_uid"
-    t.boolean "auto_generated_password", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

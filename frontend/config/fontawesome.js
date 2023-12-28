@@ -19,12 +19,6 @@ import {
   faCalendarCheck,
 } from '@fortawesome/free-solid-svg-icons';
 
-import {
-  faFacebookF,
-  faTwitter,
-  faGoogle,
-} from '@fortawesome/free-brands-svg-icons';
-
 library.add(
   faTag,
   faPlus,
@@ -42,9 +36,6 @@ library.add(
   faTimesCircle,
   faPlusCircle,
   faSignOutAlt,
-  faCalendarCheck,
-  faFacebookF,
-  faTwitter,
-  faGoogle
+  faCalendarCheck
 );
 dom.watch();

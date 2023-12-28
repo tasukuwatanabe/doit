@@ -18,8 +18,6 @@ Rails.application.routes.draw do
       resources :password_resets, only: %i[create update]
       resources :account_activations, only: :edit
       resources :email_confirmations, only: %i[edit destroy]
-      get '/auth/:provider/callback', to: 'omniauth_callbacks#create'
-      delete '/auth/:provider', to: 'omniauth_callbacks#destroy'
       get :health_check, to: 'health_check#index'
     end
   end
