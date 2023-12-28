@@ -1,8 +1,6 @@
 class User < ApplicationRecord
   include StringNormalizer
 
-  mount_uploader :user_image, ImageUploader
-
   attr_accessor :remember_token, :reset_token, :activation_token, :confirmation_token
 
   has_many :todos, dependent: :destroy

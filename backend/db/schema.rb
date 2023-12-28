@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_23_120033) do
+ActiveRecord::Schema.define(version: 2023_12_28_141308) do
 
   create_table "labels", force: :cascade do |t|
     t.integer "user_id"
@@ -68,7 +68,6 @@ ActiveRecord::Schema.define(version: 2020_11_23_120033) do
     t.string "remember_digest"
     t.string "reset_digest"
     t.datetime "reset_sent_at"
-    t.string "user_image"
     t.string "twitter_uid"
     t.string "sns_profile_image"
     t.string "facebook_uid"

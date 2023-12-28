@@ -29,7 +29,6 @@ class UserForm
   end
 
   def generate_params
-    @params[:sns_profile_image] = nil if ActiveRecord::Type::Boolean.new.cast(@params[:remove_user_image]) && @params[:remove_user_image]
     unconfirmed_email_params = @changed_email ? generate_unconfirmed_email_params : {}
     delete_no_change_params(@params.merge(unconfirmed_email_params))
   end

@@ -14,7 +14,6 @@
 /backend/.ruby-version
 /backend/.env
 /backend/public/uploads
-/backend/public/user_icons/user_*.*
 /backend/db/*.sqlite3
 /backend/db/*.sqlite3-journal
 /backend/db/*.sqlite3-[0-9]*

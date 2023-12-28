@@ -14,7 +14,6 @@
           @click.native="toggleSlide"
           class="userinfo__link"
         >
-          <UserImage />
           <div class="userinfo__username">
             {{ this.getCurrentUser.username }}
           </div>
@@ -43,7 +42,7 @@
             </router-link>
           </li>
           <li class="nav__item">
-            <router-link :to="{ name: 'labels' }" 
+            <router-link :to="{ name: 'labels' }"
                           @click.native="toggleSlide"
                           class="nav__link">
               <span class="icon nav__icon">
@@ -106,7 +105,6 @@ import { axiosForBackend } from "../../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Logout from "../mixins/logout";
 import Flash from "../mixins/flash";
-import UserImage from "./user-image";
 
 export default {
   mixins: [Logout, Flash],
@@ -115,9 +113,6 @@ export default {
       getCurrentUser: "user/getCurrentUser",
       getToggleStatus: "slideMenu/getToggleStatus"
     })
-  },
-  components: {
-    UserImage
   },
   methods: {
     ...mapActions({

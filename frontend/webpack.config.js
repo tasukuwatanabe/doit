@@ -75,7 +75,7 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: ["css", "js", "!uploads/**/default.jpg", "!/icons/**/*", "!/common/**/*"]
+      cleanOnceBeforeBuildPatterns: ["css", "js", "!/icons/**/*", "!/common/**/*"]
     }),
     new HtmlWebpackPlugin({
       template: './html/index.html'

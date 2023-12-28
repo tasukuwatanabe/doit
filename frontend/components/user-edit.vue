@@ -47,29 +47,6 @@
           <a @click="cancelEmailConfirmation" class="link--default">キャンセル</a>
         </div>
       </div>
-      <div class="form__group">
-        <label class="form__label">プロフィール画像</label>
-        <div class="form__profile-box">
-          <UserImage />
-          <input type="file"
-                  ref="file"
-                  :disabled="isGuest"
-                  @change="onImageUpload" />
-        </div>
-        <span class="form__error form__error--mt" v-if="errors.user_image">
-          {{ errors.user_image }}
-        </span>
-        <div v-if="!hasUserImage" class="form__profile-default">
-          <input
-            type="checkbox"
-            v-model="remove_user_image"
-            id="remove_user_image"
-            :disabled="isGuest"
-            true-value="1" />
-          <label for="remove_user_image"
-                  :disabled="isGuest">デフォルトの画像を使用</label>
-        </div>
-      </div>
       <!-- <div class="form__group">
         <label class="form__label">SNS連携</label>
         <table class="sns-link__table">
@@ -150,7 +127,6 @@ import { axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Flash from "./mixins/flash";
 import AccountCancelModal from "./shared/account-cancel-modal";
-import UserImage from "./shared/user-image";
 
 export default {
   data() {
@@ -158,20 +134,17 @@ export default {
       id: "",
       username: "",
       email: "",
-      user_image: {},
       facebook_uid: "",
       twitter_uid: "",
       google_uid: "",
       unconfirmed_email: "",
       auto_generated_password: "",
-      remove_user_image: "",
       file: "",
       errors: ""
     };
   },
   components: {
-    AccountCancelModal,
-    UserImage
+    AccountCancelModal
   },
   mixins: [Flash],
   created() {
@@ -183,11 +156,6 @@ export default {
     }),
     isGuest() {
       return this.email === 'guest@example.com';
-    },
-    hasUserImage() {
-      if (this.user_image) {
-        return this.user_image.url.includes('default.jpg');
-      }
     }
   },
   methods: {
@@ -198,42 +166,23 @@ export default {
       this.id = this.getCurrentUser.id;
       this.username = this.getCurrentUser.username;
       this.email = this.getCurrentUser.email;
-      this.user_image = this.getCurrentUser.user_image;
       this.facebook_uid = this.getCurrentUser.facebook_uid;
       this.twitter_uid = this.getCurrentUser.twitter_uid;
       this.google_uid = this.getCurrentUser.google_uid;
       this.unconfirmed_email = this.getCurrentUser.unconfirmed_email;
       this.auto_generated_password = this.getCurrentUser.auto_generated_password;
     },
-    onImageUpload: function (e) {
-      this.file = this.$refs.file.files[0];
-      const image = new Image();
-      const reader = new FileReader();
-      let vm = this;
-
-      reader.onload = (e) => {
-        vm.image = e.target.result;
-      }
-      reader.readAsDataURL(this.file);
-    },
     submitUser() {
       this.errors = "";
       let formData = new FormData();
       formData.append("user[username]", this.username);
       formData.append("user[email]", this.email);
-      if (this.remove_user_image === "1") {
-        formData.append("user[remove_user_image]", this.remove_user_image);
-      }
-      if (this.file) {
-        formData.append("user[user_image]", this.file);
-      }
 
       axiosForBackend
         .put(`/users/${this.id}`, formData)
         .then((res) => {
           this.$refs.file.value = '';
           this.file = '';
-          this.remove_user_image = "0";
           this.setCurrentUserAction(res.data.user);
           this.setUserData();
           this.generateFlash('success', res.data.message);
