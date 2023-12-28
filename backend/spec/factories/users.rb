@@ -9,7 +9,6 @@ FactoryBot.define do
     password { 'password' }
     password_confirmation { 'password' }
     activated { true }
-    user_image { nil }
     activation_token { token }
     activation_digest { digest }
     confirmation_token { token }

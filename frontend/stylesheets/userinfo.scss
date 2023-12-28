@@ -4,11 +4,6 @@
   display: flex;
   align-items: center;
 
-  .profile-img {
-    width: 65px;
-    margin-right: 15px;
-  }
-
   &__link {
     display: flex;
     align-items: center;
@@ -22,6 +17,7 @@
   &__username {
     @extend %link;
     word-break: break-all;
+    padding-left: 10px;
   }
 }
 
@@ -34,8 +30,4 @@
     color: $color-main-theme;
     fill: $color-main-theme;
   }
-}
-
-.profile-img {
-  border-radius: 50%;
 }

@@ -50,28 +50,6 @@ RSpec.describe UserForm, type: :model do
           end
         end
       end
-
-      context "画像" do
-        let(:user) { create(:user, user_image: Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec/files/download.jpg'))) }
-
-        context "remove_user_image の値が '1' の時" do
-          let(:params) { { remove_user_image: "1" } }
-
-          it "画像がデフォルト画像になる" do
-            is_expected.to eq true
-            expect(user.user_image.url).to eq "http://localhost:3000/user_icons/default.jpg"
-          end
-        end
-
-        context "remove_user_image の値が '1' 以外の時" do
-          let(:params) { { remove_user_image: "0" } }
-
-          it "画像は変更しない" do
-            is_expected.to eq true
-            expect(user.user_image.url).to eq  "http://localhost:3000/user_icons/user_#{user.id}.jpg"
-          end
-        end
-      end
     end
   end
 end

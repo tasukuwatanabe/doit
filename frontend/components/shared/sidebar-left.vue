@@ -10,9 +10,6 @@
           }"
           class="userinfo__link"
         >
-          <div>
-            <UserImage />
-          </div>
           <div class="userinfo__username">
             {{ this.getCurrentUser.username }}
           </div>
@@ -91,7 +88,6 @@ import { axiosForBackend } from "../../config/axios";
 import { mapGetters, mapActions } from "vuex";
 import Logout from "../mixins/logout";
 import Flash from "../mixins/flash";
-import UserImage from "./user-image";
 
 export default {
   mixins: [Logout, Flash],
@@ -99,9 +95,6 @@ export default {
     ...mapGetters({
       getCurrentUser: "user/getCurrentUser"
     })
-  },
-  components: {
-    UserImage
   },
   methods: {
     ...mapActions({
@@ -144,13 +137,13 @@ export default {
 
   &__inner {
     background-color: #fff;
-    padding: 25px 22px 10px;
+    padding: 35px 22px 10px;
     box-shadow: $box-shadow-common;
     min-height: 448px;
   }
 
   &__userinfo {
-    margin-bottom: 15px;
+    margin-bottom: 25px;
   }
 }
 </style>
