@@ -71,7 +71,7 @@
 <script>
 import { axios, axiosForBackend } from "../config/axios";
 import { mapGetters, mapActions } from "vuex";
-import moment from "../modules/myMoment";
+import { moment, formatMomentToString } from "../modules/myMoment";
 import ItemAction from "./shared/item-action";
 import TodoModal from "./todo-modal";
 import LabelItem from "./label-item";
@@ -122,7 +122,7 @@ export default {
     },
     fetchTodos(date) {
       axiosForBackend
-        .get("/todos", { params: { date: date }})
+        .get("/todos", { params: { date: formatMomentToString(date) }})
         .then((res) => {
           this.setTodosAction(res.data);
         })

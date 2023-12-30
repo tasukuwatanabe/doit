@@ -1,5 +1,6 @@
 import moment from 'moment';
 import 'moment/locale/ja';
-moment.locale('ja');
 
-export default moment;
+const formatMomentToString = datetime => datetime.format('YYYY-MM-DD').toLocaleString();
+
+export { moment, formatMomentToString };

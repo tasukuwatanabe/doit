@@ -1,4 +1,4 @@
-import moment from '../../modules/myMoment';
+import { moment } from '../../modules/myMoment';
 
 const namespaced = true;
 
@@ -26,12 +26,10 @@ const actions = {
     let selected_date;
     if (set_date) {
       selected_date = moment(set_date);
-    } else if (state.selectedDate) {
-      selected_date = moment(state.selectedDate);
     } else {
-      selected_date = moment();
+      selected_date = moment(state.selectedDate);
     }
-    commit('setSelectedDate', selected_date);
+        commit('setSelectedDate', selected_date);
   },
   resetSelectedDateAction({ commit }) {
     commit('resetSelectedDate');

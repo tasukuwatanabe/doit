@@ -1,5 +1,6 @@
 import { axiosForBackend } from '../../config/axios';
 import { mapGetters, mapActions } from 'vuex';
+import { formatMomentToString } from "../../modules/myMoment";
 import Logout from './logout';
 
 export default {
@@ -37,7 +38,7 @@ export default {
     fetchTodos() {
       if (this.getSelectedDate) {
         axiosForBackend
-          .get('/todos', { params: { date: this.getSelectedDate } })
+          .get('/todos', { params: { date: formatMomentToString(this.getSelectedDate) } })
           .then((res) => {
             this.setTodosAction(res.data);
           })

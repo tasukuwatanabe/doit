@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import moment from "../../modules/myMoment";
+import { moment } from "../../modules/myMoment";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
