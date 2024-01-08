@@ -22,14 +22,15 @@ const mutations = {
 };
 
 const actions = {
-  setSelectedDateAction({ commit, state }, set_date) {
+  setSelectedDateAction({ commit }, set_date) {
     let selected_date;
     if (set_date) {
       selected_date = moment(set_date);
     } else {
-      selected_date = moment(state.selectedDate);
+      // 引数で日付が渡ってこない場合は当日の日付をセット
+      selected_date = moment();
     }
-        commit('setSelectedDate', selected_date);
+    commit('setSelectedDate', selected_date);
   },
   resetSelectedDateAction({ commit }) {
     commit('resetSelectedDate');

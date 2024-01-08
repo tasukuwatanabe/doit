@@ -50,9 +50,6 @@ export default {
     }),
     calendarClass() {
       return function(week, date) {
-
-        let classCase;
-
         // 選択された日付のyear
         const selectedYear = this.currentMoment.year();
         // 選択された日付のmonth
@@ -63,7 +60,7 @@ export default {
         // 表示中の月外の日付かどうかを判別
         const outOfMonth = week === this.calendarData[0] && date >= 21 ||
                             week === this.calendarData[this.calendarData.length - 1] && date <= 10
-        
+
         // カレンダーから今日の日付を判別
         const isToday = selectedYear === moment().year() &&
                         selectedMonth === moment().month() + 1 &&
@@ -71,10 +68,11 @@ export default {
 
         // カレンダーから選択中の日付を判別
         const isSelected = selectedYear === this.getSelectedDate.year() &&
-                            selectedMonth === this.getSelectedDate.month() + 1 &&
-                            date === this.getSelectedDate.date() &&
-                          !outOfMonth // 月外なら除外する
+                           selectedMonth === this.getSelectedDate.month() + 1 &&
+                           date === this.getSelectedDate.date() &&
+                           !outOfMonth; // 月外なら除外する
 
+        let classCase;
         if (outOfMonth) {
           classCase = 'out'; // 月外の場合のクラス
         } else if (isToday) {
@@ -147,10 +145,17 @@ export default {
       } else if (week === this.calendarData[this.calendarData.length - 1] && date <= 10) {
         this.current++; // 翌月の日付であれば、ひと月分進める
       }
+
       const year = this.currentMoment.year(); // 表示するyearを取得
       const month = this.currentMoment.month() + 1; // 表示するmonthを取得
-      const selectedDate = `${year}/${month}/${date}`;
-      this.setSelectedDateAction(selectedDate);
+      const currentTime = new Date();
+      const hours = currentTime.getHours();
+      const minutes = currentTime.getMinutes();
+      const selectedDate = `${year}/${month}/${date} ${hours}:${minutes}`;
+      const momentDate = moment(selectedDate);
+
+      // Momentオブジェクトとして日付をセットする
+      this.setSelectedDateAction(momentDate);
     },
     todoMatchCalendar() {
       const year = this.getSelectedDate.year();
